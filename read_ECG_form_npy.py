@@ -1,5 +1,3 @@
-from cgi import print_form
-from pickle import TRUE
 import numpy as np
 import os 
 import ecg_plot
@@ -14,7 +12,6 @@ data_path =  '/workspace/data/OneDrive - mail.hfut.edu.cn/ECG/Interpretable_HTN/
 lable_path = '/workspace/data/OneDrive - mail.hfut.edu.cn/ECG/Interpretable_HTN/label.npy'
 seq_files = os.listdir(data_path)#返回指定的文件夹包含的文件或文件夹的名字的列表
 seq_files.sort(key=lambda x:int(x.split('_')[0])) #按“.”分割，并把分割结果的[0]转为整形并排序
-
 label = np.load(lable_path)
 
 for ecg_file_index in tqdm(range(len(seq_files))):
