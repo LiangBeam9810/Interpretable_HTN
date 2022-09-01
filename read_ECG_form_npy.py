@@ -18,7 +18,7 @@ for ecg_file_index in tqdm(range(len(seq_files))):
     ecg = load_data(os.path.join(data_path,seq_files[ecg_file_index]))
     ecg = ecg[:,:6000]*(4.88/1000.0)
     ecg_plot.plot(ecg, sample_rate = 500, title = seq_files[ecg_file_index],row_height= 8,show_grid=True,show_separate_line=True)
-    ecg_plot.save_as_png(seq_files[ecg_file_index][:-4],'/workspace/data/OneDrive - mail.hfut.edu.cn/ECG/Interpretable_HTN//PNG_ECG/',dpi = 100)
+    ecg_plot.save_as_png(ecg_file_index,'/workspace/data/OneDrive - mail.hfut.edu.cn/ECG/Interpretable_HTN//PNG_ECG/',dpi = 100)
 
 
 
