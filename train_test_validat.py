@@ -22,8 +22,7 @@ def train_model(train_loader,model,criterion,optimizer,device):
         optimizer.step() # 更新系数
 
         #print("labels:",labels)
-        outputs_ = outputs.clone()
-        _,pred = outputs_.max(1) # 求概率最大值对应的标签
+        _,pred = outputs.max(1) # 求概率最大值对应的标签
         num_correct = (pred == labels).sum().item()
         acc = num_correct/len(labels) # 计算准确率
         train_loss.append(loss.item())
@@ -36,7 +35,6 @@ def test_model(test_loader,criterion,model,device):
     model.eval()
     test_loss = []
     test_acc = []   
-
     for i,data in enumerate(test_loader,0):
 
         inputs,labels = data[0].to(device),data[1].to(device)
@@ -45,8 +43,7 @@ def test_model(test_loader,criterion,model,device):
 
         #print("output:",outputs)
         #print("labels:",labels)
-        outputs_ = outputs.clone()
-        _,pred = outputs_.max(1) # 求概率最大值对应的标签
+        _,pred = outputs.max(1) # 求概率最大值对应的标签
         #print("pred:",pred)
         num_correct = (pred == labels).sum().item()
         acc = num_correct/len(labels)
@@ -79,7 +76,6 @@ class EarlyStopping:
             print(f'EarlyStopping counter: {self.counter} out of {self.patience}\n')
             if self.counter >= self.patience:
                 self.early_stop = True
-                self.save_checkpoint(val_loss, model)
         else:
             self.best_score = score
             self.save_checkpoint(val_loss, model)
@@ -87,7 +83,6 @@ class EarlyStopping:
         return self.early_stop
 
     def save_checkpoint(self, val_loss, model):
-
         if self.verbose:
             print(f'Validation loss decreased ({self.val_loss_min:.6f} --> {val_loss:.6f}).  Saving model ...')
             print(" "*20+'-'*50+'\n')

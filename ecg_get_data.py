@@ -36,7 +36,11 @@ def MAX_MIN_normalization_by_feactures(x,feature_rangetuple=(-1,1) ):
         x_normalized[i] = (min_max_scaler.fit_transform(data_swap)).swapaxes(0,1)  # turn shape back to (changnal,timesteps)
     return x_normalized
 
-def get_k_fold_dataset(fold,x,y,k = 5):
+def get_k_fold_dataset(fold,x,y,k = 5 ,random_seed =1):
+    if(k <= 1): #当k = 1时，就按照8：2的比列分配训练集和测试集
+        k = 1
+        train_dataset,validate_dataset = load_numpy_dataset_to_tensor_dataset(x,y,random_seed=random_seed)
+        return train_dataset,validate_dataset
     if(fold<=0):#防止fold过小
         fold = 1
     x = MAX_MIN_normalization_by_feactures(x)
