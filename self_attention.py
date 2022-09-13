@@ -21,7 +21,7 @@ class self_Attention_1D_for_timestep(nn.Module):
         sita = np.array(sqrt(seq_len))
         q = self.dropout(self.bn(self.relu(self.query(input))))
         k = self.dropout(self.bn(self.relu(self.key(input))))
-        v = self.bn(self.relu(self.value(input)))
+        v = self.dropout(self.bn(self.relu(self.value(input))))
 
         attn_matrix = (torch.bmm(q.permute(0,2 ,1), k))/torch.from_numpy(sita)  #torch.bmm进行tensor矩阵乘法,q与k相乘得到的值为attn_matrix.
         #print(attn_matrix)
@@ -41,7 +41,7 @@ class self_Attention_1D_for_timestep_position(nn.Module):
         self.key   = nn.Conv1d(self.in_channels, self.in_channels, kernel_size = 1, stride = 1)
         self.value = nn.Conv1d(self.in_channels, self.in_channels, kernel_size = 1, stride = 1)
         self.relu = nn.ReLU()
-        self.dropout = nn.Dropout(0.2)
+        self.dropout = nn.Dropout(0.1)
         self.bn = nn.BatchNorm1d(in_channels)
         self.gamma = nn.Parameter(torch.zeros(1))  #gamma为一个衰减参数，由torch.zero生成，nn.Parameter的作用是将其转化成为可以训练的参数.
         self.softmax = nn.Softmax(dim = -1)
@@ -100,19 +100,19 @@ class self_Attention_1D_for_leads(nn.Module):
         self.gamma = nn.Parameter(torch.zeros(1))  #gamma为一个衰减参数，由torch.zero生成，nn.Parameter的作用是将其转化成为可以训练的参数.
         self.softmax = nn.Softmax(dim = -1)
         self.relu = nn.ReLU()
-        self.dropout = nn.Dropout(0.2)
+        self.dropout = nn.Dropout(0.1)
         self.bn = nn.BatchNorm1d(in_channels)
         
     def forward(self, input):
         batch_size, channels,seq_len = input.shape
         sita = np.array(sqrt(channels))
-        q = self.query(input)
-        k = self.key(input)
-        v = self.value(input)
+        q = self.dropout(self.bn(self.relu(self.query(input))))
+        k = self.dropout(self.bn(self.relu(self.key(input))))
+        v = self.dropout(self.bn(self.relu(self.value(input))))
         attn_matrix = (torch.bmm(q, k.permute(0,2 ,1)))/torch.from_numpy(sita)  #torch.bmm进行tensor矩阵乘法,q与k相乘得到的值为attn_matrix.
         attn_matrix = self.softmax(attn_matrix)
         #print("{:.5}".format(self.gamma[0]))
-        out = (torch.bmm(attn_matrix,v))+self.gamma *  input
+        out = self.gamma *  (torch.bmm(attn_matrix,v))+input
         return out,attn_matrix
 
 
