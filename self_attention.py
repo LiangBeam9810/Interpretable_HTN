@@ -28,7 +28,7 @@ class self_Attention_1D_for_timestep(nn.Module):
         #print("attention:",attn_matrix.shape)
         attn_matrix = self.softmax(attn_matrix)
         #self.attention_value = attn_matrix #输出attention值
-        out = (torch.bmm(attn_matrix,v.permute(0,2 ,1))).permute(0,2 ,1)+ self.gamma * input
+        out = (self.gamma*((torch.bmm(attn_matrix,v.permute(0,2 ,1))).permute(0,2 ,1)))+  input
         #print("out:",out.shape)
         return out,attn_matrix
 

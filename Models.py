@@ -89,7 +89,6 @@ class CNN_ATT2(nn.Module):
         x = self.linear_unit(x)
         return x
 
-
 class CNN_ATT3(nn.Module):
     def __init__(self):
         super(CNN_ATT3,self).__init__()
@@ -132,8 +131,6 @@ class CNN_ATT3(nn.Module):
         x = x.contiguous().reshape(x.size(0),-1)
         x = self.linear_unit(x)
         return x
-
-
 
 class CNN_ATT4(nn.Module):
     def __init__(self):
@@ -180,7 +177,6 @@ class CNN_ATT4(nn.Module):
         x = x.contiguous().reshape(x.size(0),-1)
         x = self.linear_unit(x)
         return x
-
 
 class CNN_ATT5(nn.Module):
     def __init__(self):
@@ -229,7 +225,6 @@ class CNN_ATT5(nn.Module):
         x = self.linear_unit(x)
         return x
 
-
 class CNN_ATT6(nn.Module):
     def __init__(self):
         super(CNN_ATT6,self).__init__()
@@ -271,6 +266,51 @@ class CNN_ATT6(nn.Module):
         #print(x.size())
         x = self.maxpool(x) # bs,256,312
         x,self.attention_value2 = self.attn2(x)
+        x = self.dropout(x)
+        x = x.contiguous().reshape(x.size(0),-1)
+        x = self.linear_unit(x)
+        return x
+
+class CNN_ATT7(nn.Module):
+    def __init__(self):
+        super(CNN_ATT7,self).__init__()
+        self.conv1 = nn.Conv1d(in_channels = 12,out_channels = 32,kernel_size = 11,stride = 1,padding = 5)
+        self.conv2 = nn.Conv1d(32,64,11,1,5)
+        self.conv3 = nn.Conv1d(64,128,3,1,1)
+        self.conv4 = nn.Conv1d(128,256,3,1,1)
+        self.attn = self_Attention_1D_for_timestep(64)
+        self.bn1 = nn.BatchNorm1d(12)
+        self.bn2 = nn.BatchNorm1d(32)
+        self.bn3 = nn.BatchNorm1d(64)
+        self.bn4 = nn.BatchNorm1d(128)
+        self.maxpool = nn.MaxPool1d(4)
+        self.relu = nn.ReLU()
+        self.dropout = nn.Dropout(0.1)
+        self.linear_unit = nn.Sequential(
+            nn.Linear(79872,1024),
+            nn.ReLU(),
+            nn.Linear(1024,128),
+            nn.ReLU(),
+            nn.Linear(128,2),
+            nn.Softmax(dim=1)
+        )
+
+    def forward(self,x):
+        batch_size, channels,seq_len = x.shape
+        x = x+(create_1d_absolute_sin_cos_embedding(batch_size,channels,seq_len)).to(x.device)
+        x = self.bn1(x)
+        x = self.relu(self.conv1(x)) # bs,32,5000
+        x = self.bn2(x)
+        x = self.relu(self.conv2(x)) # bs,64,5000
+        x = self.maxpool(x)
+        x,self.attention_value = self.attn(x)
+        print(self.attention_value.size())
+        x = self.bn3(x)
+        x = self.relu(self.conv3(x)) # bs,128,1250
+        x = self.bn4(x)
+        x = self.relu(self.conv4(x)) # bs,256,1250
+        #print(x.size())
+        x = self.maxpool(x) # bs,256,312
         x = self.dropout(x)
         x = x.contiguous().reshape(x.size(0),-1)
         x = self.linear_unit(x)
