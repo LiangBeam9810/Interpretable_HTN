@@ -34,3 +34,15 @@ log/20220904_100749/Accuracy_3_train/events.out.tfevents.1662287608.e778427eefe1
 log/20220904_100749/Accuracy_2_validate/events.out.tfevents.1662287209.e778427eefe1.1815.14
 log/20220904_100749/Accuracy_2_train/events.out.tfevents.1662287209.e778427eefe1.1815.13
 log/20220904_100749/Accuracy_1_validate/events.out.tfevents.1662286899.e778427eefe1.1815.9
+log/20220914_133511/events.out.tfevents.1663162522.11f8a0e96769.2296.6
+log/20220914_133511/0_Accuracy_train/events.out.tfevents.1663162525.11f8a0e96769.2296.9
+log/20220914_133511/0_Accuracy_validate/events.out.tfevents.1663162525.11f8a0e96769.2296.10
+log/20220914_133511/0_LearningRate_LR/events.out.tfevents.1663162525.11f8a0e96769.2296.11
+log/20220914_133511/0_Loss_train/events.out.tfevents.1663162525.11f8a0e96769.2296.7
+log/20220914_134422/0_LearningRate_LR/events.out.tfevents.1663163101.11f8a0e96769.2521.6
+log/20220915_022748/events.out.tfevents.1663209001.11f8a0e96769.4102.6
+log/20220915_022748/events.out.tfevents.1663210127.11f8a0e96769.4102.7
+log/20220915_022748/0_Accuracy_train/events.out.tfevents.1663210133.11f8a0e96769.4102.10
+log/20220915_022748/0_Accuracy_validate/events.out.tfevents.1663210133.11f8a0e96769.4102.11
+log/20220915_022748/0_LearningRate_LR/events.out.tfevents.1663210133.11f8a0e96769.4102.12
+log/20220915_022748/0_Loss_validate/events.out.tfevents.1663210133.11f8a0e96769.4102.9

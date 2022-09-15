@@ -2,6 +2,104 @@ import torch
 import torch.nn as nn
 from self_attention import *
 
+class ATICNN(nn.Module):
+    def __init__(self,DropoutRate = 0.1):
+        super(ATICNN,self).__init__()
+        self.ConvUnit1 = nn.Sequential(
+            nn.Conv1d(in_channels = 12,out_channels = 64,kernel_size = 3,stride = 1,padding = 1),
+            nn.BatchNorm1d(64),
+            nn.ReLU(),
+            #nn.Dropout(DropoutRate)
+            nn.Conv1d(in_channels = 64,out_channels = 64,kernel_size = 3,stride = 1,padding = 1),
+            nn.BatchNorm1d(64),
+            nn.ReLU(),
+            nn.Dropout(DropoutRate)
+        )
+
+        self.ConvUnit2 = nn.Sequential(
+            nn.Conv1d(in_channels = 64,out_channels = 128,kernel_size = 3,stride = 1,padding = 1),
+            nn.BatchNorm1d(128),
+            nn.ReLU(),
+            #nn.Dropout(DropoutRate)
+            nn.Conv1d(in_channels = 128,out_channels = 128,kernel_size = 3,stride = 1,padding = 1),
+            nn.BatchNorm1d(128),
+            nn.ReLU(),
+            nn.Dropout(DropoutRate)
+        )
+
+        self.ConvUnit3 = nn.Sequential(
+            nn.Conv1d(in_channels = 128,out_channels = 256,kernel_size = 3,stride = 1,padding = 1),
+            nn.BatchNorm1d(256),
+            nn.ReLU(),
+            #nn.Dropout(DropoutRate)
+            nn.Conv1d(in_channels = 256,out_channels = 256,kernel_size = 3,stride = 1,padding = 1),
+            nn.BatchNorm1d(256),
+            nn.ReLU(),
+
+            nn.Conv1d(in_channels = 256,out_channels = 256,kernel_size = 3,stride = 1,padding = 1),
+            nn.BatchNorm1d(256),
+            nn.ReLU(),
+            nn.Dropout(DropoutRate)
+        )
+
+        self.ConvUnit4 = nn.Sequential(
+            nn.Conv1d(in_channels = 256,out_channels = 512,kernel_size = 3,stride = 1,padding = 1),
+            nn.BatchNorm1d(512),
+            nn.ReLU(),
+            #nn.Dropout(DropoutRate)
+            nn.Conv1d(in_channels = 512,out_channels = 512,kernel_size = 3,stride = 1,padding = 1),
+            nn.BatchNorm1d(512),
+            nn.ReLU(),
+
+            nn.Conv1d(in_channels = 512,out_channels = 512,kernel_size = 3,stride = 1,padding = 1),
+            nn.BatchNorm1d(512),
+            nn.ReLU(),
+            nn.Dropout(DropoutRate)
+        )
+
+        self.ConvUnit5 = nn.Sequential(
+            nn.Conv1d(in_channels = 512,out_channels = 512,kernel_size = 3,stride = 1,padding = 1),
+            nn.BatchNorm1d(512),
+            nn.ReLU(),
+            #nn.Dropout(DropoutRate)
+            nn.Conv1d(in_channels = 512,out_channels = 512,kernel_size = 3,stride = 1,padding = 1),
+            nn.BatchNorm1d(512),
+            nn.ReLU(),
+
+            nn.Conv1d(in_channels = 512,out_channels = 512,kernel_size = 3,stride = 1,padding = 1),
+            nn.BatchNorm1d(512),
+            nn.ReLU(),
+            nn.Dropout(DropoutRate)
+        )
+        self.pool = nn.MaxPool1d(3)
+        self.LSTM_layer = nn.LSTM(input_size=512, hidden_size=32,num_layers  = 2,batch_first=True)
+        self.attn = self_Attention_1D_for_timestep_position(32)
+        self.linear_unit = nn.Sequential(
+            nn.Linear(1952,512),
+            nn.ReLU(),
+            nn.Linear(512,2),
+            nn.ReLU(),
+            nn.Softmax(dim=1)
+        )
+    def forward(self,x):
+        x = self.ConvUnit1(x)
+        x = self.pool(x)
+        x = self.ConvUnit2(x)
+        x = self.pool(x)
+        x = self.ConvUnit3(x)
+        x = self.pool(x)
+        x = self.ConvUnit4(x)
+        x = self.pool(x)
+        x = x.permute(0,2 ,1)#[bs,  61 ,512]
+        x , _ = self.LSTM_layer(x)#[bs,  61 ,32,]
+        #print(x.shape)
+        x = x.permute(0,2 ,1) #[bs, 32, 61]
+        #print(x.shape)
+        x,self.attention_value = self.attn(x)#[bs, 32, 61]
+        x = x.contiguous().reshape(x.size(0),-1)
+        x = self.linear_unit(x)
+        return x
+
 class CNN_ATT(nn.Module):
     def __init__(self):
         super(CNN_ATT,self).__init__()
@@ -253,11 +351,13 @@ class CNN_ATT6(nn.Module):
 
     def forward(self,x):
         x = self.bn1(x)
+        print(x.shape)
         x,self.attention_value1 = self.attn1(x)
         x = self.relu(self.conv1(x)) # bs,32,5000
         x = self.bn2(x)
         x = self.relu(self.conv2(x)) # bs,64,5000
         x = self.maxpool(x)
+        print(x.shape)
         x = self.bn3(x)
         x = self.relu(self.conv3(x)) # bs,128,1250
         x = self.bn4(x)
@@ -267,27 +367,26 @@ class CNN_ATT6(nn.Module):
         x = self.maxpool(x) # bs,256,312
         x,self.attention_value2 = self.attn2(x)
         x = self.dropout(x)
+        print(x.shape)
         x = x.contiguous().reshape(x.size(0),-1)
+        print(x.shape)
         x = self.linear_unit(x)
         return x
 
 class CNN_ATT7(nn.Module):
     def __init__(self):
         super(CNN_ATT7,self).__init__()
-        self.conv1 = nn.Conv1d(in_channels = 12,out_channels = 32,kernel_size = 11,stride = 1,padding = 5)
-        self.conv2 = nn.Conv1d(32,64,11,1,5)
-        self.conv3 = nn.Conv1d(64,128,3,1,1)
-        self.conv4 = nn.Conv1d(128,256,3,1,1)
-        self.attn = self_Attention_1D_for_timestep(64)
+        self.conv1 = nn.Conv1d(in_channels = 12,out_channels = 32,kernel_size = 5,stride = 1,padding = 2)
+        self.conv2 = nn.Conv1d(32,64,3,1,1)
+        self.attn = self_Attention_1D_for_timestep_without_relu(64)
         self.bn1 = nn.BatchNorm1d(12)
         self.bn2 = nn.BatchNorm1d(32)
         self.bn3 = nn.BatchNorm1d(64)
-        self.bn4 = nn.BatchNorm1d(128)
         self.maxpool = nn.MaxPool1d(4)
         self.relu = nn.ReLU()
-        self.dropout = nn.Dropout(0.1)
+        self.dropout = nn.Dropout(0.2)
         self.linear_unit = nn.Sequential(
-            nn.Linear(79872,1024),
+            nn.Linear(19968,1024),
             nn.ReLU(),
             nn.Linear(1024,128),
             nn.ReLU(),
@@ -300,19 +399,51 @@ class CNN_ATT7(nn.Module):
         x = x+(create_1d_absolute_sin_cos_embedding(batch_size,channels,seq_len)).to(x.device)
         x = self.bn1(x)
         x = self.relu(self.conv1(x)) # bs,32,5000
+        x = self.maxpool(x)          # bs,32,1250
         x = self.bn2(x)
-        x = self.relu(self.conv2(x)) # bs,64,5000
-        x = self.maxpool(x)
-        x,self.attention_value = self.attn(x)
-        print(self.attention_value.size())
+        x = self.relu(self.conv2(x)) # bs,64,1250
+        x = self.maxpool(x) # bs,64,312
         x = self.bn3(x)
-        x = self.relu(self.conv3(x)) # bs,128,1250
-        x = self.bn4(x)
-        x = self.relu(self.conv4(x)) # bs,256,1250
-        #print(x.size())
-        x = self.maxpool(x) # bs,256,312
+        #print(x.shape)
+        x,self.attention_value = self.attn(x)
         x = self.dropout(x)
         x = x.contiguous().reshape(x.size(0),-1)
+        #print(x.shape)
+        x = self.linear_unit(x)
+        return x
+
+class ECGiCOVIDNet(nn.Module):
+    def __init__(self,DropoutRate = 0.3):
+        super(ECGiCOVIDNet,self).__init__()
+        self.ConvUnit12 = nn.Sequential(
+            nn.Conv1d(in_channels = 12,out_channels = 32,kernel_size = 11,stride = 1,padding = 5),
+            nn.ReLU(),
+            nn.BatchNorm1d(32),
+            nn.Dropout(DropoutRate)
+        )
+        self.ConvUnit32 = nn.Sequential(
+            nn.Conv1d(in_channels = 32,out_channels = 32,kernel_size = 3,stride = 1,padding = 1),
+            nn.ReLU(),
+            nn.BatchNorm1d(32),
+            nn.Dropout(DropoutRate)
+        )
+        self.linear_unit = nn.Sequential(
+            nn.Linear(1000,512),
+            nn.ReLU(),
+            nn.Linear(512,2),
+            nn.ReLU(),
+            nn.Softmax(dim=1)
+        )
+        self.poolling = nn.AdaptiveAvgPool1d(1000)
+        self.attn = self_Attention_1D_for_leads(32)
+    def forward(self,x):
+        x = self.ConvUnit12(x)
+        x = self.ConvUnit32(x)
+        x = self.ConvUnit32(x)+x
+        x = self.poolling(x)
+        x,self.attention_value1 = self.attn1(x)
+        x = x.contiguous().reshape(x.size(0),-1)
+        x = self.poolling(x)
         x = self.linear_unit(x)
         return x
 
