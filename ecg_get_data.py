@@ -9,13 +9,30 @@ from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
 
 
+def mark_input_numpy(input,lable,mark_time = 1):
+    sample_num,channelsize,sqenlenth = input.shape
+    x = np.zeros((sample_num*mark_time,channelsize,sqenlenth))
+    for i in range(sample_num*mark_time):
+        if(i<sample_num):
+            x[i]=input[i]
+        else:
+            original_index = int(i%sample_num) #copy the original_index th ecg form original input, ready to be marked
+            x[i]=input[original_index]
+            mark_lenth = torch.randint(500,1000,[1]) 
+            mark = np.zeros([mark_lenth])
+            mark_index = np.random.randint(mark_lenth,sqenlenth-mark_lenth, size=[1])
+            for j in range(channelsize):
+                x[i,j,mark_index[0]:mark_index[0]+mark_lenth]=mark
+            
+    return x,np.tile(lable,mark_time)
 
 def load_data(npy_folder,EcgChannles_num = 12 ,EcgLength_num =5000):
     seq_files = os.listdir(npy_folder)#返回指定的文件夹包含的文件或文件夹的名字的列表
     seq_files.sort(key=lambda x:int(x.split('_')[0])) #按“.”分割，并把分割结果的[0]转为整形并排序
     sample_num = len(seq_files)
+
     ECGs = np.empty([sample_num,EcgChannles_num,EcgLength_num], dtype = float)
-    for i in tqdm(range(sample_num)):
+    for i in tqdm(range(sample_num)):  
         file_path = os.path.join(npy_folder,seq_files[i])
         X = np.load(file_path)
         ECGs[i] = X[:EcgChannles_num,:EcgLength_num]
@@ -71,9 +88,14 @@ def get_k_fold_dataset(fold,x,y,k = 5 ,random_seed =1):
     train_dataset = Data.TensorDataset(train_x, train_y)
     return train_dataset,validate_dataset
 
+def load_numpy_dataset_to_tensor_dataset(x,y):
+    x = MAX_MIN_normalization_by_feactures(x)
+    x = torch.FloatTensor(x)  #turn numpy to tensor
+    y = torch.LongTensor(y)
+    return Data.TensorDataset(x, y)  
 
 
-def load_numpy_dataset_to_tensor_dataset(x,y,random_seed,train_rate = 0.8):
+def load_numpy_dataset_to_tensor_dataset_split(x,y,random_seed,train_rate = 0.8):
     torch.manual_seed(random_seed) 
     x = MAX_MIN_normalization_by_feactures(x)
     x = torch.FloatTensor(x)  #turn numpy to tensor
