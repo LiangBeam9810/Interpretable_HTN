@@ -178,7 +178,7 @@ class CNN_ATT_Mark(nn.Module):
     def forward(self,input):
         batch_size, channels,seq_len = input.shape
         x = input+(create_1d_absolute_sin_cos_embedding(batch_size,channels,seq_len)).to(input.device)
-        mark_lenth = torch.randint(500,750,[1])
+        mark_lenth = torch.randint(int(seq_len/15),int(seq_len/10),[1])
         x = mark_input(x,mark_lenth=mark_lenth[0])
         x = self.bn1(x)
         x = self.relu(self.conv1(x)) # bs,32,5000
@@ -194,9 +194,6 @@ class CNN_ATT_Mark(nn.Module):
         x = self.adtivepooling(x)
         x = self.linear_unit(x)
         return x
-
-
-
 
 class CNN_ATT2(nn.Module):
     def __init__(self):

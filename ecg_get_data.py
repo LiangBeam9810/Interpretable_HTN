@@ -1,5 +1,3 @@
-from random import sample
-from wsgiref import validate
 import numpy as np
 import os
 from tqdm import tqdm
@@ -25,6 +23,27 @@ def mark_input_numpy(input,lable,mark_time = 1):
                 x[i,j,mark_index[0]:mark_index[0]+mark_lenth]=mark
             
     return x,np.tile(lable,mark_time)
+
+def sliding_window(input,lable,sliding_lenth = 1000,stride_factor = 2,sequence_size = 5000):
+    samlpe_num,channel_size,_ = input.shape
+    stride = int(sliding_lenth/stride_factor)
+    #print(stride)
+    ECG_sliding = np.zeros((1,channel_size,sliding_lenth))
+    lable_sliding = []
+    ECG_buff = np.zeros((1,channel_size,sliding_lenth))
+    for i in tqdm((range(samlpe_num))):
+        for start_index in range(0,sequence_size,stride):
+            #print(i,":",start_index)
+            if(start_index+sliding_lenth > sequence_size):
+                break;
+            ECG_buff[0] = input[i,:,start_index:start_index+sliding_lenth]
+            #print(ECG_buff.shape)
+            #print(ECG_sliding.shape)
+            ECG_sliding = np.concatenate((ECG_sliding,ECG_buff),axis=0)
+            lable_sliding.append(lable[i])
+    ECG_sliding =np.delete(ECG_sliding, 0, 0)#删除掉第0行，即最开始的空行
+    lable_sliding = np.array(lable_sliding)
+    return ECG_sliding,lable_sliding
 
 def load_data(npy_folder,EcgChannles_num = 12 ,EcgLength_num =5000):
     seq_files = os.listdir(npy_folder)#返回指定的文件夹包含的文件或文件夹的名字的列表
@@ -52,6 +71,14 @@ def MAX_MIN_normalization_by_feactures(x,feature_rangetuple=(-1,1) ):
         min_max_scaler = preprocessing.MinMaxScaler()#默认为范围0~1，拷贝操作
         x_normalized[i] = (min_max_scaler.fit_transform(data_swap)).swapaxes(0,1)  # turn shape back to (changnal,timesteps)
     return x_normalized
+def z_score_normalization_by_feactures(x,feature_rangetuple=(-1,1) ):
+    x_normalized = x.copy()
+    for i,data in enumerate(x,0):
+        data_swap = data.swapaxes(0,1) # transfor to (timesteps,changnal), fit the MinMaxScaler(),who's input shape is (samples_nums,features) 
+        z_score_scaler = preprocessing.StandardScaler()#默认为范围0~1，拷贝操作
+        x_normalized[i] = (z_score_scaler.fit_transform(data_swap)).swapaxes(0,1)  # turn shape back to (changnal,timesteps)
+    return x_normalized
+
 
 def get_k_fold_dataset(fold,x,y,k = 5 ,random_seed =1):
     if(k <= 1): #当k = 1时，就按照8：2的比列分配训练集和测试集
@@ -89,7 +116,7 @@ def get_k_fold_dataset(fold,x,y,k = 5 ,random_seed =1):
     return train_dataset,validate_dataset
 
 def load_numpy_dataset_to_tensor_dataset(x,y):
-    x = MAX_MIN_normalization_by_feactures(x)
+    x = z_score_normalization_by_feactures(x)
     x = torch.FloatTensor(x)  #turn numpy to tensor
     y = torch.LongTensor(y)
     return Data.TensorDataset(x, y)  
