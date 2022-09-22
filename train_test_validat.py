@@ -1,7 +1,9 @@
+import imp
 import numpy as np
 import torch
 import csv
 import random
+from Models import mark_input,create_1d_absolute_sin_cos_embedding
 import torch.utils.data as Data
 
 # 定义训练函数
@@ -11,18 +13,22 @@ def train_model(train_loader,model,criterion,optimizer,device):
     train_acc = []   
 
     for i,data in enumerate(train_loader,0):
-
         # inputs,labels = data[0].cuda(),data[1].cuda()
         inputs,labels = data[0].to(device),data[1].to(device) # 获取数据
+        #batch_size, channels,seq_len = inputs.shape
+
+        #inputs = inputs+(create_1d_absolute_sin_cos_embedding(batch_size,channels,seq_len)).to(inputs.device)
+        optimizer.zero_grad() # 梯度清0
         outputs = model(inputs) # 预测结果
         loss = criterion(outputs,labels) # 计算loss
 
-        optimizer.zero_grad() # 梯度清0
         loss.backward() # 反向传播
         optimizer.step() # 更新系数
-
+        #print(outputs)
+        
         #print("labels:",labels)
         _,pred = outputs.max(1) # 求概率最大值对应的标签
+        #print(pred)
         num_correct = (pred == labels).sum().item()
         acc = num_correct/len(labels) # 计算准确率
         train_loss.append(loss.item())

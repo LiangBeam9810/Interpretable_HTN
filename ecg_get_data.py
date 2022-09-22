@@ -16,7 +16,7 @@ def mark_input_numpy(input,lable,mark_time = 1):
         else:
             original_index = int(i%sample_num) #copy the original_index th ecg form original input, ready to be marked
             x[i]=input[original_index]
-            mark_lenth = torch.randint(500,1000,[1]) 
+            mark_lenth = torch.randint(int(sqenlenth/15),int(sqenlenth/10),[1]) 
             mark = np.zeros([mark_lenth])
             mark_index = np.random.randint(mark_lenth,sqenlenth-mark_lenth, size=[1])
             for j in range(channelsize):
@@ -27,21 +27,25 @@ def mark_input_numpy(input,lable,mark_time = 1):
 def sliding_window(input,lable,sliding_lenth = 1000,stride_factor = 2,sequence_size = 5000):
     samlpe_num,channel_size,_ = input.shape
     stride = int(sliding_lenth/stride_factor)
-    #print(stride)
-    ECG_sliding = np.zeros((1,channel_size,sliding_lenth))
+    print(stride)
+    ECG_sliding = np.zeros(((int(((sequence_size/sliding_lenth))*stride_factor)-stride_factor+1)*(samlpe_num),channel_size,sliding_lenth))
     lable_sliding = []
-    ECG_buff = np.zeros((1,channel_size,sliding_lenth))
+    ECG_buff = np.zeros((channel_size,sliding_lenth))
+    num = 0
     for i in tqdm((range(samlpe_num))):
         for start_index in range(0,sequence_size,stride):
             #print(i,":",start_index)
             if(start_index+sliding_lenth > sequence_size):
                 break;
-            ECG_buff[0] = input[i,:,start_index:start_index+sliding_lenth]
+            ECG_buff = input[i,:,start_index:start_index+sliding_lenth]
             #print(ECG_buff.shape)
             #print(ECG_sliding.shape)
-            ECG_sliding = np.concatenate((ECG_sliding,ECG_buff),axis=0)
+            ECG_sliding[num] = ECG_buff
+            #ECG_sliding = np.concatenate((ECG_sliding,ECG_buff),axis=0)
             lable_sliding.append(lable[i])
-    ECG_sliding =np.delete(ECG_sliding, 0, 0)#删除掉第0行，即最开始的空行
+            num+=1
+    print(num,(int(((sequence_size/sliding_lenth))*stride_factor)-stride_factor+1)*(samlpe_num))
+    #ECG_sliding =np.delete(ECG_sliding, 0, 0)#删除掉第0行，即最开始的空行
     lable_sliding = np.array(lable_sliding)
     return ECG_sliding,lable_sliding
 
@@ -65,19 +69,17 @@ def load_label(lable_file_path):
 # function : normalize each feacture for each sample
 '''
 def MAX_MIN_normalization_by_feactures(x,feature_rangetuple=(-1,1) ):
-    x_normalized = x.copy()
     for i,data in enumerate(x,0):
         data_swap = data.swapaxes(0,1) # transfor to (timesteps,changnal), fit the MinMaxScaler(),who's input shape is (samples_nums,features) 
         min_max_scaler = preprocessing.MinMaxScaler()#默认为范围0~1，拷贝操作
-        x_normalized[i] = (min_max_scaler.fit_transform(data_swap)).swapaxes(0,1)  # turn shape back to (changnal,timesteps)
-    return x_normalized
+        x[i] = (min_max_scaler.fit_transform(data_swap)).swapaxes(0,1)  # turn shape back to (changnal,timesteps)
+    return x
 def z_score_normalization_by_feactures(x,feature_rangetuple=(-1,1) ):
-    x_normalized = x.copy()
     for i,data in enumerate(x,0):
         data_swap = data.swapaxes(0,1) # transfor to (timesteps,changnal), fit the MinMaxScaler(),who's input shape is (samples_nums,features) 
         z_score_scaler = preprocessing.StandardScaler()#默认为范围0~1，拷贝操作
-        x_normalized[i] = (z_score_scaler.fit_transform(data_swap)).swapaxes(0,1)  # turn shape back to (changnal,timesteps)
-    return x_normalized
+        x[i] = (z_score_scaler.fit_transform(data_swap)).swapaxes(0,1)  # turn shape back to (changnal,timesteps)
+    return x
 
 
 def get_k_fold_dataset(fold,x,y,k = 5 ,random_seed =1):
@@ -116,7 +118,7 @@ def get_k_fold_dataset(fold,x,y,k = 5 ,random_seed =1):
     return train_dataset,validate_dataset
 
 def load_numpy_dataset_to_tensor_dataset(x,y):
-    x = z_score_normalization_by_feactures(x)
+    #x = z_score_normalization_by_feactures(x)
     x = torch.FloatTensor(x)  #turn numpy to tensor
     y = torch.LongTensor(y)
     return Data.TensorDataset(x, y)  
