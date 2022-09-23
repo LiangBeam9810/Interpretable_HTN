@@ -175,7 +175,7 @@ class CNN_ATT_Mark(nn.Module):
         self.dropout = nn.Dropout(0.1)
         self.adtivepooling = nn.AdaptiveAvgPool1d(1024)
         self.linear_unit = nn.Sequential(
-            nn.Linear(4000,256),
+            nn.Linear(9984,256),
             nn.ReLU(),
             nn.Linear(256,2),
             nn.Softmax(dim=1)
@@ -507,79 +507,6 @@ class ECGiCOVIDNet(nn.Module):
         x = self.linear_unit(x)
         return x
 
-# 定义模型结构
-class VGG_6(nn.Module):
-
-    def __init__(self):
-        super(VGG_6,self).__init__()
-        self.conv1 = nn.Conv1d(in_channels = 12,out_channels = 64,kernel_size = 3,stride = 1,padding = 1)
-        self.conv2 = nn.Conv1d(64,64,3,1,1)
-        self.conv3 = nn.Conv1d(64,128,3,1,1)
-        self.conv4 = nn.Conv1d(128,128,3,1,1)
-        self.conv5 = nn.Conv1d(128,256,3,1,1)
-        self.conv6 = nn.Conv1d(256,256,3,1,1)
-        self.conv7 = nn.Conv1d(256,512,3,1,1)
-        self.conv8 = nn.Conv1d(512,512,3,1,1)
-
-        self.bn64 = nn.BatchNorm1d(64)
-        self.bn128 = nn.BatchNorm1d(128)
-        self.bn256 = nn.BatchNorm1d(256)
-        self.bn512 = nn.BatchNorm1d(512)
-
-        self.pool = nn.AvgPool1d(3)
-        self.relu = nn.RReLU()
-        self.dropout = nn.Dropout(0.2)
-        self.linear_unit = nn.Sequential(
-            nn.Linear(10240,1024),
-            nn.ReLU(),
-            nn.Linear(1024,128),
-            nn.ReLU(),
-            nn.Linear(128,2),
-            nn.Softmax(dim=1)
-        )
-
-
-    def forward(self,x):
-        x = self.relu(self.conv1(x)) # (batchsize,12,5000) -> (batchsize,64,5000)
-        x = self.bn64(x)
-        x = self.relu(self.conv2(x))
-        #x = self.bn64(x)
-        x = self.pool(x)  # (batchsize,64,5000/3=1666)
-
-        x = self.relu(self.conv3(x)) # (batchsize,64,5000) --> (batchsize,128,5000)
-        #x = self.bn128(x)
-        x = self.relu(self.conv4(x)) 
-        #x = self.bn128(x)
-        x = self.pool(x)  # (batchsize,64,1666/3=555)
-
-        x = self.relu(self.conv5(x)) # (batchsize,128,5000) --> (batchsize,256,5000)
-        #x = self.bn256(x)
-        x = self.relu(self.conv6(x)) 
-        #x = self.bn256(x)    
-        x = self.relu(self.conv6(x)) 
-        #x = self.bn256(x)   
-        x = self.pool(x)  # (batchsize,64,555/3=185)
-
-        x = self.relu(self.conv7(x)) # (batchsize,256,5000) --> (batchsize,512,5000)
-        #x = self.bn512(x)
-        x = self.relu(self.conv8(x)) 
-        #x = self.bn512(x)    
-        x = self.relu(self.conv8(x)) 
-        #x = self.bn512(x)   
-        x = self.pool(x)  # (batchsize,64,185/3=61)
-
-        x = self.relu(self.conv8(x)) 
-        #x = self.bn512(x)    
-        x = self.relu(self.conv8(x)) 
-        #x = self.bn512(x)    
-        x = self.relu(self.conv8(x)) 
-        #x = self.bn512(x)    
-        x = self.pool(x)  # (batchsize,64,61/3=20)
-        x = x.view(x.size(0),-1)
-
-        x = self.linear_unit(x)
-        return x
-
 class CNN(nn.Module):
 
     def __init__(self):
@@ -702,3 +629,188 @@ def resnet18(input_channels=12, inplanes=64, num_classes=9):
 def resnet34(input_channels=12, inplanes=64, num_classes=9):
     model = ResNet1d(BasicBlock1d, [3, 4, 6, 3], input_channels, inplanes, num_classes)
     return model
+
+
+class channels_split_CNN(nn.Module):
+    def __init__(self):
+        super(channels_split_CNN, self).__init__()
+        self.channels_unit1 = nn.Sequential(
+            nn.Conv1d(1, 16, kernel_size=11, stride=1, padding=5, bias=False),
+            nn.BatchNorm1d(16),
+            nn.ReLU(),
+            nn.MaxPool1d(2),
+            nn.Conv1d(16, 32, kernel_size=5, stride=1, padding=2, bias=False),
+            nn.BatchNorm1d(32),
+            nn.ReLU(),
+            nn.MaxPool1d(2)
+        )
+        self.channels_unit2 = nn.Sequential(
+            nn.Conv1d(1, 16, kernel_size=11, stride=1, padding=5, bias=False),
+            nn.BatchNorm1d(16),
+            nn.ReLU(),
+            nn.MaxPool1d(2),
+            nn.Conv1d(16, 32, kernel_size=5, stride=1, padding=2, bias=False),
+            nn.BatchNorm1d(32),
+            nn.ReLU(),
+            nn.MaxPool1d(2)
+        )
+        self.channels_unit3 = nn.Sequential(
+            nn.Conv1d(1, 16, kernel_size=11, stride=1, padding=5, bias=False),
+            nn.BatchNorm1d(16),
+            nn.ReLU(),
+            nn.MaxPool1d(2),
+            nn.Conv1d(16, 32, kernel_size=5, stride=1, padding=2, bias=False),
+            nn.BatchNorm1d(32),
+            nn.ReLU(),
+            nn.MaxPool1d(2)
+        )
+        self.channels_unit4 = nn.Sequential(
+            nn.Conv1d(1, 16, kernel_size=11, stride=1, padding=5, bias=False),
+            nn.BatchNorm1d(16),
+            nn.ReLU(),
+            nn.MaxPool1d(2),
+            nn.Conv1d(16, 32, kernel_size=5, stride=1, padding=2, bias=False),
+            nn.BatchNorm1d(32),
+            nn.ReLU(),
+            nn.MaxPool1d(2)
+        )
+        self.channels_unit5 = nn.Sequential(
+            nn.Conv1d(1, 16, kernel_size=11, stride=1, padding=5, bias=False),
+            nn.BatchNorm1d(16),
+            nn.ReLU(),
+            nn.MaxPool1d(2),
+            nn.Conv1d(16, 32, kernel_size=5, stride=1, padding=2, bias=False),
+            nn.BatchNorm1d(32),
+            nn.ReLU(),
+            nn.MaxPool1d(2)
+        )
+        self.channels_unit6 = nn.Sequential(
+            nn.Conv1d(1, 16, kernel_size=11, stride=1, padding=5, bias=False),
+            nn.BatchNorm1d(16),
+            nn.ReLU(),
+            nn.MaxPool1d(2),
+            nn.Conv1d(16, 32, kernel_size=5, stride=1, padding=2, bias=False),
+            nn.BatchNorm1d(32),
+            nn.ReLU(),
+            nn.MaxPool1d(2)
+        )
+        self.channels_unit7 = nn.Sequential(
+            nn.Conv1d(1, 16, kernel_size=11, stride=1, padding=5, bias=False),
+            nn.BatchNorm1d(16),
+            nn.ReLU(),
+            nn.MaxPool1d(2),
+            nn.Conv1d(16, 32, kernel_size=5, stride=1, padding=2, bias=False),
+            nn.BatchNorm1d(32),
+            nn.ReLU(),
+            nn.MaxPool1d(2)
+        )
+        self.channels_unit8 = nn.Sequential(
+            nn.Conv1d(1, 16, kernel_size=11, stride=1, padding=5, bias=False),
+            nn.BatchNorm1d(16),
+            nn.ReLU(),
+            nn.MaxPool1d(2),
+            nn.Conv1d(16, 32, kernel_size=5, stride=1, padding=2, bias=False),
+            nn.BatchNorm1d(32),
+            nn.ReLU(),
+            nn.MaxPool1d(2)
+        )
+        self.channels_unit9 = nn.Sequential(
+            nn.Conv1d(1, 16, kernel_size=11, stride=1, padding=5, bias=False),
+            nn.BatchNorm1d(16),
+            nn.ReLU(),
+            nn.MaxPool1d(2),
+            nn.Conv1d(16, 32, kernel_size=5, stride=1, padding=2, bias=False),
+            nn.BatchNorm1d(32),
+            nn.ReLU(),
+            nn.MaxPool1d(2)
+        )
+        self.channels_unit10 = nn.Sequential(
+            nn.Conv1d(1, 16, kernel_size=11, stride=1, padding=5, bias=False),
+            nn.BatchNorm1d(16),
+            nn.ReLU(),
+            nn.MaxPool1d(2),
+            nn.Conv1d(16, 32, kernel_size=5, stride=1, padding=2, bias=False),
+            nn.BatchNorm1d(32),
+            nn.ReLU(),
+            nn.MaxPool1d(2)
+        )
+        self.channels_unit11 = nn.Sequential(
+            nn.Conv1d(1, 16, kernel_size=11, stride=1, padding=5, bias=False),
+            nn.BatchNorm1d(16),
+            nn.ReLU(),
+            nn.MaxPool1d(2),
+            nn.Conv1d(16, 32, kernel_size=5, stride=1, padding=2, bias=False),
+            nn.BatchNorm1d(32),
+            nn.ReLU(),
+            nn.MaxPool1d(2)
+        )
+        self.channels_unit12 = nn.Sequential(
+            nn.Conv1d(1, 16, kernel_size=11, stride=1, padding=5, bias=False),
+            nn.BatchNorm1d(16),
+            nn.ReLU(),
+            nn.MaxPool1d(2),
+            nn.Conv1d(16, 32, kernel_size=5, stride=1, padding=2, bias=False),
+            nn.BatchNorm1d(32),
+            nn.ReLU(),
+            nn.MaxPool1d(2)
+        )
+        self.conv1 = nn.Conv1d(384, 128, kernel_size=3, stride=1, padding=1, bias=False)
+        self.bn1 = nn.BatchNorm1d(128)
+        self.relu = nn.ReLU(inplace=True)
+        self.dropout = nn.Dropout(p=0.2)
+        self.conv2 = nn.Conv1d(128, 64, kernel_size=5, stride=1, padding=2, bias=False)
+        self.bn2 = nn.BatchNorm1d(64)
+        self.maxpool = nn.MaxPool1d(4)
+
+        self.linear_unit = nn.Sequential(
+            nn.Linear(4992,1024),
+            nn.ReLU(),
+            nn.Linear(1024,512),
+            nn.ReLU(),
+            nn.Linear(512,2),
+            nn.Softmax(dim=1)
+        )
+        self.att = Attention_1D_tanh(64,2)
+        self.softmax =nn.Softmax(dim=-1)
+    
+    def forward(self, input):
+        batch_size, channels,seq_len = input.shape
+        
+        input = input+(create_1d_absolute_sin_cos_embedding(batch_size,channels,seq_len)).to(input.device)#位置编码
+        if self.training:
+            mark_lenth = torch.randint(int(seq_len/10),int(seq_len/5),[1])
+            input = mark_input(input,mark_lenth=mark_lenth[0])
+
+        x1 = self.channels_unit1(input[:,0:1,:]) #提取channel_i的数据
+        x2 = self.channels_unit2(input[:,1:2,:]) #提取channel_i的数据
+        x3 = self.channels_unit3(input[:,2:3,:]) #提取channel_i的数据
+        x4 = self.channels_unit4(input[:,3:4,:]) #提取channel_i的数据
+        x5 = self.channels_unit5(input[:,4:5,:]) #提取channel_i的数据
+        x6 = self.channels_unit6(input[:,5:6,:]) #提取channel_i的数据
+        x7 = self.channels_unit7(input[:,6:7,:]) #提取channel_i的数据
+        x8 = self.channels_unit8(input[:,7:8,:]) #提取channel_i的数据
+        x9 = self.channels_unit9(input[:,8:9,:]) #提取channel_i的数据
+        x10 = self.channels_unit10(input[:,9:10,:]) #提取channel_i的数据
+        x11 = self.channels_unit11(input[:,10:11,:]) #提取channel_i的数据
+        x12 = self.channels_unit12(input[:,11:,:]) #提取channel_i的数据  
+        #print(x1.shape)
+        x = torch.cat((x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11,x12),1) #按照第1维度(channel)合并
+        #print(x.shape)
+        out = self.conv1(x)
+        out = self.bn1(out)
+        out = self.relu(out)
+        out = self.maxpool(out)
+        #out = self.dropout(out)
+        out = self.conv2(out)
+        out = self.bn2(out)
+        out = self.relu(out)
+        out = self.maxpool(out)
+        
+        #out,self.att_value = self.att(out)
+        #out = self.softmax(out)
+        #print(out)
+        out = out.view(out.size(0),-1)
+        out = self.linear_unit(out)
+        
+        
+        return out

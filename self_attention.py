@@ -5,29 +5,31 @@ from math import gamma, sqrt
 import numpy as np
 
 class Attention_1D_tanh(nn.Module):
-    def __init__(self, in_channels):
+    def __init__(self, in_channels,class_num):
         super().__init__()
         self.in_channels = in_channels
-        self.query = nn.Conv1d(self.in_channels, self.in_channels, kernel_size = 1, stride = 1)
-        self.key   = nn.Conv1d(self.in_channels, self.in_channels, kernel_size = 1, stride = 1)
-        self.value = nn.Conv1d(self.in_channels, self.in_channels, kernel_size = 1, stride = 1)
+        self.class_num = class_num
+        self.fc1 = nn.Conv1d(self.in_channels, self.in_channels, kernel_size = 1, stride = 1)
+        self.fc2   = nn.Conv1d(self.in_channels, self.class_num, kernel_size = 1, stride = 1)
+        self.fc3 = nn.Conv1d(self.in_channels, self.class_num, kernel_size = 1, stride = 1)
         self.gamma = nn.Parameter(torch.zeros(1))  #gamma为一个衰减参数，由torch.zero生成，nn.Parameter的作用是将其转化成为可以训练的参数.
-        self.softmax = nn.Softmax(dim = -1)
+        self.softmax = nn.Softmax(dim = 1)
+        self.tanh = nn.Tanh()
         self.relu = nn.ReLU()
         self.dropout = nn.Dropout(0.1)
         self.bn = nn.BatchNorm1d(in_channels)
         
     def forward(self, input):
         batch_size, channels,seq_len = input.shape
-        sita = np.array(sqrt(channels))
-        q = self.dropout(self.bn(self.relu(self.query(input))))
-        k = self.dropout(self.bn(self.relu(self.key(input))))
-        v = self.dropout(self.bn(self.relu(self.value(input))))
-        attn_matrix = (torch.bmm(q, k.permute(0,2 ,1)))/torch.from_numpy(sita)  #torch.bmm进行tensor矩阵乘法,q与k相乘得到的值为attn_matrix.
-        attn_matrix = self.softmax(attn_matrix)
-        #print("{:.5}".format(self.gamma[0]))
-        out = self.gamma *  (torch.bmm(attn_matrix,v))+input
-        return out,attn_matrix
+
+        x1 = self.relu(self.fc1(input)) # bs,class,time
+        x2 = (self.relu(self.fc2(input)))# bs,class,time
+        #print(x2)
+        x3 = self.relu(self.fc3(input))# bs,class,time
+        #print(x1.shape,x2.shape,x3.shape)
+        x = x2*x3
+        out = x.mean(dim=2)
+        return out,x
 
 
 

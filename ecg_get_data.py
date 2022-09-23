@@ -1,10 +1,84 @@
+from cProfile import label
 import numpy as np
 import os
 from tqdm import tqdm
+
 import torch
 import torch.utils.data as Data
+from torch.utils.data.dataset import Dataset
+
 from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
+
+import xml.dom.minidom as dm
+
+class ECG_Dataset(Dataset):
+    def __init__(self,data_folder,EcgChannles_num,EcgLength_num):
+        self.root = data_folder
+        xml_files_list = os.listdir(data_folder)#返回指定的文件夹包含的文件或文件夹的名字的列表
+        xml_files_list.sort(key=lambda x:int(x.split('_')[0])) #按“_”分割，并把分割结果的[0]转为整形并排序
+        self.xmls = xml_files_list
+        self.Channles_size = EcgChannles_num
+        self.Length_size = EcgLength_num
+    def __getitem__(self, item):
+        xml_path = os.path.join(self.root,self.xmls[item])
+        
+        ECG = get_ECG_form_xml(xml_path,self.Channles_size,self.Length_size) 
+        label = 1 if (((((self.xmls[item]).split('.'))[0]).split('_'))[-1]) =='HTN' else 0
+        ECG = amplitude_limiting(ECG,3000)
+        return ECG, label
+
+    def deleteitem(self, item):
+        del self.xmls[item]
+        return self.get_filepath(item)
+
+    def get_filepath(self, item):
+        return os.path.join(self.root,self.xmls[item])
+
+    def get_name_date(self, item):
+        xml_path = os.path.join(self.root,self.xmls[item])
+        xml_doc = dm.parse(xml_path) #打开该xml文件
+        try:
+            name =  (xml_doc.getElementsByTagName('name'))[1].childNodes[0].data
+        except :
+            name = "error"
+        try:
+            date = (xml_doc.getElementsByTagName('center'))[0].getAttribute("value")
+        except :
+            date = "error"
+        return name,date
+
+    def __len__(self):
+        return len(self.xmls)
+
+    def size(self):
+        return len(self.xmls), self.Channles_size,self.Length_size
+    def get_basic_inf(self, item):
+        return (self.get_name_date(item),self.get_filepath(item))
+
+def amplitude_limiting(ecg_data,max_bas = 3500):
+    ecg_data = ecg_data*4.88
+    ecg_data[ecg_data > max_bas] = max_bas
+    ecg_data[ecg_data < (-1*max_bas)] = -1*max_bas
+    return ecg_data
+
+def get_ECG_form_xml(xml_path,EcgChannles_num,EcgLength_num):
+    xml_doc = dm.parse(xml_path) #打开该xml文件
+    nope_root = xml_doc.getElementsByTagName('digits')#寻找名为digits的子类
+    ECG = np.empty([EcgChannles_num,EcgLength_num], dtype = int)
+    for channle_i in (range(EcgChannles_num)):  #遍历通道
+        list_buf = nope_root[channle_i].childNodes[0].data.split(" ") ##第i导联数据第i组序列中 取出text序列，并以‘ ’分割，得到list
+        len_of_buf = len(list_buf)
+        list_buf = list_buf[:len_of_buf-1] #去掉最后一个空位
+        len_of_buf = len(list_buf)
+        #print('Channel: '+str(channle_i)+" Length: "+str(len_of_buf))
+        for j in range(EcgLength_num):        #取前int_sequence_num个数据点
+            if(j > (len_of_buf - 1)):         #过短时补零
+                ECG[channle_i,j] = 0
+            else:
+                ECG[channle_i,j] = eval(list_buf[j]) #转化为数值型
+    return ECG
+
 
 
 def mark_input_numpy(input,lable,mark_time = 1):
@@ -66,20 +140,29 @@ def load_label(lable_file_path):
 
 '''
 # input： x(sample_nums,changnal,timesteps)
-# function : normalize each feacture for each sample
+# function : normalize each feacture for all sample
 '''
-def MAX_MIN_normalization_by_feactures(x,feature_rangetuple=(-1,1) ):
-    for i,data in enumerate(x,0):
-        data_swap = data.swapaxes(0,1) # transfor to (timesteps,changnal), fit the MinMaxScaler(),who's input shape is (samples_nums,features) 
-        min_max_scaler = preprocessing.MinMaxScaler()#默认为范围0~1，拷贝操作
-        x[i] = (min_max_scaler.fit_transform(data_swap)).swapaxes(0,1)  # turn shape back to (changnal,timesteps)
-    return x
-def z_score_normalization_by_feactures(x,feature_rangetuple=(-1,1) ):
-    for i,data in enumerate(x,0):
-        data_swap = data.swapaxes(0,1) # transfor to (timesteps,changnal), fit the MinMaxScaler(),who's input shape is (samples_nums,features) 
-        z_score_scaler = preprocessing.StandardScaler()#默认为范围0~1，拷贝操作
-        x[i] = (z_score_scaler.fit_transform(data_swap)).swapaxes(0,1)  # turn shape back to (changnal,timesteps)
-    return x
+def MAX_MIN_normalization_by_feactures(x,feature_range=(-1,1) ):
+    sample_nums,changnal,timesteps = x.shape
+    x_swap = x.swapaxes(1,2) #(sample_nums,timesteps,changnal)
+    x_swap = x_swap.reshape(-1,changnal)#(sample_nums*timestep,,changnal)
+    min_max_scaler = preprocessing.MinMaxScaler(feature_range=(-1,1))#默认为范围0~1，拷贝操作
+    x_swap = min_max_scaler.fit_transform(x_swap)
+    x_swap = x_swap.reshape(-1,timesteps,changnal) #(-1,timesteps,changnal)
+    x_swap = x_swap.swapaxes(1,2) #(sample_nums,changnal,timesteps)
+    return x_swap
+
+def z_score_normalization_by_feactures(x ):
+    sample_nums,changnal,timesteps = x.shape
+    x_swap = x.swapaxes(1,2) #(sample_nums,timesteps,changnal)
+    x_swap = x_swap.reshape(-1,changnal)#(sample_nums*timestep,,changnal)
+    #min_max_scaler = preprocessing.MinMaxScaler(feature_range=(-1,1))#默认为范围0~1，拷贝操作
+    #x_swap = min_max_scaler.fit_transform(x_swap)
+    z_score_scaler = preprocessing.StandardScaler()#默认为范围0~1，拷贝操作
+    x_swap = z_score_scaler.fit_transform(x_swap)
+    x_swap = x_swap.reshape(-1,timesteps,changnal) #(-1,timesteps,changnal)
+    x_swap = x_swap.swapaxes(1,2) #(sample_nums,changnal,timesteps)
+    return x_swap
 
 
 def get_k_fold_dataset(fold,x,y,k = 5 ,random_seed =1):
@@ -118,7 +201,7 @@ def get_k_fold_dataset(fold,x,y,k = 5 ,random_seed =1):
     return train_dataset,validate_dataset
 
 def load_numpy_dataset_to_tensor_dataset(x,y):
-    #x = z_score_normalization_by_feactures(x)
+    x = z_score_normalization_by_feactures(x)
     x = torch.FloatTensor(x)  #turn numpy to tensor
     y = torch.LongTensor(y)
     return Data.TensorDataset(x, y)  
@@ -126,7 +209,7 @@ def load_numpy_dataset_to_tensor_dataset(x,y):
 
 def load_numpy_dataset_to_tensor_dataset_split(x,y,random_seed,train_rate = 0.8):
     torch.manual_seed(random_seed) 
-    x = MAX_MIN_normalization_by_feactures(x)
+    #x = MAX_MIN_normalization_by_feactures(x)
     x = torch.FloatTensor(x)  #turn numpy to tensor
     y = torch.LongTensor(y)
     dataset = Data.TensorDataset(x, y)
@@ -139,3 +222,5 @@ def load_numpy_dataset_to_tensor_dataset_split(x,y,random_seed,train_rate = 0.8)
     print("train_dataset: %d  %d" % ( (train_dataset[:][1]).sum(),train_dataset.__len__()-(valid_dataset[:][1]).sum() ) )
     return  train_dataset,valid_dataset
 
+test = np.zeros((1000,12,5000))
+test = MAX_MIN_normalization_by_feactures(test)

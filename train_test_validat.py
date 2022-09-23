@@ -8,11 +8,12 @@ import torch.utils.data as Data
 
 # 定义训练函数
 def train_model(train_loader,model,criterion,optimizer,device):
-    model.train()
+    
     train_loss = []
     train_acc = []   
 
     for i,data in enumerate(train_loader,0):
+        model.train()
         # inputs,labels = data[0].cuda(),data[1].cuda()
         inputs,labels = data[0].to(device),data[1].to(device) # 获取数据
         #batch_size, channels,seq_len = inputs.shape
@@ -38,11 +39,11 @@ def train_model(train_loader,model,criterion,optimizer,device):
 
 # 定义测试函数，具体结构与训练函数相似
 def test_model(test_loader,criterion,model,device):
-    model.eval()
+    
     test_loss = []
     test_acc = []   
     for i,data in enumerate(test_loader,0):
-
+        model.eval()
         inputs,labels = data[0].to(device),data[1].to(device)
         outputs = model(inputs)
         loss = criterion(outputs,labels)
