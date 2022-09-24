@@ -156,8 +156,6 @@ def z_score_normalization_by_feactures(x ):
     sample_nums,changnal,timesteps = x.shape
     x_swap = x.swapaxes(1,2) #(sample_nums,timesteps,changnal)
     x_swap = x_swap.reshape(-1,changnal)#(sample_nums*timestep,,changnal)
-    #min_max_scaler = preprocessing.MinMaxScaler(feature_range=(-1,1))#默认为范围0~1，拷贝操作
-    #x_swap = min_max_scaler.fit_transform(x_swap)
     z_score_scaler = preprocessing.StandardScaler()#默认为范围0~1，拷贝操作
     x_swap = z_score_scaler.fit_transform(x_swap)
     x_swap = x_swap.reshape(-1,timesteps,changnal) #(-1,timesteps,changnal)

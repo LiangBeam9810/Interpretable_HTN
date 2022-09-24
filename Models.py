@@ -763,7 +763,7 @@ class channels_split_CNN(nn.Module):
         self.maxpool = nn.MaxPool1d(4)
 
         self.linear_unit = nn.Sequential(
-            nn.Linear(4992,1024),
+            nn.Linear(1984,1024),
             nn.ReLU(),
             nn.Linear(1024,512),
             nn.ReLU(),
