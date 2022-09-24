@@ -43,4 +43,7 @@ def plot_multicolored_line(fig,axs,x,y,color_depend,cmap = "jet",y_name = "Volta
     axs.set_ylabel(y_name)
     axs.set_title(title)
     axs.grid(True, which='both')
-    
+
+
+def plot_power():
+    return 0

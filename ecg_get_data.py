@@ -25,7 +25,8 @@ class ECG_Dataset(Dataset):
         
         ECG = get_ECG_form_xml(xml_path,self.Channles_size,self.Length_size) 
         label = 1 if (((((self.xmls[item]).split('.'))[0]).split('_'))[-1]) =='HTN' else 0
-        ECG = amplitude_limiting(ECG,3000)
+        ECG = amplitude_limiting(ECG,3500) #先幅值
+        ECG = torch.FloatTensor(ECG)
         return ECG, label
 
     def deleteitem(self, item):
@@ -65,7 +66,7 @@ def amplitude_limiting(ecg_data,max_bas = 3500):
 def get_ECG_form_xml(xml_path,EcgChannles_num,EcgLength_num):
     xml_doc = dm.parse(xml_path) #打开该xml文件
     nope_root = xml_doc.getElementsByTagName('digits')#寻找名为digits的子类
-    ECG = np.empty([EcgChannles_num,EcgLength_num], dtype = int)
+    ECG = np.empty([EcgChannles_num,EcgLength_num], dtype = float)
     for channle_i in (range(EcgChannles_num)):  #遍历通道
         list_buf = nope_root[channle_i].childNodes[0].data.split(" ") ##第i导联数据第i组序列中 取出text序列，并以‘ ’分割，得到list
         len_of_buf = len(list_buf)
@@ -78,8 +79,6 @@ def get_ECG_form_xml(xml_path,EcgChannles_num,EcgLength_num):
             else:
                 ECG[channle_i,j] = eval(list_buf[j]) #转化为数值型
     return ECG
-
-
 
 def mark_input_numpy(input,lable,mark_time = 1):
     sample_num,channelsize,sqenlenth = input.shape
