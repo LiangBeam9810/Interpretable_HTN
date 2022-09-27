@@ -2,71 +2,131 @@ from cProfile import label
 import numpy as np
 import os
 from tqdm import tqdm
-
+import random
 import torch
 import torch.utils.data as Data
 from torch.utils.data.dataset import Dataset
-
+import pywt
 from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
 
 import xml.dom.minidom as dm
 
+
 class ECG_Dataset(Dataset):
-    def __init__(self,data_folder,EcgChannles_num,EcgLength_num):
-        self.root = data_folder
-        xml_files_list = os.listdir(data_folder)#返回指定的文件夹包含的文件或文件夹的名字的列表
-        xml_files_list.sort(key=lambda x:int(x.split('_')[0])) #按“_”分割，并把分割结果的[0]转为整形并排序
-        self.xmls = xml_files_list
+    def __init__(self,npy_folder,EcgChannles_num,EcgLength_num,shadow_npy_folder = None,xml_folder = None):
+    
+        self.npy_root = npy_folder
+        npy_files_list = os.listdir(npy_folder)#返回指定的文件夹包含的文件或文件夹的名字的列表
+        npy_files_list.sort(key=lambda x:int(x.split('_')[0])) #按“_”分割，并把分割结果的[0]转为整形并排序
+        self.npys = npy_files_list
+
         self.Channles_size = EcgChannles_num
         self.Length_size = EcgLength_num
+
+        self.xml_root = xml_folder
+
+        self.shadow_npy_root = shadow_npy_folder #存放了比正样本多出来很多的负样本
+        if(self.shadow_npy_root):
+            shadow_npy_files_list = os.listdir(self.shadow_npy_root)
+            shadow_npy_files_list.sort(key=lambda x:int(x.split('_')[0])) #按“_”分割，并把分割结果的[0]转为整形并排序
+            self.shadow_npys = shadow_npy_files_list
+
     def __getitem__(self, item):
-        xml_path = os.path.join(self.root,self.xmls[item])
+        label = 1 if (((((self.npys[item]).split('.'))[0]).split('_'))[-1]) =='HTN' else 0 #先按“.”分割，并把分割结果的[0]再按“_"分割，结果的[-1](最后一个)即为
         
-        ECG = get_ECG_form_xml(xml_path,self.Channles_size,self.Length_size) 
-        label = 1 if (((((self.xmls[item]).split('.'))[0]).split('_'))[-1]) =='HTN' else 0
-        ECG = amplitude_limiting(ECG,3500) #先幅值
+        if((self.shadow_npy_root == None) or (label == 1)):#如果是没有开启负样本抽样/正样本的话，正常读取
+            npy_path = os.path.join(self.npy_root,self.npys[item])
+            ECG =  (np.load(npy_path))[:self.Channles_size,:self.Length_size]
+        else:#如果是负样本，就从所有的shadow_npy负样本中随机抽一个
+            #print("reselect the other normal sample. ")
+            if random.random()>0.5:
+                item_ = random.randint(0,len(self.shadow_npys)-1)
+                while( (((((self.shadow_npys[item_]).split('.'))[0]).split('_'))[-1]) =='HTN'):
+                    item_ = random.randint(0,len(self.shadow_npys)-1)
+                npy_path = os.path.join(self.shadow_npy_root,self.shadow_npys[item_])
+            else :
+                npy_path = os.path.join(self.npy_root,self.npys[item])
+            
+            ECG =  (np.load(npy_path))[:self.Channles_size,:self.Length_size]
+        ECG = denoise(ECG)
+        ECG = amplitude_limiting(ECG,3500) #幅值
         ECG = torch.FloatTensor(ECG)
+        label = torch.from_numpy(np.array(label))
+        #print(self.npys[item])
         return ECG, label
 
+
+
     def deleteitem(self, item):
-        del self.xmls[item]
-        return self.get_filepath(item)
+        del self.npys[item]
+        return self.npy_path(item)
 
-    def get_filepath(self, item):
-        return os.path.join(self.root,self.xmls[item])
+    def npy_path(self, item):
+        return os.path.join(self.npy_root,self.npys[item])
 
-    def get_name_date(self, item):
-        xml_path = os.path.join(self.root,self.xmls[item])
-        xml_doc = dm.parse(xml_path) #打开该xml文件
-        try:
-            name =  (xml_doc.getElementsByTagName('name'))[1].childNodes[0].data
-        except :
-            name = "error"
-        try:
-            date = (xml_doc.getElementsByTagName('center'))[0].getAttribute("value")
-        except :
-            date = "error"
-        return name,date
+    def sample_name(self,item):#获取没有后缀的文件名
+        return str(self.npys[item].split('.')[0])
 
     def __len__(self):
-        return len(self.xmls)
+        return len(self.npys)
 
     def size(self):
-        return len(self.xmls), self.Channles_size,self.Length_size
-    def get_basic_inf(self, item):
-        return (self.get_name_date(item),self.get_filepath(item))
+        return len(self.npys), self.Channles_size,self.Length_size
+
+    def xml_path(self, item):
+        if(self.xml_root):
+            xml_path = self.sample_name(item)+'.xml'
+            return os.path.join(self.xml_root,xml_path)
+        else:
+            print('xml_path is None.')
+
+    def name_date(self, item):
+        if(self.xml_root):
+            xml_path = self.xml_path(item)
+            xml_doc = dm.parse(xml_path) #打开该xml文件
+            try:
+                name =  (xml_doc.getElementsByTagName('name'))[1].childNodes[0].data
+            except :
+                name = "error"
+            try:
+                date = (xml_doc.getElementsByTagName('center'))[0].getAttribute("value")
+            except :
+                date = "error"
+            return name,date
+        else:
+            print('xml_path is None.')
+
 
 def amplitude_limiting(ecg_data,max_bas = 3500):
     ecg_data = ecg_data*4.88
     ecg_data[ecg_data > max_bas] = max_bas
     ecg_data[ecg_data < (-1*max_bas)] = -1*max_bas
-    return ecg_data
+    return ecg_data/max_bas
+
+# 小波去噪预处理
+def denoise(data):
+    # 小波变换
+    coeffs = pywt.wavedec(data=data, wavelet='db5', level=9)
+    cA9, cD9, cD8, cD7, cD6, cD5, cD4, cD3, cD2, cD1 = coeffs
+
+    # 阈值去噪
+    threshold = (np.median(np.abs(cD1)) / 0.6745) * (np.sqrt(2 * np.log(len(cD1))))
+    cD1.fill(0)
+    cD2.fill(0)
+    for i in range(1, len(coeffs) - 2):
+        coeffs[i] = pywt.threshold(coeffs[i], threshold)
+
+    # 小波反变换,获取去噪后的信号
+    rdata = pywt.waverec(coeffs=coeffs, wavelet='db5')
+    rdata[np.isnan(rdata)]=0
+    return rdata
+
 
 def get_ECG_form_xml(xml_path,EcgChannles_num,EcgLength_num):
     xml_doc = dm.parse(xml_path) #打开该xml文件
     nope_root = xml_doc.getElementsByTagName('digits')#寻找名为digits的子类
-    ECG = np.empty([EcgChannles_num,EcgLength_num], dtype = float)
+    ECG = np.empty([EcgChannles_num,EcgLength_num], dtype = int)
     for channle_i in (range(EcgChannles_num)):  #遍历通道
         list_buf = nope_root[channle_i].childNodes[0].data.split(" ") ##第i导联数据第i组序列中 取出text序列，并以‘ ’分割，得到list
         len_of_buf = len(list_buf)

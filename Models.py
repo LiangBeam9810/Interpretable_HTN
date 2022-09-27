@@ -144,7 +144,6 @@ class CNN_ATT(nn.Module):
         x = self.linear_unit(x)
         return x
 
-
 def mark_input(input,mark_lenth=500):
     batchsize,channelsize,sqenlenth = input.shape
     mark = torch.zeros([mark_lenth]).to(input.device)
@@ -411,13 +410,13 @@ class CNN_ATT6(nn.Module):
 
     def forward(self,x):
         x = self.bn1(x)
-        print(x.shape)
+        #print(x.shape)
         x,self.attention_value1 = self.attn1(x)
         x = self.relu(self.conv1(x)) # bs,32,5000
         x = self.bn2(x)
         x = self.relu(self.conv2(x)) # bs,64,5000
         x = self.maxpool(x)
-        print(x.shape)
+        #print(x.shape)
         x = self.bn3(x)
         x = self.relu(self.conv3(x)) # bs,128,1250
         x = self.bn4(x)
@@ -427,9 +426,9 @@ class CNN_ATT6(nn.Module):
         x = self.maxpool(x) # bs,256,312
         x,self.attention_value2 = self.attn2(x)
         x = self.dropout(x)
-        print(x.shape)
+        #print(x.shape)
         x = x.contiguous().reshape(x.size(0),-1)
-        print(x.shape)
+        #print(x.shape)
         x = self.linear_unit(x)
         return x
 
@@ -629,7 +628,6 @@ def resnet18(input_channels=12, inplanes=64, num_classes=9):
 def resnet34(input_channels=12, inplanes=64, num_classes=9):
     model = ResNet1d(BasicBlock1d, [3, 4, 6, 3], input_channels, inplanes, num_classes)
     return model
-
 
 class channels_split_CNN(nn.Module):
     def __init__(self):
