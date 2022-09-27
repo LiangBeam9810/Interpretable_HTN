@@ -7,3 +7,6 @@ log/
 model/
 
 
+data/test/1003.jpg
+*.jpg
+ECG1698.mat
