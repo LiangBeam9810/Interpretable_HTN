@@ -25,13 +25,21 @@ class ECG_Dataset(Dataset):
         self.Length_size = EcgLength_num
 
         self.xml_root = xml_folder
-
+        for i in range(len(self.npys)):
+            self.filter_outlier_npy(i)
+            if(i >= len(self.npys)-1):
+                break
+        print('npys:{%d}',len(self.npys))
         self.shadow_npy_root = shadow_npy_folder #存放了比正样本多出来很多的负样本
         if(self.shadow_npy_root):
             shadow_npy_files_list = os.listdir(self.shadow_npy_root)
             shadow_npy_files_list.sort(key=lambda x:int(x.split('_')[0])) #按“_”分割，并把分割结果的[0]转为整形并排序
             self.shadow_npys = shadow_npy_files_list
-
+            for i in range(len(self.shadow_npys)):
+                self.filter_outlier_shadow(i)
+                if(i >= len(self.shadow_npys)-1):
+                    break
+            print('shadow_npys:{%d}',len(self.shadow_npys))
     def __getitem__(self, item):
         label = 1 if (((((self.npys[item]).split('.'))[0]).split('_'))[-1]) =='HTN' else 0 #先按“.”分割，并把分割结果的[0]再按“_"分割，结果的[-1](最后一个)即为
         
@@ -49,18 +57,38 @@ class ECG_Dataset(Dataset):
                 npy_path = os.path.join(self.npy_root,self.npys[item])
             
             ECG =  (np.load(npy_path))[:self.Channles_size,:self.Length_size]
-        ECG = denoise(ECG)
+        #ECG = denoise(ECG)
         ECG = amplitude_limiting(ECG,3500) #幅值
         ECG = torch.FloatTensor(ECG)
         label = torch.from_numpy(np.array(label))
         #print(self.npys[item])
         return ECG, label
 
+    def filter_outlier_npy(self, item):
+        npy_path = os.path.join(self.npy_root,self.npys[item])
+        ECG =  (np.load(npy_path))[:self.Channles_size,:self.Length_size]
+        if((ECG.min() ==  -32768) or (ECG.max() ==  32768)):
+            self.deleteitem_npys(item)
+            print(npy_path)
+            return True
+        return False
+    def filter_outlier_shadow(self, item):
+        npy_path = os.path.join(self.shadow_npy_root,self.shadow_npys[item])
+        ECG =  (np.load(npy_path))[:self.Channles_size,:self.Length_size]
+        if((np.sum(ECG == -32768) +np.sum(ECG == 32768))>=5000):
+        #if((ECG.min() ==  -32768) or (ECG.max() ==  32768)):
+            self.deleteitem_shadow_npys(item)
+            print(npy_path)
+            return True
+        return False
 
-
-    def deleteitem(self, item):
+    def deleteitem_npys(self, item):
         del self.npys[item]
-        return self.npy_path(item)
+        return 
+
+    def deleteitem_shadow_npys(self, item):
+        del self.shadow_npys[item]
+        return 
 
     def npy_path(self, item):
         return os.path.join(self.npy_root,self.npys[item])
@@ -279,5 +307,3 @@ def load_numpy_dataset_to_tensor_dataset_split(x,y,random_seed,train_rate = 0.8)
     print("train_dataset: %d  %d" % ( (train_dataset[:][1]).sum(),train_dataset.__len__()-(valid_dataset[:][1]).sum() ) )
     return  train_dataset,valid_dataset
 
-test = np.zeros((1000,12,5000))
-test = MAX_MIN_normalization_by_feactures(test)
