@@ -2,6 +2,13 @@ import torch
 import torch.nn as nn
 from self_attention import *
 
+
+from informer.encoder import Encoder, EncoderLayer, ConvLayer, EncoderStack
+from informer.decoder import Decoder, DecoderLayer
+from informer.attn import FullAttention, ProbAttention, AttentionLayer
+from informer.embed import DataEmbedding
+
+
 class ATICNN(nn.Module):
     def __init__(self,DropoutRate = 0.1):
         super(ATICNN,self).__init__()
@@ -812,3 +819,313 @@ class channels_split_CNN(nn.Module):
         
         
         return out
+
+class Informer(nn.Module):
+    def __init__(self, enc_in, 
+                factor=5, d_model=12, n_heads=12, e_layers=3, d_layers=2, d_ff=12, 
+                dropout=0.0, attn='prob', embed='fixed', freq='h', activation='relu', 
+                output_attention = False, distil=True, mix=True,
+                device=torch.device('cuda:0')):
+        super(Informer, self).__init__()
+        self.attn = attn
+        self.output_attention = output_attention
+
+        # Encoding
+        self.enc_embedding1 = DataEmbedding(enc_in, d_model, embed, freq, dropout)
+        self.enc_embedding2 = DataEmbedding(enc_in, d_model, embed, freq, dropout)
+        self.enc_embedding3 = DataEmbedding(enc_in, d_model, embed, freq, dropout)
+        self.enc_embedding4 = DataEmbedding(enc_in, d_model, embed, freq, dropout)
+        self.enc_embedding5 = DataEmbedding(enc_in, d_model, embed, freq, dropout)
+        self.enc_embedding6 = DataEmbedding(enc_in, d_model, embed, freq, dropout)
+        self.enc_embedding7 = DataEmbedding(enc_in, d_model, embed, freq, dropout)
+        self.enc_embedding8 = DataEmbedding(enc_in, d_model, embed, freq, dropout)
+        self.enc_embedding9 = DataEmbedding(enc_in, d_model, embed, freq, dropout)
+        self.enc_embedding10 = DataEmbedding(enc_in, d_model, embed, freq, dropout)
+        self.enc_embedding11 = DataEmbedding(enc_in, d_model, embed, freq, dropout)
+        self.enc_embedding12 = DataEmbedding(enc_in, d_model, embed, freq, dropout)
+       
+        # Attention
+        #Attn = ProbAttention if attn=='prob' else FullAttention
+        Attn = FullAttention
+        # Encoder
+        self.encoder1 = Encoder(
+            [
+                EncoderLayer(
+                    AttentionLayer(Attn(False, factor, attention_dropout=dropout, output_attention=output_attention), 
+                                d_model, n_heads, mix=False),
+                    d_model,
+                    d_ff,
+                    dropout=dropout,
+                    activation=activation
+                ) for l in range(e_layers)
+            ],
+            [
+                ConvLayer(
+                    d_model
+                ) for l in range(e_layers-1)
+            ] if distil else None,
+            norm_layer=torch.nn.LayerNorm(d_model)
+        )
+
+
+        self.encoder2 = Encoder(
+            [
+                EncoderLayer(
+                    AttentionLayer(Attn(False, factor, attention_dropout=dropout, output_attention=output_attention), 
+                                d_model, n_heads, mix=False),
+                    d_model,
+                    d_ff,
+                    dropout=dropout,
+                    activation=activation
+                ) for l in range(e_layers)
+            ],
+            [
+                ConvLayer(
+                    d_model
+                ) for l in range(e_layers-1)
+            ] if distil else None,
+            norm_layer=torch.nn.LayerNorm(d_model)
+        )
+        self.encoder3 = Encoder(
+            [
+                EncoderLayer(
+                    AttentionLayer(Attn(False, factor, attention_dropout=dropout, output_attention=output_attention), 
+                                d_model, n_heads, mix=False),
+                    d_model,
+                    d_ff,
+                    dropout=dropout,
+                    activation=activation
+                ) for l in range(e_layers)
+            ],
+            [
+                ConvLayer(
+                    d_model
+                ) for l in range(e_layers-1)
+            ] if distil else None,
+            norm_layer=torch.nn.LayerNorm(d_model)
+        )
+        self.encoder4 = Encoder(
+            [
+                EncoderLayer(
+                    AttentionLayer(Attn(False, factor, attention_dropout=dropout, output_attention=output_attention), 
+                                d_model, n_heads, mix=False),
+                    d_model,
+                    d_ff,
+                    dropout=dropout,
+                    activation=activation
+                ) for l in range(e_layers)
+            ],
+            [
+                ConvLayer(
+                    d_model
+                ) for l in range(e_layers-1)
+            ] if distil else None,
+            norm_layer=torch.nn.LayerNorm(d_model)
+        )
+        self.encoder5 = Encoder(
+            [
+                EncoderLayer(
+                    AttentionLayer(Attn(False, factor, attention_dropout=dropout, output_attention=output_attention), 
+                                d_model, n_heads, mix=False),
+                    d_model,
+                    d_ff,
+                    dropout=dropout,
+                    activation=activation
+                ) for l in range(e_layers)
+            ],
+            [
+                ConvLayer(
+                    d_model
+                ) for l in range(e_layers-1)
+            ] if distil else None,
+            norm_layer=torch.nn.LayerNorm(d_model)
+        )
+        self.encoder6 = Encoder(
+            [
+                EncoderLayer(
+                    AttentionLayer(Attn(False, factor, attention_dropout=dropout, output_attention=output_attention), 
+                                d_model, n_heads, mix=False),
+                    d_model,
+                    d_ff,
+                    dropout=dropout,
+                    activation=activation
+                ) for l in range(e_layers)
+            ],
+            [
+                ConvLayer(
+                    d_model
+                ) for l in range(e_layers-1)
+            ] if distil else None,
+            norm_layer=torch.nn.LayerNorm(d_model)
+        )
+        self.encoder7 = Encoder(
+            [
+                EncoderLayer(
+                    AttentionLayer(Attn(False, factor, attention_dropout=dropout, output_attention=output_attention), 
+                                d_model, n_heads, mix=False),
+                    d_model,
+                    d_ff,
+                    dropout=dropout,
+                    activation=activation
+                ) for l in range(e_layers)
+            ],
+            [
+                ConvLayer(
+                    d_model
+                ) for l in range(e_layers-1)
+            ] if distil else None,
+            norm_layer=torch.nn.LayerNorm(d_model)
+        )
+        self.encoder8 = Encoder(
+            [
+                EncoderLayer(
+                    AttentionLayer(Attn(False, factor, attention_dropout=dropout, output_attention=output_attention), 
+                                d_model, n_heads, mix=False),
+                    d_model,
+                    d_ff,
+                    dropout=dropout,
+                    activation=activation
+                ) for l in range(e_layers)
+            ],
+            [
+                ConvLayer(
+                    d_model
+                ) for l in range(e_layers-1)
+            ] if distil else None,
+            norm_layer=torch.nn.LayerNorm(d_model)
+        )
+        self.encoder9 = Encoder(
+            [
+                EncoderLayer(
+                    AttentionLayer(Attn(False, factor, attention_dropout=dropout, output_attention=output_attention), 
+                                d_model, n_heads, mix=False),
+                    d_model,
+                    d_ff,
+                    dropout=dropout,
+                    activation=activation
+                ) for l in range(e_layers)
+            ],
+            [
+                ConvLayer(
+                    d_model
+                ) for l in range(e_layers-1)
+            ] if distil else None,
+            norm_layer=torch.nn.LayerNorm(d_model)
+        )
+        self.encoder10 = Encoder(
+            [
+                EncoderLayer(
+                    AttentionLayer(Attn(False, factor, attention_dropout=dropout, output_attention=output_attention), 
+                                d_model, n_heads, mix=False),
+                    d_model,
+                    d_ff,
+                    dropout=dropout,
+                    activation=activation
+                ) for l in range(e_layers)
+            ],
+            [
+                ConvLayer(
+                    d_model
+                ) for l in range(e_layers-1)
+            ] if distil else None,
+            norm_layer=torch.nn.LayerNorm(d_model)
+        )
+        self.encoder11 = Encoder(
+            [
+                EncoderLayer(
+                    AttentionLayer(Attn(False, factor, attention_dropout=dropout, output_attention=output_attention), 
+                                d_model, n_heads, mix=False),
+                    d_model,
+                    d_ff,
+                    dropout=dropout,
+                    activation=activation
+                ) for l in range(e_layers)
+            ],
+            [
+                ConvLayer(
+                    d_model
+                ) for l in range(e_layers-1)
+            ] if distil else None,
+            norm_layer=torch.nn.LayerNorm(d_model)
+        )
+        self.encoder12 = Encoder(
+            [
+                EncoderLayer(
+                    AttentionLayer(Attn(False, factor, attention_dropout=dropout, output_attention=output_attention), 
+                                d_model, n_heads, mix=False),
+                    d_model,
+                    d_ff,
+                    dropout=dropout,
+                    activation=activation
+                ) for l in range(e_layers)
+            ],
+            [
+                ConvLayer(
+                    d_model
+                ) for l in range(e_layers-1)
+            ] if distil else None,
+            norm_layer=torch.nn.LayerNorm(d_model)
+        )
+        self.conv1 = nn.Conv1d(144, 128, kernel_size=3, stride=1, padding=1, bias=False)
+        self.bn1 = nn.BatchNorm1d(128)
+        self.relu = nn.ReLU(inplace=True)
+        self.dropout = nn.Dropout(p=0.1)
+        self.conv2 = nn.Conv1d(128, 64, kernel_size=5, stride=1, padding=2, bias=False)
+        self.bn2 = nn.BatchNorm1d(64)
+        self.maxpool = nn.MaxPool1d(5)
+        self.linear_unit = nn.Sequential(
+            nn.Linear(960,256),
+            nn.ReLU(),
+            nn.Linear(256,64),
+            nn.ReLU(),
+            nn.Linear(64,2),
+            nn.Softmax(dim=1)
+        )
+        
+    def forward(self, x_enc,enc_self_mask=None):
+        B,C,L=x_enc.shape
+        x_enc = x_enc.permute(0,2,1)
+        x1 = self.enc_embedding1(x_enc[:,:,0:1]) #提取channel_i的数据
+        x2 = self.enc_embedding2(x_enc[:,:,1:2]) #提取channel_i的数据
+        x3 = self.enc_embedding3(x_enc[:,:,2:3]) #提取channel_i的数据
+        x4 = self.enc_embedding4(x_enc[:,:,3:4]) #提取channel_i的数据
+        x5 = self.enc_embedding5(x_enc[:,:,4:5]) #提取channel_i的数据
+        x6 = self.enc_embedding6(x_enc[:,:,5:6]) #提取channel_i的数据
+        x7 = self.enc_embedding7(x_enc[:,:,6:7]) #提取channel_i的数据
+        x8 = self.enc_embedding8(x_enc[:,:,7:8]) #提取channel_i的数据
+        x9 = self.enc_embedding9(x_enc[:,:,8:9]) #提取channel_i的数据
+        x10 = self.enc_embedding10(x_enc[:,:,9:10]) #提取channel_i的数据
+        x11 = self.enc_embedding11(x_enc[:,:,10:11]) #提取channel_i的数据
+        x12 = self.enc_embedding12(x_enc[:,:,11:]) #提取channel_i的数据
+
+        x1, _ = self.encoder1(x1, attn_mask=enc_self_mask)
+        x2, _ = self.encoder2(x2, attn_mask=enc_self_mask)
+        x3, _ = self.encoder3(x3, attn_mask=enc_self_mask)
+        x4, _ = self.encoder4(x4, attn_mask=enc_self_mask)
+        x5, _ = self.encoder5(x5, attn_mask=enc_self_mask)
+        x6, _ = self.encoder6(x6, attn_mask=enc_self_mask)
+        x7, _ = self.encoder7(x7, attn_mask=enc_self_mask)
+        x8, _ = self.encoder8(x8, attn_mask=enc_self_mask)
+        x9, _ = self.encoder9(x9, attn_mask=enc_self_mask)
+        x10, _ = self.encoder10(x10, attn_mask=enc_self_mask)
+        x11, _ = self.encoder11(x11, attn_mask=enc_self_mask)
+        x12, _ = self.encoder12(x12, attn_mask=enc_self_mask)
+
+
+        enc_out = torch.cat((x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11,x12),2) #按照第2维度(channel)合并 [B,625,12*12=144]
+        enc_out = enc_out.permute(0,2,1)   #[B,144,375]
+        enc_out = self.bn1(self.relu(self.conv1(enc_out)))#[B,128,375]
+        enc_out = self.maxpool(enc_out)    #[B,128,75]
+
+        enc_out = self.bn2(self.relu(self.conv2(enc_out)))#[B,64,75]
+        enc_out = self.maxpool(enc_out)    #[B,64,15]
+
+        enc_out = enc_out.view(enc_out.size(0),-1) #[B,64,15]
+        enc_out = self.linear_unit(enc_out)
+        return enc_out
+
+
+
+
+
+
