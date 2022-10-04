@@ -47,7 +47,7 @@ class self_Attention_1D_for_timestep_without_relu(nn.Module):
         self.key   = nn.Conv1d(self.in_channels, self.in_channels, kernel_size = 1, stride = 1)
         self.value = nn.Conv1d(self.in_channels, self.in_channels, kernel_size = 1, stride = 1)
         self.relu = nn.ReLU()
-        self.dropout = nn.Dropout(0.3)
+        self.dropout = nn.Dropout(0.1)
         self.bn = nn.BatchNorm1d(in_channels)
         self.gamma = nn.Parameter(torch.zeros(1))  #gamma为一个衰减参数，由torch.zero生成，nn.Parameter的作用是将其转化成为可以训练的参数.
         self.softmax = nn.Softmax(dim = -1)
@@ -67,7 +67,7 @@ class self_Attention_1D_for_timestep_without_relu(nn.Module):
         #print("attention:",attn_matrix.shape)
         attn_matrix = self.softmax(attn_matrix)
         #self.attention_value = attn_matrix #输出attention值
-        out = self.bn((self.gamma*((torch.bmm(attn_matrix,v.permute(0,2 ,1))).permute(0,2 ,1)))+  input)
+        out = (((torch.bmm(attn_matrix,v.permute(0,2 ,1))).permute(0,2 ,1)))+  input
 
         #print("out:",out.shape)
         return out,attn_matrix
@@ -80,7 +80,7 @@ class self_Attention_1D_for_timestep(nn.Module):
         self.key   = nn.Conv1d(self.in_channels, self.in_channels, kernel_size = 1, stride = 1)
         self.value = nn.Conv1d(self.in_channels, self.in_channels, kernel_size = 1, stride = 1)
         self.relu = nn.ReLU()
-        self.dropout = nn.Dropout(0.2)
+        self.dropout = nn.Dropout(0.1)
         self.bn = nn.BatchNorm1d(in_channels)
         self.gamma = nn.Parameter(torch.zeros(1))  #gamma为一个衰减参数，由torch.zero生成，nn.Parameter的作用是将其转化成为可以训练的参数.
         self.softmax = nn.Softmax(dim = -1)
