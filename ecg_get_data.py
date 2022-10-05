@@ -59,7 +59,6 @@ class ECG_Dataset(Dataset):
             ECG =  (np.load(npy_path))[:self.Channles_size,:self.Length_size]
         #ECG = denoise(ECG)
         ECG = amplitude_limiting(ECG,3500) #幅值
-        ECG[np.isnan(ECG)]=0
         ECG = torch.FloatTensor(ECG)
         label = torch.from_numpy(np.array(label))
         #print(self.npys[item])
