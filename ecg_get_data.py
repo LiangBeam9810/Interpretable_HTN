@@ -59,15 +59,17 @@ class ECG_Dataset(Dataset):
             ECG =  (np.load(npy_path))[:self.Channles_size,:self.Length_size]
         #ECG = denoise(ECG)
         ECG = amplitude_limiting(ECG,3500) #幅值
+        ECG[np.isnan(ECG)]=0
         ECG = torch.FloatTensor(ECG)
         label = torch.from_numpy(np.array(label))
+        label = torch.LongTensor(label)
         #print(self.npys[item])
         return ECG, label
 
     def filter_outlier_npy(self, item):
         npy_path = os.path.join(self.npy_root,self.npys[item])
         ECG =  (np.load(npy_path))[:self.Channles_size,:self.Length_size]
-        if((ECG.min() ==  -32768) or (ECG.max() ==  32768)):
+        if((ECG.min() <=  -32768) or (ECG.max() >=  32768)):
             self.deleteitem_npys(item)
             print(npy_path)
             return True
