@@ -18,7 +18,7 @@ class ECG_Dataset(Dataset):
     
         self.npy_root = npy_folder
         npy_files_list = os.listdir(npy_folder)#返回指定的文件夹包含的文件或文件夹的名字的列表
-        npy_files_list.sort(key=lambda x:int(x.split('_')[0])) #按“_”分割，并把分割结果的[0]转为整形并排序
+        # npy_files_list.sort(key=lambda x:int(x.split('_')[0])) #按“_”分割，并把分割结果的[0]转为整形并排序
         self.npys = npy_files_list
 
         self.Channles_size = EcgChannles_num
@@ -33,7 +33,7 @@ class ECG_Dataset(Dataset):
         self.shadow_npy_root = shadow_npy_folder #存放了比正样本多出来很多的负样本
         if(self.shadow_npy_root):
             shadow_npy_files_list = os.listdir(self.shadow_npy_root)
-            shadow_npy_files_list.sort(key=lambda x:int(x.split('_')[0])) #按“_”分割，并把分割结果的[0]转为整形并排序
+            # shadow_npy_files_list.sort(key=lambda x:int(x.split('_')[0])) #按“_”分割，并把分割结果的[0]转为整形并排序
             self.shadow_npys = shadow_npy_files_list
             # for i in range(len(self.shadow_npys)):
             #     self.filter_outlier_shadow(i)
@@ -75,7 +75,7 @@ class ECG_Dataset(Dataset):
             return True
         return False
     def filter_outlier_shadow(self, item):
-        npy_path = os.path.join(self.shadow_npy_root,self.shadow_npys[item])
+        npy_path = os.path.join(self.shadow_npy_root,self.shadow_npys[item])  # type: ignore
         ECG =  (np.load(npy_path))[:self.Channles_size,:self.Length_size]
         if((np.sum(ECG == -32768) +np.sum(ECG == 32768))>=5000):
         #if((ECG.min() ==  -32768) or (ECG.max() ==  32768)):
@@ -114,7 +114,7 @@ class ECG_Dataset(Dataset):
     def name_date(self, item):
         if(self.xml_root):
             xml_path = self.xml_path(item)
-            xml_doc = dm.parse(xml_path) #打开该xml文件
+            xml_doc = dm.parse(xml_path) # type: ignore #打开该xml文件
             try:
                 name =  (xml_doc.getElementsByTagName('name'))[1].childNodes[0].data
             except :
@@ -255,7 +255,7 @@ def z_score_normalization_by_feactures(x ):
 def get_k_fold_dataset(fold,x,y,k = 5 ,random_seed =1):
     if(k <= 1): #当k = 1时，就按照8：2的比列分配训练集和测试集
         k = 1
-        train_dataset,validate_dataset = load_numpy_dataset_to_tensor_dataset(x,y,random_seed=random_seed)
+        train_dataset,validate_dataset = load_numpy_dataset_to_tensor_dataset(x,y)
         return train_dataset,validate_dataset
     if(fold<=0):#防止fold过小
         fold = 1
