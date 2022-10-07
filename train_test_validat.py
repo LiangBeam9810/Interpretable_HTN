@@ -44,18 +44,19 @@ def test_model(test_loader,criterion,model,device):
     test_acc = []   
     for i,data in enumerate(test_loader,0):
         model.eval()
-        inputs,labels = data[0].to(device),data[1].to(device)
-        outputs = model(inputs)
-        loss = criterion(outputs,labels)
+        with torch.no_grad():
+            inputs,labels = data[0].to(device),data[1].to(device)
+            outputs = model(inputs)
+            loss = criterion(outputs,labels)
 
-        #print("output:",outputs)
-        #print("labels:",labels)
-        _,pred = outputs.max(1) # 求概率最大值对应的标签
-        #print("pred:",pred)
-        num_correct = (pred == labels).sum().item()
-        acc = num_correct/len(labels)
-        test_loss.append(loss.item())
-        test_acc.append(acc)
+            #print("output:",outputs)
+            #print("labels:",labels)
+            _,pred = outputs.max(1) # 求概率最大值对应的标签
+            #print("pred:",pred)
+            num_correct = (pred == labels).sum().item()
+            acc = num_correct/len(labels)
+            test_loss.append(loss.item())
+            test_acc.append(acc)
 
     return np.mean(test_loss),np.mean(test_acc)
 
@@ -71,14 +72,14 @@ class EarlyStopping:
         self.delta = delta
         self.model_path = model_path
 
-    def __call__(self, val_acc,model):
+    def __call__(self, val_acc,model,fold = 0):
 
         #score = -val_loss
         score = val_acc
         if self.best_score is None:
             self.best_score = score
-            if(score>0.8):
-                self.save_checkpoint(val_acc, model)
+            if(score>0.75):
+                self.save_checkpoint(val_acc, model,fold)
         elif score < self.best_score + self.delta:
             self.counter += 1
             print(f'EarlyStopping counter: {self.counter} out of {self.patience}\n')
@@ -86,14 +87,15 @@ class EarlyStopping:
                 self.early_stop = True
         else:
             self.best_score = score
-            if(score>0.8):
-                self.save_checkpoint(val_acc, model)
+            if(score>0.75):
+                self.save_checkpoint(val_acc, model,fold)
             self.counter = 0
         return self.early_stop
 
-    def save_checkpoint(self, val_loss, model):
+    def save_checkpoint(self, val_loss, model,fold = 0):
         if self.verbose:
-            print(f'Validation acc decreased ({self.val_loss_min:.6f} --> {val_loss:.6f}).  Saving model ...')
+            print(f'Validation acc  increase to ({self.val_loss_min:.8f} --> {val_loss:.8f}).  Saving model ...')
             print(" "*20+'-'*50+'\n')
-        torch.save(model, self.model_path+'/EarlyStoping.pt')                 # 这里会存储迄今最优的模型
+        torch.save(model, self.model_path+'/all_EarlyStoping_'+str(fold)+'.pt')                 # 这里会存储迄今最优的模型
+        torch.save(model.state_dict(), self.model_path+'/parameter_EarlyStoping_' + str(fold) + '.pt')
         self.val_loss_min = val_loss

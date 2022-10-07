@@ -1214,7 +1214,7 @@ class channels_split_ATT_CNN(nn.Module):
             input = input+(create_1d_absolute_sin_cos_embedding(batch_size,channels,seq_len)).to(input.device)#位置编码
             if self.training:
                 mark_lenth = torch.randint(int(seq_len/10),int(seq_len/5),[1])
-                input = mark_input(input,mark_lenth=mark_lenth[0])
+                input = mark_input(input,mark_lenth=int(mark_lenth[0]))
 
         x1 = self.maxpool(self.channels_unit1(input[:,0:1,:]) + input[:,0:1,:])#提取channel_i的数据
         x1_1,self.att1v_1 = self.att1(x1)
