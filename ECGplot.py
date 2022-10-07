@@ -28,10 +28,10 @@ def plot_multicolored_line(fig,axs,x,y,color_depend,cmap = "jet",y_name = "Volta
     axs.set_ylim(-1500, +1500)
 
     axs.set_aspect(0.2)#用于设置轴缩放的方面，即y-unit与x-unit的比率
-    axs.xaxis.set_major_locator(plt.MultipleLocator(100))# 100*0.002s=0.2s = 5格
-    axs.xaxis.set_minor_locator(plt.MultipleLocator(20)) # 20*0.002=0.004S = 1格
-    axs.yaxis.set_major_locator(plt.MultipleLocator(500))# 0.1uv*500 = 0.5ms = 5格
-    axs.yaxis.set_minor_locator(plt.MultipleLocator(100))# 0.1uv*100 =0.1ms = 1格 
+    axs.xaxis.set_major_locator(plt.MultipleLocator(100))# type: ignore # 100*0.002s=0.2s = 5格
+    axs.xaxis.set_minor_locator(plt.MultipleLocator(20)) # type: ignore # 20*0.002=0.004S = 1格
+    axs.yaxis.set_major_locator(plt.MultipleLocator(500))# type: ignore # 0.1uv*500 = 0.5ms = 5格
+    axs.yaxis.set_minor_locator(plt.MultipleLocator(100))# type: ignore # 0.1uv*100 =0.1ms = 1格 
 
     #axs.xaxis.set_major_formatter(plt.NullFormatter()) #x轴不显示刻度值/lable per 0.2s
     axs.xaxis.set_major_formatter(lambda x, pos: str(round(0.2*(x/100.0),2))) #x轴 lable per 0.2s

@@ -68,19 +68,18 @@ def eval_model(test_loader,criterion,model,device):
             inputs,labels = data[0].to(device),data[1].to(device)
             outputs = model(inputs)
             loss = criterion(outputs,labels)
-            y_ture.append(labels)
-
             #print("output:",outputs)
             #print("labels:",labels)
             _,pred = outputs.max(1) # 求概率最大值对应的标签
-            y_pred.append(pred)
+            
             #print("pred:",pred)
             num_correct = (pred == labels).sum().item()
             acc = num_correct/len(labels)
             test_loss.append(loss.item())
             test_acc.append(acc)
-
-    return y_ture,y_pred,np.mean(test_loss),np.mean(test_acc),
+            y_ture.append(labels.to('cpu'))
+            y_pred.append(pred.to('cpu'))
+    return y_ture[0].detach().numpy(),y_pred[0].detach().numpy(),np.mean(test_loss),np.mean(test_acc),
 
 
 

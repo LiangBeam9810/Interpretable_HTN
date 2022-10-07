@@ -1124,63 +1124,63 @@ class channels_split_ATT_CNN(nn.Module):
         super(channels_split_ATT_CNN, self).__init__()
         self.mark = mark
         self.channels_unit1 = nn.Sequential(
-            nn.Conv1d(1, 32, kernel_size=5, stride=1, padding=2),
+            nn.Conv1d(1, 32, kernel_size=3, stride=1, padding=1),
             nn.BatchNorm1d(32),
             nn.ReLU()
         )
         self.channels_unit2 = nn.Sequential(
-            nn.Conv1d(1, 32, kernel_size=5, stride=1, padding=2),
+            nn.Conv1d(1, 32, kernel_size=3, stride=1, padding=1),
             nn.BatchNorm1d(32),
             nn.ReLU()
 
         )
         self.channels_unit3 = nn.Sequential(
-            nn.Conv1d(1, 32, kernel_size=5, stride=1, padding=2),
+            nn.Conv1d(1, 32, kernel_size=3, stride=1, padding=1),
             nn.BatchNorm1d(32),
             nn.ReLU()
         )
         self.channels_unit4 = nn.Sequential(
-            nn.Conv1d(1, 32, kernel_size=5, stride=1, padding=2),
+            nn.Conv1d(1, 32, kernel_size=3, stride=1, padding=1),
             nn.BatchNorm1d(32),
             nn.ReLU()
         )
         self.channels_unit5 = nn.Sequential(
-            nn.Conv1d(1, 32, kernel_size=5, stride=1, padding=2),
+            nn.Conv1d(1, 32, kernel_size=3, stride=1, padding=1),
             nn.BatchNorm1d(32),
             nn.ReLU()
         )
         self.channels_unit6 = nn.Sequential(
-            nn.Conv1d(1, 32, kernel_size=5, stride=1, padding=2),
+            nn.Conv1d(1, 32, kernel_size=3, stride=1, padding=1),
             nn.BatchNorm1d(32),
             nn.ReLU()
         )
         self.channels_unit7 = nn.Sequential(
-            nn.Conv1d(1, 32, kernel_size=5, stride=1, padding=2),
+            nn.Conv1d(1, 32, kernel_size=3, stride=1, padding=1),
             nn.BatchNorm1d(32),
             nn.ReLU()
         )
         self.channels_unit8 = nn.Sequential(
-            nn.Conv1d(1, 32, kernel_size=5, stride=1, padding=2),
+            nn.Conv1d(1, 32, kernel_size=3, stride=1, padding=1),
             nn.BatchNorm1d(32),
             nn.ReLU()
         )
         self.channels_unit9 = nn.Sequential(
-            nn.Conv1d(1, 32, kernel_size=5, stride=1, padding=2),
+            nn.Conv1d(1, 32, kernel_size=3, stride=1, padding=1),
             nn.BatchNorm1d(32),
             nn.ReLU()
         )
         self.channels_unit10 = nn.Sequential(
-            nn.Conv1d(1, 32, kernel_size=5, stride=1, padding=2),
+            nn.Conv1d(1, 32, kernel_size=3, stride=1, padding=1),
             nn.BatchNorm1d(32),
             nn.ReLU()
         )
         self.channels_unit11 = nn.Sequential(
-            nn.Conv1d(1, 32, kernel_size=5, stride=1, padding=2),
+            nn.Conv1d(1, 32, kernel_size=3, stride=1, padding=1),
             nn.BatchNorm1d(32),
             nn.ReLU()
         )
         self.channels_unit12 = nn.Sequential(
-            nn.Conv1d(1, 32, kernel_size=5, stride=1, padding=2),
+            nn.Conv1d(1, 32, kernel_size=3, stride=1, padding=1),
             nn.BatchNorm1d(32),
             nn.ReLU()
         )
@@ -1189,6 +1189,7 @@ class channels_split_ATT_CNN(nn.Module):
         self.att2 = self_Attention_1D_for_timestep_without_relu(32)
 
         self.maxpool = nn.MaxPool1d(4)
+        self.avgPool = nn.AvgPool1d(4)
         self.conv1 = nn.Conv1d(768, 128, kernel_size=3, stride=1, padding=1)#1250
         self.bn1 = nn.BatchNorm1d(128)
         self.relu = nn.ReLU(inplace=True)
@@ -1209,9 +1210,8 @@ class channels_split_ATT_CNN(nn.Module):
     
     def forward(self, input):
         batch_size, channels,seq_len = input.shape
-        
+        #input = input+(create_1d_absolute_sin_cos_embedding(batch_size,channels,seq_len)).to(input.device)#位置编码
         if(self.mark):
-            input = input+(create_1d_absolute_sin_cos_embedding(batch_size,channels,seq_len)).to(input.device)#位置编码
             if self.training:
                 mark_lenth = torch.randint(int(seq_len/10),int(seq_len/5),[1])
                 input = mark_input(input,mark_lenth=int(mark_lenth[0]))
@@ -1501,7 +1501,6 @@ class ECGNet(nn.Module):
         out = self.softmax(out)
 
         return out
-
 
 class channels_split_ATT_CNN_(nn.Module):
     def __init__(self,mark = False):
