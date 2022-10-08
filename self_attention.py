@@ -81,31 +81,70 @@ class self_Attention_1D_for_timestep_without_relu_Linear(nn.Module):
             self.h_dim = in_channels
         self.in_channels = in_channels
         self.bn = nn.BatchNorm1d(self.in_channels)
-        self.query = nn.Linear(self.in_channels, self.in_channels)
-        self.key   = nn.Linear(self.in_channels, self.in_channels)
+        self.query = nn.Linear(self.in_channels, self.h_dim)
+        self.key   = nn.Linear(self.in_channels, self.h_dim)
         self.value = nn.Linear(self.in_channels, self.in_channels)
         self.relu = nn.ReLU()
         self.dropout = nn.Dropout(0.1)
-        self.bn = nn.BatchNorm1d(in_channels)
         self.gamma = nn.Parameter(torch.zeros(1))  #gamma为一个衰减参数，由torch.zero生成，nn.Parameter的作用是将其转化成为可以训练的参数.
         self.softmax = nn.Softmax(dim = -1)
 
     def forward(self, input):
         batch_size, channels,seq_len = input.shape
+        input = input.permute(0,2,1)  #batch_size, seq_len ,channels
         sita = np.array(sqrt(seq_len))
-        q = self.query(input)
-        k = self.key(input)
-        v = self.value(input)
+        q = self.query(input)  #batch_size, seq_len ,h_dim
+        k = self.key(input)    #batch_size, seq_len ,h_dim
+        v = self.value(input)  #batch_size, seq_len ,h_dim
 
-        attn_matrix = (torch.bmm(q.permute(0,2 ,1), k))/torch.from_numpy(sita)  #torch.bmm进行tensor矩阵乘法,q与k相乘得到的值为attn_matrix.
+        attn_matrix = (torch.bmm(q, k.permute(0,2 ,1)))/torch.from_numpy(sita)  #torch.bmm进行tensor矩阵乘法,q与k相乘得到的值为attn_matrix.  #batch_size, seq_len ,seq_len
         #print(attn_matrix)
         #print("attention:",attn_matrix.shape)
         attn_matrix = self.softmax(attn_matrix)
         #self.attention_value = attn_matrix #输出attention值
-        out = (((torch.bmm(attn_matrix,v.permute(0,2 ,1))).permute(0,2 ,1)))+  input
-
+        out = ((torch.bmm(attn_matrix,v))+input).permute(0,2 ,1)  #batch_size, seq_len ,channels -> batch_size,channels, seq_len 
         #print("out:",out.shape)
         return out,attn_matrix
+
+class self_Attention_1D_for_timestep_with_relu_Linear(nn.Module):
+    def __init__(self, in_channels,h_dim = None):
+        super().__init__()
+        if(h_dim): 
+            self.h_dim = h_dim
+        else:
+            self.h_dim = in_channels
+        self.in_channels = in_channels
+        self.bn_h_dim = nn.BatchNorm1d(self.h_dim)
+        self.bn_channels = nn.BatchNorm1d(self.in_channels)
+        self.query = nn.Linear(self.in_channels, self.h_dim)
+        self.key   = nn.Linear(self.in_channels, self.h_dim)
+        self.value = nn.Linear(self.in_channels, self.in_channels)
+        self.relu = nn.ReLU()
+        self.dropout = nn.Dropout(0.1)
+        self.gamma = nn.Parameter(torch.zeros(1))  #gamma为一个衰减参数，由torch.zero生成，nn.Parameter的作用是将其转化成为可以训练的参数.
+        self.softmax = nn.Softmax(dim = -1)
+
+    def forward(self, input):
+        batch_size, channels,seq_len = input.shape
+        input = input.permute(0,2,1)  #batch_size, seq_len ,channels
+        sita = np.array(sqrt(seq_len))
+        q = self.relu((self.query(input)))  #batch_size, seq_len ,h_dim
+        k = self.relu((self.key(input)))    #batch_size, seq_len ,h_dim
+        v = self.relu((self.value(input)))  #batch_size, seq_len ,h_dim
+
+        attn_matrix = (torch.bmm(q, k.permute(0,2 ,1)))/torch.from_numpy(sita)  #torch.bmm进行tensor矩阵乘法,q与k相乘得到的值为attn_matrix.  #batch_size, seq_len ,seq_len
+        #print(attn_matrix)
+        #print("attention:",attn_matrix.shape)
+        attn_matrix = self.softmax(attn_matrix)
+        #self.attention_value = attn_matrix #输出attention值
+        out = ((torch.bmm(attn_matrix,v))+input).permute(0,2 ,1)  #batch_size, seq_len ,channels -> batch_size,channels, seq_len 
+        #print("out:",out.shape)
+        return out,attn_matrix
+
+
+
+
+
 
 class self_Attention_1D_for_timestep(nn.Module):
     def __init__(self, in_channels):
