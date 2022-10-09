@@ -77,9 +77,9 @@ def eval_model(test_loader,criterion,model,device):
             acc = num_correct/len(labels)
             test_loss.append(loss.item())
             test_acc.append(acc)
-            y_ture.append(labels.to('cpu'))
-            y_pred.append(pred.to('cpu'))
-    return y_ture[0].detach().numpy(),y_pred[0].detach().numpy(),np.mean(test_loss),np.mean(test_acc),
+            y_ture.extend((labels.to('cpu').detach().numpy().flatten()).tolist())
+            y_pred.extend((pred.to('cpu').detach().numpy().flatten()).tolist())
+    return y_ture,y_pred,np.mean(test_loss),np.mean(test_acc),
 
 
 
