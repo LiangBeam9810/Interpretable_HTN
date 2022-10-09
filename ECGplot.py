@@ -17,9 +17,9 @@ def plot_multicolored_line(fig,axs,x,y,color_depend,cmap = "jet",y_name = "Volta
     points = np.array([x, y],dtype=object).T.reshape(-1, 1, 2)
     segments = np.concatenate([points[:-1], points[1:]], axis=1)
     # Create a continuous norm to map from data points to colors
-    norm = plt.Normalize(color_depend.min(), color_depend.max()) # type: ignore #normalizer
-    lc = LineCollection(segments, cmap=cmap, norm=norm)
-    #lc = LineCollection(segments, cmap=cmap)
+    #norm = plt.Normalize(color_depend.min(), color_depend.max()) # type: ignore #normalizer
+    #lc = LineCollection(segments, cmap=cmap, norm=norm)
+    lc = LineCollection(segments, cmap=cmap)
     # Set the values used for colormapping
     lc.set_array(color_depend)
     lc.set_linewidth(1)
