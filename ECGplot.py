@@ -26,7 +26,7 @@ def plot_multicolored_line(fig,axs,x,y,color_depend,cmap = "jet",y_name = "Volta
     line = axs.add_collection(lc)
     #fig.colorbar(line, ax=axs)
     axs.set_xlim(x.min(), x.max())
-    axs.set_ylim(-3500, +3500)
+    axs.set_ylim(-3000, +3000)
 
     axs.set_aspect(0.2)#用于设置轴缩放的方面，即y-unit与x-unit的比率
     axs.xaxis.set_major_locator(plt.MultipleLocator(100))# type: ignore # 100*0.002s=0.2s = 5格
