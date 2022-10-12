@@ -472,41 +472,6 @@ class CNN_ATT7(nn.Module):
         x = self.linear_unit(x)
         return x
 
-class ECGiCOVIDNet(nn.Module):
-    def __init__(self,DropoutRate = 0.3):
-        super(ECGiCOVIDNet,self).__init__()
-        self.ConvUnit12 = nn.Sequential(
-            nn.Conv1d(in_channels = 12,out_channels = 32,kernel_size = 11,stride = 1,padding = 5),
-            nn.ReLU(),
-            nn.BatchNorm1d(32),
-            nn.Dropout(DropoutRate)
-        )
-        self.ConvUnit32 = nn.Sequential(
-            nn.Conv1d(in_channels = 32,out_channels = 32,kernel_size = 3,stride = 1,padding = 1),
-            nn.ReLU(),
-            nn.BatchNorm1d(32),
-            nn.Dropout(DropoutRate)
-        )
-        self.linear_unit = nn.Sequential(
-            nn.Linear(1000,512),
-            nn.ReLU(),
-            nn.Linear(512,2),
-            nn.ReLU(),
-            nn.Softmax(dim=1)
-        )
-        self.poolling = nn.AdaptiveAvgPool1d(1000)
-        self.attn = self_Attention_1D_for_leads(32)
-    def forward(self,x):
-        x = self.ConvUnit12(x)
-        x = self.ConvUnit32(x)
-        x = self.ConvUnit32(x)+x
-        x = self.poolling(x)
-        x,self.attention_value1 = self.attn1(x)
-        x = x.contiguous().reshape(x.size(0),-1)
-        x = self.poolling(x)
-        x = self.linear_unit(x)
-        return x
-
 class CNN(nn.Module):
 
     def __init__(self):
@@ -840,8 +805,8 @@ class Informer(nn.Module):
         self.enc_embedding12 = DataEmbedding(enc_in, d_model, embed, freq, dropout)
        
         # Attention
-        #Attn = ProbAttention if attn=='prob' else FullAttention
-        Attn = FullAttention
+        Attn = ProbAttention if attn=='prob' else FullAttention
+        #Attn = FullAttention
         # Encoder
         self.encoder1 = Encoder(
             [
@@ -1069,9 +1034,9 @@ class Informer(nn.Module):
         self.bn2 = nn.BatchNorm1d(64)
         self.maxpool = nn.MaxPool1d(5)
         self.linear_unit = nn.Sequential(
-            nn.Linear(960,256),
+            nn.Linear(3200,1024),
             nn.ReLU(),
-            nn.Linear(256,64),
+            nn.Linear(1024,64),
             nn.ReLU(),
             nn.Linear(64,2),
             nn.Softmax(dim=1)
@@ -2289,8 +2254,6 @@ class channels_split_ATT_CNN_linear_avgpool_for_grad(nn.Module):
         
         return out
 
-
-
 # ECGNet_201911091150
 def conv_2d(in_planes, out_planes, stride=(1,1), size=3):
     """3x3 convolution with padding"""
@@ -2305,7 +2268,7 @@ def conv_1d(in_planes, out_planes, stride=1, size=3):
 class BasicBlock1d_(nn.Module):
     expansion = 1
 
-    def __init__(self, inplanes, planes, stride=1, downsample=None, size=3, res=True):
+    def __init__(self, inplanes, planes, stride=1, downsample=None, size=3, res=True,se = True):
         super(BasicBlock1d_, self).__init__()
         self.conv1 = conv_1d(inplanes, planes, stride, size=size)
         self.bn1 = nn.BatchNorm1d(inplanes)
@@ -2318,6 +2281,12 @@ class BasicBlock1d_(nn.Module):
         self.downsample = downsample
         self.stride = stride
         self.res = res
+        self.se=se
+        if(self.se):
+            self.globalAvgPool = nn.AdaptiveAvgPool1d(1)
+            self.fc1 = nn.Linear(in_features=planes, out_features=round(planes / 16))
+            self.fc2 = nn.Linear(in_features=round(planes / 16), out_features=planes)
+            self.sigmoid = nn.Sigmoid()
 
     def forward(self, x):
         residual = x
@@ -2330,8 +2299,18 @@ class BasicBlock1d_(nn.Module):
         out = self.conv2(out) 
         out = self.bn3(out)
         out = self.relu(out)
-        out = self.conv3(out) 
-
+        out = self.conv3(out)
+        if self.se:
+            original_out = out
+            out = self.globalAvgPool(out)
+            out = out.view(out.size(0), -1)
+            out = self.fc1(out)
+            out = self.relu(out)
+            out = self.fc2(out)
+            out = self.sigmoid(out)
+            out = out.view(out.size(0), out.size(1), 1)
+            out = out * original_out
+        
         if self.res:
             if self.downsample is not None:
                 residual = self.downsample(x)
@@ -2343,9 +2322,9 @@ class BasicBlock1d_(nn.Module):
 class BasicBlock2d(nn.Module):
     expansion = 1
 
-    def __init__(self, inplanes, planes, stride=(1,1), downsample=None, size=3, res=True):
+    def __init__(self, inplanes, planes, stride=(1,1), downsample=None, size=3, res=True,se = True):
         super(BasicBlock2d, self).__init__()
-        self.conv1 = conv_2d(inplanes, planes, stride, size=size)
+        self.conv1 = conv_2d(inplanes, planes, stride, size=size) #只有第一个卷积是使用给定的步长，意味着所有的
         self.bn1 = nn.BatchNorm2d(inplanes)
         self.relu = nn.ReLU(inplace=True)
         self.conv2 = conv_2d(planes, planes, size=size)
@@ -2356,6 +2335,12 @@ class BasicBlock2d(nn.Module):
         self.downsample = downsample
         self.stride = stride
         self.res = res
+        self.se = se
+        if(se):
+            self.globalAvgPool = nn.AdaptiveAvgPool2d(1)
+            self.fc1 = nn.Linear(in_features=planes, out_features=round(planes / 16))
+            self.fc2 = nn.Linear(in_features=round(planes / 16), out_features=planes)
+            self.sigmoid = nn.Sigmoid()
 
     def forward(self, x):
         residual = x
@@ -2369,7 +2354,16 @@ class BasicBlock2d(nn.Module):
         out = self.bn3(out)
         out = self.relu(out)
         out = self.conv3(out) 
-
+        if self.se:
+            original_out = out
+            out = self.globalAvgPool(out)
+            out = out.view(out.size(0), -1)
+            out = self.fc1(out)
+            out = self.relu(out)
+            out = self.fc2(out)
+            out = self.sigmoid(out)
+            out = out.view(out.size(0), out.size(1), 1, 1)
+            out = out * original_out
         if self.res:
             if self.downsample is not None:
                 residual = self.downsample(x)
@@ -2377,9 +2371,9 @@ class BasicBlock2d(nn.Module):
         #out = self.relu(out)
         
         return out
- 
+
 class ECGNet(nn.Module):
-    def __init__(self, input_channel=1, num_classes=2,mark = False):#, layers=[2, 2, 2, 2, 2, 2]
+    def __init__(self, input_channel=1, num_classes=2,mark = False, res=True,se = True):#, layers=[2, 2, 2, 2, 2, 2]
         self.mark = mark
         sizes = [
             [3,3,3,3,3,3],
@@ -2400,31 +2394,39 @@ class ECGNet(nn.Module):
         self.conv1 = nn.Conv2d(input_channel, 32, kernel_size=(1,50), stride=(1,2), padding=(0,0),
                                bias=False)
         self.bn1 = nn.BatchNorm2d(32)
-        self.conv2 = nn.Conv2d(32, 32, kernel_size=(1,16), stride=(1,2), padding=(0,0),
-                               bias=False)
-        self.bn2 = nn.BatchNorm2d(32)
+        self.res = res
+        self.se = se
+        # self.conv2 = nn.Conv2d(32, 32, kernel_size=(1,16), stride=(1,2), padding=(0,0),
+        #                        bias=False)
+        # self.bn2 = nn.BatchNorm2d(32)
+
+
+        self.inplanes = 32
+        self.layers = nn.Sequential()
+        self.layers.add_module('layer_1',self._make_layer2d(BasicBlock2d,32,1,stride=(1,2),size=15, res=self.res,se = self.se))
+        self.layers.add_module('layer_2',self._make_layer2d(BasicBlock2d,32,1,stride=(1,2),size=15, res=self.res,se = self.se))
+        self.layers.add_module('layer_3',self._make_layer2d(BasicBlock2d,32,1,stride=(1,2),size=15, res=self.res,se = self.se))
         #self.conv3 = nn.Conv2d(32, 32, kernel_size=(1,16), stride=(1,2), padding=(0,0),
         #                       bias=False)
         #print(self.conv2)
         #self.bn3 = nn.BatchNorm2d(32)
         #self.dropout = nn.Dropout(.2)
-        self.maxpool = nn.MaxPool2d(kernel_size=(1,3), stride=(1,2), padding=(0,0))
         self.avgpool = nn.AdaptiveAvgPool1d(1)
-        
+        self.softmax = nn.Softmax(-1)   
+
         self.layers1_list = nn.ModuleList()
         self.layers2_list = nn.ModuleList()
-        self.softmax = nn.Softmax(-1)
         for i,size in enumerate(sizes):
             self.inplanes = 32 
             self.layers1 = nn.Sequential()
             self.layers2 = nn.Sequential()
-            self.layers1.add_module('layer{}_1_1'.format(size), self._make_layer2d(BasicBlock2d, 32, layers[i][0], stride=(1,1), size=sizes[i][0]))
-            self.layers1.add_module('layer{}_1_2'.format(size), self._make_layer2d(BasicBlock2d, 32, layers[i][1], stride=(1,1), size=sizes[i][1]))
+            self.layers1.add_module('layer{}_1_1'.format(size), self._make_layer2d(BasicBlock2d, 32, layers[i][0], stride=(1,1), size=sizes[i][0], res=self.res,se = self.se))
+            self.layers1.add_module('layer{}_1_2'.format(size), self._make_layer2d(BasicBlock2d, 32, layers[i][1], stride=(1,1), size=sizes[i][1], res=self.res,se = self.se))
             self.inplanes *= 12
-            self.layers2.add_module('layer{}_2_1'.format(size), self._make_layer1d(BasicBlock1d_, 384 , layers[i][2], stride=2, size=sizes[i][2]))
-            self.layers2.add_module('layer{}_2_2'.format(size), self._make_layer1d(BasicBlock1d_, 384 , layers[i][3], stride=2, size=sizes[i][3]))
-            self.layers2.add_module('layer{}_2_3'.format(size), self._make_layer1d(BasicBlock1d_, 384 , layers[i][4], stride=2, size=sizes[i][4]))
-            self.layers2.add_module('layer{}_2_4'.format(size), self._make_layer1d(BasicBlock1d_, 384 , layers[i][5], stride=2, size=sizes[i][5]))
+            self.layers2.add_module('layer{}_2_1'.format(size), self._make_layer1d(BasicBlock1d_, 384 , layers[i][2], stride=2, size=sizes[i][2], res=self.res,se = self.se))
+            self.layers2.add_module('layer{}_2_2'.format(size), self._make_layer1d(BasicBlock1d_, 384 , layers[i][3], stride=2, size=sizes[i][3], res=self.res,se = self.se))
+            self.layers2.add_module('layer{}_2_3'.format(size), self._make_layer1d(BasicBlock1d_, 384 , layers[i][4], stride=2, size=sizes[i][4], res=self.res,se = self.se))
+            self.layers2.add_module('layer{}_2_4'.format(size), self._make_layer1d(BasicBlock1d_, 384 , layers[i][5], stride=2, size=sizes[i][5], res=self.res,se = self.se))
             
             self.layers1_list.append(self.layers1)
             self.layers2_list.append(self.layers2)
@@ -2432,7 +2434,7 @@ class ECGNet(nn.Module):
         # self.drop = nn.Dropout(p=0.2)
         self.fc = nn.Linear(384 *len(sizes), num_classes)
         
-    def _make_layer1d(self, block, planes, blocks, stride=2, size=3, res=True):
+    def _make_layer1d(self, block, planes, blocks, stride=2, size=3, res=True,se = True):
         downsample = None
         if stride != 1 or self.inplanes != planes * block.expansion:
             downsample = nn.Sequential(
@@ -2442,14 +2444,14 @@ class ECGNet(nn.Module):
             )
 
         layers = []
-        layers.append(block(self.inplanes, planes, stride, downsample, size=size, res=res))
+        layers.append(block(self.inplanes, planes, stride, downsample, size=size, res=res,se = se))
         self.inplanes = planes * block.expansion
         for i in range(1, blocks):
-            layers.append(block(self.inplanes, planes, size=size, res=res))
+            layers.append(block(self.inplanes, planes, size=size, res=res,se = se))
 
         return nn.Sequential(*layers)
     
-    def _make_layer2d(self, block, planes, blocks, stride=(1,2), size=3, res=True):
+    def _make_layer2d(self, block, planes, blocks, stride=(1,2), size=3, res=True,se = True):
         downsample = None
         if stride != (1,1) or self.inplanes != planes * block.expansion:
             downsample = nn.Sequential(
@@ -2459,36 +2461,28 @@ class ECGNet(nn.Module):
             )
 
         layers = []
-        layers.append(block(self.inplanes, planes, stride, downsample, size=size, res=res))
+        layers.append(block(self.inplanes, planes, stride, downsample, size=size, res=res, se = se))
         self.inplanes = planes * block.expansion
         for i in range(1, blocks):
-            layers.append(block(self.inplanes, planes, size=size, res=res))
+            layers.append(block(self.inplanes, planes, size=size, res=res, se = se))
 
         return nn.Sequential(*layers)
     
 
     def forward(self, x0):
         batch_size, channels,seq_len = x0.shape
-        #x0 = x0+(create_1d_absolute_sin_cos_embedding(batch_size,channels,seq_len)).to(x0.device)#位置编码
+        x0 = x0+(create_1d_absolute_sin_cos_embedding(batch_size,channels,seq_len)).to(x0.device)#位置编码
         if(self.mark):
             if self.training:
                 mark_lenth = torch.randint(int(seq_len/10),int(seq_len/5),[1])
                 x0 = mark_input(x0,mark_lenth=mark_lenth[0])  # type: ignore
         x0 = x0.unsqueeze(1)
-        x0 = x0.float()
         x0 = self.conv1(x0) 
-        x0 = x0.float()    
         x0 = self.bn1(x0)
-        x0 = x0.float()
         x0 = self.relu(x0)
-        x0 = x0.float()
-        x0 = self.maxpool(x0)
-        x0 = x0.float()
-        x0 = self.conv2(x0)
-        x0 = x0.float()
+        x0 = self.layers(x0)
         #x0 = self.bn2(x0)
         #x0 = self.relu(x0)
-        x0 = self.maxpool(x0)
         #x0 = self.dropout(x0)
         
 
