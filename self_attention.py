@@ -141,6 +141,7 @@ class self_Attention_1D_for_timestep_with_relu_Linear(nn.Module):
         #print("out:",out.shape)
         return out,attn_matrix
 
+
 class self_Attention_1D_for_timestep(nn.Module):
     def __init__(self, in_channels):
         super().__init__()

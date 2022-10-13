@@ -2472,6 +2472,7 @@ class ECGNet(nn.Module):
     def forward(self, x0):
         batch_size, channels,seq_len = x0.shape
         x0 = x0+(create_1d_absolute_sin_cos_embedding(batch_size,channels,seq_len)).to(x0.device)#位置编码
+
         if(self.mark):
             if self.training:
                 mark_lenth = torch.randint(int(seq_len/10),int(seq_len/5),[1])
@@ -2481,6 +2482,7 @@ class ECGNet(nn.Module):
         x0 = self.bn1(x0)
         x0 = self.relu(x0)
         x0 = self.layers(x0)
+        
         #x0 = self.bn2(x0)
         #x0 = self.relu(x0)
         #x0 = self.dropout(x0)
@@ -2496,8 +2498,8 @@ class ECGNet(nn.Module):
             xs.append(x)
         out = torch.cat(xs, dim=2)
         out = out.view(out.size(0), -1)
-        out = self.fc(out)
-        out = self.softmax(out)
+        self.out = self.fc(out)
+        out = self.softmax(self.out)
 
         return out
 
