@@ -67,7 +67,7 @@ class self_Attention_1D_for_timestep_without_relu(nn.Module):
         #print("attention:",attn_matrix.shape)
         attn_matrix = self.softmax(attn_matrix)
         #self.attention_value = attn_matrix #输出attention值
-        out = (((torch.bmm(attn_matrix,v.permute(0,2 ,1))).permute(0,2 ,1)))+  input
+        out = (((torch.bmm(attn_matrix,v.permute(0,2 ,1))).permute(0,2 ,1)))*self.gamma +  input
 
         #print("out:",out.shape)
         return out,attn_matrix
@@ -170,7 +170,7 @@ class self_Attention_1D_for_timestep(nn.Module):
         #print("attention:",attn_matrix.shape)
         attn_matrix = self.softmax(attn_matrix)
         #self.attention_value = attn_matrix #输出attention值
-        out = (((torch.bmm(attn_matrix,v.permute(0,2 ,1))).permute(0,2 ,1)))+  input
+        out = (((torch.bmm(attn_matrix,v.permute(0,2 ,1))).permute(0,2 ,1)))
         #print("out:",out.shape)
         return out,attn_matrix
 
@@ -193,13 +193,13 @@ class self_Attention_1D_for_leads(nn.Module):
     def forward(self, input):
         batch_size, channels,seq_len = input.shape
         sita = np.array(sqrt(channels))
-        q = self.dropout(self.bn(self.relu(self.query(input))))
-        k = self.dropout(self.bn(self.relu(self.key(input))))
-        v = self.dropout(self.bn(self.relu(self.value(input))))
+        q = self.query(input)
+        k = self.key(input)
+        v = self.value(input)
         attn_matrix = (torch.bmm(q, k.permute(0,2 ,1)))/torch.from_numpy(sita)  #torch.bmm进行tensor矩阵乘法,q与k相乘得到的值为attn_matrix.
         attn_matrix = self.softmax(attn_matrix)
         #print("{:.5}".format(self.gamma[0]))
-        out = self.gamma *  (torch.bmm(attn_matrix,v))+input
+        out = self.gamma *  (torch.bmm(attn_matrix,v))+  input
         return out,attn_matrix
 
 def create_1d_absolute_sin_cos_embedding(batch_size,dim,pos_len):
