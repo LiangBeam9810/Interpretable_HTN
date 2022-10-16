@@ -154,7 +154,8 @@ class channels_branch_CNN(nn.Module):
         self.sizes = [
             [3,3,3,3,3,3],
             [7,7,7,7,3,3],
-            [5,5,5,5,3,3]
+            [5,5,5,5,3,3],
+            [11,11,11,11,3,3]
                 ]
         
         self.layers_list_2d = nn.ModuleList()
@@ -192,7 +193,7 @@ class channels_branch_CNN(nn.Module):
         self.softmax = nn.Softmax(-1)
     def forward(self, x):
         batch_size, channels,seq_len = x.shape
-        x = x+(Models.create_1d_absolute_sin_cos_embedding(batch_size,channels,seq_len)).to(x.device)#位置编码
+        #x = x+(Models.create_1d_absolute_sin_cos_embedding(batch_size,channels,seq_len)).to(x.device)#位置编码
         if(self.mark):
             if self.training:
                 mark_lenth = torch.randint(int(seq_len/10),int(seq_len/5),[1])

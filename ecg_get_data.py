@@ -127,6 +127,59 @@ class ECG_Dataset(Dataset):
         else:
             print('xml_path is None.')
 
+class ECG_Dataset_xml(Dataset):
+    def __init__(self,root_folder,type="train",EcgChannles_num = 12,EcgLength_num = 5000,addition = True):
+        self.EcgChannles_num = EcgChannles_num
+        self.EcgLength_num = EcgLength_num
+        self.addition = addition
+        self.HTN_folder = os.path.join(root_folder,'HTN',type)
+        self.NHTN_folder = os.path.join(root_folder,'NHTN',type)
+        HTN_list = os.listdir(self.HTN_folder)
+        NHTN_list = os.listdir(self.NHTN_folder)
+        self.num_HTN = len(HTN_list)
+        self.num_NHTN = len(NHTN_list)
+        self.data_list = []
+        if(self.addition):
+            self.data_list = (HTN_list)
+            self.data_list.extend(NHTN_list[:self.num_HTN])#取前self.num_HTN个NHTN样本 一起作为数据集,保证1：1
+            self.addition_list = NHTN_list[self.num_HTN:] #剩余负样本（NHTN）的作为补充数据集
+            random.shuffle(self.addition_list)#随机打乱附加库
+            self.addition_count = 0 #用于在附加库里计算，保证附加库里每个样本在重复被抽取之前，都能被抽取到至少一次
+        else:
+            self.data_list = (HTN_list)
+            self.data_list.extend(NHTN_list)
+        print("HTN: %d " % (self.num_HTN))
+        print("NHTN: %d " % (self.num_NHTN))
+    def __getitem__(self, item):
+        label = 1 if (((((self.data_list[item]).split('.'))[0]).split('_'))[1]) =='HTN' else 0 #先按“.”分割，并把分割结果的[0]再按“_"分割，结果的[-1](最后一个)即为
+        
+        if((self.addition == False) or (label == 1)):#如果 (没有开启负样本抽样)/(正样本)的话，正常读取
+            if(label == 1):
+                xml_path = os.path.join(self.HTN_folder,self.data_list[item])
+            else:
+                xml_path = os.path.join(self.NHTN_folder,self.data_list[item])
+        else:#如果是负样本且开启了负样本抽样，就从所有的shadow_npy负样本中随机抽一个
+            #print("reselect the other normal sample. ")
+            if random.random()>0.5:
+                xml_path = os.path.join(self.NHTN_folder,self.addition_list[self.addition_count])
+                self.addition_count = self.addition_count+1 if self.addition_count<(len(self.addition_list)-1) else 0 #
+            else :
+                xml_path = os.path.join(self.NHTN_folder,self.data_list[item])
+            
+        ECG =  get_ECG_form_xml(xml_path,self.EcgChannles_num,self.EcgLength_num)
+        ECG = amplitude_limiting(ECG,3500) #幅值
+        ECG[np.isnan(ECG)]=0
+        ECG = torch.FloatTensor(ECG)
+        label = torch.from_numpy(np.array(label))
+        label = torch.LongTensor(label)
+        #print(self.npys[item])
+        return ECG, label
+    def __len__(self):
+        return len(self.data_list)
+    def sample_name(self,item):#获取没有后缀的文件名
+        return str(self.data_list[item].split('.')[0])
+        
+
 
 def amplitude_limiting(ecg_data,max_bas = 3500):
     ecg_data = ecg_data*4.88

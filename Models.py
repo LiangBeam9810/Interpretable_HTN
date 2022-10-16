@@ -573,6 +573,11 @@ class ResNet1d(nn.Module):
         return nn.Sequential(*layers)
 
     def forward(self, x):
+        batch_size, channels,seq_len = x.shape
+        # x = x+(create_1d_absolute_sin_cos_embedding(batch_size,channels,seq_len)).to(x.device)#位置编码
+        if self.training:
+            mark_lenth = torch.randint(int(seq_len/10),int(seq_len/5),[1])
+            x = mark_input(x,mark_lenth=int(mark_lenth[0]))
         x = self.conv1(x)
         x = self.bn1(x)
         x = self.relu(x)

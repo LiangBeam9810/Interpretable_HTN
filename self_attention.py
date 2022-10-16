@@ -57,6 +57,7 @@ class self_Attention_1D_for_timestep_without_relu(nn.Module):
         init_conv(self.value)
     def forward(self, input):
         batch_size, channels,seq_len = input.shape
+        input = input+(create_1d_absolute_sin_cos_embedding(batch_size,channels,seq_len)).to(input.device)#位置编码
         sita = np.array(sqrt(seq_len))
         q = self.query(input)
         k = self.key(input)
