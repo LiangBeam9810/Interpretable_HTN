@@ -154,8 +154,7 @@ class channels_branch_CNN(nn.Module):
         self.sizes = [
             [3,3,3,3,3,3],
             [7,7,7,7,3,3],
-            [5,5,5,5,3,3],
-            [11,11,11,11,3,3]
+            [5,5,5,5,3,3]
                 ]
         
         self.layers_list_2d = nn.ModuleList()
