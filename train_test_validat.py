@@ -87,7 +87,7 @@ def eval_model(test_loader,criterion,model,device):
 
 class EarlyStopping:
     
-    def __init__(self,patience=7, verbose=True,model_path = "./",delta = 0):
+    def __init__(self,patience=7, verbose=True,model_path = "./",delta = 0,positive=True):
         self.patience = patience
         self.verbose = verbose
         self.counter = 0
@@ -96,15 +96,19 @@ class EarlyStopping:
         self.last_best_score = np.Inf
         self.delta = delta
         self.model_path = model_path
+        self.positive= positive
 
     def __call__(self, score,model,fold = 0):
 
         #score = -val_loss
-        score = score
+        if(self.positive):
+            score = score
+        else:
+            score = -score
+            self.delta = -self.delta
         if self.best_score is None:
             self.best_score = score
-            if(score>0.75):
-                self.save_checkpoint(score, model,fold)
+            self.save_checkpoint(score, model,fold)
         elif score < self.best_score + self.delta:
             self.counter += 1
             print(f'EarlyStopping counter: {self.counter} out of {self.patience}\n')
@@ -112,8 +116,7 @@ class EarlyStopping:
                 self.early_stop = True
         else:
             self.best_score = score
-            if(score>0.75):
-                self.save_checkpoint(score, model,fold)
+            self.save_checkpoint(score, model,fold)
             self.counter = 0
         return self.early_stop
 
@@ -121,6 +124,6 @@ class EarlyStopping:
         if self.verbose:
             print(f'Validation F1 score  increase to ({self.last_best_score:.8f} --> {score:.8f}).  Saving model ...')
             print(" "*20+'-'*50+'\n')
-        torch.save(model, self.model_path+'/all_EarlyStoping_'+str(fold)+'.pt')                 # 这里会存储迄今最优的模型
+        # torch.save(model, self.model_path+'/all_EarlyStoping_'+str(fold)+'.pt')                 # 这里会存储迄今最优的模型
         torch.save(model.state_dict(), self.model_path+'/parameter_EarlyStoping_' + str(fold) + '.pt')
         self.last_best_score = score

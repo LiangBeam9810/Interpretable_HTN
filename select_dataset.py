@@ -10,82 +10,82 @@ class splite_dataset():
         self.folder =folder
         self.drop_duplicates = drop_duplicates
         
-        self.validate_HTN_path= (self.folder+'/validate_HTN.pkl')
-        self.validate_NHTN_path = (self.folder+'/validate_NHTN.pkl')
-        self.TT_HTN_path = (self.folder+'/TT_HTN.pkl')
-        self.TT_NHTN_path =(self.folder+'/TT_NHTN.pkl')
-
-        self.val_list = list()
+        self.test_HTN_path= (self.folder+'/test_HTN.pkl')
+        self.test_NHTN_path = (self.folder+'/test_NHTN.pkl')
+        self.VT_HTN_path = (self.folder+'/VT_HTN.pkl')
+        self.VT_NHTN_path =(self.folder+'/VT_NHTN.pkl')
         self.test_list = list()
+        
+        self.val_list = list()
         self.train_list = list()
         # if(shuffer):
         #     random.shuffle(self.HTN_files_list)
         #     random.shuffle(self.NHTN_files_list)
     
-    def __get_validate_file_list__(self,shuffer = True):
-        validate_HTN_df = pd.read_pickle(self.validate_HTN_path)
-        # validate_NHTN_df = pd.read_pickle(self.folder+'/validate_NHTN.pkl')
-        validate_NHTN_df = self.__filter_NHTN_df__(pd.read_pickle(self.validate_NHTN_path))#按照年龄和科室进行过滤
+    def __get_test_file_list__(self,shuffer = True):
+        test_HTN_df = pd.read_pickle(self.test_HTN_path)
+        # test_NHTN_df = pd.read_pickle(self.folder+'/validate_NHTN.pkl')
+        test_NHTN_df = self.__filter_NHTN_df__(pd.read_pickle(self.test_NHTN_path))#按照年龄和科室进行过滤
         
         if(self.drop_duplicates):
-            validate_HTN_df =self.__remove_duplicated__(validate_HTN_df)
-            validate_NHTN_df =self.__remove_duplicated__(validate_NHTN_df)
+            test_HTN_df =self.__remove_duplicated__(test_HTN_df)
+            test_NHTN_df =self.__remove_duplicated__(test_NHTN_df)
         
-        self.val_list = list()
-        self.val_list.extend(validate_HTN_df['ECG_path'].tolist())#先把所有HTN添加到列表中
-        val_HTN_lenth = len(self.val_list) 
+        self.test_list = list()
+        self.test_list.extend(test_HTN_df['ECG_path'].tolist())#先把所有HTN添加到列表中
+        test_HTN_lenth = len(self.test_list) 
         
-        NHTN_list = validate_NHTN_df['ECG_path'].tolist()
+        NHTN_list = test_NHTN_df['ECG_path'].tolist()
         
         
         if(shuffer):
             random.shuffle(NHTN_list) #随机打乱
-            self.val_list.extend(NHTN_list[:val_HTN_lenth])#取前val_HTN_lenth个NHTN样本，保证样本平衡
-            random.shuffle(self.val_list) #随机打乱
+            self.test_list.extend(NHTN_list[:test_HTN_lenth])#取前test_HTN_lenth个NHTN样本，保证样本平衡
+            random.shuffle(self.test_list) #随机打乱
         else:
-            self.val_list.extend(NHTN_list)#不打乱,则取所有NHTN样本
-        print('\n')
+            self.test_list.extend(NHTN_list)#不打乱,则取所有NHTN样本
+        print('\t')
         print("{:^5} {:^5} {:^5}".format(' ','HTN','NHTN'))
-        print("{:^5} {:^5} {:^5}".format('val',val_HTN_lenth,(len(self.val_list)-val_HTN_lenth)))
-        return  self.val_list
+        print("{:^5} {:^5} {:^5}".format('test',test_HTN_lenth,(len(self.test_list)-test_HTN_lenth)))
+        return  self.test_list
     
     
-    def __get_TT_file_list__(self,rate=0.3,shuffer = True):
-        TT_HTN_df = pd.read_pickle(self.TT_HTN_path)
-        # TT_NHTN_df = pd.read_pickle(self.folder+'/TT_NHTN.pkl')
-        TT_NHTN_df = self.__filter_NHTN_df__(pd.read_pickle(self.TT_NHTN_path)) #按照年龄和科室进行过滤
+    def __get_VT_file_list__(self,rate=0.3,shuffer = True):
+        VT_HTN_df = pd.read_pickle(self.VT_HTN_path)
+        # VT_NHTN_df = pd.read_pickle(self.folder+'/VT_NHTN.pkl')
+        VT_NHTN_df = self.__filter_NHTN_df__(pd.read_pickle(self.VT_NHTN_path)) #按照年龄和科室进行过滤
         
         if(self.drop_duplicates):
-            TT_HTN_df =self.__remove_duplicated__(TT_HTN_df)
-            TT_NHTN_df =self.__remove_duplicated__(TT_NHTN_df)
+            VT_HTN_df =self.__remove_duplicated__(VT_HTN_df)
+            VT_NHTN_df =self.__remove_duplicated__(VT_NHTN_df)
         
         
-        self.test_list = list()
+        self.val_list = list()
         self.train_list = list()
         self.addition_train_list = list()
         
-        HTN_list = TT_HTN_df['ECG_path'].tolist()
-        random.shuffle(HTN_list)
-        test_size = int(len(HTN_list)*rate) #按照rate 设置 test的样本数量
-        self.test_list.extend(HTN_list[:test_size])#前test_size个为测试集
-        test_HTN_size = len(self.test_list)
-        self.train_list.extend(HTN_list[test_size:])#其余的为训练集
+        HTN_list = VT_HTN_df['ECG_path'].tolist()
+        random.shuffle(HTN_list) #打乱
+        val_size = int(len(HTN_list)*rate) #按照rate 设置 test的样本数量
+        self.val_list.extend(HTN_list[:val_size])#前val_size个为测试集
+        test_HTN_size = len(self.val_list)
+        self.train_list.extend(HTN_list[val_size:])#其余的为训练集
         train_HTN_size = len(self.train_list)
         
         
-        NHTN_list = TT_NHTN_df['ECG_path'].tolist()
-        random.shuffle(NHTN_list)
-        self.test_list.extend(NHTN_list[:test_size])#前test_size个为测试集
-        self.train_list.extend(NHTN_list[test_size:len(HTN_list)])#其余从test_size:len(HTN_list)为训练集（保持和HTN的样本1：1的个数）
+        NHTN_list = VT_NHTN_df['ECG_path'].tolist()
+        random.shuffle(NHTN_list) #打乱
+        self.val_list.extend(NHTN_list[:val_size])#前val_size个为测试集
+        self.train_list.extend(NHTN_list[val_size:len(HTN_list)])#其余从val_size:len(HTN_list)为训练集（保持和HTN的样本1：1的个数）
         self.addition_train_list.extend(NHTN_list[len(HTN_list):])#从len(HTN_list)往后全为附加集
         
-        print('\n')
+        print('\t')
         print("{:^5} {:^5} {:^5}".format('','HTN','NHTN'))
         print("{:^5} {:^5} {:^5}".format('train',train_HTN_size,len(self.train_list)-train_HTN_size))
-        print("{:^5} {:^5} {:^5}".format('test',test_HTN_size,len(self.test_list)-test_HTN_size))
+        print("{:^5} {:^5} {:^5}".format('test',test_HTN_size,len(self.val_list)-test_HTN_size))
         print("{:^5} {:^5} {:^5}".format('add',0,(len(self.addition_train_list))))
         
-        return self.test_list,self.train_list,self.addition_train_list
+        return self.val_list,self.train_list,self.addition_train_list
     
     #删除重复的ID
     def __remove_duplicated__(self,df):
@@ -93,7 +93,7 @@ class splite_dataset():
         df1 = df_remove[df_remove['ID']=='']
         df2 = df_remove[~(df_remove['ID']=='')]
         df_remove =pd.concat([df1,df2.drop_duplicates(subset=['ID'],keep='last')],axis=0)
-        print('\n')
+        print('\t')
         print("{:^10} {:^10}".format('orginal','fliterID'))
         print("{:^10} {:^10}".format(len(df),len(df_remove)))
         return df_remove
@@ -104,11 +104,11 @@ class splite_dataset():
         df_filter = df_filter.dropna(subset=['years']) #删除years== nan
         df_filter.loc[~(df_filter['years'].str.contains('岁')),'years']='0岁' #不含有岁的（天周月）改为"0岁"
         df_filter['years'].replace(regex=True,inplace=True,to_replace=r'岁',value=r'') #删除"岁"
-        df_filter[
+        df_filter = df_filter[
             (((df_filter['years'].apply(int))<45) &(df_filter['department'].str.contains('外科')))|
             (((df_filter['years'].apply(int))<40) &(df_filter['department']==''))
            ]#两种条件
-        print('\n')
+        print('\t')
         print("{:^10} {:^10}".format('orginal','fliteryears'))
         print("{:^10} {:^10}".format(len(df),len(df_filter)))
         return df_filter
@@ -116,9 +116,9 @@ class splite_dataset():
     def __read_info__(self,FN): #按照ECG文件名FN查找info信息
         type = FN.split('_')[1]
         if(type == "HTN"):
-            info_df = pd.concat(pd.read_pickle(self.validate_HTN_path),pd.read_pickle(self.TT_HTN_path))
+            info_df = pd.concat(pd.read_pickle(self.test_HTN_path),pd.read_pickle(self.VT_HTN_path))
         else:
-            info_df = pd.concat(pd.read_pickle(self.validate_NHTN_path),pd.read_pickle(self.TT_NHTN_path))
+            info_df = pd.concat(pd.read_pickle(self.test_NHTN_path),pd.read_pickle(self.VT_NHTN_path))
         info = info_df[info_df['ECG_path'] == FN]
         print(info)
         return info
@@ -148,10 +148,10 @@ class assemble_dataset():
         info = ((pd.read_pickle(path))[0]).tolist()
         return info
     def __split___(self):
-        validate_HTN_df = pd.DataFrame(columns=['num','name','years','gender','department','diagnose','ID','date','ECG_path']) 
-        validate_NHTN_df = pd.DataFrame(columns=['num','name','years','gender','department','diagnose','ID','date','ECG_path']) 
-        TT_HTN_df = pd.DataFrame(columns=['num','name','years','gender','department','diagnose','ID','date','ECG_path']) 
-        TT_NHTN_df = pd.DataFrame(columns=['num','name','years','gender','department','diagnose','ID','date','ECG_path']) 
+        test_HTN_df = pd.DataFrame(columns=['num','name','years','gender','department','diagnose','ID','date','ECG_path']) 
+        test_NHTN_df = pd.DataFrame(columns=['num','name','years','gender','department','diagnose','ID','date','ECG_path']) 
+        VT_HTN_df = pd.DataFrame(columns=['num','name','years','gender','department','diagnose','ID','date','ECG_path']) 
+        VT_NHTN_df = pd.DataFrame(columns=['num','name','years','gender','department','diagnose','ID','date','ECG_path']) 
 
         for file in tqdm(self.HTN_files_list): 
             year = file[:2] 
@@ -160,17 +160,17 @@ class assemble_dataset():
                 info = (self.__read_info__(file[:-4]))[1:]#去掉第一行的标号，因为保存的时候忘了不保存标号了
                 str_1 = str(file[:-4]+'.npy')
                 info.append(str_1)#添加ECG地址
-                validate_HTN_df.loc[len(validate_HTN_df.index)] = info  # type: ignore
+                test_HTN_df.loc[len(test_HTN_df.index)] = info  # type: ignore
             elif(year == '00'):
                 
                 info = (self.__read_info__(file[:-4]))[1:]#去掉第一行的标号，
                 info.extend(['','','','',str(file[:-4]+'.npy')])#添加空缺的空信息为''#添加ECG地址
-                TT_HTN_df.loc[len(TT_HTN_df.index)] = info  # type: ignore
+                VT_HTN_df.loc[len(VT_HTN_df.index)] = info  # type: ignore
             elif(year == '20'):
                 info = (self.__read_info__(file[:-4]))[1:]#去掉第一行的标号，
                 str_1 = str(file[:-4]+'.npy')
                 info.append(str_1)#添加ECG地址
-                TT_HTN_df.loc[len(TT_HTN_df.index)] = info  # type: ignore
+                VT_HTN_df.loc[len(VT_HTN_df.index)] = info  # type: ignore
                 
         for file in tqdm(self.NHTN_files_list):  
             year = file[:2] 
@@ -179,31 +179,31 @@ class assemble_dataset():
                 info = (self.__read_info__(file[:-4]))[1:]#去掉第一行的标号，
                 str_1 = str(file[:-4]+'.npy')
                 info.append(str_1)#添加ECG地址
-                validate_NHTN_df.loc[len(validate_NHTN_df.index)] = info  # type: ignore
+                test_NHTN_df.loc[len(test_NHTN_df.index)] = info  # type: ignore
             elif(year == '00'):
                 
                 info = (self.__read_info__(file[:-4]))[1:]#去掉第一行的标号，
                 info.extend(['','','','',str(file[:-4]+'.npy')])#添加空缺的空信息为''#添加ECG地址
-                TT_NHTN_df.loc[len(TT_NHTN_df.index)] = info  # type: ignore
+                VT_NHTN_df.loc[len(VT_NHTN_df.index)] = info  # type: ignore
             elif(year == '20'):
                 info = (self.__read_info__(file[:-4]))[1:]#去掉第一行的标号
                 str_1 = str(file[:-4]+'.npy')
                 info.append(str_1)#添加ECG地址
-                TT_NHTN_df.loc[len(TT_NHTN_df.index)] = info  # type: ignore       
+                VT_NHTN_df.loc[len(VT_NHTN_df.index)] = info  # type: ignore       
                 
         
-        validate_HTN_df.to_pickle(self.folder+'/validate_HTN.pkl')
-        validate_NHTN_df.to_pickle(self.folder+'/validate_NHTN.pkl')
-        TT_HTN_df.to_pickle(self.folder+'/TT_HTN.pkl')
-        TT_NHTN_df.to_pickle(self.folder+'/TT_NHTN.pkl')
+        test_HTN_df.to_pickle(self.folder+'/validate_HTN.pkl')
+        test_NHTN_df.to_pickle(self.folder+'/validate_NHTN.pkl')
+        VT_HTN_df.to_pickle(self.folder+'/VT_HTN.pkl')
+        VT_NHTN_df.to_pickle(self.folder+'/VT_NHTN.pkl')
 
 
 if __name__ == '__main__':
     print("   ")
     data = splite_dataset('/workspace/data/Preprocess_HTN/data/',True)
-    valid_list = data.__get_validate_file_list__(True)
+    test_list = data.__get_test_file_list__(True)
     # print(valid_list)
-    test_list,train_list,addition_train_list = data.__get_TT_file_list__(0.3,True)
+    valid_list,train_list,addition_train_list = data.__get_VT_file_list__(0.3,True)
     x = [k for k in test_list if k in addition_train_list]
     print(x)
 # print(test_list,train_list)

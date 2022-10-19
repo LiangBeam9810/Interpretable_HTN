@@ -14,17 +14,15 @@ import xml.dom.minidom as dm
 
 
 class ECG_Dataset(Dataset):
-    def __init__(self,npy_folder,EcgChannles_num,EcgLength_num,shadow_npy_folder = None,xml_folder = None):
+    def __init__(self,npy_folder:str,npy_files_list:list,EcgChannles_num:int,EcgLength_num:int,shadow_npy_folder = None,shadow_npy_files_list :list = []):
     
         self.npy_root = npy_folder
-        npy_files_list = os.listdir(npy_folder)#返回指定的文件夹包含的文件或文件夹的名字的列表
         # npy_files_list.sort(key=lambda x:int(x.split('_')[0])) #按“_”分割，并把分割结果的[0]转为整形并排序
         self.npys = npy_files_list
 
         self.Channles_size = EcgChannles_num
         self.Length_size = EcgLength_num
 
-        self.xml_root = xml_folder
         # for i in range(len(self.npys)):
         #     self.filter_outlier_npy(i)
         #     if(i >= len(self.npys)-1):
@@ -32,7 +30,7 @@ class ECG_Dataset(Dataset):
         print('npys:{%d}',len(self.npys))
         self.shadow_npy_root = shadow_npy_folder #存放了比正样本多出来很多的负样本
         if(self.shadow_npy_root):
-            shadow_npy_files_list = os.listdir(self.shadow_npy_root)
+            self.shadow_count_index = 0
             # shadow_npy_files_list.sort(key=lambda x:int(x.split('_')[0])) #按“_”分割，并把分割结果的[0]转为整形并排序
             self.shadow_npys = shadow_npy_files_list
             # for i in range(len(self.shadow_npys)):
@@ -49,10 +47,12 @@ class ECG_Dataset(Dataset):
         else:#如果是负样本，就从所有的shadow_npy负样本中随机抽一个
             #print("reselect the other normal sample. ")
             if random.random()>0.5:
-                item_ = random.randint(0,len(self.shadow_npys)-1)
-                while( (((((self.shadow_npys[item_]).split('.'))[0]).split('_'))[-1]) =='HTN'):
-                    item_ = random.randint(0,len(self.shadow_npys)-1)
-                npy_path = os.path.join(self.shadow_npy_root,self.shadow_npys[item_])
+                # item_ = random.randint(0,len(self.shadow_npys)-1)
+                # while( (((((self.shadow_npys[item_]).split('.'))[0]).split('_'))[-1]) =='HTN'):
+                #     item_ = random.randint(0,len(self.shadow_npys)-1)
+                # npy_path = os.path.join(self.shadow_npy_root,self.shadow_npys[item_])
+                npy_path = os.path.join(self.shadow_npy_root,self.shadow_npys[self.shadow_count_index])#选取第self.shadow_count_index个替代
+                self.shadow_count_index = self.shadow_count_index+1 if self.shadow_count_index < (len(self.shadow_npys)-1) else 0  # type: ignore #self.shadow_count_index更新
             else :
                 npy_path = os.path.join(self.npy_root,self.npys[item])
             
@@ -103,29 +103,8 @@ class ECG_Dataset(Dataset):
 
     def size(self):
         return len(self.npys), self.Channles_size,self.Length_size
-
-    def xml_path(self, item):
-        if(self.xml_root):
-            xml_path = self.sample_name(item)+'.xml'
-            return os.path.join(self.xml_root,xml_path)
-        else:
-            print('xml_path is None.')
-
-    def name_date(self, item):
-        if(self.xml_root):
-            xml_path = self.xml_path(item)
-            xml_doc = dm.parse(xml_path) # type: ignore #打开该xml文件
-            try:
-                name =  (xml_doc.getElementsByTagName('name'))[1].childNodes[0].data
-            except :
-                name = "error"
-            try:
-                date = (xml_doc.getElementsByTagName('center'))[0].getAttribute("value")
-            except :
-                date = "error"
-            return name,date
-        else:
-            print('xml_path is None.')
+    
+    
 
 def amplitude_limiting(ecg_data,max_bas = 3500):
     ecg_data = ecg_data*4.88
