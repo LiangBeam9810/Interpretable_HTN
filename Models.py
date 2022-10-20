@@ -2436,7 +2436,7 @@ class ECGNet(nn.Module):
             self.layers1_list.append(self.layers1)
             self.layers2_list.append(self.layers2)
 
-        # self.drop = nn.Dropout(p=0.2)
+        self.dropout = nn.Dropout(p=0.1)
         self.fc = nn.Linear(384 *len(sizes), num_classes)
         
     def _make_layer1d(self, block, planes, blocks, stride=2, size=3, res=True,se = True):
@@ -2476,7 +2476,7 @@ class ECGNet(nn.Module):
 
     def forward(self, x0):
         batch_size, channels,seq_len = x0.shape
-        x0 = x0+(create_1d_absolute_sin_cos_embedding(batch_size,channels,seq_len)).to(x0.device)#位置编码
+        # x0 = x0+(create_1d_absolute_sin_cos_embedding(batch_size,channels,seq_len)).to(x0.device)#位置编码
 
         if(self.mark):
             if self.training:
@@ -2490,7 +2490,7 @@ class ECGNet(nn.Module):
         
         #x0 = self.bn2(x0)
         #x0 = self.relu(x0)
-        #x0 = self.dropout(x0)
+        x0 = self.dropout(x0)  # type: ignore
         
 
         xs = []
@@ -2500,6 +2500,7 @@ class ECGNet(nn.Module):
             x = torch.flatten(x, start_dim=1,end_dim=2)
             x = self.layers2_list[i](x)
             x = self.avgpool(x)
+            # x = self.dropout(x)  # type: ignore
             xs.append(x)
         out = torch.cat(xs, dim=2)
         out = out.view(out.size(0), -1)

@@ -135,7 +135,7 @@ class ResSeBlock2d(nn.Module):
 
 
 class channels_branch_CNN(nn.Module):
-    def __init__(self,mark = True,res = True,se=True):
+    def __init__(self,mark = True,res = True,se=True,Dropout_rate = 0.1):
         
         
         super(channels_branch_CNN, self).__init__()
@@ -164,8 +164,6 @@ class channels_branch_CNN(nn.Module):
             layers = nn.Sequential()
             layers.append(ResSeBlock2d(inplanes=self.inplanes,outplanes=32,stride=1, kernel_size=(self.sizes[i][0],self.sizes[i][1]), res=res, se = se))
             layers.append(ResSeBlock2d(inplanes=32,outplanes=32,stride=1, kernel_size=(self.sizes[i][2],self.sizes[i][3]), res=res, se = se))
-            layers.append(ResSeBlock2d(inplanes=32,outplanes=32,stride=1, kernel_size=(self.sizes[i][4],self.sizes[i][5]), res=res, se = se))
-            layers.append(ResSeBlock2d(inplanes=32,outplanes=32,stride=1, kernel_size=(self.sizes[i][4],self.sizes[i][5]), res=res, se = se))
             self.layers_list_2d.append(layers)
     
         self.layers_list_1d = nn.ModuleList()
@@ -186,7 +184,7 @@ class channels_branch_CNN(nn.Module):
             layers.append(ResSeBlock1d(inplanes=384,outplanes=384,stride=1, kernel_size=(self.sizes[i][4],self.sizes[i][5]), res=res, se = se))
             
             self.layers_list_1d.append(layers)    
-            
+        self.dorp = nn.Dropout(p = Dropout_rate)
         self.avgpool = nn.AdaptiveAvgPool1d(1)
         self.fc = nn.Linear(1152,2)
         self.softmax = nn.Softmax(-1)
@@ -205,15 +203,17 @@ class channels_branch_CNN(nn.Module):
         x = self.conv1(x)
         x = self.conv2(x)
         x = self.conv3(x)#b,32,12,313
-        x1 = torch.flatten(x, start_dim=1,end_dim=2)#[N,384,313]
-        x1,self.att1 = self.self_att_t(x1)
-        x1 = torch.reshape(x1,x.shape)
+        # x1 = torch.flatten(x, start_dim=1,end_dim=2)#[N,384,313]
+        # x1,self.att1 = self.self_att_t(x1)
+        # x1 = torch.reshape(x1,x.shape)
+        x = self.dorp(x)
         xs = []
         for i in range(len(self.sizes)):
             x1 = self.layers_list_2d[i](x)#[N,D,12,L]
             x1 = torch.flatten(x1, start_dim=1,end_dim=2)#[N,D*12,L]
             x1 = self.layers_list_1d[i](x1)#[N,D*12,L]
             x1 = self.avgpool(x1)#[N,D,1]
+            x1 = self.dorp(x1)
             xs.append(x1) #[N,D*12,L]
         out = torch.cat(xs, dim=1)#[N,3*D,L]
         
