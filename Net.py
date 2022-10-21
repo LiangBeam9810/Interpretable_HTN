@@ -132,8 +132,6 @@ class ResSeBlock2d(nn.Module):
         out = self.relu(out)
         return out
 
-
-
 class channels_branch_CNN(nn.Module):
     def __init__(self,mark = True,res = True,se=True,Dropout_rate = 0.1):
         
@@ -163,6 +161,8 @@ class channels_branch_CNN(nn.Module):
             self.inplanes = 32 
             layers = nn.Sequential()
             layers.append(ResSeBlock2d(inplanes=self.inplanes,outplanes=32,stride=1, kernel_size=(self.sizes[i][0],self.sizes[i][1]), res=res, se = se))
+            layers.append(ResSeBlock2d(inplanes=32,outplanes=32,stride=1, kernel_size=(self.sizes[i][2],self.sizes[i][3]), res=res, se = se))
+            layers.append(ResSeBlock2d(inplanes=32,outplanes=32,stride=1, kernel_size=(self.sizes[i][2],self.sizes[i][3]), res=res, se = se))
             layers.append(ResSeBlock2d(inplanes=32,outplanes=32,stride=1, kernel_size=(self.sizes[i][2],self.sizes[i][3]), res=res, se = se))
             self.layers_list_2d.append(layers)
     
