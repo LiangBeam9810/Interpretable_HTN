@@ -7,7 +7,8 @@ def train_model(train_loader,model,criterion,optimizer,device):
     
     train_loss = []
     train_acc = []   
-
+    y_ture = []
+    y_pred = []
     for i,data in enumerate(train_loader,0):
         model.train()
         # inputs,labels = data[0].cuda(),data[1].cuda()
@@ -30,8 +31,9 @@ def train_model(train_loader,model,criterion,optimizer,device):
         acc = num_correct/len(labels) # 计算准确率
         train_loss.append(loss.item())
         train_acc.append(acc)
-
-    return np.mean(train_loss),np.mean(train_acc)
+        y_ture.extend((labels.to('cpu').detach().numpy().flatten()).tolist())
+        y_pred.extend((pred.to('cpu').detach().numpy().flatten()).tolist())
+    return y_ture,y_pred,np.mean(train_loss),np.mean(train_acc)
 
 # 定义测试函数，具体结构与训练函数相似
 def test_model(test_loader,criterion,model,device):

@@ -552,6 +552,10 @@ class block1d_2(nn.Module):
             
         return out
 
+
+        
+        return out
+
 class att(nn.Module):
     def __init__(self,inplanes = 24, outplanes = 24,dropout = 0.2):
         super(att,self).__init__()
