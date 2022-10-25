@@ -24,7 +24,7 @@ class ECG_Dataset(Dataset):
         self.Length_size = EcgLength_num
 
         # for i in range(len(self.npys)):
-        #     self.filter_outlier_npy(i)
+        #     self.filter_outlier_npy(i)111
         #     if(i >= len(self.npys)-1):
         #         break
         print('npys:{%d}',len(self.npys))
@@ -39,9 +39,9 @@ class ECG_Dataset(Dataset):
             #         break
             print('shadow_npys:{%d}',len(self.shadow_npys))
     def __getitem__(self, item):
-        label = 1 if (((((self.npys[item]).split('.'))[0]).split('_'))[1]) =='HTN' else 0 #先按“.”分割，并把分割结果的[0]再按“_"分割，结果的[-1](最后一个)即为
+        label = 0 if (((((self.npys[item]).split('.'))[0]).split('_'))[1]) =='HTN' else 1 #先按“.”分割，并把分割结果的[0]再按“_"分割，结果的[-1](最后一个)即为
         
-        if((self.shadow_npy_root == None) or (label == 1)):#如果 (没有开启负样本抽样)/(正样本)的话，正常读取
+        if((self.shadow_npy_root == None) or (label == 0)):#如果 (没有开启负样本抽样)/(正样本)的话，正常读取
             npy_path = os.path.join(self.npy_root,self.npys[item])
             ECG =  (np.load(npy_path,allow_pickle=True))[:self.Channles_size,:self.Length_size]
         else:#如果是负样本，就从所有的shadow_npy负样本中随机抽一个
