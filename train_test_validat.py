@@ -84,10 +84,11 @@ def eval_model(test_loader,criterion,model,device):
     return y_ture,y_pred,np.mean(test_loss),np.mean(test_acc),
 
 def eval_model_possibility(test_loader,criterion,model,device):
-    loss = []
-    acc = []   
+    test_loss = []
+    test_acc = []   
     y_ture = []
     y_pred = []
+    possibility = []
     for i,data in enumerate(test_loader,0):
         model.eval()
         with torch.no_grad():
@@ -99,14 +100,15 @@ def eval_model_possibility(test_loader,criterion,model,device):
             _,pred = outputs.max(1) # 求概率最大值对应的标签
             
             #print("pred:",pred)
-            outputs_= outputs.copy().to('cpu')
+            outputs_= outputs.to('cpu')
             num_correct = (pred == labels).sum().item()
             acc = num_correct/len(labels)
-            loss.append(loss.item())
-            acc.append(acc)
+            test_loss.append(loss.item())
+            test_acc.append(acc)
             y_ture.extend((labels.to('cpu').detach().numpy().flatten()).tolist())
             y_pred.extend((pred.to('cpu').detach().numpy().flatten()).tolist())
-    return ((outputs_.detach().numpy().flatten()).tolist()),y_ture,y_pred,np.mean(loss),np.mean(acc)
+            possibility.extend((outputs.to('cpu').detach().numpy()).tolist())
+    return possibility,y_ture,y_pred,np.mean(test_loss),np.mean(test_acc)
 
 
 
