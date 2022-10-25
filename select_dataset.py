@@ -129,14 +129,13 @@ class splite_dataset():
         df_filter = df_filter.dropna(subset=['years']) #删除years== nan
         df_filter.loc[~(df_filter['years'].str.contains('岁')),'years']='0岁' #不含有岁的（天周月）改为"0岁"
         df_filter['years'].replace(regex=True,inplace=True,to_replace=r'岁',value=r'') #删除"岁"
-        df_filter = df_filter[
-            (((df_filter['years'].apply(int))<55) &(df_filter['department'].str.contains('外科')))|
-            (((df_filter['years'].apply(int))<50) &(df_filter['department']==''))
-           ]#两种条件
         # df_filter = df_filter[
-        #     (((df_filter['department'].str.contains('外科'))))|
-        #     (((df_filter['years'].apply(int))<60) &(df_filter['department']==''))
+        #     (((df_filter['years'].apply(int))<55) &(df_filter['department'].str.contains('外科')))|
+        #     (((df_filter['years'].apply(int))<50) &(df_filter['department']==''))
         #    ]#两种条件
+        df_filter = df_filter[
+            (((df_filter['department'].str.contains('外科'))==True))
+           ]#只选择外科
         print('\t')
         print("{:^10} {:^10}".format('orginal','fliteryears'))
         print("{:^10} {:^10}".format(len(df),len(df_filter)))

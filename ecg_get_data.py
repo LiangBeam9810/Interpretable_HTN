@@ -39,7 +39,7 @@ class ECG_Dataset(Dataset):
             #         break
             print('shadow_npys:{%d}',len(self.shadow_npys))
     def __getitem__(self, item):
-        label = 0 if (((((self.npys[item]).split('.'))[0]).split('_'))[1]) =='HTN' else 1 #先按“.”分割，并把分割结果的[0]再按“_"分割，结果的[-1](最后一个)即为
+        label = 1 if (((((self.npys[item]).split('.'))[0]).split('_'))[1]) =='HTN' else 0 #先按“.”分割，并把分割结果的[0]再按“_"分割，结果的[-1](最后一个)即为
         
         if((self.shadow_npy_root == None) or (label == 0)):#如果 (没有开启负样本抽样)/(正样本)的话，正常读取
             npy_path = os.path.join(self.npy_root,self.npys[item])
