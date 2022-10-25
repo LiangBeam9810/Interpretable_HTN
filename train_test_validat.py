@@ -83,6 +83,31 @@ def eval_model(test_loader,criterion,model,device):
             y_pred.extend((pred.to('cpu').detach().numpy().flatten()).tolist())
     return y_ture,y_pred,np.mean(test_loss),np.mean(test_acc),
 
+def eval_model_possibility(test_loader,criterion,model,device):
+    loss = []
+    acc = []   
+    y_ture = []
+    y_pred = []
+    for i,data in enumerate(test_loader,0):
+        model.eval()
+        with torch.no_grad():
+            inputs,labels = data[0].to(device),data[1].to(device)
+            outputs = model(inputs)
+            loss = criterion(outputs,labels)
+            #print("output:",outputs)
+            #print("labels:",labels)
+            _,pred = outputs.max(1) # 求概率最大值对应的标签
+            
+            #print("pred:",pred)
+            outputs_= outputs.copy().to('cpu')
+            num_correct = (pred == labels).sum().item()
+            acc = num_correct/len(labels)
+            loss.append(loss.item())
+            acc.append(acc)
+            y_ture.extend((labels.to('cpu').detach().numpy().flatten()).tolist())
+            y_pred.extend((pred.to('cpu').detach().numpy().flatten()).tolist())
+    return ((outputs_.detach().numpy().flatten()).tolist()),y_ture,y_pred,np.mean(loss),np.mean(acc)
+
 
 
 

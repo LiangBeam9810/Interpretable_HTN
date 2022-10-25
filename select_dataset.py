@@ -77,8 +77,6 @@ class splite_dataset():
             val_HTN_size = len(self.val_list)
             self.train_list.extend(HTN_list[val_size:])#其余的为训练集
             train_HTN_size = len(self.train_list)
-        
-        
             
             random.shuffle(NHTN_list) #打乱
             self.val_list.extend(NHTN_list[:val_size])#前val_size个为测试集
@@ -134,7 +132,7 @@ class splite_dataset():
         #     (((df_filter['years'].apply(int))<50) &(df_filter['department']==''))
         #    ]#两种条件
         df_filter = df_filter[
-            (((df_filter['department'].str.contains('外科'))==True))
+            (((df_filter['years'].apply(int))<55) &(df_filter['department'].str.contains('外科')))
            ]#只选择外科
         print('\t')
         print("{:^10} {:^10}".format('orginal','fliteryears'))
