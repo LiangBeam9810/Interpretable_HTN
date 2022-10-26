@@ -92,6 +92,8 @@ class splite_dataset():
         
             return self.val_list,self.train_list,self.addition_train_list
         else:
+            random.shuffle(HTN_list)
+            random.shuffle(NHTN_list)
             val_size = int(len(HTN_list)*rate) #按照rate 设置 test的样本数量
             self.val_list.extend(HTN_list[:val_size])#前val_size个为测试集
             val_HTN_size = len(self.val_list)
