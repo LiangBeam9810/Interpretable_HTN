@@ -5,13 +5,13 @@ from self_attention import *
 
 class ResSeBlock1d(nn.Module):
 
-    def __init__(self, inplanes, outplanes, stride=1, kernel_size = (3,3),res = True,se=True):
+    def __init__(self, inplanes, outplanes, stride=1, kernel_size = (3,3),res = True,se=True,Dropout_rate = 0.2):
         super(ResSeBlock1d, self).__init__()
         self.conv1 = nn.Conv1d(inplanes, outplanes, kernel_size= kernel_size[0], stride=stride, 
                                padding=(kernel_size[0]-1)//2, bias=False)
         self.bn1 = nn.BatchNorm1d(inplanes)
         self.relu = nn.LeakyReLU(inplace=True)
-        self.dropout = nn.Dropout(p=0.2)
+        self.dropout = nn.Dropout(p=Dropout_rate)
         self.conv2 = nn.Conv1d(outplanes, outplanes, kernel_size=kernel_size[1], stride=1, 
                                padding=(kernel_size[1]-1)//2, bias=False)
         self.bn2 = nn.BatchNorm1d(outplanes)
@@ -42,6 +42,7 @@ class ResSeBlock1d(nn.Module):
         out = self.bn1(x)
         out = self.relu(out)
         out = self.conv1(out)
+        out = self.dropout(out)
         out = self.bn2(out)
         out = self.relu(out)
         out = self.conv2(out)
@@ -70,13 +71,13 @@ class ResSeBlock1d(nn.Module):
         return out
 
 class ResSeBlock2d(nn.Module):
-    def __init__(self, inplanes, outplanes, stride=1, kernel_size =(3,3),dilation=(1,1),res = True,se=True):
+    def __init__(self, inplanes, outplanes, stride=1, kernel_size =(3,3),dilation=(1,1),res = True,se=True,Dropout_rate = 0.2):
         super(ResSeBlock2d, self).__init__()
         self.conv12d = nn.Conv2d(inplanes, outplanes, kernel_size, stride=(1,stride), dilation=dilation,
                                padding=((kernel_size[0]-1)//2,(kernel_size[1]-1)//2), bias=False)
         self.bn1 = nn.BatchNorm2d(inplanes)
         self.relu = nn.ReLU(inplace=True)
-        self.dropout = nn.Dropout(p=0.2)
+        self.dropout = nn.Dropout(p=Dropout_rate)
         self.conv22d = nn.Conv2d(outplanes, outplanes, kernel_size=kernel_size, stride=(1,1), dilation=(1,1),
                                padding=((kernel_size[0]-1)//2,(kernel_size[1]-1)//2), bias=False)
         self.bn2 = nn.BatchNorm2d(outplanes)
@@ -107,6 +108,7 @@ class ResSeBlock2d(nn.Module):
         out = self.bn1(x)
         out = self.relu(out)
         out = self.conv12d(out)
+        out = self.dropout(out)
         out = self.bn2(out)
         out = self.relu(out)
         out = self.conv22d(out)
@@ -393,6 +395,8 @@ class MLBFNet(nn.Module):
         # x1 = torch.flatten(x, start_dim=1,end_dim=2)#[N,384,313]
         # x1,self.att1 = self.self_att_t(x1)
         # x1 = torch.reshape(x1,x.shape)
+        # x = self.bn(x)
+        # x0 = self.bn(x0)
         x = torch.cat((x,x0),dim = 1) #B 32 12 L/2/2/2/2
         x = self.dorp(x)
         xs = []
