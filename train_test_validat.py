@@ -19,7 +19,13 @@ def train_model(train_loader,model,criterion,optimizer,device):
         optimizer.zero_grad() # 梯度清0
         outputs = model(inputs) # 预测结果
         loss = criterion(outputs,labels) # 计算loss
-
+        # # L2 #################################
+        # # Replaces pow(2.0) with abs() for L1 regularization
+        # l2_lambda = 0.001
+        # l2_norm = sum(p.pow(2.0).sum()
+        #           for p in model.parameters())
+        # loss = loss + l2_lambda * l2_norm
+        # ######################################
         loss.backward() # 反向传播
         optimizer.step() # 更新系数
         #print(outputs)
