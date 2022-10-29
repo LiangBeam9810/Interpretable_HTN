@@ -132,7 +132,7 @@ class splite_dataset():
         #     (((df_filter['years'].apply(int))<50) &(df_filter['department']==''))
         #    ]#两种条件
         df_filter = df_filter[
-            (((df_filter['years'].apply(int))<55) &(df_filter['department'].str.contains('外科')))
+            (df_filter['department'].str.contains('外科'))==True
            ]#只选择外科
         print('\t')
         print("{:^10} {:^10}".format('orginal','fliteryears'))
