@@ -12,6 +12,7 @@ import os
 from pip import main
 from sklearn.utils import resample
 from tqdm import tqdm
+
 class splite_dataset():
     def __init__(self,folder,drop_duplicates = True):
         self.folder =folder
@@ -40,7 +41,7 @@ class splite_dataset():
         
         if(shuffer):
             test_HTN_df = test_HTN_df.sample(frac=1)#打乱
-            test_df = self.__pair_HTN_(test_HTN_df,test_NHTN_df)
+            test_df = self.__pair_HTNs_(test_HTN_df,test_NHTN_df)
             self.test_list = test_df['ECG_path'].tolist()
             random.shuffle(self.test_list)
         else:
@@ -75,7 +76,7 @@ class splite_dataset():
         if(shuffer):
             VT_HTN_size = len(VT_HTN_df['ECG_path'].tolist())
             VT_HTN_df = VT_HTN_df.sample(frac=1)#打乱
-            VT_df = self.__pair_HTN_(VT_HTN_df,VT_NHTN_df)
+            VT_df = self.__pair_HTNs_(VT_HTN_df,VT_NHTN_df)
             VT_list = VT_df['ECG_path'].tolist()
             HTN_list = VT_list[:VT_HTN_size]# 前VT_HTN_size是HTN
             NHTN_list = VT_list[VT_HTN_size:]
@@ -119,7 +120,7 @@ class splite_dataset():
         return self.val_list,self.train_list,self.addition_train_list
     
     #根据年龄、性别抽取出HTN条件相同的NHTN样本，力求正负标签分布相同
-    def __pair_HTN_(self,HTN_df,NHTN_df,ageRang = 5):
+    def __pair_HTNs_(self,HTN_df,NHTN_df,ageRang = 5):
         ALL_df = HTN_df.copy() #所有的HNT和抽取出来的NHTN都存放入其中
         NHTN_df_popl = NHTN_df.copy()#即抽即删,抽出一条删一条
         
@@ -135,6 +136,14 @@ class splite_dataset():
                 print("lack sample like :",data)
                 continue  
         return ALL_df
+    
+    def __pair_HTN_by_list_(self,HTN_list,NHTN_list,ageRang = 5):
+        HTN_df = self.__read_infos__(HTN_list)
+        NHTN_df_popl = self.__read_infos__(NHTN_list)
+        ALL_df = self.__pair_HTNs_(HTN_df,NHTN_df_popl,ageRang)
+        set_diff_df = pd.concat([ALL_df, HTN_df, HTN_df]).drop_duplicates(keep=False) #ALL_df-HTN_df
+        pair_NHTN_list = set_diff_df['ECG_path'].tolist()
+        return pair_NHTN_list
     #删除重复的样本,先通过ID号筛选，并再用姓名和年龄都一致的筛选
     def __remove_duplicated__(self,df):
         df_remove = df.copy()
@@ -146,9 +155,6 @@ class splite_dataset():
         print('\t')
         print("{:^10} {:^10}".format('orginal','fliterID'))
         print("{:^10} {:^10}".format(len(df),len(df_remove)))
-        return df_remove
-    def __remove__some_name_and_age__(self,df):
-        df_remove = df.copy()
         return df_remove
         
     #通过年龄与科室过滤NHTN   
