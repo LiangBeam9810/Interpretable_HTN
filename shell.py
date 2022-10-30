@@ -56,8 +56,8 @@ def train_fold(fold,NET,test_Dataset,valid_Dataset,train_Dataset):
     lambda0 = lambda cur_iter: lr_min if  cur_iter < warm_up_iter else \
         (lr_min + 0.5*(lr_max-lr_min)*(1.0+math.cos( (cur_iter-warm_up_iter)/(T_max-warm_up_iter)*math.pi)))/0.01
     scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda=lambda0)
-    # criterion = torch.nn.CrossEntropyLoss()   
-    criterion = LabelSmoothingCrossEntropy()
+    criterion = torch.nn.CrossEntropyLoss()   
+    # criterion = LabelSmoothingCrossEntropy()
     best_test_F1 = 0
     for epoch in range(1,EPOCHS):
         time_all=0
