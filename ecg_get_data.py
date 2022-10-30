@@ -9,34 +9,35 @@ from torch.utils.data.dataset import Dataset
 import pywt
 from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
-
+from select_dataset import*
 import xml.dom.minidom as dm
 
+def one_hot(x, num_classes, on_value=1., off_value=0., device='cpu'):
+    x = x.long().view(-1, 1)
+    return torch.full((x.size()[0], num_classes), off_value, device=device).scatter_(1, x, on_value)
+
+
+def mixup_target(target, num_classes, smoothing=0.1, device='cpu'):
+    y1 = one_hot(target, num_classes, on_value=1, off_value=0, device=device)
+    y2 = y1+torch.tensor([-1*smoothing,smoothing])
+    y2[y2>1] = 1
+    y2[y2<0] = 0
+    return y2[0]
 
 class ECG_Dataset(Dataset):
-    def __init__(self,npy_folder:str,npy_files_list:list,EcgChannles_num:int,EcgLength_num:int,shadow_npy_folder = None,shadow_npy_files_list :list = []):
+    def __init__(self,npy_folder:str,npy_files_list:list,EcgChannles_num:int,EcgLength_num:int,shadow_npy_folder = None,shadow_npy_files_list :list = [],data_set_father_class = None):
     
         self.npy_root = npy_folder
-        # npy_files_list.sort(key=lambda x:int(x.split('_')[0])) #按“_”分割，并把分割结果的[0]转为整形并排序
         self.npys = npy_files_list
-
         self.Channles_size = EcgChannles_num
         self.Length_size = EcgLength_num
+        self.data_set_father_class = data_set_father_class
 
-        # for i in range(len(self.npys)):
-        #     self.filter_outlier_npy(i)111
-        #     if(i >= len(self.npys)-1):
-        #         break
         print('npys:{%d}',len(self.npys))
         self.shadow_npy_root = shadow_npy_folder #存放了比正样本多出来很多的负样本
         if(self.shadow_npy_root):
-            self.shadow_count_index = 0
-            # shadow_npy_files_list.sort(key=lambda x:int(x.split('_')[0])) #按“_”分割，并把分割结果的[0]转为整形并排序
+            # self.shadow_count_index = 0
             self.shadow_npys = shadow_npy_files_list
-            # for i in range(len(self.shadow_npys)):
-            #     self.filter_outlier_shadow(i)
-            #     if(i >= len(self.shadow_npys)-1):
-            #         break
             print('shadow_npys:{%d}',len(self.shadow_npys))
     def __getitem__(self, item):
         label = 1 if (((((self.npys[item]).split('.'))[0]).split('_'))[1]) =='HTN' else 0 #先按“.”分割，并把分割结果的[0]再按“_"分割，结果的[-1](最后一个)即为
@@ -44,27 +45,26 @@ class ECG_Dataset(Dataset):
         if((self.shadow_npy_root == None) or (label == 1)):#如果 (没有开启负样本抽样)/(正样本)的话，正常读取
             npy_path = os.path.join(self.npy_root,self.npys[item])
             ECG =  (np.load(npy_path,allow_pickle=True))[:self.Channles_size,:self.Length_size]
-        else:#如果是负样本，就从所有的shadow_npy负样本中随机抽一个
-            #print("reselect the other normal sample. ")
+        else: #如果是负样本，就从所有的shadow_npy负样本中()随机抽一个
             if random.random()>0.5:
-                # item_ = random.randint(0,len(self.shadow_npys)-1)
-                # while( (((((self.shadow_npys[item_]).split('.'))[0]).split('_'))[-1]) =='HTN'):
-                #     item_ = random.randint(0,len(self.shadow_npys)-1)
-                # npy_path = os.path.join(self.shadow_npy_root,self.shadow_npys[item_])
-                npy_path = os.path.join(self.shadow_npy_root,self.shadow_npys[self.shadow_count_index])#选取第self.shadow_count_index个替代
-                self.shadow_count_index = self.shadow_count_index+1 if self.shadow_count_index < (len(self.shadow_npys)-1) else 0  # type: ignore #self.shadow_count_index更新
+                # npy_path = os.path.join(self.shadow_npy_root,self.shadow_npys[self.shadow_count_index])#选取第self.shadow_count_index个替代
+                # self.shadow_count_index = self.shadow_count_index+1 if self.shadow_count_index < (len(self.shadow_npys)-1) else 0  # type: ignore #self.shadow_count_index更新
+                #sampler_shadow_list = self.data_set_father_class.__pair_HTN_by_list_(list(self.npys[item]),self.shadow_npys)
+                #npy_path = os.path.join(self.npy_root,sampler_shadow_list[0])
+                npy_path = os.path.join(self.npy_root,self.npys[item])
             else :
                 npy_path = os.path.join(self.npy_root,self.npys[item])
             
             ECG =  (np.load(npy_path))[:self.Channles_size,:self.Length_size]
-        #ECG = denoise(ECG)
+        #ECG = denoise(ECG) #滤波
         ECG = amplitude_limiting(ECG,3500) #幅值
         ECG[np.isnan(ECG)]=0
         ECG = torch.FloatTensor(ECG)
         label = torch.from_numpy(np.array(label))
-        label = torch.LongTensor(label)
+        # label = torch.LongTensor(label)
         #print(self.npys[item])
-        return ECG, label
+        label_smoothed = mixup_target(label,2,0.1)
+        return ECG, label_smoothed
 
     def filter_outlier_npy(self, item):
         npy_path = os.path.join(self.npy_root,self.npys[item])
@@ -78,7 +78,6 @@ class ECG_Dataset(Dataset):
         npy_path = os.path.join(self.shadow_npy_root,self.shadow_npys[item])  # type: ignore
         ECG =  (np.load(npy_path))[:self.Channles_size,:self.Length_size]
         if((np.sum(ECG == -32768) +np.sum(ECG == 32768))>=5000):
-        #if((ECG.min() ==  -32768) or (ECG.max() ==  32768)):
             self.deleteitem_shadow_npys(item)
             print(npy_path)
             return True
@@ -91,21 +90,9 @@ class ECG_Dataset(Dataset):
     def deleteitem_shadow_npys(self, item):
         del self.shadow_npys[item]
         return 
-
-    def npy_path(self, item):
-        return os.path.join(self.npy_root,self.npys[item])
-
-    def sample_name(self,item):#获取没有后缀的文件名
-        return str(self.npys[item].split('.')[0])
-
     def __len__(self):
-        return len(self.npys)
-
-    def size(self):
-        return len(self.npys), self.Channles_size,self.Length_size
+        return self.npys.__len__()
     
-    
-
 def amplitude_limiting(ecg_data,max_bas = 3500):
     ecg_data = ecg_data*4.88
     ecg_data[ecg_data > max_bas] = max_bas

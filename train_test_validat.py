@@ -33,11 +33,12 @@ def train_model(train_loader,model,criterion,optimizer,device):
         #print("labels:",labels)
         _,pred = outputs.max(1) # 求概率最大值对应的标签
         #print(pred)
-        num_correct = (pred == labels).sum().item()
-        acc = num_correct/len(labels) # 计算准确率
+        _,label = labels.max(1) #
+        num_correct = (pred == label).sum().item()
+        acc = num_correct/len(label) # 计算准确率
         train_loss.append(loss.item())
         train_acc.append(acc)
-        y_ture.extend((labels.to('cpu').detach().numpy().flatten()).tolist())
+        y_ture.extend((label.to('cpu').detach().numpy().flatten()).tolist())
         y_pred.extend((pred.to('cpu').detach().numpy().flatten()).tolist())
     return y_ture,y_pred,np.mean(train_loss),np.mean(train_acc)
 
@@ -56,9 +57,10 @@ def test_model(test_loader,criterion,model,device):
             #print("output:",outputs)
             #print("labels:",labels)
             _,pred = outputs.max(1) # 求概率最大值对应的标签
+            _,label = labels.max(1) #
             #print("pred:",pred)
-            num_correct = (pred == labels).sum().item()
-            acc = num_correct/len(labels)
+            num_correct = (pred == label).sum().item()
+            acc = num_correct/len(label)
             test_loss.append(loss.item())
             test_acc.append(acc)
 
@@ -79,13 +81,13 @@ def eval_model(test_loader,criterion,model,device):
             #print("output:",outputs)
             #print("labels:",labels)
             _,pred = outputs.max(1) # 求概率最大值对应的标签
-            
+            _,label = labels.max(1) #
             #print("pred:",pred)
-            num_correct = (pred == labels).sum().item()
-            acc = num_correct/len(labels)
+            num_correct = (pred == label).sum().item()
+            acc = num_correct/len(label)
             test_loss.append(loss.item())
             test_acc.append(acc)
-            y_ture.extend((labels.to('cpu').detach().numpy().flatten()).tolist())
+            y_ture.extend((label.to('cpu').detach().numpy().flatten()).tolist())
             y_pred.extend((pred.to('cpu').detach().numpy().flatten()).tolist())
     return y_ture,y_pred,np.mean(test_loss),np.mean(test_acc),
 
