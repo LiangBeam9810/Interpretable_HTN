@@ -125,7 +125,7 @@ def main():
     for fold in range(FOLDS):
         test_list = data.__get_test_file_list__(True)
         test_Dataset = ecg_get_data.ECG_Dataset(ECG_root,test_list,EcgChannles_num,EcgLength_num)  # type: ignore
-        valid_list,train_list,addition_train_list = data.__get_VT_file_list__(0.9,True)
+        valid_list,train_list,addition_train_list = data.__get_VT_file_list__(0.9,True)  # type: ignore
         valid_Dataset = ecg_get_data.ECG_Dataset(ECG_root,valid_list,EcgChannles_num,EcgLength_num)
         train_Dataset = ecg_get_data.ECG_Dataset(ECG_root,train_list,EcgChannles_num,EcgLength_num)
     

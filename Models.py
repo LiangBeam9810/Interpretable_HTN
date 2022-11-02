@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 from self_attention import *
 
 class ATICNN(nn.Module):
@@ -153,7 +154,13 @@ def mark_input(input,mark_lenth=500):
         for j in range(channelsize):
             input[i,j,mark_index:mark_index+mark_lenth]=mark
     return input
-
+def scaler_input(input):  # type: ignore
+    factor_max = 1.0/input.max()
+    factor = torch.rand(1) 
+    if factor > factor_max:
+        factor = factor_max 
+    input = input*factor
+    return input
 class CNN(nn.Module):
 
     def __init__(self):
@@ -571,168 +578,75 @@ class att(nn.Module):
         faat = self.drop(faat)
         return faat
         
-class MLBFNet(nn.Module):
-    def __init__(self,inplanes, outplanes,dropout = 0.2,res=True,se = True,mark = True):
-        super(MLBFNet,self).__init__()
-        self.res = res
-        self.se=se
-        self.mark = mark
-        self.layers0 = nn.Sequential(
-            block1d_1(inplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_1(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_1(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_1(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_2(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
 
-        )
-        self.layers1 = nn.Sequential(
-            block1d_1(inplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_1(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_1(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_1(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_2(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
 
-        )
-        self.layers2 = nn.Sequential(
-            block1d_1(inplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_1(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_1(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_1(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_2(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
 
-        )
-        self.layers3 = nn.Sequential(
-            block1d_1(inplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_1(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_1(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_1(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_2(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-
-        )
-        self.layers4 = nn.Sequential(
-            block1d_1(inplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_1(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_1(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_1(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_2(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-
-        )
-        self.layers5 = nn.Sequential(
-            block1d_1(inplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_1(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_1(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_1(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_2(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-
-        )
-        self.layers6 = nn.Sequential(
-            block1d_1(inplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_1(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_1(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_1(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_2(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-        )
-        self.layers7 = nn.Sequential(
-            block1d_1(inplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_1(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_1(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_1(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_2(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-
-        )
-        self.layers8 = nn.Sequential(
-            block1d_1(inplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_1(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_1(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_1(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_2(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-
-        )
-        self.layers9 = nn.Sequential(
-            block1d_1(inplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_1(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_1(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_1(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_2(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-
-        )
-        self.layers10 = nn.Sequential(
-            block1d_1(inplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_1(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_1(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_1(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_2(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-
-        )
-        self.layers11 = nn.Sequential(
-            block1d_1(inplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_1(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_1(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_1(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-            block1d_2(outplanes, outplanes, dropout=dropout, res=self.res, se=self.se),
-        )
-        self.GRU = nn.GRU(outplanes, outplanes, 1, batch_first=True,bidirectional=True)
-        self.conv1 = nn.Conv2d(1,32,(5,5),(5,5),(2,2))
-        self.conv2 = nn.Conv2d(32,32,(5,5),(5,5),(2,2))
-        self.conv3 = nn.Conv2d(32,32,(3,3),(2,2),(1,1))
-        self.conv4 = nn.Conv2d(32,32,(3,3),(2,2),(1,1))
-        self.dorp = nn.Dropout(dropout)
-        self.att =att(outplanes,outplanes,dropout)
-        self.fc = nn.Linear(192,2)
-        self.softmax = nn.Softmax(dim=1)
-    def forward(self,x):
-        batch_size, channels,seq_len = x.shape
-        # x0 = x0+(create_1d_absolute_sin_cos_embedding(batch_size,channels,seq_len)).to(x0.device)#位置编码
-        if(self.mark):
-            if self.training:
-                mark_lenth = torch.randint(int(seq_len/10),int(seq_len/5),[1])
-                x = mark_input(x,mark_lenth=mark_lenth[0])  # type: ignore
-        x0 = self.layers0(x[:,:1,:])
-        x1 = self.layers1(x[:,1:2,:])
-        x2 = self.layers2(x[:,2:3,:])
-        x3 = self.layers3(x[:,3:4,:])
-        x4 = self.layers4(x[:,4:5,:])
-        x5 = self.layers5(x[:,5:6,:])
-        x6 = self.layers6(x[:,6:7,:])
-        x7 = self.layers7(x[:,7:8,:])
-        x8 = self.layers8(x[:,8:9,:])
-        x9 = self.layers9(x[:,9:10,:])
-        x10 = self.layers10(x[:,10:11,:])
-        x11 = self.layers11(x[:,11:,:])
+class LSTNet(nn.Module):
+    
+    def __init__(self):
+        super(LSTNet, self).__init__()
+        self.num_features = 5
+        self.conv1_out_channels = 32 
+        self.conv1_kernel_height = 7
+        self.recc1_out_channels = 64 
+        self.skip_steps = [4, 24] 
+        self.skip_reccs_out_channels = [4, 4] 
+        self.output_out_features = 2
+        self.ar_window_size = 0
+        self.dropout = nn.Dropout(p = 0.2)
+       
         
-        x0,_ = (self.GRU(x0.permute(0,2 ,1)))
-        x1,_ = (self.GRU(x1.permute(0,2 ,1)))
-        x2,_ = (self.GRU(x2.permute(0,2 ,1)))
-        x3,_ = (self.GRU(x3.permute(0,2 ,1)))
-        x4,_ = (self.GRU(x4.permute(0,2 ,1)))
-        x5,_ = (self.GRU(x5.permute(0,2 ,1)))
-        x6,_ = (self.GRU(x6.permute(0,2 ,1)))
-        x7,_ = (self.GRU(x7.permute(0,2 ,1)))
-        x8,_ = (self.GRU(x8.permute(0,2 ,1)))
-        x9,_ = (self.GRU(x9.permute(0,2 ,1)))
-        x10,_ = (self.GRU(x10.permute(0,2 ,1)))
-        x11,_ = (self.GRU(x11.permute(0,2 ,1)))
+        self.conv1 = nn.Conv2d(1, self.conv1_out_channels, 
+                               kernel_size=(self.conv1_kernel_height, self.num_features))
+        self.recc1 = nn.GRU(self.conv1_out_channels, self.recc1_out_channels, batch_first=True)
+        self.skip_reccs = {}
+        for i in range(len(self.skip_steps)):
+            self.skip_reccs[i] = nn.GRU(self.conv1_out_channels, self.skip_reccs_out_channels[i], batch_first=True)
+        self.output_in_features = self.recc1_out_channels + np.dot(self.skip_steps, self.skip_reccs_out_channels)
+        self.output = nn.Linear(self.output_in_features, self.output_out_features)
+        if self.ar_window_size > 0:
+            self.ar = nn.Linear(self.ar_window_size, 1)
         
-        x0 = (self.dorp(x0.permute(0,2 ,1)))
-        x1 = (self.dorp(x1.permute(0,2 ,1)))
-        x2 = (self.dorp(x2.permute(0,2 ,1)))
-        x3 = (self.dorp(x3.permute(0,2 ,1)))
-        x4 = (self.dorp(x4.permute(0,2 ,1)))
-        x5 = (self.dorp(x5.permute(0,2 ,1)))
-        x6 = (self.dorp(x6.permute(0,2 ,1)))
-        x7 = (self.dorp(x7.permute(0,2 ,1)))
-        x8 = (self.dorp(x8.permute(0,2 ,1)))
-        x9 = (self.dorp(x9.permute(0,2 ,1)))
-        x10 = (self.dorp(x10.permute(0,2 ,1)))
-        x11 = (self.dorp(x11.permute(0,2 ,1)))
+    def forward(self, X):
+        """
+        Parameters:
+        X (tensor) [batch_size, time_steps, num_features]
+        """
+        batch_size = X.size(0)
         
-        x = torch.cat((x0,x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11),dim=1)
-        x = x.unsqueeze(dim = 1)
-        x = self.conv1(x)
-        x = self.conv2(x)
-        x = self.conv3(x)
-        x = self.conv4(x)
-        x = x.view(batch_size, -1)
-        x = self.fc(x)
-        x = self.softmax(x)
-        return x
+        # Convolutional Layer
+        C = X.unsqueeze(1) # [batch_size, num_channels=1, time_steps, num_features]
+        C = F.relu(self.conv1(C)) # [batch_size, conv1_out_channels, shrinked_time_steps, 1]
+        C = self.dropout(C)
+        C = torch.squeeze(C, 3) # [batch_size, conv1_out_channels, shrinked_time_steps]
+        
+        # Recurrent Layer
+        R = C.permute(0, 2, 1) # [batch_size, shrinked_time_steps, conv1_out_channels]
+        out, hidden = self.recc1(R) # [batch_size, shrinked_time_steps, recc_out_channels]
+        R = out[:, -1, :] # [batch_size, recc_out_channels]
+        R = self.dropout(R)
+        #print(R.shape)
+        
+        # Skip Recurrent Layers
+        shrinked_time_steps = C.size(2)
+        for i in range(len(self.skip_steps)):
+            skip_step = self.skip_steps[i]
+            skip_sequence_len = shrinked_time_steps // skip_step
+            # shrinked_time_steps shrinked further
+            S = C[:, :, -skip_sequence_len*skip_step:] # [batch_size, conv1_out_channels, shrinked_time_steps]
+            S = S.view(S.size(0), S.size(1), skip_sequence_len, skip_step) # [batch_size, conv1_out_channels, skip_sequence_len, skip_step=num_skip_components]
+            # note that num_skip_components = skip_step
+            S = S.permute(0, 3, 2, 1).contiguous() # [batch_size, skip_step=num_skip_components, skip_sequence_len, conv1_out_channels]
+            S = S.view(S.size(0)*S.size(1), S.size(2), S.size(3))  # [batch_size*num_skip_components, skip_sequence_len, conv1_out_channels]
+            out, hidden = self.skip_reccs[i](S) # [batch_size*num_skip_components, skip_sequence_len, skip_reccs_out_channels[i]]
+            S = out[:, -1, :] # [batch_size*num_skip_components, skip_reccs_out_channels[i]]
+            S = S.view(batch_size, skip_step*S.size(1)) # [batch_size, num_skip_components*skip_reccs_out_channels[i]]
+            S = self.dropout(S)
+            R = torch.cat((R, S), 1) # [batch_size, recc_out_channels + skip_reccs_out_channels * num_skip_components]
+            #print(S.shape)
+        #print(R.shape)
+        
+        # Output Layer
+        O = F.softmax(self.output(R)) # [batch_size, output_out_features=1]
+        
+        return O
