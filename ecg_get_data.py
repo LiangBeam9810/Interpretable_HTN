@@ -1,4 +1,3 @@
-from cProfile import label
 import numpy as np
 import os
 from tqdm import tqdm
@@ -25,76 +24,46 @@ def mixup_target(target, num_classes, smoothing=0.1, device='cpu'):
     return y2[0]
 
 class ECG_Dataset(Dataset):
-    def __init__(self,npy_folder:str,npy_files_list:list,EcgChannles_num:int,EcgLength_num:int,shadow_npy_folder = None,shadow_npy_files_list :list = [],data_set_father_class = None):
+    def __init__(self,npy_folder:str,npy_files_list:list,EcgChannles_num:int,EcgLength_num:int,shadow_npy_folder = None,shadow_npy_files_list :list = []):  # type: ignore
     
         self.npy_root = npy_folder
         self.npys = npy_files_list
         self.Channles_size = EcgChannles_num
         self.Length_size = EcgLength_num
-        self.data_set_father_class = data_set_father_class
-
+        self.ECG = np.zeros((self.__len__(),self.Channles_size,self.Length_size))  # type: ignore
+        self.Label = np.zeros((self.__len__(),2))  # type: ignore
+        
+        for index,file in enumerate(self.npys):
+            label = torch.tensor(1) if ((((file[:-4]).split('_'))[-1]) =='HTN') else torch.tensor(0) #去除后缀名再按“_"分割，结果的[-1](最后一个)即为标签
+            npy_path = os.path.join(self.npy_root,file)    
+            ECG =  (np.load(npy_path))[:self.Channles_size,:self.Length_size]*4.88 #放大系数 xml文件中提供的
+            #ECG = denoise(ECG) #滤波
+            ECG = amplitude_limiting(ECG,3500) #幅值
+            ECG = torch.FloatTensor(ECG)
+            self.ECG[index] = ECG
+            
+            # label_smoothed = mixup_target(label,2,0.1)
+            label = one_hot(label,2)
+            self.Label[index] = label
+        self.ECG = torch.FloatTensor(self.ECG)
         print('npys:{%d}',len(self.npys))
         self.shadow_npy_root = shadow_npy_folder #存放了比正样本多出来很多的负样本
         if(self.shadow_npy_root):
             # self.shadow_count_index = 0
             self.shadow_npys = shadow_npy_files_list
             print('shadow_npys:{%d}',len(self.shadow_npys))
-    def __getitem__(self, item):
-        label = 1 if (((((self.npys[item]).split('.'))[0]).split('_'))[1]) =='HTN' else 0 #先按“.”分割，并把分割结果的[0]再按“_"分割，结果的[-1](最后一个)即为
-        
-        if((self.shadow_npy_root == None) or (label == 1)):#如果 (没有开启负样本抽样)/(正样本)的话，正常读取
-            npy_path = os.path.join(self.npy_root,self.npys[item])
-            ECG =  (np.load(npy_path,allow_pickle=True))[:self.Channles_size,:self.Length_size]
-        else: #如果是负样本，就从所有的shadow_npy负样本中()随机抽一个
-            if random.random()>0.5:
-                # npy_path = os.path.join(self.shadow_npy_root,self.shadow_npys[self.shadow_count_index])#选取第self.shadow_count_index个替代
-                # self.shadow_count_index = self.shadow_count_index+1 if self.shadow_count_index < (len(self.shadow_npys)-1) else 0  # type: ignore #self.shadow_count_index更新
-                #sampler_shadow_list = self.data_set_father_class.__pair_HTN_by_list_(list(self.npys[item]),self.shadow_npys)
-                #npy_path = os.path.join(self.npy_root,sampler_shadow_list[0])
-                npy_path = os.path.join(self.npy_root,self.npys[item])
-            else :
-                npy_path = os.path.join(self.npy_root,self.npys[item])
             
-            ECG =  (np.load(npy_path))[:self.Channles_size,:self.Length_size]
-        #ECG = denoise(ECG) #滤波
-        ECG = amplitude_limiting(ECG,3500) #幅值
-        ECG[np.isnan(ECG)]=0
-        ECG = torch.FloatTensor(ECG)
-        label = torch.from_numpy(np.array(label))
-        # label = torch.LongTensor(label)
-        #print(self.npys[item])
-        label_smoothed = mixup_target(label,2,0.1)
-        return ECG, label_smoothed
 
-    def filter_outlier_npy(self, item):
-        npy_path = os.path.join(self.npy_root,self.npys[item])
-        ECG =  (np.load(npy_path))[:self.Channles_size,:self.Length_size]
-        if((ECG.min() <=  -32768) or (ECG.max() >=  32768)):
-            self.deleteitem_npys(item)
-            print(npy_path)
-            return True
-        return False
-    def filter_outlier_shadow(self, item):
-        npy_path = os.path.join(self.shadow_npy_root,self.shadow_npys[item])  # type: ignore
-        ECG =  (np.load(npy_path))[:self.Channles_size,:self.Length_size]
-        if((np.sum(ECG == -32768) +np.sum(ECG == 32768))>=5000):
-            self.deleteitem_shadow_npys(item)
-            print(npy_path)
-            return True
-        return False
+    def __getitem__(self, item):
+        label = self.Label[item]
+        ECG = self.ECG[item]
+        return ECG, label
 
-    def deleteitem_npys(self, item):
-        del self.npys[item]
-        return 
-
-    def deleteitem_shadow_npys(self, item):
-        del self.shadow_npys[item]
-        return 
     def __len__(self):
         return self.npys.__len__()
     
+
 def amplitude_limiting(ecg_data,max_bas = 3500):
-    ecg_data = ecg_data*4.88
     ecg_data[ecg_data > max_bas] = max_bas
     ecg_data[ecg_data < (-1*max_bas)] = -1*max_bas
     return ecg_data/max_bas
