@@ -155,8 +155,8 @@ def mark_input(input,mark_lenth=500):
             input[i,j,mark_index:mark_index+mark_lenth]=mark
     return input
 def scaler_input(input):  # type: ignore
-    factor_max = 1.0/input.max()
-    factor = torch.rand(1) 
+    factor_max = (1.0/input.max())
+    factor = torch.rand(1).to(input.device)
     if factor > factor_max:
         factor = factor_max 
     input = input*factor
@@ -585,7 +585,7 @@ class LSTNet(nn.Module):
     
     def __init__(self):
         super(LSTNet, self).__init__()
-        self.num_features = 5
+        self.num_features = 12
         self.conv1_out_channels = 32 
         self.conv1_kernel_height = 7
         self.recc1_out_channels = 64 
@@ -599,9 +599,9 @@ class LSTNet(nn.Module):
         self.conv1 = nn.Conv2d(1, self.conv1_out_channels, 
                                kernel_size=(self.conv1_kernel_height, self.num_features))
         self.recc1 = nn.GRU(self.conv1_out_channels, self.recc1_out_channels, batch_first=True)
-        self.skip_reccs = {}
+        self.skip_reccs = nn.Sequential()
         for i in range(len(self.skip_steps)):
-            self.skip_reccs[i] = nn.GRU(self.conv1_out_channels, self.skip_reccs_out_channels[i], batch_first=True)
+            self.skip_reccs.append(nn.GRU(self.conv1_out_channels, self.skip_reccs_out_channels[i], batch_first=True))
         self.output_in_features = self.recc1_out_channels + np.dot(self.skip_steps, self.skip_reccs_out_channels)
         self.output = nn.Linear(self.output_in_features, self.output_out_features)
         if self.ar_window_size > 0:
@@ -613,7 +613,7 @@ class LSTNet(nn.Module):
         X (tensor) [batch_size, time_steps, num_features]
         """
         batch_size = X.size(0)
-        
+        X = X.permute(0,2 ,1)
         # Convolutional Layer
         C = X.unsqueeze(1) # [batch_size, num_channels=1, time_steps, num_features]
         C = F.relu(self.conv1(C)) # [batch_size, conv1_out_channels, shrinked_time_steps, 1]
@@ -647,6 +647,6 @@ class LSTNet(nn.Module):
         #print(R.shape)
         
         # Output Layer
-        O = F.softmax(self.output(R)) # [batch_size, output_out_features=1]
+        O = F.softmax(self.output(R),dim=-1) # [batch_size, output_out_features=1]
         
         return O

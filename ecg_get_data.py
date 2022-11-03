@@ -11,13 +11,13 @@ from sklearn.model_selection import train_test_split
 from select_dataset import*
 import xml.dom.minidom as dm
 
-def one_hot(x, num_classes, on_value=1., off_value=0., device='cpu'):
+def one_hot(x, num_classes, on_value=1., off_value=0.):
     x = x.long().view(-1, 1)
-    return torch.full((x.size()[0], num_classes), off_value, device=device).scatter_(1, x, on_value)
+    return torch.full((x.size()[0], num_classes), off_value).scatter_(1, x, on_value)
 
 
-def mixup_target(target, num_classes, smoothing=0.1, device='cpu'):
-    y1 = one_hot(target, num_classes, on_value=1, off_value=0, device=device)
+def mixup_target(target, num_classes, smoothing=0.1):
+    y1 = one_hot(target, num_classes, on_value=1, off_value=0)
     y2 = y1+torch.tensor([-1*smoothing,smoothing])
     y2[y2>1] = 1
     y2[y2<0] = 0
