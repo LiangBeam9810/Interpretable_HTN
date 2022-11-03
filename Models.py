@@ -579,8 +579,6 @@ class att(nn.Module):
         return faat
         
 
-
-
 class LSTNet(nn.Module):
     
     def __init__(self):
@@ -612,6 +610,15 @@ class LSTNet(nn.Module):
         Parameters:
         X (tensor) [batch_size, time_steps, num_features]
         """
+        batch_size, channels,seq_len = X.shape
+                #x = x+(Models.create_1d_absolute_sin_cos_embedding(batch_size,channels,seq_len)).to(x.device)#位置编码
+        if(self.mark):
+            if self.training:
+                if(torch.rand(1)>0.5): #mark
+                    mark_lenth = torch.randint(int(seq_len/10),int(seq_len/5),[1])
+                    X = mark_input(X,mark_lenth=int(mark_lenth[0]))
+                if(torch.rand(1)>0.5):
+                    X = scaler_input(X)
         batch_size = X.size(0)
         X = X.permute(0,2 ,1)
         # Convolutional Layer

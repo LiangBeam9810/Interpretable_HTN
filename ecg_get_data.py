@@ -42,9 +42,9 @@ class ECG_Dataset(Dataset):
             ECG = torch.FloatTensor(ECG)
             self.ECG[index] = ECG
             
-            # label_smoothed = mixup_target(label,2,0.1)
-            label = one_hot(label,2)
-            self.Label[index] = label
+            label_smoothed = mixup_target(label,2,0.1)
+            #label = one_hot(label,2)
+            self.Label[index] = label_smoothed
         self.ECG = torch.FloatTensor(self.ECG)
         print('npys:{%d}',len(self.npys))
         self.shadow_npy_root = shadow_npy_folder #存放了比正样本多出来很多的负样本
