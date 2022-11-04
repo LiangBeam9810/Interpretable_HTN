@@ -42,8 +42,8 @@ class ECG_Dataset(Dataset):
             ECG = torch.FloatTensor(ECG)
             self.ECG[index] = ECG
             
-            label_smoothed = mixup_target(label,2,0.1)
-            #label = one_hot(label,2)
+            #label_smoothed = mixup_target(label,2,0.1)
+            label_smoothed = one_hot(label,2)
             self.Label[index] = label_smoothed
         self.ECG = torch.FloatTensor(self.ECG)
         print('npys:{%d}',len(self.npys))
