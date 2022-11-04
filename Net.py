@@ -227,7 +227,8 @@ class channels_branch_CNN(nn.Module):
     
     
 class MLBFNet(nn.Module):
-    def __init__(self,mark = True,res = True,se=True,Dropout_rate = 0.2,size = [[5,5,5,5,3,3],
+    def __init__(self,mark = True,res = True,se=True,Dropout_rate = 0.2,size = [[9,9,9,9,3,3],
+                                                                                [5,5,5,5,3,3],
                                                                                 [7,7,7,7,3,3]]):
         super(MLBFNet, self).__init__()
         self.mark = mark
