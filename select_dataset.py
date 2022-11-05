@@ -187,9 +187,8 @@ class splite_dataset():
         
         ALL_df = self.__pair_HTNs_(HTN_df,NHTN_df_popl,ageRang)
         
-        pair_NHTN_list =(ALL_df['ECG_path'].tolist())[HTN_size:]
-        return pair_NHTN_list
-    
+        pair_list =(ALL_df['ECG_path'].tolist())
+        return pair_list
     #删除重复的样本,先通过ID号筛选，并再用姓名和年龄都一致的筛选
     def __remove_duplicated__(self,df):
         df_remove = df.copy()

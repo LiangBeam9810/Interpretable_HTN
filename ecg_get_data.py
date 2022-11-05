@@ -227,7 +227,6 @@ def load_numpy_dataset_to_tensor_dataset(x,y):
     y = torch.LongTensor(y)
     return Data.TensorDataset(x, y)  
 
-
 def load_numpy_dataset_to_tensor_dataset_split(x,y,random_seed,train_rate = 0.8):
     torch.manual_seed(random_seed) 
     #x = MAX_MIN_normalization_by_feactures(x)

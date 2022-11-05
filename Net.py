@@ -15,9 +15,9 @@ class ResSeBlock1d(nn.Module):
         self.conv2 = nn.Conv1d(outplanes, outplanes, kernel_size=kernel_size[1], stride=1, 
                                padding=(kernel_size[1]-1)//2, bias=False)
         self.bn2 = nn.BatchNorm1d(outplanes)
-        # self.conv3 = nn.Conv1d(outplanes, outplanes, kernel_size=kernel_size[1], stride=1, 
-        #                        padding=(kernel_size[1]-1)//2, bias=False)
-        # self.bn3 = nn.BatchNorm1d(outplanes)
+        self.conv3 = nn.Conv1d(outplanes, outplanes, kernel_size=kernel_size[1], stride=1, 
+                               padding=(kernel_size[1]-1)//2, bias=False)
+        self.bn3 = nn.BatchNorm1d(outplanes)
         
         if (stride != 1 or inplanes != outplanes): #
             self.downsample = nn.Sequential(
@@ -47,9 +47,9 @@ class ResSeBlock1d(nn.Module):
         out = self.relu(out)
         out = self.conv2(out)
         # out = self.dropout(out)
-        # out = self.bn3(out)
-        # out = self.relu(out)
-        # out = self.conv3(out)
+        out = self.bn3(out)
+        out = self.relu(out)
+        out = self.conv3(out)
         
         if self.se:
             original_out = out
@@ -81,9 +81,9 @@ class ResSeBlock2d(nn.Module):
         self.conv22d = nn.Conv2d(outplanes, outplanes, kernel_size=kernel_size, stride=(1,1), dilation=(1,1),
                                padding=((kernel_size[0]-1)//2,(kernel_size[1]-1)//2), bias=False)
         self.bn2 = nn.BatchNorm2d(outplanes)
-        # self.conv32d = nn.Conv2d(outplanes, outplanes, kernel_size=kernel_size, stride=(1,1), dilation=(1,1),
-        #                        padding=((kernel_size[0]-1)//2,(kernel_size[1]-1)//2), bias=False)
-        # self.bn3 = nn.BatchNorm2d(outplanes)
+        self.conv32d = nn.Conv2d(outplanes, outplanes, kernel_size=kernel_size, stride=(1,1), dilation=(1,1),
+                               padding=((kernel_size[0]-1)//2,(kernel_size[1]-1)//2), bias=False)
+        self.bn3 = nn.BatchNorm2d(outplanes)
         
         if (stride != 1 or inplanes != outplanes): #
             self.downsample = nn.Sequential(
@@ -113,9 +113,9 @@ class ResSeBlock2d(nn.Module):
         out = self.relu(out)
         out = self.conv22d(out)
         # out = self.dropout(out)
-        # out = self.bn3(out)
-        # out = self.relu(out)
-        # out = self.conv32d(out)
+        out = self.bn3(out)
+        out = self.relu(out)
+        out = self.conv32d(out)
 
         if self.se:
             original_out = out
