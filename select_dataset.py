@@ -201,7 +201,7 @@ class splite_dataset():
         print("{:^10} {:^10}".format('orginal','fliter duplicated'))
         print("{:^10} {:^10}".format(len(df),len(df_remove)))
         return df_remove
-        
+    
     #通过年龄与科室过滤NHTN   
     def __filter_NHTN_df__(self,df,filter_department:str = None,filter_age:int = None):  # type: ignore
         df_filter = df.copy()

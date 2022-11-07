@@ -11,6 +11,9 @@ from sklearn.model_selection import train_test_split
 from select_dataset import*
 import xml.dom.minidom as dm
 
+from biosppy.signals import ecg
+import math
+
 def one_hot(x, num_classes, on_value=1., off_value=0.):
     x = x.long().view(-1, 1)
     return torch.full((x.size()[0], num_classes), off_value).scatter_(1, x, on_value)
@@ -24,7 +27,7 @@ def mixup_target(target, num_classes, smoothing=0.1):
     return y2[0]
 
 class ECG_Dataset(Dataset):
-    def __init__(self,npy_folder:str,npy_files_list:list,EcgChannles_num:int,EcgLength_num:int,shadow_npy_folder = None,shadow_npy_files_list :list = []):  # type: ignore
+    def __init__(self,npy_folder:str,npy_files_list:list,EcgChannles_num:int,EcgLength_num:int,shadow_npy_folder = None,shadow_npy_files_list :list = [],position_encode = False):  # type: ignore
     
         self.npy_root = npy_folder
         self.npys = npy_files_list
@@ -41,7 +44,8 @@ class ECG_Dataset(Dataset):
             ECG = amplitude_limiting(ECG,3500) #幅值
             ECG = torch.FloatTensor(ECG)
             self.ECG[index] = ECG
-            
+            if(position_encode):
+                ECG = get_rpeak(ECG)
             #label_smoothed = mixup_target(label,2,0.1)
             label_smoothed = one_hot(label,2)
             self.Label[index] = label_smoothed
@@ -85,7 +89,6 @@ def denoise(data):
     rdata = pywt.waverec(coeffs=coeffs, wavelet='db5')
     rdata[np.isnan(rdata)]=0
     return rdata
-
 
 def get_ECG_form_xml(xml_path,EcgChannles_num,EcgLength_num):
     xml_doc = dm.parse(xml_path) #打开该xml文件
@@ -161,6 +164,36 @@ def load_data(npy_folder,EcgChannles_num = 12 ,EcgLength_num =5000):
 def load_label(lable_file_path):
     return np.load(lable_file_path)
 
+def get_rpeak(ECG,fs = 500):
+    channel_szie= int(ECG.shape[0])
+    length = int(ECG.shape[1])
+    rpeaks = ecg.christov_segmenter(ECG[0], sampling_rate=fs)[0]# 调用christov_segmenter
+    # print(rpeaks)
+    r_num = len(rpeaks)
+    for i in range(r_num+1): #have r_num rpeaks, so have  r_num+1 section
+        if(i==0):
+            start_index = 0
+            end_index = rpeaks[i] - 0
+        elif(i == (r_num)):
+            start_index = rpeaks[i-1]
+            end_index = length
+        else:
+            start_index = rpeaks[i-1]
+            end_index = rpeaks[i]
+        PE = PositionEncoder(channel_szie,end_index-start_index)
+        ECG[:,start_index:end_index] =  ECG[:,start_index:end_index] + PE
+    return ECG
+def PositionEncoder(channel,lens):
+    pe = torch.zeros(lens, channel)
+    position = torch.arange(0, lens).unsqueeze(1)
+    div_term = torch.exp(torch.arange(0, channel, 2) *-(math.log(10000.0) / channel))
+    pe[:, 0::2] = torch.sin(position * div_term)
+    pe[:, 1::2] = torch.cos(position * div_term)
+    pe = pe.permute(1,0)
+    return pe
+    
+
+
 '''
 # input： x(sample_nums,changnal,timesteps)
 # function : normalize each feacture for all sample
@@ -184,7 +217,6 @@ def z_score_normalization_by_feactures(x ):
     x_swap = x_swap.reshape(-1,timesteps,changnal) #(-1,timesteps,changnal)
     x_swap = x_swap.swapaxes(1,2) #(sample_nums,changnal,timesteps)
     return x_swap
-
 
 def get_k_fold_dataset(fold,x,y,k = 5 ,random_seed =1):
     if(k <= 1): #当k = 1时，就按照8：2的比列分配训练集和测试集
