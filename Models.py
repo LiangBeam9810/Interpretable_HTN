@@ -153,7 +153,13 @@ def mark_input(input,mark_lenth=500):
         for j in range(channelsize):
             input[i,j,mark_index:mark_index+mark_lenth]=mark
     return input
-
+def scaler_input(input):  # type: ignore
+    factor_max = (1.0/input.max())
+    factor = torch.rand(1).to(input.device)
+    if factor > factor_max:
+        factor = factor_max 
+    input = input*factor
+    return input
 class CNN(nn.Module):
 
     def __init__(self):
