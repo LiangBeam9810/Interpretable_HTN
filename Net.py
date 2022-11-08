@@ -380,12 +380,12 @@ class MLBFNet(nn.Module):
                     mark_lenth = torch.randint(int(seq_len/10),int(seq_len/5),[1])
                     x = Models.mark_input(x,mark_lenth=int(mark_lenth[0]))
         for i in range(batch_size):  #归一化
-            mean = torch.mean(x[i],1,keepdim=True)
-            var = torch.var(x[i], 1,keepdim=True) 
-            x[i] = (x[i]-mean)/(var+1e-6)
-            # max = torch.max(x[i],1,keepdim=True)
-            # min = torch.min(x[i], 1,keepdim=True) 
-            # x[i] = (x[i]-min)/(max-min+1e-6)
+            # mean = torch.mean(x[i],1,keepdim=True)
+            # var = torch.var(x[i], 1,keepdim=True) 
+            # x[i] = (x[i]-mean)/(var+1e-6)
+            max,_ = torch.max(x[i],1,keepdim=True)
+            min,_ = torch.min(x[i], 1,keepdim=True) 
+            x[i] = (x[i]-min)/(max-min+1e-6)
                 # if(torch.rand(1)>0.5):
                 #     x = Models.scaler_input(x)
         
