@@ -41,7 +41,7 @@ class ECG_Dataset(Dataset):
             ECG = amplitude_limiting(ECG,3500) #幅值
             ECG = torch.FloatTensor(ECG)
             self.ECG[index] = ECG
-            ECG = single_z_score_normalization_by_feactures(ECG)#对每个样本的每个通道单独进行归一化
+            #ECG = single_z_score_normalization_by_feactures(ECG)#对每个样本的每个通道单独进行归一化
             if(position_encode):
                 ECG = get_rpeak(ECG)
             #label_smoothed = mixup_target(label,2,0.1)

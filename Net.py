@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import Models
 from self_attention import *
-
+import ecg_get_data
 class ResSeBlock1d(nn.Module):
 
     def __init__(self, inplanes, outplanes, stride=1, kernel_size = (3,3),res = True,se=True,Dropout_rate = 0.2):
@@ -379,8 +379,16 @@ class MLBFNet(nn.Module):
                 if(torch.rand(1)>0.5): #mark
                     mark_lenth = torch.randint(int(seq_len/10),int(seq_len/5),[1])
                     x = Models.mark_input(x,mark_lenth=int(mark_lenth[0]))
+        for i in range(batch_size):  #归一化
+            mean = torch.mean(x[i],1,keepdim=True)
+            var = torch.var(x[i], 1,keepdim=True) 
+            x[i] = (x[i]-mean)/(var+1e-6)
+            # max = torch.max(x[i],1,keepdim=True)
+            # min = torch.min(x[i], 1,keepdim=True) 
+            # x[i] = (x[i]-min)/(max-min+1e-6)
                 # if(torch.rand(1)>0.5):
                 #     x = Models.scaler_input(x)
+        
         x0 = self.layers0(x[:,:1,:])
         x1 = self.layers1(x[:,1:2,:])
         x2 = self.layers2(x[:,2:3,:])
