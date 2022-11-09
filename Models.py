@@ -423,7 +423,6 @@ class ECGNet(nn.Module):
             if self.training:
                 mark_lenth = torch.randint(int(seq_len/10),int(seq_len/5),[1])
                 x0 = mark_input(x0,mark_lenth=mark_lenth[0])  # type: ignore
-        x0 = self.ln(x0)
         x0 = x0.unsqueeze(1)
         x0 = self.conv1(x0) 
         x0 = self.bn1(x0)
