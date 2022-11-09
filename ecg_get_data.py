@@ -10,6 +10,8 @@ from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
 
 import xml.dom.minidom as dm
+from biosppy.signals import ecg
+import math
 
 def one_hot(x, num_classes, on_value=1., off_value=0.):
     x = x.long().view(-1, 1)
