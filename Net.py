@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import Models
 from self_attention import *
-import ecg_get_data
+
 class ResSeBlock1d(nn.Module):
 
     def __init__(self, inplanes, outplanes, stride=1, kernel_size = (3,3),res = True,se=True,Dropout_rate = 0.2):
@@ -39,8 +39,8 @@ class ResSeBlock1d(nn.Module):
     def forward(self, x):
         residual = x
        
-        # out = self.bn1(x)
-        out = self.relu(x)
+        out = self.bn1(x)
+        out = self.relu(out)
         out = self.conv1(out)
         # out = self.dropout(out)
         out = self.bn2(out)
@@ -65,7 +65,7 @@ class ResSeBlock1d(nn.Module):
         if self.res:
             if self.downsample is not None:
                 residual = self.downsample(x)
-            out = residual+out
+            out += residual
         # out = self.bn3(out)
         out = self.relu(out)
         return out
@@ -105,8 +105,8 @@ class ResSeBlock2d(nn.Module):
     def forward(self, x):
         residual = x
        
-        # out = self.bn1(x)
-        out = self.relu(x)
+        out = self.bn1(x)
+        out = self.relu(out)
         out = self.conv12d(out)
         # out = self.dropout(out)
         out = self.bn2(out)
@@ -131,7 +131,7 @@ class ResSeBlock2d(nn.Module):
         if self.res:
             if self.downsample is not None:
                 residual = self.downsample(x)
-            out = residual+out
+            out += residual
         # out = self.bn3(out)
         out = self.relu(out)
         return out
@@ -237,7 +237,6 @@ class MLBFNet(nn.Module):
         self.sizes = size
         
         self.conv0 = nn.Conv2d(1,16,(1,51),(1,2),(0,25))
-        self.ln =nn.LayerNorm([12,5000])
         self.bn = nn.BatchNorm2d(16)
         self.relu = nn.ReLU(inplace=True)
         self.conv1 = ResSeBlock2d(inplanes=16,outplanes=16,stride=2,kernel_size=(1,15),res=self.res,se=self.se,Dropout_rate=self.Dropout_rate)
@@ -380,16 +379,8 @@ class MLBFNet(nn.Module):
                 if(torch.rand(1)>0.5): #mark
                     mark_lenth = torch.randint(int(seq_len/10),int(seq_len/5),[1])
                     x = Models.mark_input(x,mark_lenth=int(mark_lenth[0]))
-        # for i in range(batch_size):  #归一化
-        #     # mean = torch.mean(x[i],1,keepdim=True)
-        #     # var = torch.var(x[i], 1,keepdim=True) 
-        #     # x[i] = (x[i]-mean)/(var+1e-5)
-        #     max,_ = torch.max(x[i],1,keepdim=True)
-        #     min,_ = torch.min(x[i], 1,keepdim=True) 
-        #     x[i] = (x[i]-min)/(max-min+1e-5)
-        #         # if(torch.rand(1)>0.5):
-        #         #     x = Models.scaler_input(x)
-        x = self.ln(x)
+                if(torch.rand(1)>0.5):
+                    x = Models.scaler_input(x)
         x0 = self.layers0(x[:,:1,:])
         x1 = self.layers1(x[:,1:2,:])
         x2 = self.layers2(x[:,2:3,:])
@@ -435,7 +426,6 @@ class MLBFNet(nn.Module):
                 x8.unsqueeze(1),x9.unsqueeze(1),x10.unsqueeze(1),x11.unsqueeze(1)),dim=1)
         x0 = x0.permute(0,2,1,3)#B 16 12 L/2/2/2/2
         x0 = self.dorp(x0)
-        
         
         x = x.unsqueeze(1)
         x = self.conv0(x)
@@ -527,7 +517,7 @@ class ResSe1d(nn.Module):
         if self.res:
             if self.downsample is not None:
                 residual = self.downsample(x)
-            out = residual+out
+            out += residual
         # out = self.bn3(out)
         out = self.relu(out)
         return out
@@ -593,18 +583,22 @@ class ResSe2d(nn.Module):
         if self.res:
             if self.downsample is not None:
                 residual = self.downsample(x)
-            out = residual+out
+            out += residual
         # out = self.bn3(out)
         out = self.relu(out)
         return out
 
 class TPALSTM_branch(nn.Module):
-    def __init__(self,mark = True,res = True,se=True,Dropout_rate = 0.2):
+    def __init__(self,mark = True,res = True,se=True,Dropout_rate = 0.2,size = [[9,9,9,9,3,3],
+                                                                                [5,5,5,5,3,3],
+                                                                                [7,7,7,7,3,3]]):
         super(TPALSTM_branch, self).__init__()
         self.mark = mark
         self.res = res
         self.se = se
         self.Dropout_rate = Dropout_rate
+        self.sizes = size
+        
     def forward(self, x):
         batch_size, channels,seq_len = x.shape
         #x = x+(Models.create_1d_absolute_sin_cos_embedding(batch_size,channels,seq_len)).to(x.device)#位置编码
@@ -613,6 +607,7 @@ class TPALSTM_branch(nn.Module):
                 if(torch.rand(1)>0.5): #mark
                     mark_lenth = torch.randint(int(seq_len/10),int(seq_len/5),[1])
                     x = Models.mark_input(x,mark_lenth=int(mark_lenth[0]))
-
+                if(torch.rand(1)>0.5):
+                    x = Models.scaler_input(x)
         
         return x
