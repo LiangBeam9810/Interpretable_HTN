@@ -142,7 +142,7 @@ def sliding_window(input,lable,sliding_lenth = 1000,stride_factor = 2,sequence_s
             ECG_sliding[num] = ECG_buff
             #ECG_sliding = np.concatenate((ECG_sliding,ECG_buff),axis=0)
             lable_sliding.append(lable[i])
-            num+=1
+            num=1+num
     print(num,(int(((sequence_size/sliding_lenth))*stride_factor)-stride_factor+1)*(samlpe_num))
     #ECG_sliding =np.delete(ECG_sliding, 0, 0)#删除掉第0行，即最开始的空行
     lable_sliding = np.array(lable_sliding)

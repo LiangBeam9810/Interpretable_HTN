@@ -260,7 +260,7 @@ class BasicBlock1d_(nn.Module):
         if self.res:
             if self.downsample is not None:
                 residual = self.downsample(x)
-            out += residual
+            out = residual+out
         #out = self.relu(out)
         
         return out
@@ -313,7 +313,7 @@ class BasicBlock2d(nn.Module):
         if self.res:
             if self.downsample is not None:
                 residual = self.downsample(x)
-            out += residual
+            out = residual+out
         #out = self.relu(out)
         
         return out
@@ -335,7 +335,7 @@ class ECGNet(nn.Module):
            
 
         super(ECGNet, self).__init__()
-
+        self.ln = nn.LayerNorm([12,5000])
         self.relu = nn.ReLU(inplace=True)
         self.conv1 = nn.Conv2d(input_channel, 32, kernel_size=(1,50), stride=(1,2), padding=(0,0),
                                bias=False)
@@ -423,6 +423,7 @@ class ECGNet(nn.Module):
             if self.training:
                 mark_lenth = torch.randint(int(seq_len/10),int(seq_len/5),[1])
                 x0 = mark_input(x0,mark_lenth=mark_lenth[0])  # type: ignore
+        x0 = self.ln(x0)
         x0 = x0.unsqueeze(1)
         x0 = self.conv1(x0) 
         x0 = self.bn1(x0)
@@ -501,7 +502,7 @@ class block1d_1(nn.Module):
             out = out * original_out
         if self.res:
             residual = self.downsammpler(x)
-            out += residual
+            out = residual+out
             
         return out
 
@@ -554,7 +555,7 @@ class block1d_2(nn.Module):
             out = out * original_out
         if self.res:
             residual = self.downsammpler(x)
-            out += residual
+            out = residual+out
             
         return out
 

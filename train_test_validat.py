@@ -27,7 +27,7 @@ def train_model(train_loader,model,criterion,optimizer,device):
         #           for p in model.parameters())
         # loss = loss + l2_lambda * l2_norm
         # ######################################
-        loss.backward() # 反向传播
+        loss.backward(retain_graph=True) # 反向传播
         optimizer.step() # 更新系数
         #print(outputs)
         
@@ -148,7 +148,7 @@ class EarlyStopping:
             self.best_score = score
             self.save_checkpoint(score, model,fold)
         elif score < self.best_score + self.delta:
-            self.counter += 1
+            self.counter = 1+self.counter
             print(f'EarlyStopping counter: {self.counter} out of {self.patience}\n')
             if self.counter >= self.patience:
                 self.early_stop = True
