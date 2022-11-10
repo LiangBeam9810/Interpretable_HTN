@@ -379,8 +379,8 @@ class MLBFNet(nn.Module):
                 if(torch.rand(1)>0.5): #mark
                     mark_lenth = torch.randint(int(seq_len/10),int(seq_len/5),[1])
                     x = Models.mark_input(x,mark_lenth=int(mark_lenth[0]))
-                if(torch.rand(1)>0.5):
-                    x = Models.scaler_input(x)
+                # if(torch.rand(1)>0.5):
+                #     x = Models.scaler_input(x)
         x0 = self.layers0(x[:,:1,:])
         x1 = self.layers1(x[:,1:2,:])
         x2 = self.layers2(x[:,2:3,:])
