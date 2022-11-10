@@ -8,6 +8,7 @@ from torch.utils.data.dataset import Dataset
 import pywt
 from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
+from ecg_qc import EcgQc
 
 import xml.dom.minidom as dm
 from biosppy.signals import ecg
@@ -32,24 +33,39 @@ class ECG_Dataset(Dataset):
         self.npys = npy_files_list
         self.Channles_size = EcgChannles_num
         self.Length_size = EcgLength_num
-        self.ECG = np.zeros((self.__len__(),self.Channles_size,self.Length_size))  # type: ignore
-        self.Label = np.zeros((self.__len__(),2))  # type: ignore
-        
+        self.ECG = np.zeros((self.npys.__len__(),self.Channles_size,self.Length_size))  # type: ignore
+        self.Label = np.zeros((self.npys.__len__(),2))  # type: ignore
+        # ecg_qc = EcgQc('rfc_norm_2s.pkl',
+        #        sampling_frequency=500,
+        #        normalized=True)
+        i = 0
         for index,file in enumerate(self.npys):
             label = torch.tensor(1) if ((((file[:-4]).split('_'))[-1]) =='HTN') else torch.tensor(0) #去除后缀名再按“_"分割，结果的[-1](最后一个)即为标签
             npy_path = os.path.join(self.npy_root,file)    
             ECG =  (np.load(npy_path))[:self.Channles_size,:self.Length_size]*4.88 #放大系数 xml文件中提供的
-            #ECG = denoise(ECG) #滤波
+            # ECG_denoise = denoise(ECG) #滤波
+            # signal_quality = 0
+            # for j in range(self.Channles_size):
+            #     try:
+            #         sqi_scores = ecg_qc.compute_sqi_scores(ECG_denoise[j,:].tolist())
+            #         signal_quality = ecg_qc.predict_quality(sqi_scores) + signal_quality
+            #     except:
+            #         #print(file,"channel ",i," quality is pool ")
+            #         continue#signal_quality不增加
+            # if(signal_quality<10):#signal_quality
+            #     #print(file," quality is pool ")
+            #     continue
             ECG = amplitude_limiting(ECG,3500) #幅值
             ECG = torch.FloatTensor(ECG)
-            self.ECG[index] = ECG
+            self.ECG[i] = ECG
             #ECG = single_z_score_normalization_by_feactures(ECG)#对每个样本的每个通道单独进行归一化
             if(position_encode):
                 ECG = get_rpeak(ECG)
             #label_smoothed = mixup_target(label,2,0.1)
             label = one_hot(label,2)
-            self.Label[index] = label
-        self.ECG = torch.FloatTensor(self.ECG)
+            self.Label[i] = label
+            i = i+1
+        self.ECG = torch.FloatTensor(self.ECG[:i,:,:])
         print('npys:{%d}',len(self.npys))
         self.shadow_npy_root = shadow_npy_folder #存放了比正样本多出来很多的负样本
         if(self.shadow_npy_root):
@@ -64,7 +80,8 @@ class ECG_Dataset(Dataset):
         return ECG, label
 
     def __len__(self):
-        return self.npys.__len__()
+        #return self.npys.__len__()
+        return self.ECG.shape[0]
     
 
 def amplitude_limiting(ecg_data,max_bas = 3500):
@@ -82,12 +99,15 @@ def denoise(data):
     threshold = (np.median(np.abs(cD1)) / 0.6745) * (np.sqrt(2 * np.log(len(cD1))))
     cD1.fill(0)
     cD2.fill(0)
-    for i in range(1, len(coeffs) - 2):
+    cD9.fill(0)
+    cA9.fill(0)
+    for i in range(2, len(coeffs) - 2):
         coeffs[i] = pywt.threshold(coeffs[i], threshold)
 
     # 小波反变换,获取去噪后的信号
     rdata = pywt.waverec(coeffs=coeffs, wavelet='db5')
     rdata[np.isnan(rdata)]=0
+    rdata[np.isinf(rdata)]=0
     return rdata
 
 def get_ECG_form_xml(xml_path,EcgChannles_num,EcgLength_num):
