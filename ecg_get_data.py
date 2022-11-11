@@ -34,7 +34,7 @@ class ECG_Dataset(Dataset):
         self.Channles_size = EcgChannles_num
         self.Length_size = EcgLength_num
         self.ECG = np.zeros((self.npys.__len__(),self.Channles_size,self.Length_size))  # type: ignore
-        self.Label = np.zeros((self.npys.__len__(),2))  # type: ignore
+        self.Label = np.zeros((self.npys.__len__()))  # type: ignore
         # ecg_qc = EcgQc('rfc_norm_2s.pkl',
         #        sampling_frequency=500,
         #        normalized=True)
@@ -62,10 +62,11 @@ class ECG_Dataset(Dataset):
             if(position_encode):
                 ECG = get_rpeak(ECG)
             #label_smoothed = mixup_target(label,2,0.1)
-            label = one_hot(label,2)
+            # label = one_hot(label,2)
             self.Label[i] = label
             i = i+1
         self.ECG = torch.FloatTensor(self.ECG[:i,:,:])
+        self.Label = torch.LongTensor(self.Label)
         print('npys:{%d}',len(self.npys))
         self.shadow_npy_root = shadow_npy_folder #存放了比正样本多出来很多的负样本
         if(self.shadow_npy_root):
