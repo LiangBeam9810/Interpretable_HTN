@@ -44,7 +44,7 @@ class splite_dataset():
             random.shuffle(self.test_list)
         else:
             self.test_list = (test_HTN_df['ECG_path'].tolist())#不打乱,则取所有HTN样本
-            self.test_list.extend(test_NHTN_df['ECG_path'].tolist())#不打乱,则取所有NHTN样本
+            self.test_list.extend((test_NHTN_df['ECG_path'].tolist())[:test_HTN_lenth])#不打乱,则取所有NHTN样本
         print('\t')
         print("{:^5} {:^5} {:^5}".format(' ','HTN','NHTN'))
         print("{:^5} {:^5} {:^5}".format('test',test_HTN_lenth,(len(self.test_list)-test_HTN_lenth)))
