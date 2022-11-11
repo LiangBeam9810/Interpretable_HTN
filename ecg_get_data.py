@@ -1,4 +1,3 @@
-from cProfile import label
 import numpy as np
 import os
 from tqdm import tqdm
@@ -9,105 +8,83 @@ from torch.utils.data.dataset import Dataset
 import pywt
 from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
+from ecg_qc import EcgQc
 
 import xml.dom.minidom as dm
+from biosppy.signals import ecg
+import math
 
+def one_hot(x, num_classes, on_value=1., off_value=0.):
+    x = x.long().view(-1, 1)
+    return torch.full((x.size()[0], num_classes), off_value).scatter_(1, x, on_value)
+
+
+def mixup_target(target, num_classes, smoothing=0.1):
+    y1 = one_hot(target, num_classes, on_value=1, off_value=0)
+    y2 = y1+torch.tensor([-1*smoothing,smoothing])
+    y2[y2>1] = 1
+    y2[y2<0] = 0
+    return y2[0]
 
 class ECG_Dataset(Dataset):
-    def __init__(self,npy_folder:str,npy_files_list:list,EcgChannles_num:int,EcgLength_num:int,shadow_npy_folder = None,shadow_npy_files_list :list = []):
+    def __init__(self,npy_folder:str,npy_files_list:list,EcgChannles_num:int,EcgLength_num:int,shadow_npy_folder = None,shadow_npy_files_list :list = [],position_encode = False):  # type: ignore
     
         self.npy_root = npy_folder
-        # npy_files_list.sort(key=lambda x:int(x.split('_')[0])) #按“_”分割，并把分割结果的[0]转为整形并排序
         self.npys = npy_files_list
-
         self.Channles_size = EcgChannles_num
         self.Length_size = EcgLength_num
-
-        # for i in range(len(self.npys)):
-        #     self.filter_outlier_npy(i)111
-        #     if(i >= len(self.npys)-1):
-        #         break
+        self.ECG = np.zeros((self.npys.__len__(),self.Channles_size,self.Length_size))  # type: ignore
+        self.Label = np.zeros((self.npys.__len__(),2))  # type: ignore
+        # ecg_qc = EcgQc('rfc_norm_2s.pkl',
+        #        sampling_frequency=500,
+        #        normalized=True)
+        i = 0
+        for index,file in enumerate(self.npys):
+            label = torch.tensor(1) if ((((file[:-4]).split('_'))[-1]) =='HTN') else torch.tensor(0) #去除后缀名再按“_"分割，结果的[-1](最后一个)即为标签
+            npy_path = os.path.join(self.npy_root,file)    
+            ECG =  (np.load(npy_path))[:self.Channles_size,:self.Length_size]*4.88 #放大系数 xml文件中提供的
+            # ECG_denoise = denoise(ECG) #滤波
+            # signal_quality = 0
+            # for j in range(self.Channles_size):
+            #     try:
+            #         sqi_scores = ecg_qc.compute_sqi_scores(ECG_denoise[j,:].tolist())
+            #         signal_quality = ecg_qc.predict_quality(sqi_scores) + signal_quality
+            #     except:
+            #         #print(file,"channel ",i," quality is pool ")
+            #         continue#signal_quality不增加
+            # if(signal_quality<10):#signal_quality
+            #     #print(file," quality is pool ")
+            #     continue
+            ECG = amplitude_limiting(ECG,3500) #幅值
+            ECG = torch.FloatTensor(ECG)
+            self.ECG[i] = ECG
+            #ECG = single_z_score_normalization_by_feactures(ECG)#对每个样本的每个通道单独进行归一化
+            if(position_encode):
+                ECG = get_rpeak(ECG)
+            #label_smoothed = mixup_target(label,2,0.1)
+            label = one_hot(label,2)
+            self.Label[i] = label
+            i = i+1
+        self.ECG = torch.FloatTensor(self.ECG[:i,:,:])
         print('npys:{%d}',len(self.npys))
         self.shadow_npy_root = shadow_npy_folder #存放了比正样本多出来很多的负样本
         if(self.shadow_npy_root):
-            self.shadow_count_index = 0
-            # shadow_npy_files_list.sort(key=lambda x:int(x.split('_')[0])) #按“_”分割，并把分割结果的[0]转为整形并排序
+            # self.shadow_count_index = 0
             self.shadow_npys = shadow_npy_files_list
-            # for i in range(len(self.shadow_npys)):
-            #     self.filter_outlier_shadow(i)
-            #     if(i >= len(self.shadow_npys)-1):
-            #         break
             print('shadow_npys:{%d}',len(self.shadow_npys))
-    def __getitem__(self, item):
-        label = 1 if (((((self.npys[item]).split('.'))[0]).split('_'))[1]) =='HTN' else 0 #先按“.”分割，并把分割结果的[0]再按“_"分割，结果的[-1](最后一个)即为
-        
-        if((self.shadow_npy_root == None) or (label == 1)):#如果 (没有开启负样本抽样)/(正样本)的话，正常读取
-            npy_path = os.path.join(self.npy_root,self.npys[item])
-            ECG =  (np.load(npy_path,allow_pickle=True))[:self.Channles_size,:self.Length_size]
-        else:#如果是负样本，就从所有的shadow_npy负样本中随机抽一个
-            #print("reselect the other normal sample. ")
-            if random.random()>0.5:
-                # item_ = random.randint(0,len(self.shadow_npys)-1)
-                # while( (((((self.shadow_npys[item_]).split('.'))[0]).split('_'))[-1]) =='HTN'):
-                #     item_ = random.randint(0,len(self.shadow_npys)-1)
-                # npy_path = os.path.join(self.shadow_npy_root,self.shadow_npys[item_])
-                npy_path = os.path.join(self.shadow_npy_root,self.shadow_npys[self.shadow_count_index])#选取第self.shadow_count_index个替代
-                self.shadow_count_index = self.shadow_count_index+1 if self.shadow_count_index < (len(self.shadow_npys)-1) else 0  # type: ignore #self.shadow_count_index更新
-            else :
-                npy_path = os.path.join(self.npy_root,self.npys[item])
             
-            ECG =  (np.load(npy_path))[:self.Channles_size,:self.Length_size]
-        #ECG = denoise(ECG)
-        ECG = amplitude_limiting(ECG,3500) #幅值
-        ECG[np.isnan(ECG)]=0
-        ECG = torch.FloatTensor(ECG)
-        label = torch.from_numpy(np.array(label))
-        label = torch.LongTensor(label)
-        #print(self.npys[item])
+
+    def __getitem__(self, item):
+        label = self.Label[item]
+        ECG = self.ECG[item]
         return ECG, label
 
-    def filter_outlier_npy(self, item):
-        npy_path = os.path.join(self.npy_root,self.npys[item])
-        ECG =  (np.load(npy_path))[:self.Channles_size,:self.Length_size]
-        if((ECG.min() <=  -32768) or (ECG.max() >=  32768)):
-            self.deleteitem_npys(item)
-            print(npy_path)
-            return True
-        return False
-    def filter_outlier_shadow(self, item):
-        npy_path = os.path.join(self.shadow_npy_root,self.shadow_npys[item])  # type: ignore
-        ECG =  (np.load(npy_path))[:self.Channles_size,:self.Length_size]
-        if((np.sum(ECG == -32768) +np.sum(ECG == 32768))>=5000):
-        #if((ECG.min() ==  -32768) or (ECG.max() ==  32768)):
-            self.deleteitem_shadow_npys(item)
-            print(npy_path)
-            return True
-        return False
-
-    def deleteitem_npys(self, item):
-        del self.npys[item]
-        return 
-
-    def deleteitem_shadow_npys(self, item):
-        del self.shadow_npys[item]
-        return 
-
-    def npy_path(self, item):
-        return os.path.join(self.npy_root,self.npys[item])
-
-    def sample_name(self,item):#获取没有后缀的文件名
-        return str(self.npys[item].split('.')[0])
-
     def __len__(self):
-        return len(self.npys)
-
-    def size(self):
-        return len(self.npys), self.Channles_size,self.Length_size
-    
+        #return self.npys.__len__()
+        return self.ECG.shape[0]
     
 
 def amplitude_limiting(ecg_data,max_bas = 3500):
-    ecg_data = ecg_data*4.88
     ecg_data[ecg_data > max_bas] = max_bas
     ecg_data[ecg_data < (-1*max_bas)] = -1*max_bas
     return ecg_data/max_bas
@@ -122,14 +99,16 @@ def denoise(data):
     threshold = (np.median(np.abs(cD1)) / 0.6745) * (np.sqrt(2 * np.log(len(cD1))))
     cD1.fill(0)
     cD2.fill(0)
-    for i in range(1, len(coeffs) - 2):
+    cD9.fill(0)
+    cA9.fill(0)
+    for i in range(2, len(coeffs) - 2):
         coeffs[i] = pywt.threshold(coeffs[i], threshold)
 
     # 小波反变换,获取去噪后的信号
     rdata = pywt.waverec(coeffs=coeffs, wavelet='db5')
     rdata[np.isnan(rdata)]=0
+    rdata[np.isinf(rdata)]=0
     return rdata
-
 
 def get_ECG_form_xml(xml_path,EcgChannles_num,EcgLength_num):
     xml_doc = dm.parse(xml_path) #打开该xml文件
@@ -146,6 +125,7 @@ def get_ECG_form_xml(xml_path,EcgChannles_num,EcgLength_num):
                 ECG[channle_i,j] = 0
             else:
                 ECG[channle_i,j] = eval(list_buf[j]) #转化为数值型
+        
     return ECG
 
 def mark_input_numpy(input,lable,mark_time = 1):
@@ -184,7 +164,7 @@ def sliding_window(input,lable,sliding_lenth = 1000,stride_factor = 2,sequence_s
             ECG_sliding[num] = ECG_buff
             #ECG_sliding = np.concatenate((ECG_sliding,ECG_buff),axis=0)
             lable_sliding.append(lable[i])
-            num+=1
+            num=1+num
     print(num,(int(((sequence_size/sliding_lenth))*stride_factor)-stride_factor+1)*(samlpe_num))
     #ECG_sliding =np.delete(ECG_sliding, 0, 0)#删除掉第0行，即最开始的空行
     lable_sliding = np.array(lable_sliding)
@@ -205,6 +185,36 @@ def load_data(npy_folder,EcgChannles_num = 12 ,EcgLength_num =5000):
 def load_label(lable_file_path):
     return np.load(lable_file_path)
 
+def get_rpeak(ECG,fs = 500):
+    channel_szie= int(ECG.shape[0])
+    length = int(ECG.shape[1])
+    rpeaks = ecg.christov_segmenter(ECG[0], sampling_rate=fs)[0]# 调用christov_segmenter
+    # print(rpeaks)
+    r_num = len(rpeaks)
+    for i in range(r_num+1): #have r_num rpeaks, so have  r_num+1 section
+        if(i==0):
+            start_index = 0
+            end_index = rpeaks[i] - 0
+        elif(i == (r_num)):
+            start_index = rpeaks[i-1]
+            end_index = length
+        else:
+            start_index = rpeaks[i-1]
+            end_index = rpeaks[i]
+        PE = PositionEncoder(channel_szie,end_index-start_index)
+        ECG[:,start_index:end_index] =  ECG[:,start_index:end_index] + PE
+    return ECG
+def PositionEncoder(channel,lens):
+    pe = torch.zeros(lens, channel)
+    position = torch.arange(0, lens).unsqueeze(1)
+    div_term = torch.exp(torch.arange(0, channel, 2) *-(math.log(10000.0) / channel))
+    pe[:, 0::2] = torch.sin(position * div_term)
+    pe[:, 1::2] = torch.cos(position * div_term)
+    pe = pe.permute(1,0)
+    return pe
+    
+
+
 '''
 # input： x(sample_nums,changnal,timesteps)
 # function : normalize each feacture for all sample
@@ -219,6 +229,14 @@ def MAX_MIN_normalization_by_feactures(x,feature_range=(-1,1) ):
     x_swap = x_swap.swapaxes(1,2) #(sample_nums,changnal,timesteps)
     return x_swap
 
+def single_z_score_normalization_by_feactures(x ):
+    #  x shape = changnal,timesteps 
+    x_swap = x.swapaxes(0,1) #(timesteps,changnal)
+    z_score_scaler = preprocessing.StandardScaler()#默认为范围0~1，拷贝操作
+    x_swap = z_score_scaler.fit_transform(x_swap)
+    x_swap = x_swap.swapaxes(0,1) #(changnal,timesteps)
+    return x_swap
+
 def z_score_normalization_by_feactures(x ):
     sample_nums,changnal,timesteps = x.shape
     x_swap = x.swapaxes(1,2) #(sample_nums,timesteps,changnal)
@@ -228,7 +246,6 @@ def z_score_normalization_by_feactures(x ):
     x_swap = x_swap.reshape(-1,timesteps,changnal) #(-1,timesteps,changnal)
     x_swap = x_swap.swapaxes(1,2) #(sample_nums,changnal,timesteps)
     return x_swap
-
 
 def get_k_fold_dataset(fold,x,y,k = 5 ,random_seed =1):
     if(k <= 1): #当k = 1时，就按照8：2的比列分配训练集和测试集
@@ -270,7 +287,6 @@ def load_numpy_dataset_to_tensor_dataset(x,y):
     x = torch.FloatTensor(x)  #turn numpy to tensor
     y = torch.LongTensor(y)
     return Data.TensorDataset(x, y)  
-
 
 def load_numpy_dataset_to_tensor_dataset_split(x,y,random_seed,train_rate = 0.8):
     torch.manual_seed(random_seed) 
