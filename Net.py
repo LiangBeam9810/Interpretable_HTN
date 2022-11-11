@@ -75,7 +75,7 @@ class ResSeBlock2d(nn.Module):
         self.conv12d = nn.Conv2d(inplanes, outplanes, kernel_size, stride=(1,stride), dilation=dilation,
                                padding=((kernel_size[0]-1)//2,(kernel_size[1]-1)//2), bias=False)
         self.bn1 = nn.BatchNorm2d(inplanes)
-        self.relu = nn.ReLU(inplace=True)
+        self.relu = nn.LeakyReLU(inplace=True)
         self.dropout = nn.Dropout(p=Dropout_rate)
         self.conv22d = nn.Conv2d(outplanes, outplanes, kernel_size=kernel_size, stride=(1,1), dilation=(1,1),
                                padding=((kernel_size[0]-1)//2,(kernel_size[1]-1)//2), bias=False)
@@ -235,7 +235,7 @@ class MLBFNet(nn.Module):
         
         self.conv0 = nn.Conv2d(1,16,(1,51),(1,2),(0,25))
         self.bn = nn.BatchNorm2d(16)
-        self.relu = nn.ReLU(inplace=True)
+        self.relu = nn.LeakyReLU(inplace=True)
         self.conv1 = ResSeBlock2d(inplanes=16,outplanes=16,stride=2,kernel_size=(1,15),res=self.res,se=self.se,Dropout_rate=self.Dropout_rate)
         self.conv2 = ResSeBlock2d(inplanes=16,outplanes=16,stride=2,kernel_size=(1,15),res=self.res,se=self.se,Dropout_rate=self.Dropout_rate)
         self.conv3 = ResSeBlock2d(inplanes=16,outplanes=16,stride=2,kernel_size=(1,15),res=self.res,se=self.se,Dropout_rate=self.Dropout_rate)
@@ -355,18 +355,18 @@ class MLBFNet(nn.Module):
         self.avgpool = nn.AdaptiveAvgPool1d(1)
         self.fc = nn.Linear(512*len(self.sizes),2)
         self.softmax = nn.Softmax(-1)
-        self.GRU0 = nn.GRU(16, 16, 1, batch_first=True,bidirectional=True)
-        self.GRU1 = nn.GRU(16, 16, 1, batch_first=True,bidirectional=True)
-        self.GRU2 = nn.GRU(16, 16, 1, batch_first=True,bidirectional=True)
-        self.GRU3 = nn.GRU(16, 16, 1, batch_first=True,bidirectional=True)
-        self.GRU4 = nn.GRU(16, 16, 1, batch_first=True,bidirectional=True)
-        self.GRU5 = nn.GRU(16, 16, 1, batch_first=True,bidirectional=True)
-        self.GRU6 = nn.GRU(16, 16, 1, batch_first=True,bidirectional=True)
-        self.GRU7 = nn.GRU(16, 16, 1, batch_first=True,bidirectional=True)
-        self.GRU8 = nn.GRU(16, 16, 1, batch_first=True,bidirectional=True)
-        self.GRU9 = nn.GRU(16, 16, 1, batch_first=True,bidirectional=True)
-        self.GRU10 = nn.GRU(16, 16, 1, batch_first=True,bidirectional=True)
-        self.GRU11 = nn.GRU(16, 16, 1, batch_first=True,bidirectional=True)
+        self.GRU0 = nn.GRU(16, 16, 2, batch_first=True,bidirectional=True)
+        self.GRU1 = nn.GRU(16, 16, 2, batch_first=True,bidirectional=True)
+        self.GRU2 = nn.GRU(16, 16, 2, batch_first=True,bidirectional=True)
+        self.GRU3 = nn.GRU(16, 16, 2, batch_first=True,bidirectional=True)
+        self.GRU4 = nn.GRU(16, 16, 2, batch_first=True,bidirectional=True)
+        self.GRU5 = nn.GRU(16, 16, 2, batch_first=True,bidirectional=True)
+        self.GRU6 = nn.GRU(16, 16, 2, batch_first=True,bidirectional=True)
+        self.GRU7 = nn.GRU(16, 16, 2, batch_first=True,bidirectional=True)
+        self.GRU8 = nn.GRU(16, 16, 2, batch_first=True,bidirectional=True)
+        self.GRU9 = nn.GRU(16, 16, 2, batch_first=True,bidirectional=True)
+        self.GRU10 = nn.GRU(16, 16, 2, batch_first=True,bidirectional=True)
+        self.GRU11 = nn.GRU(16, 16, 2, batch_first=True,bidirectional=True)
         
     def forward(self, x):
         batch_size, channels,seq_len = x.shape
