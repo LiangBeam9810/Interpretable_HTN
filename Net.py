@@ -23,7 +23,7 @@ class ResSeBlock1d(nn.Module):
             self.downsample = nn.Sequential(
                 nn.Conv1d(inplanes, outplanes, kernel_size= 1, stride=stride, 
                           padding=0, bias=False),
-                nn.BatchNorm1d(outplanes)
+                # nn.BatchNorm1d(outplanes)
             )
         else:    
             self.downsample = None
@@ -69,7 +69,6 @@ class ResSeBlock1d(nn.Module):
         # out = self.bn3(out)
         out = self.relu(out)
         return out
-
 class ResSeBlock2d(nn.Module):
     def __init__(self, inplanes, outplanes, stride=1, kernel_size =(3,3),dilation=(1,1),res = True,se=True,Dropout_rate = 0.2):
         super(ResSeBlock2d, self).__init__()
@@ -89,7 +88,7 @@ class ResSeBlock2d(nn.Module):
             self.downsample = nn.Sequential(
                 nn.Conv2d(inplanes, outplanes, kernel_size= 1, stride=(1,stride), 
                           padding=0, bias=False),
-                nn.BatchNorm2d(outplanes)
+                # nn.BatchNorm2d(outplanes)
             )
         else:    
             self.downsample = None
@@ -135,7 +134,6 @@ class ResSeBlock2d(nn.Module):
         # out = self.bn3(out)
         out = self.relu(out)
         return out
-
 class channels_branch_CNN(nn.Module):
     def __init__(self,mark = True,res = True,se=True,Dropout_rate = 0.1,size = [[3,3,3,3,3,3],
                                                                                 [7,7,7,7,3,3],
@@ -224,7 +222,6 @@ class channels_branch_CNN(nn.Module):
         self.last_out = self.fc(out)
         out = self.softmax(self.last_out)
         return out
-       
 class MLBFNet(nn.Module):
     def __init__(self,mark = True,res = True,se=True,Dropout_rate = 0.2,size = [[9,9,9,9,3,3],
                                                                                 [5,5,5,5,3,3],
@@ -428,8 +425,7 @@ class MLBFNet(nn.Module):
         x0 = self.dorp(x0)
         
         x = x.unsqueeze(1)
-        x = self.conv0(x)
-        x = self.bn(x)    
+        x = self.conv0(x)   
         x = self.relu(x)
         x = self.conv1(x)
         x = self.conv2(x)
@@ -455,159 +451,110 @@ class MLBFNet(nn.Module):
         out = self.softmax(self.last_out)
         return out
 
-class ResSe1d(nn.Module):
+class InceptionBlock2d(nn.Module):
 
-    def __init__(self, inplanes, outplanes, stride=1, kernel_size = (3,3),res = True,se=True,Dropout_rate = 0.2):
-        super(ResSe1d, self).__init__()
-        self.conv1 = nn.Conv1d(inplanes, outplanes, kernel_size= kernel_size[0], stride=stride, 
-                               padding=(kernel_size[0]-1)//2, bias=False)
-        self.bn1 = nn.BatchNorm1d(inplanes)
-        self.relu = nn.LeakyReLU(inplace=True)
-        self.dropout = nn.Dropout(p=Dropout_rate)
-        self.conv2 = nn.Conv1d(outplanes, outplanes, kernel_size=kernel_size[1], stride=1, 
-                               padding=(kernel_size[1]-1)//2, bias=False)
-        self.bn2 = nn.BatchNorm1d(outplanes)
-        self.conv3 = nn.Conv1d(outplanes, outplanes, kernel_size=kernel_size[1], stride=1, 
-                               padding=(kernel_size[1]-1)//2, bias=False)
-        self.bn3 = nn.BatchNorm1d(outplanes)
+    def __init__(self, inplanes, outplanes, stride=1,res = True,se=True,Dropout_rate = 0.2):
+        super(InceptionBlock2d, self).__init__()
+        self.res = nn.Sequential(
+            nn.Conv2d(inplanes, outplanes*3, kernel_size= 1, stride=stride, 
+                               padding=0, bias=False),
+            nn.ReLU(outplanes*3),
+        )
         
-        if (stride != 1 or inplanes != outplanes): #
-            self.downsample = nn.Sequential(
-                nn.Conv1d(inplanes, outplanes, kernel_size= 1, stride=stride, 
-                          padding=0, bias=False),
-                nn.BatchNorm1d(outplanes)
-            )
-        else:    
-            self.downsample = None
+        self.branch1 = nn.Sequential(
+            nn.Conv2d(inplanes, outplanes, kernel_size= 1, stride=stride, 
+                               padding=0, bias=False),
+            nn.ReLU(outplanes),
+            nn.BatchNorm2d(outplanes)
+        )
 
-        self.res = res
-        self.se = se
-        if(se):
-            self.globalAvgPool = nn.AdaptiveAvgPool1d(1)
-            self.fc1 = nn.Linear(in_features=outplanes, out_features=round(outplanes / 16))
-            self.fc2 = nn.Linear(in_features=round(outplanes / 16), out_features=outplanes)
-            self.sigmoid = nn.Sigmoid()
-        
+        self.branch2 = nn.Sequential(
+            nn.Conv2d(inplanes, outplanes, kernel_size= 3, stride=stride, 
+                               padding=1, bias=False),
+            nn.ReLU(outplanes),
+            nn.BatchNorm2d(outplanes),
+            nn.Conv2d(outplanes, outplanes, kernel_size= 1, stride=stride, 
+                               padding=0, bias=False),
+            nn.ReLU(outplanes),
+            nn.BatchNorm2d(outplanes)
+        )
+        self.branch3 = nn.Sequential(
+            nn.Conv2d(inplanes, outplanes, kernel_size= 7, stride=stride, 
+                               padding=3, bias=False),
+            nn.ReLU(outplanes),
+            nn.BatchNorm2d(outplanes),
+            nn.Conv2d(outplanes, outplanes, kernel_size= 3, stride=stride, 
+                               padding=1, bias=False),
+            nn.ReLU(outplanes),
+            nn.Conv2d(outplanes, outplanes, kernel_size= 1, stride=stride, 
+                               padding=0, bias=False),
+            nn.ReLU(outplanes),
+            nn.BatchNorm2d(outplanes)
+        )
+
     def forward(self, x):
-        residual = x
-       
-        out = self.bn1(x)
-        out = self.relu(out)
-        out = self.conv1(out)
-        # out = self.dropout(out)
-        out = self.bn2(out)
-        out = self.relu(out)
-        out = self.conv2(out)
-        # out = self.dropout(out)
-        out = self.bn3(out)
-        out = self.relu(out)
-        out = self.conv3(out)
-        
-        if self.se:
-            original_out = out
-            out = self.globalAvgPool(out)
-            out = out.view(out.size(0), -1)
-            out = self.fc1(out)
-            out = self.relu(out)
-            out = self.fc2(out)
-            out = self.sigmoid(out)
-            out = out.view(out.size(0), out.size(1), 1)
-            out = out * original_out
-            
-        if self.res:
-            if self.downsample is not None:
-                residual = self.downsample(x)
-            out += residual
-        # out = self.bn3(out)
-        out = self.relu(out)
+        res = self.res(x)
+        b1 = self.branch1(x)
+        b2 = self.branch2(x)
+        b3 = self.branch3(x)
+        out = torch.cat([b1, b2, b3], dim=1)+res
         return out
 
-class ResSe2d(nn.Module):
-    def __init__(self, inplanes, outplanes, stride=1, kernel_size =(3,3),dilation=(1,1),res = True,se=True,Dropout_rate = 0.2):
-        super(ResSe2d, self).__init__()
-        self.conv12d = nn.Conv2d(inplanes, outplanes, kernel_size, stride=(1,stride), dilation=dilation,
-                               padding=((kernel_size[0]-1)//2,(kernel_size[1]-1)//2), bias=False)
-        self.bn1 = nn.BatchNorm2d(inplanes)
-        self.relu = nn.ReLU(inplace=True)
-        self.dropout = nn.Dropout(p=Dropout_rate)
-        self.conv22d = nn.Conv2d(outplanes, outplanes, kernel_size=kernel_size, stride=(1,1), dilation=(1,1),
-                               padding=((kernel_size[0]-1)//2,(kernel_size[1]-1)//2), bias=False)
-        self.bn2 = nn.BatchNorm2d(outplanes)
-        self.conv32d = nn.Conv2d(outplanes, outplanes, kernel_size=kernel_size, stride=(1,1), dilation=(1,1),
-                               padding=((kernel_size[0]-1)//2,(kernel_size[1]-1)//2), bias=False)
-        self.bn3 = nn.BatchNorm2d(outplanes)
-        
-        if (stride != 1 or inplanes != outplanes): #
-            self.downsample = nn.Sequential(
-                nn.Conv2d(inplanes, outplanes, kernel_size= 1, stride=(1,stride), 
-                          padding=0, bias=False),
-                nn.BatchNorm2d(outplanes)
-            )
-        else:    
-            self.downsample = None
+class Inception(nn.Module):
 
-        self.res = res
-        self.se = se
-        if(se):
-            self.globalAvgPool = nn.AdaptiveAvgPool2d(1)
-            self.fc1 = nn.Linear(in_features=outplanes, out_features=round(outplanes / 16))
-            self.fc2 = nn.Linear(in_features=round(outplanes / 16), out_features=outplanes)
-            self.sigmoid = nn.Sigmoid()
-        
+    def __init__(self, inplanes, outplanes,se=True,Dropout_rate = 0.2):
+        super(Inception, self).__init__()
+        self.layer1 = nn.Conv2d(inplanes,outplanes,kernel_size=(7,3),stride=1,padding=(3,1))
+        self.layer21  = nn.Sequential(
+            InceptionBlock2d(outplanes,outplanes),
+            InceptionBlock2d(outplanes*3,outplanes),
+            nn.MaxPool2d((1,4),(1,4))
+        )
+        self.layer22  = nn.Sequential(
+            InceptionBlock2d(outplanes*3,outplanes),
+            InceptionBlock2d(outplanes*3,outplanes),
+            nn.MaxPool2d((1,4),(1,4))
+        )
+        self.layer23  = nn.Sequential(
+            InceptionBlock2d(outplanes*3,outplanes),
+            InceptionBlock2d(outplanes*3,outplanes),
+            nn.MaxPool2d((1,4),(1,4))
+        )
+        self.layer31  = nn.Sequential(
+            InceptionBlock2d(outplanes*3,outplanes),
+            InceptionBlock2d(outplanes*3,outplanes),
+            InceptionBlock2d(outplanes*3,outplanes),
+            nn.MaxPool2d((1,3),(1,3))
+        )
+        self.layer32  = nn.Sequential(
+            InceptionBlock2d(outplanes*3,outplanes),
+            InceptionBlock2d(outplanes*3,outplanes),
+            InceptionBlock2d(outplanes*3,outplanes),
+            nn.MaxPool2d((1,3),(1,3))
+        )
+        self.layer33  = nn.Sequential(
+            InceptionBlock2d(outplanes*3,outplanes),
+            InceptionBlock2d(outplanes*3,outplanes),
+            InceptionBlock2d(outplanes*3,outplanes),
+            nn.MaxPool2d((1,3),(1,3))
+        )
+        self.layer34  = nn.Sequential(
+            InceptionBlock2d(outplanes*3,outplanes),
+            InceptionBlock2d(outplanes*3,outplanes),
+            nn.MaxPool2d((1,2),(1,2))
+        )
+        self.fc = nn.Linear(576,2)
+        self.softmax = nn.Softmax(-1)
     def forward(self, x):
-        residual = x
-       
-        out = self.bn1(x)
-        out = self.relu(out)
-        out = self.conv12d(out)
-        # out = self.dropout(out)
-        out = self.bn2(out)
-        out = self.relu(out)
-        out = self.conv22d(out)
-        # out = self.dropout(out)
-        out = self.bn3(out)
-        out = self.relu(out)
-        out = self.conv32d(out)
-
-        if self.se:
-            original_out = out
-            out = self.globalAvgPool(out)
-            out = out.view(out.size(0), -1)
-            out = self.fc1(out)
-            out = self.relu(out)
-            out = self.fc2(out)
-            out = self.sigmoid(out)
-            out = out.view(out.size(0), out.size(1), 1, 1)
-            out = out * original_out
-            
-        if self.res:
-            if self.downsample is not None:
-                residual = self.downsample(x)
-            out += residual
-        # out = self.bn3(out)
-        out = self.relu(out)
-        return out
-
-class TPALSTM_branch(nn.Module):
-    def __init__(self,mark = True,res = True,se=True,Dropout_rate = 0.2,size = [[9,9,9,9,3,3],
-                                                                                [5,5,5,5,3,3],
-                                                                                [7,7,7,7,3,3]]):
-        super(TPALSTM_branch, self).__init__()
-        self.mark = mark
-        self.res = res
-        self.se = se
-        self.Dropout_rate = Dropout_rate
-        self.sizes = size
-        
-    def forward(self, x):
-        batch_size, channels,seq_len = x.shape
-        #x = x+(Models.create_1d_absolute_sin_cos_embedding(batch_size,channels,seq_len)).to(x.device)#位置编码
-        if(self.mark):
-            if self.training:
-                if(torch.rand(1)>0.5): #mark
-                    mark_lenth = torch.randint(int(seq_len/10),int(seq_len/5),[1])
-                    x = Models.mark_input(x,mark_lenth=int(mark_lenth[0]))
-                if(torch.rand(1)>0.5):
-                    x = Models.scaler_input(x)
-        
+        x = x.unsqueeze(1)
+        x = self.layer1(x)
+        x = self.layer21(x)
+        x = self.layer22(x)
+        x = self.layer23(x)
+        x = self.layer31(x)
+        x = self.layer32(x)
+        x = self.layer33(x)
+        x = self.layer34(x)
+        x = x.view(x.size(0), -1)
+        x = self.softmax(self.fc(x))
         return x
