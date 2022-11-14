@@ -649,12 +649,6 @@ class MLBFNet_GUR(nn.Module):
         x,_ = self.GRU(x.permute(0,2 ,1))
         x = (self.dorp(x.permute(0,2 ,1)))
         x = x.view(x.shape[0],32,12,313)
-        # x = self.dorp(x)
-        # x1 = torch.flatten(x, start_dim=1,end_dim=2)#[N,384,313]
-        # x1,self.att1 = self.self_att_t(x1)
-        # x1 = torch.reshape(x1,x.shape)
-        # x = self.bn(x)
-        # x0 = self.bn(x0)
         x = torch.cat((x,x0),dim = 1) #B 32 12 L/2/2/2/2
         xs = []
         for i in range(len(self.sizes)):
@@ -669,3 +663,4 @@ class MLBFNet_GUR(nn.Module):
         self.last_out = self.dorp(self.fc(out))
         out = self.softmax(self.last_out)
         return out
+    
