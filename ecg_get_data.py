@@ -27,7 +27,7 @@ def mixup_target(target, num_classes, smoothing=0.1):
     return y2[0]
 
 class ECG_Dataset(Dataset):
-    def __init__(self,npy_folder:str,npy_files_list:list,EcgChannles_num:int,EcgLength_num:int,shadow_npy_folder = None,shadow_npy_files_list :list = [],position_encode = False):  # type: ignore
+    def __init__(self,npy_folder:str,npy_files_list:list,EcgChannles_num:int,EcgLength_num:int,shadow_npy_folder = None,shadow_npy_files_list :list = [],position_encode = False,denoise_flag = False):  # type: ignore
     
         self.npy_root = npy_folder
         self.npys = npy_files_list
@@ -38,12 +38,12 @@ class ECG_Dataset(Dataset):
         # ecg_qc = EcgQc('rfc_norm_2s.pkl',
         #        sampling_frequency=500,
         #        normalized=True)
-        i = 0
         for index,file in enumerate(self.npys):
             label = torch.tensor(1) if ((((file[:-4]).split('_'))[-1]) =='HTN') else torch.tensor(0) #去除后缀名再按“_"分割，结果的[-1](最后一个)即为标签
             npy_path = os.path.join(self.npy_root,file)    
             ECG =  (np.load(npy_path))[:self.Channles_size,:self.Length_size]*4.88 #放大系数 xml文件中提供的
-            # ECG_denoise = denoise(ECG) #滤波
+            if(denoise_flag):
+                ECG = denoise(ECG) #滤波
             # signal_quality = 0
             # for j in range(self.Channles_size):
             #     try:
@@ -57,15 +57,14 @@ class ECG_Dataset(Dataset):
             #     continue
             ECG = amplitude_limiting(ECG,3500) #幅值
             ECG = torch.FloatTensor(ECG)
-            self.ECG[i] = ECG
+            self.ECG[index] = ECG
             #ECG = single_z_score_normalization_by_feactures(ECG)#对每个样本的每个通道单独进行归一化
             if(position_encode):
                 ECG = get_rpeak(ECG)
             #label_smoothed = mixup_target(label,2,0.1)
             # label = one_hot(label,2)
-            self.Label[i] = label
-            i = i+1
-        self.ECG = torch.FloatTensor(self.ECG[:i,:,:])
+            self.Label[index] = label
+        self.ECG = torch.FloatTensor(self.ECG)
         self.Label = torch.LongTensor(self.Label)
         print('npys:{%d}',len(self.npys))
         self.shadow_npy_root = shadow_npy_folder #存放了比正样本多出来很多的负样本
