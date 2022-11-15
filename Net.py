@@ -803,7 +803,7 @@ class MLBFNet_GUR_single(nn.Module):
         self.layers_list_1d = nn.ModuleList()
         for i,size in enumerate(self.sizes):
             self.layers = nn.Sequential()
-            self.inplanes = 32*12
+            self.inplanes = 64*12
             layers = nn.Sequential()
             layers.append(ResSeBlock1d(inplanes=self.inplanes,outplanes=512,stride=2, kernel_size=(self.sizes[i][0],self.sizes[i][1]), res=res, se = se))
             layers.append(ResSeBlock1d(inplanes=512,outplanes=512,stride=1, kernel_size=(self.sizes[i][0],self.sizes[i][1]), res=res, se = se))
@@ -902,7 +902,7 @@ class MLBFNet_GUR_single(nn.Module):
         x = x.view(x.shape[0],x.shape[1],x.shape[2]*x.shape[3])# b,16,12,313
         x,_ = self.GRU(x.permute(0,2 ,1))
         x = (self.dorp(x.permute(0,2 ,1)))
-        x = x.view(x.shape[0],32,12,313)
+        x = x.view(x.shape[0],16,12,313)
         x = torch.cat((x,x0),dim = 1) #B 32 12 L/2/2/2/2
         xs = []
         for i in range(len(self.sizes)):
