@@ -42,8 +42,6 @@ class ECG_Dataset(Dataset):
             label = torch.tensor(1) if ((((file[:-4]).split('_'))[-1]) =='HTN') else torch.tensor(0) #去除后缀名再按“_"分割，结果的[-1](最后一个)即为标签
             npy_path = os.path.join(self.npy_root,file)    
             ECG =  (np.load(npy_path))[:self.Channles_size,:self.Length_size]*4.88 #放大系数 xml文件中提供的
-            if(denoise_flag):
-                ECG = denoise(ECG) #滤波
             # signal_quality = 0
             # for j in range(self.Channles_size):
             #     try:
@@ -55,7 +53,10 @@ class ECG_Dataset(Dataset):
             # if(signal_quality<10):#signal_quality
             #     #print(file," quality is pool ")
             #     continue
-            ECG = amplitude_limiting(ECG,3500) #幅值
+            ECG = amplitude_limiting(ECG,5000) #幅值
+            if(denoise_flag):
+                for i in range(self.Channles_size):
+                    ECG[i,:] = denoise(ECG[i])
             ECG = torch.FloatTensor(ECG)
             self.ECG[index] = ECG
             #ECG = single_z_score_normalization_by_feactures(ECG)#对每个样本的每个通道单独进行归一化
@@ -89,25 +90,31 @@ def amplitude_limiting(ecg_data,max_bas = 3500):
     ecg_data[ecg_data < (-1*max_bas)] = -1*max_bas
     return ecg_data/max_bas
 
-# 小波去噪预处理
+## https://ieeexplore.ieee.org/document/8300189 ECG denoising using wavelet transform and filters
 def denoise(data):
-    # 小波变换
-    coeffs = pywt.wavedec(data=data, wavelet='db5', level=9)
-    cA9, cD9, cD8, cD7, cD6, cD5, cD4, cD3, cD2, cD1 = coeffs
+    coeffs = pywt.wavedec(data=data, wavelet='sym8', level=7)
+    cA7,  cD7, cD6, cD5, cD4, cD3, cD2, cD1 = coeffs
 
     # 阈值去噪
-    threshold = (np.median(np.abs(cD1)) / 0.6745) * (np.sqrt(2 * np.log(len(cD1))))
-    cD1.fill(0)
-    cD2.fill(0)
-    cD9.fill(0)
-    cA9.fill(0)
+    cA7.fill(0)
+    cD7.fill(0)
     for i in range(2, len(coeffs) - 2):
+        threshold = np.var(coeffs[i])*np.sqrt(2*np.log10(7-i+1))
         coeffs[i] = pywt.threshold(coeffs[i], threshold)
-
     # 小波反变换,获取去噪后的信号
-    rdata = pywt.waverec(coeffs=coeffs, wavelet='db5')
-    rdata[np.isnan(rdata)]=0
-    rdata[np.isinf(rdata)]=0
+    rdata = pywt.waverec(coeffs=coeffs, wavelet='sym8')
+    return rdata
+
+#ECG Noise Filtering Using Wavelets with Soft-thres holding Methods 
+def denoise_powerline(data):
+    coeffs = pywt.wavedec(data=data, wavelet='db3', level=3)
+    cA3, cD3, cD2, cD1 = coeffs
+    # 阈值去噪
+    threshold = np.var(cD1) * (np.sqrt(2 * np.log(len(cD1))))
+    for i in range(2, len(coeffs) - 1):
+        coeffs[i] = pywt.threshold(coeffs[i], threshold)
+    # 小波反变换,获取去噪后的信号
+    rdata = pywt.waverec(coeffs=coeffs, wavelet='db3')
     return rdata
 
 def get_ECG_form_xml(xml_path,EcgChannles_num,EcgLength_num):
