@@ -53,7 +53,7 @@ class ECG_Dataset(Dataset):
             # if(signal_quality<10):#signal_quality
             #     #print(file," quality is pool ")
             #     continue
-            ECG = amplitude_limiting(ECG,5000) #幅值
+            ECG = amplitude_limiting(ECG,3500) #幅值
             if(denoise_flag):
                 for i in range(self.Channles_size):
                     ECG[i,:] = denoise(ECG[i])
