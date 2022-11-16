@@ -918,3 +918,136 @@ class MLBFNet_GUR_single(nn.Module):
         out = self.softmax(self.last_out)
         return out
     
+class ECGNet_GUR_single(nn.Module):
+    def __init__(self,mark = True,res = True,se=True,Dropout_rate = 0.2,size = [[3,3,3,3,3,3],
+                                                                                [5,5,5,5,3,3],
+                                                                                [7,7,7,7,3,3]]):
+        super(ECGNet_GUR_single, self).__init__()
+        self.mark = mark
+        self.res = res
+        self.se = se
+        self.Dropout_rate = Dropout_rate
+        self.sizes = size
+        self.hidden_size = 256
+        self.n_layers = 2
+        self.conv0 = nn.Conv2d(1,16,(1,51),(1,2),(0,25))
+        self.bn = nn.BatchNorm2d(16)
+        self.relu = nn.ReLU(inplace=True)
+        self.conv1 = ResSeBlock2d(inplanes=16,outplanes=16,stride=2,kernel_size=(1,15),res=self.res,se=self.se)
+        self.conv2 = ResSeBlock2d(inplanes=16,outplanes=16,stride=2,kernel_size=(1,15),res=self.res,se=self.se)
+        self.conv3 = ResSeBlock2d(inplanes=16,outplanes=16,stride=2,kernel_size=(1,15),res=self.res,se=self.se)
+        
+        self.layers_list_2d = nn.ModuleList()
+        for i,size in enumerate(self.sizes):
+            self.layers = nn.Sequential()
+            self.inplanes = 32
+            layers = nn.Sequential()
+            layers.append(ResSeBlock2d(inplanes=self.inplanes,outplanes=64,stride=2, kernel_size=(self.sizes[i][0],self.sizes[i][1]), res=res, se = se))
+            layers.append(ResSeBlock2d(inplanes=64,outplanes=64,stride=1, kernel_size=(self.sizes[i][2],self.sizes[i][3]), res=res, se = se))
+            layers.append(ResSeBlock2d(inplanes=64,outplanes=64,stride=2, kernel_size=(self.sizes[i][2],self.sizes[i][3]), res=res, se = se))
+            layers.append(ResSeBlock2d(inplanes=64,outplanes=64,stride=1, kernel_size=(self.sizes[i][2],self.sizes[i][3]), res=res, se = se))
+            self.layers_list_2d.append(layers)
+    
+        self.layers_list_1d = nn.ModuleList()
+        for i,size in enumerate(self.sizes):
+            self.layers = nn.Sequential()
+            self.inplanes = 64*12
+            layers = nn.Sequential()
+            layers.append(ResSeBlock1d(inplanes=self.inplanes,outplanes=512,stride=2, kernel_size=(self.sizes[i][0],self.sizes[i][1]), res=res, se = se))
+            layers.append(ResSeBlock1d(inplanes=512,outplanes=512,stride=1, kernel_size=(self.sizes[i][0],self.sizes[i][1]), res=res, se = se))
+            
+            layers.append(ResSeBlock1d(inplanes=512,outplanes=512,stride=2, kernel_size=(self.sizes[i][2],self.sizes[i][3]), res=res, se = se))
+            layers.append(ResSeBlock1d(inplanes=512,outplanes=512,stride=1, kernel_size=(self.sizes[i][2],self.sizes[i][3]), res=res, se = se))
+            
+            self.layers_list_1d.append(layers)    
+        self.dorp = nn.Dropout(p = Dropout_rate)
+        self.avgpool = nn.AdaptiveAvgPool1d(1)
+        self.fc = nn.Linear(512*len(self.sizes),2)
+        self.softmax = nn.Softmax(-1)
+        
+        self.GRU = nn.GRU(16*12,self.hidden_size,self.n_layers,batch_first=True,bias=True,bidirectional=False)
+        
+    def forward(self, x):
+        batch_size, channels,seq_len = x.shape
+        #x = x+(Models.create_1d_absolute_sin_cos_embedding(batch_size,channels,seq_len)).to(x.device)#位置编码
+        if(self.mark):
+            if self.training:
+                if(torch.rand(1)>0.5): #mark
+                    mark_lenth = torch.randint(int(seq_len/10),int(seq_len/5),[1])
+                    x = Models.mark_input(x,mark_lenth=int(mark_lenth[0]))
+        x = x.unsqueeze(1)
+        x = self.conv0(x)
+        x = self.bn(x)    
+        x = self.relu(x)
+        x = self.conv1(x)
+        x = self.conv2(x)
+        x = self.conv3(x)#B,dim,channels,seq_len
+        x = x.view(x.shape[0],x.shape[1]*x.shape[2],x.shape[3])# b,16*12,313
+        obs_dim = x.shape[1]
+        obs_len = x.shape[2]
+        
+        x = x.permute(0,2 ,1)
+        
+        H = torch.zeros(batch_size, obs_len-1, self.hidden_size)
+        ht = torch.zeros(self.n_layers, batch_size, self.hidden_size)
+        ct = ht.clone()
+        for t in range(obs_len):
+            xt = x[:, t, :].view(batch_size, 1, -1)# INPUT (batch_size, 1, obs_dim)
+            out, (ht, ct) = self.GRU(xt, (ht, ct)) # output (batch_size, 1,  hidden_size) , ht (n_layer, batch_size,hidden_size ), ct (n_layer, batch_size,hidden_size )
+            htt = ht.permute(1, 0, 2) # ( batch_size,n_layer,hidden_size )
+            htt = htt[:, -1, :]# ht的最后一层
+            if t != obs_len - 1:
+                H[:, t, :] = htt #batch_size, t, self.hidden_size
+        H = self.relu(H)
+        # reshape hidden states H
+        H = H.view(-1, 1, obs_len-1, self.hidden_size) #batch_size, 1 , obs_len-1 , self.hidden_size  (b , 1 , 312 , 256)
+
+        
+        x = (self.dorp(x.permute(0,2 ,1)))
+        x = x.view(x.shape[0],16,12,313)
+
+        xs = []
+        for i in range(len(self.sizes)):
+            x1 = self.layers_list_2d[i](x)#[N,D,12,L]
+            x1 = torch.flatten(x1, start_dim=1,end_dim=2)#[N,D*12,L]
+            x1 = self.layers_list_1d[i](x1)#[N,D*12,L]
+            x1 = self.avgpool(x1)#[N,D,1]
+            x1 = self.dorp(x1)
+            xs.append(x1) #[N,D*12,L]
+        out = torch.cat(xs, dim=1)#[N,3*D,L]
+        out = out.view(out.size(0), -1)
+        self.last_out = self.dorp(self.fc(out))
+        out = self.softmax(self.last_out)
+        return out
+
+class TemporalPatternAttention(nn.Module):
+
+    def __init__(self, filter_size, filter_num, attn_len, attn_size):
+        super(TemporalPatternAttention, self).__init__()
+        self.filter_size = filter_size
+        self.filter_num = filter_num
+        self.feat_size = attn_size - self.filter_size + 1
+        self.conv = nn.Conv2d(1, filter_num, (attn_len, filter_size))
+        self.linear1 = nn.Linear(attn_size, filter_num)
+        self.linear2 = nn.Linear(attn_size + self.filter_num, attn_size)
+        self.relu = nn.ReLU()
+    
+    def forward(self, H, ht):
+        _, channels, _, attn_size = H.size()
+        new_ht = ht.view(-1, 1, attn_size)
+        w = self.linear1(new_ht) # batch_size, 1, filter_num 
+        conv_vecs = self.conv(H)
+        
+        conv_vecs = conv_vecs.view(-1, self.feat_size, self.filter_num)
+        conv_vecs = self.relu(conv_vecs)
+
+        # score function
+        w = w.expand(-1, self.feat_size, self.filter_num)
+        s = torch.mul(conv_vecs, w).sum(dim=2)
+        alpha = torch.sigmoid(s)
+        new_alpha = alpha.view(-1, self.feat_size, 1).expand(-1, self.feat_size, self.filter_num)
+        v = torch.mul(new_alpha, conv_vecs).sum(dim=1).view(-1, self.filter_num)
+        
+        concat = torch.cat([ht, v], dim=1)
+        new_ht = self.linear2(concat)
+        return new_ht
