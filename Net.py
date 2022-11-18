@@ -919,9 +919,7 @@ class MLBFNet_GUR_single(nn.Module):
         return out
     
 class ECGNet_GUR_single(nn.Module):
-    def __init__(self,mark = True,res = True,se=True,Dropout_rate = 0.2,size = [[3,3,3,3,3,3],
-                                                                                [5,5,5,5,3,3],
-                                                                                [7,7,7,7,3,3]]):
+    def __init__(self,mark = True,res = True,se=True,Dropout_rate = 0.2,size = [[3,3,3,3,3,3]]):
         super(ECGNet_GUR_single, self).__init__()
         self.mark = mark
         self.res = res
@@ -935,7 +933,6 @@ class ECGNet_GUR_single(nn.Module):
         self.relu = nn.ReLU(inplace=True)
         self.conv1 = ResSeBlock2d(inplanes=16,outplanes=16,stride=2,kernel_size=(1,15),res=self.res,se=self.se)
         self.conv2 = ResSeBlock2d(inplanes=16,outplanes=16,stride=2,kernel_size=(1,15),res=self.res,se=self.se)
-        self.conv3 = ResSeBlock2d(inplanes=16,outplanes=16,stride=2,kernel_size=(1,15),res=self.res,se=self.se)
         
         self.layers_list_1d = nn.ModuleList()
         for i,size in enumerate(self.sizes):
@@ -943,8 +940,6 @@ class ECGNet_GUR_single(nn.Module):
             self.inplanes = 16*12
             layers = nn.Sequential()
             layers.append(ResSeBlock1d(inplanes=self.inplanes,outplanes=256,stride=1, kernel_size=(self.sizes[i][0],self.sizes[i][1]), res=res, se = se))
-            layers.append(ResSeBlock1d(inplanes=256,outplanes=256,stride=2, kernel_size=(self.sizes[i][0],self.sizes[i][1]), res=res, se = se))
-            layers.append(ResSeBlock1d(inplanes=256,outplanes=256,stride=1, kernel_size=(self.sizes[i][2],self.sizes[i][3]), res=res, se = se))
             self.layers_list_1d.append(layers)    
         self.dorp = nn.Dropout(p = Dropout_rate)
         self.avgpool = nn.AdaptiveAvgPool1d(1)
@@ -954,7 +949,7 @@ class ECGNet_GUR_single(nn.Module):
         self.LSTM = nn.LSTM(256,self.hidden_size,self.n_layers,batch_first=True,bias=True,bidirectional=False)
         self.filter_num = 32
         self.filter_size = 1
-        self.attention = TemporalPatternAttention(self.filter_size,self.filter_num, 157-1, self.hidden_size)
+        self.attention = TemporalPatternAttention(self.filter_size,self.filter_num, 625-1, self.hidden_size)
         
     def forward(self, x):
         batch_size, channels,seq_len = x.shape
@@ -970,17 +965,16 @@ class ECGNet_GUR_single(nn.Module):
         x = self.relu(x)
         x = self.conv1(x)
         x = self.conv2(x)
-        x = self.conv3(x)#B,dim,channels,seq_len
-        x = x.view(x.shape[0],x.shape[1]*x.shape[2],x.shape[3])# b,16*12,313
+        x = x.view(x.shape[0],x.shape[1]*x.shape[2],x.shape[3])# b,16*12,625
         xs = []
         for i in range(len(self.sizes)):
-            x1 = self.layers_list_1d[i](x)# b,16*12,313  -> # b,256,156
+            x1 = self.layers_list_1d[i](x)# b,16*12,625  -> # b,256,625
             obs_dim = x1.shape[1]
             obs_len = x1.shape[2]
             x1= x1.view(x1.shape[0],obs_len,obs_dim) 
-            H = torch.zeros(batch_size, obs_len-1, self.hidden_size)
-            ht = torch.zeros(self.n_layers, batch_size, self.hidden_size)
-            ct = ht.clone()
+            H = torch.zeros(batch_size, obs_len-1, self.hidden_size).to(x.device)
+            ht = torch.zeros(self.n_layers, batch_size, self.hidden_size).to(x.device)
+            ct = ht.clone().to(x.device)
             for t in range(obs_len):
                 xt = x1[:, t, :].view(batch_size, 1, -1)# INPUT (batch_size, 1, obs_dim)
                 out, (ht, ct) = self.LSTM(xt, (ht, ct)) # output (batch_size, 1,  hidden_size) , ht (n_layer, batch_size,hidden_size ), ct (n_layer, batch_size,hidden_size )
