@@ -27,7 +27,7 @@ def mixup_target(target, num_classes, smoothing=0.1):
     return y2[0]
 
 class ECG_Dataset(Dataset):
-    def __init__(self,npy_folder:str,npy_files_list:list,EcgChannles_num:int,EcgLength_num:int,shadow_npy_folder = None,shadow_npy_files_list :list = [],position_encode = False,denoise_flag = False):  # type: ignore
+    def __init__(self,npy_folder:str,npy_files_list:list,EcgChannles_num:int,EcgLength_num:int,shadow_npy_folder = None,shadow_npy_files_list :list = [],position_encode = False):  # type: ignore
     
         self.npy_root = npy_folder
         self.npys = npy_files_list
@@ -35,28 +35,11 @@ class ECG_Dataset(Dataset):
         self.Length_size = EcgLength_num
         self.ECG = np.zeros((self.npys.__len__(),self.Channles_size,self.Length_size))  # type: ignore
         self.Label = np.zeros((self.npys.__len__()))  # type: ignore
-        # ecg_qc = EcgQc('rfc_norm_2s.pkl',
-        #        sampling_frequency=500,
-        #        normalized=True)
         for index,file in enumerate(self.npys):
             label = torch.tensor(1) if ((((file[:-4]).split('_'))[-1]) =='HTN') else torch.tensor(0) #去除后缀名再按“_"分割，结果的[-1](最后一个)即为标签
             npy_path = os.path.join(self.npy_root,file)    
             ECG =  (np.load(npy_path))[:self.Channles_size,:self.Length_size]*4.88 #放大系数 xml文件中提供的
-            # signal_quality = 0
-            # for j in range(self.Channles_size):
-            #     try:
-            #         sqi_scores = ecg_qc.compute_sqi_scores(ECG_denoise[j,:].tolist())
-            #         signal_quality = ecg_qc.predict_quality(sqi_scores) + signal_quality
-            #     except:
-            #         #print(file,"channel ",i," quality is pool ")
-            #         continue#signal_quality不增加
-            # if(signal_quality<10):#signal_quality
-            #     #print(file," quality is pool ")
-            #     continue
             ECG = amplitude_limiting(ECG,3500) #幅值
-            if(denoise_flag):
-                for i in range(self.Channles_size):
-                    ECG[i,:] = denoise(ECG[i])
             ECG = torch.FloatTensor(ECG)
             self.ECG[index] = ECG
             #ECG = single_z_score_normalization_by_feactures(ECG)#对每个样本的每个通道单独进行归一化

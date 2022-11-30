@@ -233,8 +233,8 @@ class splite_dataset():
 class assemble_dataset():
     def __init__(self,folder):
         self.folder =folder
-        self.HTN_folder = folder+'/pkl/HTN/'
-        self.NHTN_folder = folder+'/pkl/NHTN/'
+        self.HTN_folder = folder+'/good/HTN/'
+        self.NHTN_folder = folder+'/good/NHTN/'
         self.ECG_folder = folder+'/ECG/'
             
         self.HTN_files_list = os.listdir(self.HTN_folder)#返回指定的文件夹包含的文件或文件夹的名字的列表
@@ -277,6 +277,8 @@ class assemble_dataset():
                 info.append(str_1)#添加ECG地址
                 VT_HTN_df.loc[len(VT_HTN_df.index)] = info  # type: ignore
                 
+               
+        
         for file in tqdm(self.NHTN_files_list):  
             year = file[:2] 
             info = list()
@@ -296,32 +298,31 @@ class assemble_dataset():
                 info.append(str_1)#添加ECG地址
                 VT_NHTN_df.loc[len(VT_NHTN_df.index)] = info  # type: ignore       
                 
-        
-        test_HTN_df.to_pickle(self.folder+'/validate_HTN.pkl')
-        test_NHTN_df.to_pickle(self.folder+'/validate_NHTN.pkl')
         VT_HTN_df.to_pickle(self.folder+'/VT_HTN.pkl')
         VT_NHTN_df.to_pickle(self.folder+'/VT_NHTN.pkl')
+        test_HTN_df.to_pickle(self.folder+'/test_HTN.pkl')
+        test_NHTN_df.to_pickle(self.folder+'/test_NHTN.pkl') 
 
 
 if __name__ == '__main__':
-    print("   ")
-    data = splite_dataset('/workspace/data/Preprocess_HTN/data/',True)
-    test_list = data.__get_test_file_list__(True)
-    # print(valid_list)
-    valid_list,train_list,addition_train_list = data.__get_VT_file_list__(0.3,True)  # type: ignore
-    x = [k for k in test_list if k in addition_train_list]
-    print(x)
-    x = [k for k in test_list if k in valid_list]
-    print(x)
-    x = [k for k in test_list if k in train_list]
-    print(x)
-    x = [k for k in train_list if k in test_list]
-    print(x)
-    x = [k for k in train_list if k in addition_train_list]
-    print(x)
+    # print("   ")
+    # data = splite_dataset('/workspace/data/Preprocess_HTN/data/',True)
+    # test_list = data.__get_test_file_list__(True)
+    # # print(valid_list)
+    # valid_list,train_list,addition_train_list = data.__get_VT_file_list__(0.3,True)  # type: ignore
+    # x = [k for k in test_list if k in addition_train_list]
+    # print(x)
+    # x = [k for k in test_list if k in valid_list]
+    # print(x)
+    # x = [k for k in test_list if k in train_list]
+    # print(x)
+    # x = [k for k in train_list if k in test_list]
+    # print(x)
+    # x = [k for k in train_list if k in addition_train_list]
+    # print(x)
 # print(test_list,train_list)
 # if __name__ == 'main':
-#     data = assemble_dataset('/workspace/data/Preprocess_HTN/data/')
-#     info = data.__read_info__('20-10046_HTN')[1:]
-#     print(info)
-#     data.__split__
+    data = assemble_dataset('/workspace/data/Preprocess_HTN/data')
+    data.__split___()
+    # info = data.__read_info__('20-10046_HTN')[1:]
+    # print(info)
