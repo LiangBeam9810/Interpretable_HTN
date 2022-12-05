@@ -246,6 +246,8 @@ class ECG_Dataset(Dataset):
     def info(self,index):
         return self.infos.iloc[index]
     
+    
+
 if __name__ == '__main__':
     ALLDataset = ECG_Dataset_Init('./data_like_pxl')
     

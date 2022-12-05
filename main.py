@@ -30,7 +30,7 @@ print(DEVICE)
 
 BATCH_SIZE = 128
 
-FOLDS = 2
+FOLDS = 5
 EPOCHS = 100  
 PATIENCE = 10
 LR = 0.01
@@ -74,8 +74,8 @@ if __name__ == '__main__':
                                                                                                 ,BATCH_SIZE = BATCH_SIZE,
                                                                                                 DEVICE=DEVICE,
                                                                                                 criterion = criterion,
-                                                                                                EPOCHS = 300,  
-                                                                                                PATIENCE = 50,
+                                                                                                EPOCHS = 100,  
+                                                                                                PATIENCE = 3,
                                                                                                 LR_MAX = 1e-3,
                                                                                                 LR_MIN = 1e-5,)
         train_loss_sum[fold] = train_loss
