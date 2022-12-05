@@ -84,6 +84,7 @@ def tarinning_one_flod(fold,Model,train_dataset,val_dataset,test_dataset,writer,
     Model.load_state_dict(torch.load(best_model_path))
     
     y_true,y_pred,train_loss,train_acc = train_model(train_dataloader, Model, criterion, optimizer,DEVICE) # type: ignore # 模型
+    Model.load_state_dict(torch.load(best_model_path))
     y_true,y_pred,validate_loss,validate_acc = eval_model(valid_dataloader,criterion,Model,DEVICE) # 验证模型
     F1_score_valid =f1_score(y_true, y_pred, average='macro')#F1分数
     C1 = confusion_matrix(y_true,y_pred)
