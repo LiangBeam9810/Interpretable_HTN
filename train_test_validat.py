@@ -16,6 +16,7 @@ def tarinning_one_flod(fold,Model,train_dataset,val_dataset,test_dataset,writer,
                         weight_decay=1e-3,
                         num_workers = 0,
                         shuffle = True,
+                        onehot_lable = False
                         ):
     target = train_dataset.labels
     class_sample_count = np.array([len(np.where(target == t)[0]) for t in np.unique(target)])
@@ -33,7 +34,7 @@ def tarinning_one_flod(fold,Model,train_dataset,val_dataset,test_dataset,writer,
     criterion =  criterion.to(DEVICE)
     
     warm_up_iter = warm_up_iter
-    T_max = EPOCHS//2	# 周期
+    T_max = EPOCHS	# 周期
     lr_max = LR_MAX	# 最大值
     lr_min = LR_MIN	# 最小值
     lambda0 = lambda cur_iter: lr_min if  cur_iter < warm_up_iter else \
@@ -45,12 +46,12 @@ def tarinning_one_flod(fold,Model,train_dataset,val_dataset,test_dataset,writer,
         time_all=0
         start_time = time.time()
         
-        y_true,y_pred,train_loss,train_acc = train_model(train_dataloader, Model, criterion, optimizer,DEVICE) # type: ignore # 训练模型
+        y_true,y_pred,train_loss,train_acc = train_model(train_dataloader, Model, criterion, optimizer,DEVICE,onehot_lable=onehot_lable) # type: ignore # 训练模型
         
         # F1_score_train =f1_score(y_true, y_pred, average='macro')#F1分数
         # C0 = confusion_matrix(y_true,y_pred)
         
-        y_true,y_pred,validate_loss,validate_acc = eval_model(valid_dataloader,criterion,Model,DEVICE) # 验证模型
+        y_true,y_pred,validate_loss,validate_acc = eval_model(valid_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
         time_all = time.time()-start_time
         # F1_score_valid =f1_score(y_true, y_pred, average='macro')#F1分数
         # C1 = confusion_matrix(y_true,y_pred)
@@ -59,8 +60,8 @@ def tarinning_one_flod(fold,Model,train_dataset,val_dataset,test_dataset,writer,
         writer.add_scalars(main_tag=str(fold)+'_Accuracy',tag_scalar_dict={'train': train_acc,'validate': validate_acc},global_step=epoch)
         # writer.add_scalars(main_tag=str(fold)+'_LearningRate',tag_scalar_dict={'LR': optimizer.state_dict()['param_groups'][0]['lr']},global_step=epoch)
         # writer.add_scalars(main_tag=str(fold)+'_F1_score',tag_scalar_dict={'train':F1_score_train,'validate': F1_score_valid},global_step=epoch)        
-        print('- Epoch: %d - Train_loss: %.5f - Train_acc: %.5f -  - Val_loss: %.5f - Val_acc: %.5f  - T_Time: %.5f' %(epoch,train_loss,train_acc,validate_loss,validate_acc,time_all))
-        print('当前学习率：%.8f' %optimizer.state_dict()['param_groups'][0]['lr'])
+        print(" "*20+'- Epoch: %d - Train_loss: %.5f - Train_acc: %.5f -  - Val_loss: %.5f - Val_acc: %.5f  - T_Time: %.5f' %(epoch,train_loss,train_acc,validate_loss,validate_acc,time_all))
+        print(" "*20+'LR：%.8f' %optimizer.state_dict()['param_groups'][0]['lr'])
         # print('train:\n',C0)
         # print('validate:\n',C1)
         
@@ -69,14 +70,14 @@ def tarinning_one_flod(fold,Model,train_dataset,val_dataset,test_dataset,writer,
             best_valida_acc = validate_acc
             F1_score_valid =f1_score(y_true, y_pred, average='macro')#F1分数
             C1 = confusion_matrix(y_true,y_pred)
-            print('Get best valida acc !')
-            print('validate: ',F1_score_valid,'\n',C1)
+            print(" "*20+'Get Better Validate ACC !')
+            print(" "*20+'Validate: ',F1_score_valid,'\n'+" "*20,C1[0],'\n'+" "*20,C1[1])
             
         scheduler.step() # 学习率迭代
         
         #是否满足早停法条件
         if(early_stopping(validate_loss,Model,fold)):
-            print("Early stopping")
+            print(" "*20+"Early stopping")
             break
         
     # 计算此flod 在testset上的效果
@@ -88,13 +89,13 @@ def tarinning_one_flod(fold,Model,train_dataset,val_dataset,test_dataset,writer,
     y_true,y_pred,validate_loss,validate_acc = eval_model(valid_dataloader,criterion,Model,DEVICE) # 验证模型
     F1_score_valid =f1_score(y_true, y_pred, average='macro')#F1分数
     C1 = confusion_matrix(y_true,y_pred)
-    print('validate: ',F1_score_valid,'\n',C1)
+    print(" "*10+'validate: ',F1_score_valid,'\n'+" "*10,C1[0],'\n'+" "*10,C1[1])
     
     y_true,y_pred,test_loss,test_acc = eval_model(test_dataloader,criterion,Model,DEVICE) # 验证模型
     F1_score_test =f1_score(y_true, y_pred, average='macro')#F1分数
     C = confusion_matrix(y_true,y_pred)
-    print('test: ',F1_score_test,'\n',C)
-    print('Fold %d Training Finished' %(fold))
+    print(" "*10+'test: ',F1_score_test,'\n'+" "*10,C[0],'\n'+" "*10,C[1])
+    print(" "*10+'Fold %d Training Finished' %(fold))
     return train_loss,train_acc,validate_loss,validate_acc,test_loss,test_acc
 
 
@@ -221,7 +222,7 @@ class EarlyStopping:
             self.save_checkpoint(score, model,fold)
         elif score < self.best_score + self.delta:
             self.counter += 1
-            print(f'EarlyStopping counter: {self.counter} out of {self.patience}\n')
+            print(" "*20+f'EarlyStopping counter: {self.counter} out of {self.patience}\n')
             if self.counter >= self.patience:
                 self.early_stop = True
         else:
@@ -233,7 +234,7 @@ class EarlyStopping:
     def save_checkpoint(self, score, model,fold = 0):
         if self.verbose:
             print(" "*20+'-'*50+'\n')
-            print(f'Validation  score to ({self.last_best_score:.8f} --> {score:.8f}).  Saving model ...')
+            print(" "*20+f'Validation  score to ({self.last_best_score:.8f} --> {score:.8f}).  Saving model ...')
             print(" "*20+'-'*50+'\n')
         # torch.save(model, self.model_path+'/all_EarlyStoping_'+str(fold)+'.pt')                 # 这里会存储迄今最优的模型
         torch.save(model.state_dict(), self.model_path+'/parameter_EarlyStoping_' + str(fold) + '.pt')
