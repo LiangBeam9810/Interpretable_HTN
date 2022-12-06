@@ -6,13 +6,13 @@ from torch.utils.data.dataset import Dataset
 from tqdm import tqdm
 
 class ECG_Dataset_Init():
-    def __init__(self,data_root:str,filter_age = 0): 
+    def __init__(self,data_root:str,filter_age = 0,rebuild_flage = False): 
         
         self.ECGs_path = data_root+'/ECG/'
         self.INFOs_path = data_root+'/INFO/'
         self.Qualitys_path = data_root+'/Q/'
         self.filter_age = filter_age
-        if(os.path.exists(data_root+'/INFOs.pkl')):
+        if((not rebuild_flage) and (os.path.exists(data_root+'/INFOs.pkl'))):
             self.INFOsDf = pd.read_pickle(data_root+'/INFOs.pkl')
             # print(self.INFOsDf.head(),'\n',len(self.INFOsDf))
         else: #INFOs_df文件不存在，则重构INFOs_df
@@ -22,10 +22,11 @@ class ECG_Dataset_Init():
         self.INFOsDf = self.filter_INFOs_Df(self.INFOsDf)
         self.testDf,self.TVDf = self.splite_TVandT(self.INFOsDf)    
         
-        if((os.path.exists(data_root+'/testECGs.npy')) 
+        if((not rebuild_flage) and 
+           ((os.path.exists(data_root+'/testECGs.npy')) 
            and (os.path.exists(data_root+'/testLabels.npy')) 
            and (os.path.exists(data_root+'/TVECGs.npy')) 
-           and (os.path.exists(data_root+'/TVLabels.npy'))):   
+           and (os.path.exists(data_root+'/TVLabels.npy')))):   
             self.testECGs = np.load(data_root+'/testECGs.npy')
             self.testLabels = np.load(data_root+'/testLabels.npy')
             self.TVECGs = np.load(data_root+'/TVECGs.npy')
@@ -109,7 +110,7 @@ class ECG_Dataset_Init():
     #QC by q file 
     def __filter__quality__(self,df_input):
         df = df_input.copy()
-        df = df.dropna(subset=['q0']) #删除diagnose== nan
+        # df = df.dropna(subset=['q0']) #删除diagnose== nan
         df["q0"] = pd.to_numeric(df["q0"],errors='coerce') #把Q改成数值型
         df["q1"] = pd.to_numeric(df["q1"],errors='coerce') #把Q改成数值型
         df["q2"] = pd.to_numeric(df["q2"],errors='coerce') #把Q改成数值型
@@ -214,7 +215,7 @@ class ECG_Dataset_Init():
     
         
 class ECG_Dataset(Dataset):
-    def __init__(self,datas,labels,infos,preprocess = True,num_classes = 0):
+    def __init__(self,datas,labels,infos,preprocess = True,onehot_lable=False):
         self.datas = datas
         self.labels = labels
         self.infos = infos
@@ -223,9 +224,10 @@ class ECG_Dataset(Dataset):
             self.preprocess()
         self.datas[np.isnan(self.datas)]=0
         self.datas = torch.FloatTensor(self.datas)
+        # num_classes = len(torch.bincount(self.labels))
         self.labels = torch.from_numpy(np.array(self.labels))
-        if(num_classes>0):
-            self.labels = torch.nn.functional.one_hot(self.labels,num_classes).float()
+        if(onehot_lable):
+            self.labels = torch.nn.functional.one_hot(self.labels).float()
     def preprocess(self):
         self.datas = self.amplitude_limiting(self.datas)
     def __getitem__(self,index):
