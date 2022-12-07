@@ -70,6 +70,7 @@ if __name__ == '__main__':
 
     print('\nTraining..\n')
     for train_index, val_index in skf.split(ALLDataset.TVECGs, ALLDataset.TVLabels):
+        print(" "*10+ "Fold "+str(fold)+" of "+str(FOLDS) + ' :')
         # print("TRAIN:", train_index, "TEST:", val_index)
         train_datas = ALLDataset.TVECGs[train_index]
         train_labels = ALLDataset.TVLabels[train_index]
