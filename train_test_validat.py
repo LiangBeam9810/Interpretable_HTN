@@ -40,7 +40,7 @@ def tarinning_one_flod(fold,Model,train_dataset,val_dataset,test_dataset,writer,
     lambda0 = lambda cur_iter: lr_min if  cur_iter < warm_up_iter else \
         (lr_min + 0.5*(lr_max-lr_min)*(1.0+math.cos( (cur_iter-warm_up_iter)/(T_max-warm_up_iter)*math.pi)))/0.01
     scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda=lambda0)
-    best_valida_acc = 0
+    best_valida_loss = np.inf
     Model.to(DEVICE)
     for epoch in range(1,EPOCHS):
         time_all=0
@@ -55,29 +55,24 @@ def tarinning_one_flod(fold,Model,train_dataset,val_dataset,test_dataset,writer,
         time_all = time.time()-start_time
         # F1_score_valid =f1_score(y_true, y_pred, average='macro')#F1分数
         # C1 = confusion_matrix(y_true,y_pred)
+        # print(" "*20+'Validate: ',F1_score_valid,'\n'+" "*20,C1[0],'\n'+" "*20,C1[1])
         
         writer.add_scalars(main_tag=str(fold)+'_Loss',tag_scalar_dict={'train': train_loss,'validate': validate_loss},global_step=epoch)
         writer.add_scalars(main_tag=str(fold)+'_Accuracy',tag_scalar_dict={'train': train_acc,'validate': validate_acc},global_step=epoch)
-        # writer.add_scalars(main_tag=str(fold)+'_LearningRate',tag_scalar_dict={'LR': optimizer.state_dict()['param_groups'][0]['lr']},global_step=epoch)
-        # writer.add_scalars(main_tag=str(fold)+'_F1_score',tag_scalar_dict={'train':F1_score_train,'validate': F1_score_valid},global_step=epoch)        
-        print(" "*20+'- Epoch: %d - Train_loss: %.5f - Train_acc: %.5f -  - Val_loss: %.5f - Val_acc: %.5f  - T_Time: %.5f' %(epoch,train_loss,train_acc,validate_loss,validate_acc,time_all))
-        print(" "*20+'LR：%.8f' %optimizer.state_dict()['param_groups'][0]['lr'])
-        # print('train:\n',C0)
-        # print('validate:\n',C1)
+        writer.add_scalars(main_tag=str(fold)+'_LearningRate',tag_scalar_dict={'LR': optimizer.state_dict()['param_groups'][0]['lr']},global_step=epoch)      
+        print(" "*20+'- Epoch: %d - Train_loss: %.5f - Train_acc: %.5f -  - Val_loss: %.5f - Val_acc: %.5f  - T_Time: %.5f' %(epoch,train_loss,train_acc,validate_loss,validate_acc,time_all),'LR：%.8f' %optimizer.state_dict()['param_groups'][0]['lr'])
         
-        if(validate_acc>best_valida_acc):
-            
-            best_valida_acc = validate_acc
+        if(best_valida_loss>validate_loss):
+            best_valida_loss = validate_loss
             F1_score_valid =f1_score(y_true, y_pred, average='macro')#F1分数
             C1 = confusion_matrix(y_true,y_pred)
-            print(" "*20+'Get Better Validate ACC !')
             print(" "*20+'Validate: ',F1_score_valid,'\n'+" "*20,C1[0],'\n'+" "*20,C1[1])
             
         scheduler.step() # 学习率迭代
         
         #是否满足早停法条件
         if(early_stopping(validate_loss,Model,fold)):
-            print(" "*20+"Early stopping")
+            print(" "*20+"Early stopping...")
             break
         
     # 计算此flod 在testset上的效果
