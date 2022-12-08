@@ -225,7 +225,7 @@ class ECG_Dataset(Dataset):
         self.datas[np.isnan(self.datas)]=0
         self.datas = torch.FloatTensor(self.datas)
         # num_classes = len(torch.bincount(self.labels))
-        self.labels = torch.from_numpy(np.array(self.labels))
+        self.labels = torch.from_numpy(np.array(self.labels)).long()
         if(onehot_lable):
             self.labels = torch.nn.functional.one_hot(self.labels).float()
     def preprocess(self):
