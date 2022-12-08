@@ -33,7 +33,7 @@ EcgLength_num = 5000
 DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 print(DEVICE)
 
-BATCH_SIZE = 128
+BATCH_SIZE = 160
 
 FOLDS = 5
 EPOCHS = 100  
@@ -42,7 +42,7 @@ LR = 0.01
 
 if __name__ == '__main__':
     
-    ALLDataset = ECGDataset.ECG_Dataset_Init('/workspace/data/Preprocess_HTN/data_like_pxl/',rebuild_flage= True,filter_age = 45)
+    ALLDataset = ECGDataset.ECG_Dataset_Init('/workspace/data/Preprocess_HTN/data_like_pxl/',rebuild_flage= True,filter_age = 0)
     ALLDataset.report()  # type: ignore
     
     torch.cuda.empty_cache()# 清空显卡cuda
