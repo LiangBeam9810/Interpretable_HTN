@@ -225,7 +225,7 @@ class channels_branch_CNN(nn.Module):
     
     
 class MLBFNet(nn.Module):
-    def __init__(self,mark = True,res = True,se=True,Dropout_rate = 0.2,size = [[3,3,3,3,3,3],
+    def __init__(self,num_class,mark = True,res = True,se=True,Dropout_rate = 0.2,size = [[3,3,3,3,3,3],
                                                                                 [7,7,7,7,3,3],
                                                                                 [5,5,5,5,3,3]]):
         super(MLBFNet, self).__init__()
@@ -355,7 +355,7 @@ class MLBFNet(nn.Module):
             self.layers_list_1d.append(layers)    
         self.dorp = nn.Dropout(p = Dropout_rate)
         self.avgpool = nn.AdaptiveAvgPool1d(1)
-        self.fc = nn.Linear(self.inplanes*len(self.sizes),2)
+        self.fc = nn.Linear(self.inplanes*len(self.sizes),num_class)
         self.softmax = nn.Softmax(-1)
     def forward(self, x):
         batch_size, channels,seq_len = x.shape
@@ -407,8 +407,8 @@ class MLBFNet(nn.Module):
         
         out = out.view(out.size(0), -1)
         self.last_out = self.fc(out)
-        out = self.softmax(self.last_out)
-        return out
+        # out = self.softmax(self.last_out)
+        return self.last_out
     
   
 class MLBFNet_GUR(nn.Module):
