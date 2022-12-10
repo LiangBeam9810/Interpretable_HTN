@@ -4,6 +4,7 @@ import pandas as pd
 import torch
 from torch.utils.data.dataset import Dataset
 from tqdm import tqdm
+import random
 
 class ECG_Dataset_Init():
     def __init__(self,data_root:str,filter_age = 0,rebuild_flage = False): 
@@ -215,11 +216,13 @@ class ECG_Dataset_Init():
     
         
 class ECG_Dataset(Dataset):
-    def __init__(self,datas,labels,infos,preprocess = True,onehot_lable=False):
+    def __init__(self,datas,labels,infos,preprocess = True,onehot_lable=False,pair_flag = False):
         self.datas = datas
         self.labels = labels
         self.infos = infos
+        self.pair_flag = pair_flag
         self.len = len(datas)
+
         if(preprocess):
             self.preprocess()
         self.datas[np.isnan(self.datas)]=0
@@ -228,13 +231,21 @@ class ECG_Dataset(Dataset):
         self.labels = torch.from_numpy(np.array(self.labels)).long()
         if(onehot_lable):
             self.labels = torch.nn.functional.one_hot(self.labels).float()
+            
+        if(self.pair_flag):
+            self.pair_()
+            self.len = self.datas_paired.shape[0]
     def preprocess(self):
         self.datas = self.amplitude_limiting(self.datas)
     def __getitem__(self,index):
         # print(index)
-        return self.datas[index],self.labels[index]
+        if(self.pair_flag):
+            return self.datas_paired[index],self.labels_paired[index]
+        else:
+            return self.datas[index],self.labels[index]
     def __len__(self):
         return self.len
+    
     def amplitude_limiting(self,ecg_data,max_bas = 3500):
         ecg_data = ecg_data*4.88
         ecg_data[ecg_data > max_bas] = max_bas
@@ -246,8 +257,54 @@ class ECG_Dataset(Dataset):
         print("{:^10} {:^10} {:^10}".format('  ','HTN','NHTN'))
         print("{:^10} {:^10} {:^10}".format('Nums', np.all(self.labels == 1),np.all(self.labels == 0)))
     def info(self,index):
-        return self.infos.iloc[index]
-    
+        if(self.pair_flag):
+            return self.infos_paired.iloc[index]
+        else:
+            return self.infos.iloc[index]
+    def pair_(self):
+        datas = self.datas
+        labels = self.labels
+        infos = self.infos
+        HTN_index = (infos[(infos['diagnose'] == 1)].index.tolist())
+        HTN_num = HTN_index.__len__()
+        datas_paired = torch.zeros(HTN_num*2,12,5000).float()
+        labels_paired = torch.zeros(HTN_num*2).long()
+        infos_paired = pd.DataFrame(index=range(HTN_num*2),columns=infos.columns)
+        
+        #先将所有HTN的赋值给 paied 的前HTN_num个 
+        #要确保所有INDEX都是对用着self.datas self.labels self.infos 的index
+        datas_paired[:HTN_num] = datas[HTN_index]# type: ignore        
+        labels_paired[:HTN_num] = labels[HTN_index]
+        infos_paired.iloc[:HTN_num] = infos[infos['diagnose'] == 1]
+        for i in range(HTN_num):
+            info = infos_paired.iloc[i]
+            age = info.ages
+            gender = info.gender
+            candidate_index = (infos[(infos['diagnose'] == 0) & 
+                                    (infos['gender'] == gender ) &
+                                    ((infos['ages'] > age-6)&(infos['ages'] < age+6))]).index.tolist()
+            if(candidate_index.__len__()>0):
+                sample_index=random.sample(candidate_index,1)[0]
+                
+            else:
+                print('Couldn\'t find such sample like ', age, gender)
+                candidate_index = (infos[(infos['diagnose'] == 0) & 
+                                    (infos['gender'] == gender )]).index.tolist()
+                sample_index=random.sample(candidate_index,1)[0]
+            buffer= infos.iloc[sample_index]
+            raw = i + HTN_num # 行号
+            datas_paired[raw] = datas[sample_index]
+            labels_paired[raw] = labels[sample_index]
+            infos_paired.iloc[raw] = infos.iloc[sample_index]
+            # print(infos_paired.iloc[raw])
+        self.datas_paired = datas_paired.float()
+        self.labels_paired = labels_paired.long()
+        self.infos_paired = infos_paired
+        # print("{:^10} {:^10} {:^10}".format('  ','ECGs','Labels'))
+        # print("{:^10} {:^10} {:^10}".format('PairShape', str(self.datas_paired.shape),str(self.labels_paired.shape)))
+        # print("{:^10} {:^10} {:^10}".format('  ','HTN','NHTN'))
+        # print("{:^10} {:^10} {:^10}".format('Nums', ((self.labels_paired == 1).sum()),((self.labels_paired == 0).sum())))
+        # print('Dataset Len:',self.len)
     
 
 if __name__ == '__main__':

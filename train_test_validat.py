@@ -16,19 +16,23 @@ def tarinning_one_flod(fold,Model,train_dataset,val_dataset,test_dataset,writer,
                         weight_decay=1e-3,
                         num_workers = 0,
                         shuffle = True,
-                        onehot_lable = False
+                        onehot_lable = False,
+                        pair_flag = False
                         ):
-    target = train_dataset.labels
-    class_sample_count = np.array([len(np.where(target == t)[0]) for t in np.unique(target)])
-    weight = 1. / class_sample_count
-    samples_weight = np.array([weight[t] for t in target])
-    samples_weight = torch.from_numpy(samples_weight)
-    samples_weight = samples_weight.double()
-    sampler = Data.WeightedRandomSampler(samples_weight, len(samples_weight))  # type: ignore
 
-    train_dataloader = Data.DataLoader(dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=False,num_workers=num_workers,pin_memory=True,sampler = sampler)
+    if(not pair_flag):
+        target = train_dataset.labels
+        class_sample_count = np.array([len(np.where(target == t)[0]) for t in np.unique(target)])
+        weight = 1. / class_sample_count
+        samples_weight = np.array([weight[t] for t in target])
+        samples_weight = torch.from_numpy(samples_weight)
+        samples_weight = samples_weight.double()
+        sampler = Data.WeightedRandomSampler(samples_weight, len(samples_weight))  # type: ignore
+        train_dataloader = Data.DataLoader(dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=False,num_workers=num_workers,pin_memory=True,sampler = sampler)#
+        
     valid_dataloader = Data.DataLoader(dataset=val_dataset, batch_size=BATCH_SIZE, shuffle=False,num_workers=num_workers,pin_memory=True)
     test_dataloader = Data.DataLoader(dataset=test_dataset, batch_size=BATCH_SIZE, shuffle=False,num_workers=num_workers,pin_memory=True)
+    
     early_stopping = EarlyStopping(PATIENCE, verbose=True, model_path=save_model_path, delta=0, positive=False)
     optimizer  = torch.optim.Adam(Model.parameters(), lr=LR_MAX,weight_decay=weight_decay) 
     criterion =  criterion.to(DEVICE)
@@ -43,6 +47,9 @@ def tarinning_one_flod(fold,Model,train_dataset,val_dataset,test_dataset,writer,
     best_valida_loss = np.inf
     Model.to(DEVICE)
     for epoch in range(1,EPOCHS):
+        if(pair_flag):
+            train_dataloader = Data.DataLoader(dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=shuffle,num_workers=num_workers,pin_memory=True)#
+        
         time_all=0
         start_time = time.time()
         
@@ -74,6 +81,9 @@ def tarinning_one_flod(fold,Model,train_dataset,val_dataset,test_dataset,writer,
         if(early_stopping(validate_loss,Model,fold)):
             print(" "*20+"Early stopping...")
             break
+        
+        if(pair_flag):
+            train_dataset.pair_() #重新配对一遍
         
     # 计算此flod 在testset上的效果
     best_model_path = save_model_path+'/parameter_EarlyStoping_' + str(fold) + '.pt' #此fold最优参数
