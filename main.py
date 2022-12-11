@@ -86,9 +86,10 @@ if __name__ == '__main__':
         val_labels = ALLDataset.TVLabels[val_index]
         val_infos = ALLDataset.TVDf.iloc[val_index]
         val_dataset =  ECGDataset.ECG_Dataset(val_datas,val_labels,val_infos,preprocess = True,onehot_lable = False)  # type: ignore
-        weights = torch.tensor([1.0/7.0, 8.0/7.0]).to(DEVICE)#device表示GPU显卡
-        criterion = nn.CrossEntropyLoss(weight=weights)  # 设置损失函数
+        # weights = torch.tensor([1.0/7.0, 8.0/7.0]).to(DEVICE)#device表示GPU显卡
+        # criterion = nn.CrossEntropyLoss(weight=weights)  # 设置损失函数
         # criterion = FocalLoss(class_num=2,alpha=torch.Tensor([0.25,0.75]))
+        criterion = nn.CrossEntropyLoss()
         train_loss,train_acc,validate_loss,validate_acc,test_loss,test_acc = tarinning_one_flod(fold,NET[fold]
                                                                                                 ,train_dataset,val_dataset,test_dataset
                                                                                                 ,writer,model_path

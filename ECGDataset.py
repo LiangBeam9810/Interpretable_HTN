@@ -5,6 +5,7 @@ import torch
 from torch.utils.data.dataset import Dataset
 from tqdm import tqdm
 import random
+from scipy.signal import butter, lfilter
 
 class ECG_Dataset_Init():
     def __init__(self,data_root:str,filter_age = 0,rebuild_flage = False): 
@@ -236,6 +237,11 @@ class ECG_Dataset(Dataset):
             self.pair_()
             self.len = self.datas_paired.shape[0]
     def preprocess(self):
+        filter_lowcut = 1.0
+        filter_highcut = 47.0
+        filter_order = 1
+        for i in tqdm(range(len(self.datas))):
+            self.datas[i] = bandpass_filter(self.datas[i], lowcut=filter_lowcut, highcut=filter_highcut, signal_freq=500, filter_order=filter_order)# type: ignore        
         self.datas = self.amplitude_limiting(self.datas)
     def __getitem__(self,index):
         # print(index)
@@ -306,7 +312,23 @@ class ECG_Dataset(Dataset):
         # print("{:^10} {:^10} {:^10}".format('Nums', ((self.labels_paired == 1).sum()),((self.labels_paired == 0).sum())))
         # print('Dataset Len:',self.len)
     
-
+def bandpass_filter(data, lowcut, highcut, signal_freq, filter_order):
+        """
+        Method responsible for creating and applying Butterworth filter.
+        :param deque data: raw data
+        :param float lowcut: filter lowcut frequency value
+        :param float highcut: filter highcut frequency value
+        :param int signal_freq: signal frequency in samples per second (Hz)
+        :param int filter_order: filter order
+        :return array: filtered data
+        """
+        nyquist_freq = 0.5 * signal_freq
+        low = lowcut / nyquist_freq
+        high = highcut / nyquist_freq
+        b, a = butter(filter_order, [low, high], btype="band")
+        y = lfilter(b, a, data)
+        return y
+    
 if __name__ == '__main__':
     ALLDataset = ECG_Dataset_Init('./data_like_pxl')
     
