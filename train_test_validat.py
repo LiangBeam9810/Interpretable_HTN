@@ -21,14 +21,14 @@ def tarinning_one_flod(fold,Model,train_dataset,val_dataset,test_dataset,writer,
                         ):
 
     if(not pair_flag):
-        target = train_dataset.labels
-        class_sample_count = np.array([len(np.where(target == t)[0]) for t in np.unique(target)])
-        weight = 1. / class_sample_count
-        samples_weight = np.array([weight[t] for t in target])
-        samples_weight = torch.from_numpy(samples_weight)
-        samples_weight = samples_weight.double()
-        sampler = Data.WeightedRandomSampler(samples_weight, len(samples_weight))  # type: ignore
-        train_dataloader = Data.DataLoader(dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=False,num_workers=num_workers,pin_memory=True,sampler = sampler)#
+        # target = train_dataset.labels
+        # class_sample_count = np.array([len(np.where(target == t)[0]) for t in np.unique(target)])
+        # weight = 1. / class_sample_count
+        # samples_weight = np.array([weight[t] for t in target])
+        # samples_weight = torch.from_numpy(samples_weight)
+        # samples_weight = samples_weight.double()
+        # sampler = Data.WeightedRandomSampler(samples_weight, len(samples_weight))  # type: ignore
+        train_dataloader = Data.DataLoader(dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=False,num_workers=num_workers,pin_memory=True)#
         
     valid_dataloader = Data.DataLoader(dataset=val_dataset, batch_size=BATCH_SIZE, shuffle=False,num_workers=num_workers,pin_memory=True)
     test_dataloader = Data.DataLoader(dataset=test_dataset, batch_size=BATCH_SIZE, shuffle=False,num_workers=num_workers,pin_memory=True)

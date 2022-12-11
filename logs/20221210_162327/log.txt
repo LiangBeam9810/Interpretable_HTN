@@ -1,0 +1,1129 @@
+
+Training..
+
+          Fold 0 of 5 :
+                    - Epoch: 1 - Train_loss: 0.69905 - Train_acc: 0.47603 -  - Val_loss: 0.68277 - Val_acc: 0.86660  - T_Time: 110.40370 LR：0.00000005
+                    Validate:  0.4726180546307135 
+                     [1445   27] 
+                     [198   2]
+                    --------------------------------------------------
+
+                    Validation  score to (inf --> -0.68276822).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 2 - Train_loss: 0.70170 - Train_acc: 0.47042 -  - Val_loss: 0.69776 - Val_acc: 0.49646  - T_Time: 105.15571 LR：0.00000005
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 3 - Train_loss: 0.69714 - Train_acc: 0.48656 -  - Val_loss: 0.69478 - Val_acc: 0.54444  - T_Time: 105.05317 LR：0.00000005
+                    EarlyStopping counter: 2 out of 50
+
+                    - Epoch: 4 - Train_loss: 0.69636 - Train_acc: 0.49673 -  - Val_loss: 0.69435 - Val_acc: 0.54628  - T_Time: 105.06879 LR：0.00000005
+                    EarlyStopping counter: 3 out of 50
+
+                    - Epoch: 5 - Train_loss: 0.69542 - Train_acc: 0.50706 -  - Val_loss: 0.69382 - Val_acc: 0.55934  - T_Time: 105.54951 LR：0.00000005
+                    EarlyStopping counter: 4 out of 50
+
+                    - Epoch: 6 - Train_loss: 0.71671 - Train_acc: 0.78323 -  - Val_loss: 0.79759 - Val_acc: 0.78636  - T_Time: 107.14373 LR：0.00250000
+                    EarlyStopping counter: 5 out of 50
+
+                    - Epoch: 7 - Train_loss: 0.73893 - Train_acc: 0.75764 -  - Val_loss: 6.93804 - Val_acc: 0.27923  - T_Time: 106.01629 LR：0.00249997
+                    EarlyStopping counter: 6 out of 50
+
+                    - Epoch: 8 - Train_loss: 0.66525 - Train_acc: 0.78788 -  - Val_loss: 0.64246 - Val_acc: 0.65278  - T_Time: 106.03958 LR：0.00249990
+                    Validate:  0.5156053169439448 
+                     [987 485] 
+                     [ 98 102]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.68276822 --> -0.64245731).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 9 - Train_loss: 0.68260 - Train_acc: 0.76682 -  - Val_loss: 0.64779 - Val_acc: 0.88049  - T_Time: 106.35680 LR：0.00249977
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 10 - Train_loss: 0.66334 - Train_acc: 0.83580 -  - Val_loss: 2.28697 - Val_acc: 0.88049  - T_Time: 106.58153 LR：0.00249960
+                    EarlyStopping counter: 2 out of 50
+
+                    - Epoch: 11 - Train_loss: 0.68943 - Train_acc: 0.80992 -  - Val_loss: 0.62905 - Val_acc: 0.85941  - T_Time: 106.65166 LR：0.00249937
+                    Validate:  0.5317670036764706 
+                     [1419   53] 
+                     [181  19]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.64245731 --> -0.62904738).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 12 - Train_loss: 0.64344 - Train_acc: 0.80576 -  - Val_loss: 0.74614 - Val_acc: 0.85669  - T_Time: 106.74515 LR：0.00249910
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 13 - Train_loss: 0.65004 - Train_acc: 0.80817 -  - Val_loss: 0.66813 - Val_acc: 0.87614  - T_Time: 105.83246 LR：0.00249877
+                    EarlyStopping counter: 2 out of 50
+
+                    - Epoch: 14 - Train_loss: 0.64831 - Train_acc: 0.80054 -  - Val_loss: 0.62648 - Val_acc: 0.87159  - T_Time: 108.38075 LR：0.00249839
+                    Validate:  0.49605725220268176 
+                     [1450   22] 
+                     [193   7]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.62904738 --> -0.62647788).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 15 - Train_loss: 0.64878 - Train_acc: 0.81843 -  - Val_loss: 0.91326 - Val_acc: 0.87809  - T_Time: 105.46696 LR：0.00249797
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 16 - Train_loss: 0.63641 - Train_acc: 0.80255 -  - Val_loss: 0.62886 - Val_acc: 0.86622  - T_Time: 105.60773 LR：0.00249749
+                    EarlyStopping counter: 2 out of 50
+
+                    - Epoch: 17 - Train_loss: 0.62419 - Train_acc: 0.82107 -  - Val_loss: 0.59899 - Val_acc: 0.82620  - T_Time: 106.70474 LR：0.00249696
+                    Validate:  0.608361333677953 
+                     [1315  157] 
+                     [133  67]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.62647788 --> -0.59899465).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 18 - Train_loss: 0.64326 - Train_acc: 0.77812 -  - Val_loss: 0.61109 - Val_acc: 0.82481  - T_Time: 107.09820 LR：0.00249638
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 19 - Train_loss: 0.61347 - Train_acc: 0.80806 -  - Val_loss: 0.62004 - Val_acc: 0.87386  - T_Time: 107.02634 LR：0.00249576
+                    EarlyStopping counter: 2 out of 50
+
+                    - Epoch: 20 - Train_loss: 0.63031 - Train_acc: 0.80963 -  - Val_loss: 0.56627 - Val_acc: 0.83258  - T_Time: 106.60770 LR：0.00249508
+                    Validate:  0.6156473308112652 
+                     [1324  148] 
+                     [132  68]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.59899465 --> -0.56627018).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 21 - Train_loss: 0.64623 - Train_acc: 0.79370 -  - Val_loss: 0.58418 - Val_acc: 0.87582  - T_Time: 107.12050 LR：0.00249435
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 22 - Train_loss: 0.61113 - Train_acc: 0.83077 -  - Val_loss: 0.58441 - Val_acc: 0.85657  - T_Time: 106.34158 LR：0.00249357
+                    EarlyStopping counter: 2 out of 50
+
+                    - Epoch: 23 - Train_loss: 0.62288 - Train_acc: 0.81164 -  - Val_loss: 0.68045 - Val_acc: 0.88390  - T_Time: 108.45648 LR：0.00249275
+                    EarlyStopping counter: 3 out of 50
+
+                    - Epoch: 24 - Train_loss: 0.64062 - Train_acc: 0.80266 -  - Val_loss: 0.56046 - Val_acc: 0.87355  - T_Time: 106.54555 LR：0.00249187
+                    Validate:  0.5629815278938086 
+                     [1432   40] 
+                     [174  26]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.56627018 --> -0.56046200).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 25 - Train_loss: 0.62328 - Train_acc: 0.81507 -  - Val_loss: 0.54768 - Val_acc: 0.88049  - T_Time: 107.60743 LR：0.00249094
+                    Validate:  0.6056525886397515 
+                     [1430   42] 
+                     [161  39]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.56046200 --> -0.54767735).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 26 - Train_loss: 0.60251 - Train_acc: 0.79960 -  - Val_loss: 0.53666 - Val_acc: 0.82841  - T_Time: 106.50369 LR：0.00248996
+                    Validate:  0.6256874805266741 
+                     [1302  170] 
+                     [121  79]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.54767735 --> -0.53666328).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 27 - Train_loss: 0.61252 - Train_acc: 0.80133 -  - Val_loss: 0.52442 - Val_acc: 0.82746  - T_Time: 105.90608 LR：0.00248894
+                    Validate:  0.6429100868101358 
+                     [1292  180] 
+                     [109  91]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.53666328 --> -0.52441756).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 28 - Train_loss: 0.61041 - Train_acc: 0.79113 -  - Val_loss: 0.55501 - Val_acc: 0.83668  - T_Time: 104.60682 LR：0.00248786
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 29 - Train_loss: 0.60493 - Train_acc: 0.79672 -  - Val_loss: 0.55175 - Val_acc: 0.86218  - T_Time: 106.90402 LR：0.00248673
+                    EarlyStopping counter: 2 out of 50
+
+                    - Epoch: 30 - Train_loss: 0.59865 - Train_acc: 0.80482 -  - Val_loss: 0.55921 - Val_acc: 0.87936  - T_Time: 106.07200 LR：0.00248556
+                    EarlyStopping counter: 3 out of 50
+
+                    - Epoch: 31 - Train_loss: 0.59810 - Train_acc: 0.78856 -  - Val_loss: 0.53263 - Val_acc: 0.79192  - T_Time: 106.66841 LR：0.00248433
+                    EarlyStopping counter: 4 out of 50
+
+                    - Epoch: 32 - Train_loss: 0.59595 - Train_acc: 0.80240 -  - Val_loss: 0.53213 - Val_acc: 0.85568  - T_Time: 106.34643 LR：0.00248305
+                    EarlyStopping counter: 5 out of 50
+
+                    - Epoch: 33 - Train_loss: 0.59870 - Train_acc: 0.80124 -  - Val_loss: 0.54441 - Val_acc: 0.83510  - T_Time: 108.44749 LR：0.00248173
+                    EarlyStopping counter: 6 out of 50
+
+                    - Epoch: 34 - Train_loss: 0.59601 - Train_acc: 0.79047 -  - Val_loss: 0.54422 - Val_acc: 0.86774  - T_Time: 106.69053 LR：0.00248035
+                    EarlyStopping counter: 7 out of 50
+
+                    - Epoch: 35 - Train_loss: 0.59142 - Train_acc: 0.79560 -  - Val_loss: 0.58757 - Val_acc: 0.64716  - T_Time: 106.18560 LR：0.00247893
+                    EarlyStopping counter: 8 out of 50
+
+                    - Epoch: 36 - Train_loss: 0.58438 - Train_acc: 0.79894 -  - Val_loss: 0.51919 - Val_acc: 0.79956  - T_Time: 106.09905 LR：0.00247746
+                    Validate:  0.6366426044767717 
+                     [1233  239] 
+                     [ 93 107]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.52441756 --> -0.51919364).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 37 - Train_loss: 0.58021 - Train_acc: 0.80445 -  - Val_loss: 0.53030 - Val_acc: 0.83788  - T_Time: 104.75955 LR：0.00247593
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 38 - Train_loss: 0.58077 - Train_acc: 0.78886 -  - Val_loss: 0.54063 - Val_acc: 0.81995  - T_Time: 108.49865 LR：0.00247436
+                    EarlyStopping counter: 2 out of 50
+
+                    - Epoch: 39 - Train_loss: 0.58268 - Train_acc: 0.79753 -  - Val_loss: 0.52167 - Val_acc: 0.82500  - T_Time: 105.37192 LR：0.00247274
+                    EarlyStopping counter: 3 out of 50
+
+                    - Epoch: 40 - Train_loss: 0.58038 - Train_acc: 0.82120 -  - Val_loss: 0.53295 - Val_acc: 0.77588  - T_Time: 106.55905 LR：0.00247107
+                    EarlyStopping counter: 4 out of 50
+
+                    - Epoch: 41 - Train_loss: 0.56869 - Train_acc: 0.79700 -  - Val_loss: 0.52445 - Val_acc: 0.80354  - T_Time: 105.99109 LR：0.00246935
+                    EarlyStopping counter: 5 out of 50
+
+                    - Epoch: 42 - Train_loss: 0.56686 - Train_acc: 0.79931 -  - Val_loss: 0.53419 - Val_acc: 0.83258  - T_Time: 105.95306 LR：0.00246758
+                    EarlyStopping counter: 6 out of 50
+
+                    - Epoch: 43 - Train_loss: 0.57179 - Train_acc: 0.79883 -  - Val_loss: 0.52349 - Val_acc: 0.82607  - T_Time: 105.29976 LR：0.00246576
+                    EarlyStopping counter: 7 out of 50
+
+                    - Epoch: 44 - Train_loss: 0.56419 - Train_acc: 0.80442 -  - Val_loss: 0.56407 - Val_acc: 0.87753  - T_Time: 105.57057 LR：0.00246390
+                    EarlyStopping counter: 8 out of 50
+
+                    - Epoch: 45 - Train_loss: 0.56284 - Train_acc: 0.81260 -  - Val_loss: 0.55572 - Val_acc: 0.86364  - T_Time: 106.10811 LR：0.00246198
+                    EarlyStopping counter: 9 out of 50
+
+                    - Epoch: 46 - Train_loss: 0.55948 - Train_acc: 0.80738 -  - Val_loss: 0.55180 - Val_acc: 0.76660  - T_Time: 106.37721 LR：0.00246002
+                    EarlyStopping counter: 10 out of 50
+
+                    - Epoch: 47 - Train_loss: 0.55693 - Train_acc: 0.80505 -  - Val_loss: 0.53553 - Val_acc: 0.83996  - T_Time: 107.68807 LR：0.00245800
+                    EarlyStopping counter: 11 out of 50
+
+                    - Epoch: 48 - Train_loss: 0.54956 - Train_acc: 0.80311 -  - Val_loss: 0.53442 - Val_acc: 0.83807  - T_Time: 106.92112 LR：0.00245594
+                    EarlyStopping counter: 12 out of 50
+
+                    - Epoch: 49 - Train_loss: 0.54300 - Train_acc: 0.81650 -  - Val_loss: 0.61135 - Val_acc: 0.85795  - T_Time: 105.12610 LR：0.00245383
+                    EarlyStopping counter: 13 out of 50
+
+                    - Epoch: 50 - Train_loss: 0.54148 - Train_acc: 0.81711 -  - Val_loss: 0.54844 - Val_acc: 0.81591  - T_Time: 105.60690 LR：0.00245167
+                    EarlyStopping counter: 14 out of 50
+
+                    - Epoch: 51 - Train_loss: 0.53820 - Train_acc: 0.81594 -  - Val_loss: 0.55208 - Val_acc: 0.80960  - T_Time: 106.69065 LR：0.00244947
+                    EarlyStopping counter: 15 out of 50
+
+                    - Epoch: 52 - Train_loss: 0.54376 - Train_acc: 0.80925 -  - Val_loss: 0.56975 - Val_acc: 0.83984  - T_Time: 106.95528 LR：0.00244721
+                    EarlyStopping counter: 16 out of 50
+
+                    - Epoch: 53 - Train_loss: 0.52754 - Train_acc: 0.81661 -  - Val_loss: 0.52550 - Val_acc: 0.80126  - T_Time: 108.25391 LR：0.00244491
+                    EarlyStopping counter: 17 out of 50
+
+                    - Epoch: 54 - Train_loss: 0.52529 - Train_acc: 0.81256 -  - Val_loss: 0.54985 - Val_acc: 0.84943  - T_Time: 106.26119 LR：0.00244256
+                    EarlyStopping counter: 18 out of 50
+
+                    - Epoch: 55 - Train_loss: 0.51755 - Train_acc: 0.82250 -  - Val_loss: 0.54249 - Val_acc: 0.83283  - T_Time: 106.73920 LR：0.00244016
+                    EarlyStopping counter: 19 out of 50
+
+                    - Epoch: 56 - Train_loss: 0.51835 - Train_acc: 0.82286 -  - Val_loss: 0.54392 - Val_acc: 0.81275  - T_Time: 106.38401 LR：0.00243771
+                    EarlyStopping counter: 20 out of 50
+
+                    - Epoch: 57 - Train_loss: 0.51799 - Train_acc: 0.82060 -  - Val_loss: 0.59144 - Val_acc: 0.87241  - T_Time: 107.46625 LR：0.00243522
+                    EarlyStopping counter: 21 out of 50
+
+                    - Epoch: 58 - Train_loss: 0.51532 - Train_acc: 0.82250 -  - Val_loss: 0.57334 - Val_acc: 0.79558  - T_Time: 105.85139 LR：0.00243268
+                    EarlyStopping counter: 22 out of 50
+
+                    - Epoch: 59 - Train_loss: 0.50950 - Train_acc: 0.81997 -  - Val_loss: 0.60007 - Val_acc: 0.86799  - T_Time: 108.06204 LR：0.00243009
+                    EarlyStopping counter: 23 out of 50
+
+                    - Epoch: 60 - Train_loss: 0.50918 - Train_acc: 0.82523 -  - Val_loss: 0.54849 - Val_acc: 0.81604  - T_Time: 107.57839 LR：0.00242745
+                    EarlyStopping counter: 24 out of 50
+
+                    - Epoch: 61 - Train_loss: 0.49632 - Train_acc: 0.83023 -  - Val_loss: 0.55620 - Val_acc: 0.81117  - T_Time: 106.97398 LR：0.00242477
+                    EarlyStopping counter: 25 out of 50
+
+                    - Epoch: 62 - Train_loss: 0.51029 - Train_acc: 0.83460 -  - Val_loss: 0.58695 - Val_acc: 0.85644  - T_Time: 106.74386 LR：0.00242204
+                    EarlyStopping counter: 26 out of 50
+
+                    - Epoch: 63 - Train_loss: 0.50504 - Train_acc: 0.82253 -  - Val_loss: 0.59892 - Val_acc: 0.87683  - T_Time: 107.38120 LR：0.00241926
+                    EarlyStopping counter: 27 out of 50
+
+                    - Epoch: 64 - Train_loss: 0.48380 - Train_acc: 0.83548 -  - Val_loss: 0.65209 - Val_acc: 0.86168  - T_Time: 104.74721 LR：0.00241643
+                    EarlyStopping counter: 28 out of 50
+
+                    - Epoch: 65 - Train_loss: 0.49367 - Train_acc: 0.83180 -  - Val_loss: 0.57129 - Val_acc: 0.85246  - T_Time: 106.68148 LR：0.00241356
+                    EarlyStopping counter: 29 out of 50
+
+                    - Epoch: 66 - Train_loss: 0.49089 - Train_acc: 0.82856 -  - Val_loss: 0.56802 - Val_acc: 0.79527  - T_Time: 106.69999 LR：0.00241064
+                    EarlyStopping counter: 30 out of 50
+
+                    - Epoch: 67 - Train_loss: 0.47695 - Train_acc: 0.83220 -  - Val_loss: 0.63915 - Val_acc: 0.86149  - T_Time: 105.83994 LR：0.00240767
+                    EarlyStopping counter: 31 out of 50
+
+                    - Epoch: 68 - Train_loss: 0.47233 - Train_acc: 0.83150 -  - Val_loss: 0.56353 - Val_acc: 0.81572  - T_Time: 106.28546 LR：0.00240466
+                    EarlyStopping counter: 32 out of 50
+
+                    - Epoch: 69 - Train_loss: 0.46847 - Train_acc: 0.83339 -  - Val_loss: 0.63055 - Val_acc: 0.85852  - T_Time: 106.70819 LR：0.00240160
+                    EarlyStopping counter: 33 out of 50
+
+                    - Epoch: 70 - Train_loss: 0.46987 - Train_acc: 0.83400 -  - Val_loss: 0.60663 - Val_acc: 0.84577  - T_Time: 106.46515 LR：0.00239850
+                    EarlyStopping counter: 34 out of 50
+
+                    - Epoch: 71 - Train_loss: 0.46141 - Train_acc: 0.84293 -  - Val_loss: 0.66621 - Val_acc: 0.87014  - T_Time: 107.61287 LR：0.00239535
+                    EarlyStopping counter: 35 out of 50
+
+                    - Epoch: 72 - Train_loss: 0.46300 - Train_acc: 0.84010 -  - Val_loss: 0.66268 - Val_acc: 0.85297  - T_Time: 106.00027 LR：0.00239215
+                    EarlyStopping counter: 36 out of 50
+
+                    - Epoch: 73 - Train_loss: 0.45318 - Train_acc: 0.84959 -  - Val_loss: 0.70628 - Val_acc: 0.87115  - T_Time: 105.91071 LR：0.00238890
+                    EarlyStopping counter: 37 out of 50
+
+                    - Epoch: 74 - Train_loss: 0.44958 - Train_acc: 0.84413 -  - Val_loss: 0.65146 - Val_acc: 0.78409  - T_Time: 108.05428 LR：0.00238562
+                    EarlyStopping counter: 38 out of 50
+
+                    - Epoch: 75 - Train_loss: 0.45957 - Train_acc: 0.84256 -  - Val_loss: 0.72224 - Val_acc: 0.87437  - T_Time: 107.05495 LR：0.00238228
+                    EarlyStopping counter: 39 out of 50
+
+                    - Epoch: 76 - Train_loss: 0.43941 - Train_acc: 0.85842 -  - Val_loss: 0.75260 - Val_acc: 0.87153  - T_Time: 107.72603 LR：0.00237890
+                    EarlyStopping counter: 40 out of 50
+
+                    - Epoch: 77 - Train_loss: 0.45237 - Train_acc: 0.84370 -  - Val_loss: 0.71895 - Val_acc: 0.86654  - T_Time: 106.95798 LR：0.00237548
+                    EarlyStopping counter: 41 out of 50
+
+                    - Epoch: 78 - Train_loss: 0.45684 - Train_acc: 0.83717 -  - Val_loss: 0.72286 - Val_acc: 0.84962  - T_Time: 105.84375 LR：0.00237200
+                    EarlyStopping counter: 42 out of 50
+
+                    - Epoch: 79 - Train_loss: 0.43552 - Train_acc: 0.85101 -  - Val_loss: 0.73211 - Val_acc: 0.86913  - T_Time: 105.08530 LR：0.00236849
+                    EarlyStopping counter: 43 out of 50
+
+                    - Epoch: 80 - Train_loss: 0.44029 - Train_acc: 0.84822 -  - Val_loss: 0.68985 - Val_acc: 0.87109  - T_Time: 105.82896 LR：0.00236493
+                    EarlyStopping counter: 44 out of 50
+
+                    - Epoch: 81 - Train_loss: 0.44330 - Train_acc: 0.85098 -  - Val_loss: 0.66932 - Val_acc: 0.86515  - T_Time: 107.47623 LR：0.00236132
+                    EarlyStopping counter: 45 out of 50
+
+                    - Epoch: 82 - Train_loss: 0.43666 - Train_acc: 0.85004 -  - Val_loss: 0.78235 - Val_acc: 0.87481  - T_Time: 106.65573 LR：0.00235767
+                    EarlyStopping counter: 46 out of 50
+
+                    - Epoch: 83 - Train_loss: 0.42997 - Train_acc: 0.85153 -  - Val_loss: 0.77002 - Val_acc: 0.86900  - T_Time: 106.37517 LR：0.00235398
+                    EarlyStopping counter: 47 out of 50
+
+                    - Epoch: 84 - Train_loss: 0.42423 - Train_acc: 0.84929 -  - Val_loss: 0.76295 - Val_acc: 0.87311  - T_Time: 105.93597 LR：0.00235024
+                    EarlyStopping counter: 48 out of 50
+
+                    - Epoch: 85 - Train_loss: 0.41347 - Train_acc: 0.85965 -  - Val_loss: 0.80401 - Val_acc: 0.87210  - T_Time: 107.23310 LR：0.00234645
+                    EarlyStopping counter: 49 out of 50
+
+                    - Epoch: 86 - Train_loss: 0.41331 - Train_acc: 0.85834 -  - Val_loss: 0.83036 - Val_acc: 0.87538  - T_Time: 107.03558 LR：0.00234263
+                    EarlyStopping counter: 50 out of 50
+
+                    Early stopping...
+          validate:  0.6366426044767717 
+           [1233  239] 
+           [ 93 107]
+          test:  0.5531190068329168 
+           [4235 1010] 
+           [171 175]
+          Fold 0 Training Finished
+          ==================================================
+          ==================================================
+          train_loss 0.5749934826578412           train_acc 0.8014125094482237 
+          validate_loss 0.519193635745482           validate_acc 0.7995580808080809 
+          test_loss 0.5761003409113202           test_acc 0.788713339640492
+          ==================================================
+          ==================================================
+          Fold 1 of 5 :
+                    - Epoch: 1 - Train_loss: 0.70564 - Train_acc: 0.41526 -  - Val_loss: 0.69180 - Val_acc: 0.64912  - T_Time: 106.68624 LR：0.00000005
+                    Validate:  0.47465147212713743 
+                     [1024  448] 
+                     [139  61]
+                    --------------------------------------------------
+
+                    Validation  score to (inf --> -0.69179660).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 2 - Train_loss: 0.70597 - Train_acc: 0.42042 -  - Val_loss: 0.69242 - Val_acc: 0.55795  - T_Time: 107.07036 LR：0.00000005
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 3 - Train_loss: 0.70849 - Train_acc: 0.42093 -  - Val_loss: 0.69900 - Val_acc: 0.37620  - T_Time: 106.08104 LR：0.00000005
+                    EarlyStopping counter: 2 out of 50
+
+                    - Epoch: 4 - Train_loss: 0.70498 - Train_acc: 0.43532 -  - Val_loss: 0.69865 - Val_acc: 0.38554  - T_Time: 106.48693 LR：0.00000005
+                    EarlyStopping counter: 3 out of 50
+
+                    - Epoch: 5 - Train_loss: 0.70211 - Train_acc: 0.44432 -  - Val_loss: 0.69603 - Val_acc: 0.45795  - T_Time: 107.70145 LR：0.00000005
+                    EarlyStopping counter: 4 out of 50
+
+                    - Epoch: 6 - Train_loss: 0.77236 - Train_acc: 0.81703 -  - Val_loss: 0.70779 - Val_acc: 0.84596  - T_Time: 107.16218 LR：0.00250000
+                    EarlyStopping counter: 5 out of 50
+
+                    - Epoch: 7 - Train_loss: 0.68630 - Train_acc: 0.83107 -  - Val_loss: 0.74393 - Val_acc: 0.86528  - T_Time: 107.22594 LR：0.00249997
+                    EarlyStopping counter: 6 out of 50
+
+                    - Epoch: 8 - Train_loss: 0.68220 - Train_acc: 0.80410 -  - Val_loss: 0.64758 - Val_acc: 0.86313  - T_Time: 106.07393 LR：0.00249990
+                    Validate:  0.515420374757034 
+                     [1434   38] 
+                     [187  13]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.69179660 --> -0.64758005).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 9 - Train_loss: 0.67262 - Train_acc: 0.78538 -  - Val_loss: 1.82588 - Val_acc: 0.44981  - T_Time: 105.35008 LR：0.00249977
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 10 - Train_loss: 0.67501 - Train_acc: 0.79421 -  - Val_loss: 0.74237 - Val_acc: 0.63460  - T_Time: 106.81729 LR：0.00249960
+                    EarlyStopping counter: 2 out of 50
+
+                    - Epoch: 11 - Train_loss: 0.67030 - Train_acc: 0.76960 -  - Val_loss: 0.68405 - Val_acc: 0.85960  - T_Time: 106.71286 LR：0.00249937
+                    EarlyStopping counter: 3 out of 50
+
+                    - Epoch: 12 - Train_loss: 0.65226 - Train_acc: 0.80949 -  - Val_loss: 0.69540 - Val_acc: 0.87689  - T_Time: 105.49801 LR：0.00249910
+                    EarlyStopping counter: 4 out of 50
+
+                    - Epoch: 13 - Train_loss: 0.63026 - Train_acc: 0.81351 -  - Val_loss: 1.05629 - Val_acc: 0.70284  - T_Time: 105.94026 LR：0.00249877
+                    EarlyStopping counter: 5 out of 50
+
+                    - Epoch: 14 - Train_loss: 0.66003 - Train_acc: 0.79664 -  - Val_loss: 0.66655 - Val_acc: 0.74779  - T_Time: 106.96838 LR：0.00249839
+                    EarlyStopping counter: 6 out of 50
+
+                    - Epoch: 15 - Train_loss: 0.64466 - Train_acc: 0.80316 -  - Val_loss: 0.62757 - Val_acc: 0.86951  - T_Time: 105.69306 LR：0.00249797
+                    Validate:  0.5768628194157204 
+                     [1426   46] 
+                     [169  31]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.64758005 --> -0.62756830).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 16 - Train_loss: 0.63354 - Train_acc: 0.79225 -  - Val_loss: 0.66608 - Val_acc: 0.85915  - T_Time: 105.94128 LR：0.00249749
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 17 - Train_loss: 0.63040 - Train_acc: 0.80751 -  - Val_loss: 1.21707 - Val_acc: 0.87563  - T_Time: 108.07804 LR：0.00249696
+                    EarlyStopping counter: 2 out of 50
+
+                    - Epoch: 18 - Train_loss: 0.63309 - Train_acc: 0.81149 -  - Val_loss: 0.67864 - Val_acc: 0.86585  - T_Time: 106.14356 LR：0.00249638
+                    EarlyStopping counter: 3 out of 50
+
+                    - Epoch: 19 - Train_loss: 0.62655 - Train_acc: 0.80025 -  - Val_loss: 0.58387 - Val_acc: 0.70391  - T_Time: 106.63708 LR：0.00249576
+                    Validate:  0.5790884102455167 
+                     [1047  425] 
+                     [ 68 132]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.62756830 --> -0.58386562).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 20 - Train_loss: 0.61764 - Train_acc: 0.81670 -  - Val_loss: 0.71660 - Val_acc: 0.86029  - T_Time: 107.12858 LR：0.00249508
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 21 - Train_loss: 0.60944 - Train_acc: 0.81849 -  - Val_loss: 0.64477 - Val_acc: 0.86938  - T_Time: 107.01420 LR：0.00249435
+                    EarlyStopping counter: 2 out of 50
+
+                    - Epoch: 22 - Train_loss: 0.60693 - Train_acc: 0.81317 -  - Val_loss: 0.60771 - Val_acc: 0.86711  - T_Time: 104.95847 LR：0.00249357
+                    EarlyStopping counter: 3 out of 50
+
+                    - Epoch: 23 - Train_loss: 0.60398 - Train_acc: 0.81323 -  - Val_loss: 0.78038 - Val_acc: 0.86528  - T_Time: 107.54975 LR：0.00249275
+                    EarlyStopping counter: 4 out of 50
+
+                    - Epoch: 24 - Train_loss: 0.59973 - Train_acc: 0.81201 -  - Val_loss: 0.62169 - Val_acc: 0.86654  - T_Time: 106.94508 LR：0.00249187
+                    EarlyStopping counter: 5 out of 50
+
+                    - Epoch: 25 - Train_loss: 0.59174 - Train_acc: 0.81535 -  - Val_loss: 0.60972 - Val_acc: 0.79470  - T_Time: 106.73106 LR：0.00249094
+                    EarlyStopping counter: 6 out of 50
+
+                    - Epoch: 26 - Train_loss: 0.59227 - Train_acc: 0.81290 -  - Val_loss: 0.66267 - Val_acc: 0.86484  - T_Time: 105.22548 LR：0.00248996
+                    EarlyStopping counter: 7 out of 50
+
+                    - Epoch: 27 - Train_loss: 0.58741 - Train_acc: 0.81224 -  - Val_loss: 0.58110 - Val_acc: 0.74716  - T_Time: 105.56524 LR：0.00248894
+                    Validate:  0.5868597695079687 
+                     [1145  327] 
+                     [ 96 104]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.58386562 --> -0.58110052).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 28 - Train_loss: 0.57587 - Train_acc: 0.81547 -  - Val_loss: 0.62554 - Val_acc: 0.86212  - T_Time: 106.60289 LR：0.00248786
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 29 - Train_loss: 0.58660 - Train_acc: 0.81318 -  - Val_loss: 0.57772 - Val_acc: 0.76686  - T_Time: 108.48576 LR：0.00248673
+                    Validate:  0.5966274017453811 
+                     [1181  291] 
+                     [101  99]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.58110052 --> -0.57772025).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 30 - Train_loss: 0.58174 - Train_acc: 0.80784 -  - Val_loss: 0.59248 - Val_acc: 0.81597  - T_Time: 106.79210 LR：0.00248556
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 31 - Train_loss: 0.57603 - Train_acc: 0.81759 -  - Val_loss: 0.58997 - Val_acc: 0.81484  - T_Time: 108.46964 LR：0.00248433
+                    EarlyStopping counter: 2 out of 50
+
+                    - Epoch: 32 - Train_loss: 0.57404 - Train_acc: 0.82253 -  - Val_loss: 0.66160 - Val_acc: 0.87418  - T_Time: 105.06726 LR：0.00248305
+                    EarlyStopping counter: 3 out of 50
+
+                    - Epoch: 33 - Train_loss: 0.57319 - Train_acc: 0.80835 -  - Val_loss: 0.57776 - Val_acc: 0.79609  - T_Time: 105.60205 LR：0.00248173
+                    EarlyStopping counter: 4 out of 50
+
+                    - Epoch: 34 - Train_loss: 0.56392 - Train_acc: 0.81600 -  - Val_loss: 0.60836 - Val_acc: 0.86269  - T_Time: 108.15558 LR：0.00248035
+                    EarlyStopping counter: 5 out of 50
+
+                    - Epoch: 35 - Train_loss: 0.56410 - Train_acc: 0.81819 -  - Val_loss: 0.61829 - Val_acc: 0.87304  - T_Time: 107.46051 LR：0.00247893
+                    EarlyStopping counter: 6 out of 50
+
+                    - Epoch: 36 - Train_loss: 0.55994 - Train_acc: 0.81394 -  - Val_loss: 0.63595 - Val_acc: 0.87702  - T_Time: 108.18856 LR：0.00247746
+                    EarlyStopping counter: 7 out of 50
+
+                    - Epoch: 37 - Train_loss: 0.56142 - Train_acc: 0.80862 -  - Val_loss: 0.60986 - Val_acc: 0.84350  - T_Time: 105.78027 LR：0.00247593
+                    EarlyStopping counter: 8 out of 50
+
+                    - Epoch: 38 - Train_loss: 0.54687 - Train_acc: 0.82328 -  - Val_loss: 0.59491 - Val_acc: 0.74116  - T_Time: 107.75083 LR：0.00247436
+                    EarlyStopping counter: 9 out of 50
+
+                    - Epoch: 39 - Train_loss: 0.54835 - Train_acc: 0.82123 -  - Val_loss: 0.65281 - Val_acc: 0.87506  - T_Time: 108.16931 LR：0.00247274
+                    EarlyStopping counter: 10 out of 50
+
+                    - Epoch: 40 - Train_loss: 0.53695 - Train_acc: 0.82115 -  - Val_loss: 0.65746 - Val_acc: 0.87418  - T_Time: 107.60574 LR：0.00247107
+                    EarlyStopping counter: 11 out of 50
+
+                    - Epoch: 41 - Train_loss: 0.54324 - Train_acc: 0.81693 -  - Val_loss: 0.63449 - Val_acc: 0.87235  - T_Time: 107.03024 LR：0.00246935
+                    EarlyStopping counter: 12 out of 50
+
+                    - Epoch: 42 - Train_loss: 0.51857 - Train_acc: 0.82847 -  - Val_loss: 0.62940 - Val_acc: 0.87759  - T_Time: 106.76737 LR：0.00246758
+                    EarlyStopping counter: 13 out of 50
+
+                    - Epoch: 43 - Train_loss: 0.48440 - Train_acc: 0.84125 -  - Val_loss: 0.84941 - Val_acc: 0.40953  - T_Time: 107.64746 LR：0.00246576
+                    EarlyStopping counter: 14 out of 50
+
+                    - Epoch: 44 - Train_loss: 0.47138 - Train_acc: 0.83971 -  - Val_loss: 0.69007 - Val_acc: 0.87986  - T_Time: 107.64980 LR：0.00246390
+                    EarlyStopping counter: 15 out of 50
+
+                    - Epoch: 45 - Train_loss: 0.45928 - Train_acc: 0.85841 -  - Val_loss: 0.45140 - Val_acc: 0.90593  - T_Time: 105.70702 LR：0.00246198
+                    Validate:  0.7674698357609113 
+                     [1403   69] 
+                     [ 88 112]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.57772025 --> -0.45139623).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 46 - Train_loss: 0.42814 - Train_acc: 0.86467 -  - Val_loss: 1.11559 - Val_acc: 0.87633  - T_Time: 108.23234 LR：0.00246002
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 47 - Train_loss: 0.43763 - Train_acc: 0.85850 -  - Val_loss: 0.45774 - Val_acc: 0.92393  - T_Time: 106.35745 LR：0.00245800
+                    EarlyStopping counter: 2 out of 50
+
+                    - Epoch: 48 - Train_loss: 0.42798 - Train_acc: 0.86292 -  - Val_loss: 0.61267 - Val_acc: 0.89691  - T_Time: 105.93012 LR：0.00245594
+                    EarlyStopping counter: 3 out of 50
+
+                    - Epoch: 49 - Train_loss: 0.40755 - Train_acc: 0.86922 -  - Val_loss: 0.64540 - Val_acc: 0.89261  - T_Time: 107.74528 LR：0.00245383
+                    EarlyStopping counter: 4 out of 50
+
+                    - Epoch: 50 - Train_loss: 0.40296 - Train_acc: 0.87335 -  - Val_loss: 0.42537 - Val_acc: 0.92708  - T_Time: 107.69967 LR：0.00245167
+                    Validate:  0.7891614793879271 
+                     [1453   19] 
+                     [102  98]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.45139623 --> -0.42537142).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 51 - Train_loss: 0.39589 - Train_acc: 0.87044 -  - Val_loss: 0.75860 - Val_acc: 0.88567  - T_Time: 108.99415 LR：0.00244947
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 52 - Train_loss: 0.39301 - Train_acc: 0.87945 -  - Val_loss: 0.42369 - Val_acc: 0.93529  - T_Time: 106.24988 LR：0.00244721
+                    Validate:  0.8121896199747934 
+                     [1457   15] 
+                     [ 94 106]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.42537142 --> -0.42369151).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 53 - Train_loss: 0.37387 - Train_acc: 0.88183 -  - Val_loss: 0.66636 - Val_acc: 0.89293  - T_Time: 108.34604 LR：0.00244491
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 54 - Train_loss: 0.36291 - Train_acc: 0.88987 -  - Val_loss: 0.58591 - Val_acc: 0.91319  - T_Time: 110.86470 LR：0.00244256
+                    EarlyStopping counter: 2 out of 50
+
+                    - Epoch: 55 - Train_loss: 0.36142 - Train_acc: 0.88317 -  - Val_loss: 1.01220 - Val_acc: 0.87689  - T_Time: 109.73730 LR：0.00244016
+                    EarlyStopping counter: 3 out of 50
+
+                    - Epoch: 56 - Train_loss: 0.36593 - Train_acc: 0.88209 -  - Val_loss: 0.96029 - Val_acc: 0.87689  - T_Time: 110.98303 LR：0.00243771
+                    EarlyStopping counter: 4 out of 50
+
+                    - Epoch: 57 - Train_loss: 0.33552 - Train_acc: 0.89661 -  - Val_loss: 0.85509 - Val_acc: 0.88636  - T_Time: 108.67255 LR：0.00243522
+                    EarlyStopping counter: 5 out of 50
+
+                    - Epoch: 58 - Train_loss: 0.32603 - Train_acc: 0.89589 -  - Val_loss: 1.05104 - Val_acc: 0.87746  - T_Time: 109.55435 LR：0.00243268
+                    EarlyStopping counter: 6 out of 50
+
+                    - Epoch: 59 - Train_loss: 0.31446 - Train_acc: 0.90464 -  - Val_loss: 1.02011 - Val_acc: 0.88112  - T_Time: 109.34079 LR：0.00243009
+                    EarlyStopping counter: 7 out of 50
+
+                    - Epoch: 60 - Train_loss: 0.32028 - Train_acc: 0.90278 -  - Val_loss: 1.14988 - Val_acc: 0.88441  - T_Time: 107.98525 LR：0.00242745
+                    EarlyStopping counter: 8 out of 50
+
+                    - Epoch: 61 - Train_loss: 0.31874 - Train_acc: 0.90698 -  - Val_loss: 1.07230 - Val_acc: 0.87961  - T_Time: 110.23746 LR：0.00242477
+                    EarlyStopping counter: 9 out of 50
+
+                    - Epoch: 62 - Train_loss: 0.35002 - Train_acc: 0.89347 -  - Val_loss: 1.14649 - Val_acc: 0.88327  - T_Time: 109.85659 LR：0.00242204
+                    EarlyStopping counter: 10 out of 50
+
+                    - Epoch: 63 - Train_loss: 0.31496 - Train_acc: 0.91204 -  - Val_loss: 1.02517 - Val_acc: 0.87563  - T_Time: 109.18744 LR：0.00241926
+                    EarlyStopping counter: 11 out of 50
+
+                    - Epoch: 64 - Train_loss: 0.30860 - Train_acc: 0.91510 -  - Val_loss: 0.90343 - Val_acc: 0.87689  - T_Time: 109.19058 LR：0.00241643
+                    EarlyStopping counter: 12 out of 50
+
+                    - Epoch: 65 - Train_loss: 0.29127 - Train_acc: 0.91926 -  - Val_loss: 0.95947 - Val_acc: 0.88030  - T_Time: 108.17650 LR：0.00241356
+                    EarlyStopping counter: 13 out of 50
+
+                    - Epoch: 66 - Train_loss: 0.28833 - Train_acc: 0.91978 -  - Val_loss: 1.15273 - Val_acc: 0.87860  - T_Time: 107.82730 LR：0.00241064
+                    EarlyStopping counter: 14 out of 50
+
+                    - Epoch: 67 - Train_loss: 0.28439 - Train_acc: 0.91822 -  - Val_loss: 0.61125 - Val_acc: 0.90398  - T_Time: 108.09625 LR：0.00240767
+                    EarlyStopping counter: 15 out of 50
+
+                    - Epoch: 68 - Train_loss: 0.27697 - Train_acc: 0.92979 -  - Val_loss: 1.09014 - Val_acc: 0.87689  - T_Time: 106.94470 LR：0.00240466
+                    EarlyStopping counter: 16 out of 50
+
+                    - Epoch: 69 - Train_loss: 0.28735 - Train_acc: 0.92522 -  - Val_loss: 1.04459 - Val_acc: 0.87917  - T_Time: 106.98154 LR：0.00240160
+                    EarlyStopping counter: 17 out of 50
+
+                    - Epoch: 70 - Train_loss: 0.27751 - Train_acc: 0.93064 -  - Val_loss: 1.35494 - Val_acc: 0.87803  - T_Time: 107.85732 LR：0.00239850
+                    EarlyStopping counter: 18 out of 50
+
+                    - Epoch: 71 - Train_loss: 0.27132 - Train_acc: 0.93052 -  - Val_loss: 0.96237 - Val_acc: 0.88838  - T_Time: 105.82696 LR：0.00239535
+                    EarlyStopping counter: 19 out of 50
+
+                    - Epoch: 72 - Train_loss: 0.26039 - Train_acc: 0.93551 -  - Val_loss: 0.92659 - Val_acc: 0.88213  - T_Time: 106.12172 LR：0.00239215
+                    EarlyStopping counter: 20 out of 50
+
+                    - Epoch: 73 - Train_loss: 0.26772 - Train_acc: 0.92930 -  - Val_loss: 0.93556 - Val_acc: 0.88157  - T_Time: 105.97371 LR：0.00238890
+                    EarlyStopping counter: 21 out of 50
+
+                    - Epoch: 74 - Train_loss: 0.25932 - Train_acc: 0.93664 -  - Val_loss: 0.64284 - Val_acc: 0.90423  - T_Time: 104.82543 LR：0.00238562
+                    EarlyStopping counter: 22 out of 50
+
+                    - Epoch: 75 - Train_loss: 0.23792 - Train_acc: 0.94178 -  - Val_loss: 0.53177 - Val_acc: 0.91559  - T_Time: 107.05594 LR：0.00238228
+                    EarlyStopping counter: 23 out of 50
+
+                    - Epoch: 76 - Train_loss: 0.23335 - Train_acc: 0.94251 -  - Val_loss: 1.13796 - Val_acc: 0.87746  - T_Time: 105.34263 LR：0.00237890
+                    EarlyStopping counter: 24 out of 50
+
+                    - Epoch: 77 - Train_loss: 0.27285 - Train_acc: 0.93645 -  - Val_loss: 1.44012 - Val_acc: 0.87986  - T_Time: 107.03090 LR：0.00237548
+                    EarlyStopping counter: 25 out of 50
+
+                    - Epoch: 78 - Train_loss: 0.25106 - Train_acc: 0.93934 -  - Val_loss: 0.99492 - Val_acc: 0.87689  - T_Time: 106.97202 LR：0.00237200
+                    EarlyStopping counter: 26 out of 50
+
+                    - Epoch: 79 - Train_loss: 0.24838 - Train_acc: 0.93827 -  - Val_loss: 1.02792 - Val_acc: 0.88554  - T_Time: 108.14906 LR：0.00236849
+                    EarlyStopping counter: 27 out of 50
+
+                    - Epoch: 80 - Train_loss: 0.23581 - Train_acc: 0.94233 -  - Val_loss: 0.98854 - Val_acc: 0.87986  - T_Time: 107.49028 LR：0.00236493
+                    EarlyStopping counter: 28 out of 50
+
+                    - Epoch: 81 - Train_loss: 0.21997 - Train_acc: 0.94366 -  - Val_loss: 0.92391 - Val_acc: 0.89078  - T_Time: 105.46769 LR：0.00236132
+                    EarlyStopping counter: 29 out of 50
+
+                    - Epoch: 82 - Train_loss: 0.26599 - Train_acc: 0.92684 -  - Val_loss: 1.35115 - Val_acc: 0.88497  - T_Time: 107.12650 LR：0.00235767
+                    EarlyStopping counter: 30 out of 50
+
+                    - Epoch: 83 - Train_loss: 0.34830 - Train_acc: 0.90632 -  - Val_loss: 1.05210 - Val_acc: 0.87816  - T_Time: 106.32946 LR：0.00235398
+                    EarlyStopping counter: 31 out of 50
+
+                    - Epoch: 84 - Train_loss: 0.24511 - Train_acc: 0.93638 -  - Val_loss: 1.27354 - Val_acc: 0.88213  - T_Time: 107.01931 LR：0.00235024
+                    EarlyStopping counter: 32 out of 50
+
+                    - Epoch: 85 - Train_loss: 0.22951 - Train_acc: 0.94371 -  - Val_loss: 1.11783 - Val_acc: 0.87689  - T_Time: 105.05888 LR：0.00234645
+                    EarlyStopping counter: 33 out of 50
+
+                    - Epoch: 86 - Train_loss: 0.22905 - Train_acc: 0.94460 -  - Val_loss: 0.98960 - Val_acc: 0.88668  - T_Time: 107.16518 LR：0.00234263
+                    EarlyStopping counter: 34 out of 50
+
+                    - Epoch: 87 - Train_loss: 0.22812 - Train_acc: 0.94084 -  - Val_loss: 1.31800 - Val_acc: 0.88213  - T_Time: 106.87028 LR：0.00233876
+                    EarlyStopping counter: 35 out of 50
+
+                    - Epoch: 88 - Train_loss: 0.22619 - Train_acc: 0.94367 -  - Val_loss: 0.91685 - Val_acc: 0.89160  - T_Time: 108.22611 LR：0.00233484
+                    EarlyStopping counter: 36 out of 50
+
+                    - Epoch: 89 - Train_loss: 0.21724 - Train_acc: 0.94669 -  - Val_loss: 0.85836 - Val_acc: 0.89842  - T_Time: 106.92150 LR：0.00233088
+                    EarlyStopping counter: 37 out of 50
+
+                    - Epoch: 90 - Train_loss: 0.20730 - Train_acc: 0.95022 -  - Val_loss: 0.92597 - Val_acc: 0.89249  - T_Time: 107.57557 LR：0.00232688
+                    EarlyStopping counter: 38 out of 50
+
+                    - Epoch: 91 - Train_loss: 0.21650 - Train_acc: 0.94560 -  - Val_loss: 0.76983 - Val_acc: 0.91035  - T_Time: 107.09375 LR：0.00232283
+                    EarlyStopping counter: 39 out of 50
+
+                    - Epoch: 92 - Train_loss: 0.24700 - Train_acc: 0.93251 -  - Val_loss: 1.78914 - Val_acc: 0.87746  - T_Time: 104.93391 LR：0.00231875
+                    EarlyStopping counter: 40 out of 50
+
+                    - Epoch: 93 - Train_loss: 0.22895 - Train_acc: 0.93880 -  - Val_loss: 1.08661 - Val_acc: 0.88611  - T_Time: 105.90333 LR：0.00231461
+                    EarlyStopping counter: 41 out of 50
+
+                    - Epoch: 94 - Train_loss: 0.21504 - Train_acc: 0.94690 -  - Val_loss: 0.76491 - Val_acc: 0.91730  - T_Time: 105.09962 LR：0.00231044
+                    EarlyStopping counter: 42 out of 50
+
+                    - Epoch: 95 - Train_loss: 0.20961 - Train_acc: 0.95304 -  - Val_loss: 1.22364 - Val_acc: 0.87803  - T_Time: 105.70091 LR：0.00230622
+                    EarlyStopping counter: 43 out of 50
+
+                    - Epoch: 96 - Train_loss: 0.19714 - Train_acc: 0.95275 -  - Val_loss: 1.05052 - Val_acc: 0.87689  - T_Time: 106.27645 LR：0.00230196
+                    EarlyStopping counter: 44 out of 50
+
+                    - Epoch: 97 - Train_loss: 0.19410 - Train_acc: 0.95062 -  - Val_loss: 0.96337 - Val_acc: 0.89078  - T_Time: 105.84253 LR：0.00229766
+                    EarlyStopping counter: 45 out of 50
+
+                    - Epoch: 98 - Train_loss: 0.19222 - Train_acc: 0.94936 -  - Val_loss: 1.36869 - Val_acc: 0.88043  - T_Time: 107.26942 LR：0.00229332
+                    EarlyStopping counter: 46 out of 50
+
+                    - Epoch: 99 - Train_loss: 0.17663 - Train_acc: 0.95547 -  - Val_loss: 0.89906 - Val_acc: 0.90467  - T_Time: 106.80228 LR：0.00228893
+                    EarlyStopping counter: 47 out of 50
+
+                    - Epoch: 100 - Train_loss: 0.19237 - Train_acc: 0.94847 -  - Val_loss: 1.36118 - Val_acc: 0.88270  - T_Time: 105.78988 LR：0.00228451
+                    EarlyStopping counter: 48 out of 50
+
+                    - Epoch: 101 - Train_loss: 0.19946 - Train_acc: 0.94824 -  - Val_loss: 0.39201 - Val_acc: 0.95044  - T_Time: 107.00313 LR：0.00228004
+                    Validate:  0.8522306399036466 
+                     [1468    4] 
+                     [ 82 118]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.42369151 --> -0.39200861).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 102 - Train_loss: 0.22626 - Train_acc: 0.94902 -  - Val_loss: 1.08858 - Val_acc: 0.88554  - T_Time: 105.94493 LR：0.00227553
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 103 - Train_loss: 0.20943 - Train_acc: 0.94694 -  - Val_loss: 0.61649 - Val_acc: 0.92449  - T_Time: 105.56599 LR：0.00227097
+                    EarlyStopping counter: 2 out of 50
+
+                    - Epoch: 104 - Train_loss: 0.18058 - Train_acc: 0.95345 -  - Val_loss: 1.24786 - Val_acc: 0.88043  - T_Time: 108.15306 LR：0.00226638
+                    EarlyStopping counter: 3 out of 50
+
+                    - Epoch: 105 - Train_loss: 0.18276 - Train_acc: 0.95294 -  - Val_loss: 1.20986 - Val_acc: 0.88100  - T_Time: 107.37580 LR：0.00226175
+                    EarlyStopping counter: 4 out of 50
+
+                    - Epoch: 106 - Train_loss: 0.18519 - Train_acc: 0.95334 -  - Val_loss: 1.00798 - Val_acc: 0.88087  - T_Time: 106.67200 LR：0.00225707
+                    EarlyStopping counter: 5 out of 50
+
+                    - Epoch: 107 - Train_loss: 0.16377 - Train_acc: 0.95572 -  - Val_loss: 1.19547 - Val_acc: 0.88952  - T_Time: 105.43964 LR：0.00225236
+                    EarlyStopping counter: 6 out of 50
+
+                    - Epoch: 108 - Train_loss: 0.13739 - Train_acc: 0.96871 -  - Val_loss: 1.38298 - Val_acc: 0.89135  - T_Time: 108.40693 LR：0.00224761
+                    EarlyStopping counter: 7 out of 50
+
+                    - Epoch: 109 - Train_loss: 0.17267 - Train_acc: 0.95100 -  - Val_loss: 0.97910 - Val_acc: 0.91218  - T_Time: 105.90078 LR：0.00224281
+                    EarlyStopping counter: 8 out of 50
+
+                    - Epoch: 110 - Train_loss: 0.16313 - Train_acc: 0.95874 -  - Val_loss: 1.19163 - Val_acc: 0.88497  - T_Time: 105.45621 LR：0.00223798
+                    EarlyStopping counter: 9 out of 50
+
+                    - Epoch: 111 - Train_loss: 0.15608 - Train_acc: 0.96327 -  - Val_loss: 0.81894 - Val_acc: 0.91742  - T_Time: 106.50736 LR：0.00223310
+                    EarlyStopping counter: 10 out of 50
+
+                    - Epoch: 112 - Train_loss: 0.18554 - Train_acc: 0.94642 -  - Val_loss: 0.69440 - Val_acc: 0.91319  - T_Time: 106.51744 LR：0.00222819
+                    EarlyStopping counter: 11 out of 50
+
+                    - Epoch: 113 - Train_loss: 0.15594 - Train_acc: 0.95889 -  - Val_loss: 1.05750 - Val_acc: 0.88782  - T_Time: 105.54217 LR：0.00222323
+                    EarlyStopping counter: 12 out of 50
+
+                    - Epoch: 114 - Train_loss: 0.14149 - Train_acc: 0.96722 -  - Val_loss: 1.61746 - Val_acc: 0.88497  - T_Time: 106.78278 LR：0.00221824
+                    EarlyStopping counter: 13 out of 50
+
+                    - Epoch: 115 - Train_loss: 0.12733 - Train_acc: 0.96967 -  - Val_loss: 0.78849 - Val_acc: 0.88327  - T_Time: 105.23576 LR：0.00221321
+                    EarlyStopping counter: 14 out of 50
+
+                    - Epoch: 116 - Train_loss: 0.11377 - Train_acc: 0.97358 -  - Val_loss: 1.25993 - Val_acc: 0.88087  - T_Time: 107.28303 LR：0.00220814
+                    EarlyStopping counter: 15 out of 50
+
+                    - Epoch: 117 - Train_loss: 0.11733 - Train_acc: 0.97303 -  - Val_loss: 0.65353 - Val_acc: 0.90625  - T_Time: 105.94630 LR：0.00220303
+                    EarlyStopping counter: 16 out of 50
+
+                    - Epoch: 118 - Train_loss: 0.10019 - Train_acc: 0.97645 -  - Val_loss: 1.48576 - Val_acc: 0.89021  - T_Time: 105.98311 LR：0.00219789
+                    EarlyStopping counter: 17 out of 50
+
+                    - Epoch: 119 - Train_loss: 0.12372 - Train_acc: 0.97194 -  - Val_loss: 2.10590 - Val_acc: 0.88611  - T_Time: 107.95974 LR：0.00219270
+                    EarlyStopping counter: 18 out of 50
+
+                    - Epoch: 120 - Train_loss: 0.12969 - Train_acc: 0.96618 -  - Val_loss: 0.89542 - Val_acc: 0.90101  - T_Time: 104.68868 LR：0.00218748
+                    EarlyStopping counter: 19 out of 50
+
+                    - Epoch: 121 - Train_loss: 0.13277 - Train_acc: 0.97009 -  - Val_loss: 2.88862 - Val_acc: 0.88030  - T_Time: 105.72243 LR：0.00218222
+                    EarlyStopping counter: 20 out of 50
+
+                    - Epoch: 122 - Train_loss: 0.12192 - Train_acc: 0.97109 -  - Val_loss: 1.33489 - Val_acc: 0.88371  - T_Time: 106.08419 LR：0.00217692
+                    EarlyStopping counter: 21 out of 50
+
+                    - Epoch: 123 - Train_loss: 0.13730 - Train_acc: 0.96971 -  - Val_loss: 0.68240 - Val_acc: 0.89419  - T_Time: 106.22487 LR：0.00217158
+                    EarlyStopping counter: 22 out of 50
+
+                    - Epoch: 124 - Train_loss: 0.11847 - Train_acc: 0.97243 -  - Val_loss: 1.01776 - Val_acc: 0.91376  - T_Time: 106.91604 LR：0.00216621
+                    EarlyStopping counter: 23 out of 50
+
+                    - Epoch: 125 - Train_loss: 0.12239 - Train_acc: 0.96588 -  - Val_loss: 1.33626 - Val_acc: 0.88567  - T_Time: 106.34683 LR：0.00216080
+                    EarlyStopping counter: 24 out of 50
+
+                    - Epoch: 126 - Train_loss: 0.09698 - Train_acc: 0.97704 -  - Val_loss: 0.85985 - Val_acc: 0.90271  - T_Time: 107.80291 LR：0.00215536
+                    EarlyStopping counter: 25 out of 50
+
+                    - Epoch: 127 - Train_loss: 0.08088 - Train_acc: 0.98151 -  - Val_loss: 1.95582 - Val_acc: 0.87860  - T_Time: 104.89671 LR：0.00214988
+                    EarlyStopping counter: 26 out of 50
+
+                    - Epoch: 128 - Train_loss: 0.08643 - Train_acc: 0.97560 -  - Val_loss: 1.09269 - Val_acc: 0.89874  - T_Time: 107.42873 LR：0.00214436
+                    EarlyStopping counter: 27 out of 50
+
+                    - Epoch: 129 - Train_loss: 0.14101 - Train_acc: 0.97350 -  - Val_loss: 0.72270 - Val_acc: 0.94053  - T_Time: 106.86026 LR：0.00213880
+                    EarlyStopping counter: 28 out of 50
+
+                    - Epoch: 130 - Train_loss: 0.15113 - Train_acc: 0.96142 -  - Val_loss: 1.71482 - Val_acc: 0.88725  - T_Time: 104.55350 LR：0.00213321
+                    EarlyStopping counter: 29 out of 50
+
+                    - Epoch: 131 - Train_loss: 0.12179 - Train_acc: 0.96901 -  - Val_loss: 0.64660 - Val_acc: 0.94122  - T_Time: 106.41299 LR：0.00212759
+                    EarlyStopping counter: 30 out of 50
+
+                    - Epoch: 132 - Train_loss: 0.08836 - Train_acc: 0.98043 -  - Val_loss: 1.47192 - Val_acc: 0.89830  - T_Time: 106.47320 LR：0.00212193
+                    EarlyStopping counter: 31 out of 50
+
+                    - Epoch: 133 - Train_loss: 0.08550 - Train_acc: 0.98017 -  - Val_loss: 1.72363 - Val_acc: 0.88908  - T_Time: 106.54059 LR：0.00211623
+                    EarlyStopping counter: 32 out of 50
+
+                    - Epoch: 134 - Train_loss: 0.08930 - Train_acc: 0.97615 -  - Val_loss: 1.47814 - Val_acc: 0.89703  - T_Time: 105.87581 LR：0.00211050
+                    EarlyStopping counter: 33 out of 50
+
+                    - Epoch: 135 - Train_loss: 0.07748 - Train_acc: 0.98065 -  - Val_loss: 1.40270 - Val_acc: 0.89886  - T_Time: 106.06516 LR：0.00210474
+                    EarlyStopping counter: 34 out of 50
+
+                    - Epoch: 136 - Train_loss: 0.06977 - Train_acc: 0.98195 -  - Val_loss: 1.42228 - Val_acc: 0.88611  - T_Time: 106.79278 LR：0.00209894
+                    EarlyStopping counter: 35 out of 50
+
+                    - Epoch: 137 - Train_loss: 0.09115 - Train_acc: 0.97808 -  - Val_loss: 1.08390 - Val_acc: 0.92393  - T_Time: 104.97336 LR：0.00209311
+                    EarlyStopping counter: 36 out of 50
+
+                    - Epoch: 138 - Train_loss: 0.13224 - Train_acc: 0.96886 -  - Val_loss: 1.37028 - Val_acc: 0.90044  - T_Time: 105.62655 LR：0.00208724
+                    EarlyStopping counter: 37 out of 50
+
+                    - Epoch: 139 - Train_loss: 0.12942 - Train_acc: 0.96346 -  - Val_loss: 1.76744 - Val_acc: 0.89021  - T_Time: 105.82038 LR：0.00208134
+                    EarlyStopping counter: 38 out of 50
+
+                    - Epoch: 140 - Train_loss: 0.21585 - Train_acc: 0.94210 -  - Val_loss: 0.89509 - Val_acc: 0.91389  - T_Time: 105.91575 LR：0.00207541
+                    EarlyStopping counter: 39 out of 50
+
+                    - Epoch: 141 - Train_loss: 0.08582 - Train_acc: 0.97883 -  - Val_loss: 2.21291 - Val_acc: 0.89192  - T_Time: 108.03098 LR：0.00206944
+                    EarlyStopping counter: 40 out of 50
+
+                    - Epoch: 142 - Train_loss: 0.07268 - Train_acc: 0.98132 -  - Val_loss: 0.69074 - Val_acc: 0.92525  - T_Time: 106.78252 LR：0.00206344
+                    EarlyStopping counter: 41 out of 50
+
+                    - Epoch: 143 - Train_loss: 0.08025 - Train_acc: 0.98028 -  - Val_loss: 1.42267 - Val_acc: 0.88895  - T_Time: 106.15128 LR：0.00205741
+                    EarlyStopping counter: 42 out of 50
+
+                    - Epoch: 144 - Train_loss: 0.07936 - Train_acc: 0.97972 -  - Val_loss: 1.77393 - Val_acc: 0.88030  - T_Time: 105.82782 LR：0.00205134
+                    EarlyStopping counter: 43 out of 50
+
+                    - Epoch: 145 - Train_loss: 0.05941 - Train_acc: 0.98333 -  - Val_loss: 1.73279 - Val_acc: 0.88030  - T_Time: 104.97751 LR：0.00204524
+                    EarlyStopping counter: 44 out of 50
+
+                    - Epoch: 146 - Train_loss: 0.06534 - Train_acc: 0.98467 -  - Val_loss: 2.11203 - Val_acc: 0.88851  - T_Time: 106.07178 LR：0.00203911
+                    EarlyStopping counter: 45 out of 50
+
+                    - Epoch: 147 - Train_loss: 0.05794 - Train_acc: 0.98497 -  - Val_loss: 1.85114 - Val_acc: 0.88087  - T_Time: 107.02117 LR：0.00203295
+                    EarlyStopping counter: 46 out of 50
+
+                    - Epoch: 148 - Train_loss: 0.04676 - Train_acc: 0.98973 -  - Val_loss: 1.35494 - Val_acc: 0.89306  - T_Time: 106.30161 LR：0.00202676
+                    EarlyStopping counter: 47 out of 50
+
+                    - Epoch: 149 - Train_loss: 0.05602 - Train_acc: 0.98489 -  - Val_loss: 1.40416 - Val_acc: 0.88965  - T_Time: 105.54648 LR：0.00202054
+                    EarlyStopping counter: 48 out of 50
+
+                    - Epoch: 150 - Train_loss: 0.08504 - Train_acc: 0.97752 -  - Val_loss: 2.15685 - Val_acc: 0.88611  - T_Time: 106.65561 LR：0.00201428
+                    EarlyStopping counter: 49 out of 50
+
+                    - Epoch: 151 - Train_loss: 0.09956 - Train_acc: 0.97500 -  - Val_loss: 1.64808 - Val_acc: 0.88554  - T_Time: 105.84652 LR：0.00200800
+                    EarlyStopping counter: 50 out of 50
+
+                    Early stopping...
+          validate:  0.8522306399036466 
+           [1468    4] 
+           [ 82 118]
+          test:  0.8366624594475685 
+           [5239    6] 
+           [161 185]
+          Fold 1 Training Finished
+          ==================================================
+          ==================================================
+          train_loss 0.22624844392495497           train_acc 0.93786611866969 
+          validate_loss 0.3920086093924262           validate_acc 0.9504419191919191 
+          test_loss 0.4261979341506958           test_acc 0.9701679280983916
+          ==================================================
+          ==================================================
+          Fold 2 of 5 :
+                    - Epoch: 1 - Train_loss: 0.69328 - Train_acc: 0.60709 -  - Val_loss: 0.69924 - Val_acc: 0.25025  - T_Time: 107.18541 LR：0.00000005
+                    Validate:  0.2525462526593596 
+                     [ 265 1207] 
+                     [ 38 162]
+                    --------------------------------------------------
+
+                    Validation  score to (inf --> -0.69924164).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 2 - Train_loss: 0.69097 - Train_acc: 0.60605 -  - Val_loss: 0.68811 - Val_acc: 0.64842  - T_Time: 106.02196 LR：0.00000005
+                    Validate:  0.46347417994363954 
+                     [1034  438] 
+                     [149  51]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.69924164 --> -0.68811354).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 3 - Train_loss: 0.69158 - Train_acc: 0.61749 -  - Val_loss: 0.68968 - Val_acc: 0.66723  - T_Time: 107.31770 LR：0.00000005
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 4 - Train_loss: 0.69222 - Train_acc: 0.62363 -  - Val_loss: 0.68884 - Val_acc: 0.68510  - T_Time: 106.90895 LR：0.00000005
+                    EarlyStopping counter: 2 out of 50
+
+                    - Epoch: 5 - Train_loss: 0.68752 - Train_acc: 0.63230 -  - Val_loss: 0.68903 - Val_acc: 0.67633  - T_Time: 106.26141 LR：0.00000005
+                    EarlyStopping counter: 3 out of 50
+
+                    - Epoch: 6 - Train_loss: 0.78061 - Train_acc: 0.81483 -  - Val_loss: 0.66405 - Val_acc: 0.87304  - T_Time: 105.83700 LR：0.00250000
+                    Validate:  0.5734413220927131 
+                     [1420   52] 
+                     [169  31]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.68811354 --> -0.66405399).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 7 - Train_loss: 0.75197 - Train_acc: 0.78230 -  - Val_loss: 2.53494 - Val_acc: 0.87759  - T_Time: 105.46802 LR：0.00249997
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 8 - Train_loss: 0.68987 - Train_acc: 0.81964 -  - Val_loss: 0.63075 - Val_acc: 0.87746  - T_Time: 105.29563 LR：0.00249990
+                    Validate:  0.48856992803181143 
+                     [1455   17] 
+                     [195   5]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.66405399 --> -0.63075337).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 9 - Train_loss: 0.66714 - Train_acc: 0.81605 -  - Val_loss: 0.64399 - Val_acc: 0.87872  - T_Time: 106.00064 LR：0.00249977
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 10 - Train_loss: 0.63697 - Train_acc: 0.82447 -  - Val_loss: 2.06801 - Val_acc: 0.86850  - T_Time: 106.23153 LR：0.00249960
+                    EarlyStopping counter: 2 out of 50
+
+                    - Epoch: 11 - Train_loss: 0.66426 - Train_acc: 0.81958 -  - Val_loss: 0.62349 - Val_acc: 0.88497  - T_Time: 106.77955 LR：0.00249937
+                    Validate:  0.46819338422391854 
+                     [1472    0] 
+                     [200   0]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.63075337 --> -0.62349404).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 12 - Train_loss: 0.64055 - Train_acc: 0.81382 -  - Val_loss: 1.36344 - Val_acc: 0.88384  - T_Time: 105.03977 LR：0.00249910
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 13 - Train_loss: 0.62350 - Train_acc: 0.78785 -  - Val_loss: 0.71036 - Val_acc: 0.87746  - T_Time: 105.51677 LR：0.00249877
+                    EarlyStopping counter: 2 out of 50
+
+                    - Epoch: 14 - Train_loss: 0.62665 - Train_acc: 0.82223 -  - Val_loss: 1.94399 - Val_acc: 0.88497  - T_Time: 106.26807 LR：0.00249839
+                    EarlyStopping counter: 3 out of 50
+
+                    - Epoch: 15 - Train_loss: 0.63506 - Train_acc: 0.78738 -  - Val_loss: 0.60418 - Val_acc: 0.86098  - T_Time: 106.63613 LR：0.00249797
+                    Validate:  0.5937717693195623 
+                     [1387   85] 
+                     [156  44]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.62349404 --> -0.60417584).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 16 - Train_loss: 0.61656 - Train_acc: 0.78781 -  - Val_loss: 0.65616 - Val_acc: 0.88441  - T_Time: 106.71788 LR：0.00249749
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 17 - Train_loss: 0.62987 - Train_acc: 0.82495 -  - Val_loss: 0.61578 - Val_acc: 0.87235  - T_Time: 108.10056 LR：0.00249696
+                    EarlyStopping counter: 2 out of 50
+
+                    - Epoch: 18 - Train_loss: 0.62379 - Train_acc: 0.79905 -  - Val_loss: 1.34104 - Val_acc: 0.88441  - T_Time: 107.11691 LR：0.00249638
+                    EarlyStopping counter: 3 out of 50
+
+                    - Epoch: 19 - Train_loss: 0.62478 - Train_acc: 0.80883 -  - Val_loss: 1.52242 - Val_acc: 0.88100  - T_Time: 106.05400 LR：0.00249576
+                    EarlyStopping counter: 4 out of 50
+
+                    - Epoch: 20 - Train_loss: 0.61505 - Train_acc: 0.81038 -  - Val_loss: 0.62553 - Val_acc: 0.87689  - T_Time: 106.82713 LR：0.00249508
+                    EarlyStopping counter: 5 out of 50
+
+                    - Epoch: 21 - Train_loss: 0.59015 - Train_acc: 0.80683 -  - Val_loss: 0.65467 - Val_acc: 0.88384  - T_Time: 107.57946 LR：0.00249435
+                    EarlyStopping counter: 6 out of 50
+
+                    - Epoch: 22 - Train_loss: 0.59556 - Train_acc: 0.81222 -  - Val_loss: 0.68939 - Val_acc: 0.88668  - T_Time: 105.64762 LR：0.00249357
+                    EarlyStopping counter: 7 out of 50
+
+                    - Epoch: 23 - Train_loss: 0.59770 - Train_acc: 0.81121 -  - Val_loss: 0.57714 - Val_acc: 0.82936  - T_Time: 107.31410 LR：0.00249275
+                    Validate:  0.6245268225236694 
+                     [1300  172] 
+                     [121  79]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.60417584 --> -0.57713791).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 24 - Train_loss: 0.59093 - Train_acc: 0.83784 -  - Val_loss: 0.68366 - Val_acc: 0.88668  - T_Time: 107.52441 LR：0.00249187
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 25 - Train_loss: 0.60061 - Train_acc: 0.81368 -  - Val_loss: 0.55898 - Val_acc: 0.87506  - T_Time: 104.92632 LR：0.00249094
+                    Validate:  0.6027665341744763 
+                     [1416   56] 
+                     [159  41]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.57713791 --> -0.55898142).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 26 - Train_loss: 0.57922 - Train_acc: 0.81629 -  - Val_loss: 0.66528 - Val_acc: 0.88497  - T_Time: 106.85547 LR：0.00248996
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 27 - Train_loss: 0.59416 - Train_acc: 0.81477 -  - Val_loss: 0.60671 - Val_acc: 0.74773  - T_Time: 106.80288 LR：0.00248894
+                    EarlyStopping counter: 2 out of 50
+
+                    - Epoch: 28 - Train_loss: 0.57506 - Train_acc: 0.82124 -  - Val_loss: 0.70661 - Val_acc: 0.88655  - T_Time: 108.61007 LR：0.00248786
+                    EarlyStopping counter: 3 out of 50
+
+                    - Epoch: 29 - Train_loss: 0.57110 - Train_acc: 0.82537 -  - Val_loss: 0.53957 - Val_acc: 0.81749  - T_Time: 107.75461 LR：0.00248673
+                    Validate:  0.6324210643146457 
+                     [1271  201] 
+                     [108  92]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.55898142 --> -0.53957248).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 30 - Train_loss: 0.55077 - Train_acc: 0.83542 -  - Val_loss: 0.60869 - Val_acc: 0.84880  - T_Time: 103.59018 LR：0.00248556
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 31 - Train_loss: 0.57709 - Train_acc: 0.80856 -  - Val_loss: 0.58574 - Val_acc: 0.87917  - T_Time: 106.57178 LR：0.00248433
+                    EarlyStopping counter: 2 out of 50
+
+                    - Epoch: 32 - Train_loss: 0.55398 - Train_acc: 0.82579 -  - Val_loss: 0.71017 - Val_acc: 0.88611  - T_Time: 106.82815 LR：0.00248305
+                    EarlyStopping counter: 3 out of 50
+
+                    - Epoch: 33 - Train_loss: 0.55833 - Train_acc: 0.83215 -  - Val_loss: 0.54408 - Val_acc: 0.86686  - T_Time: 105.38400 LR：0.00248173
+                    EarlyStopping counter: 4 out of 50
+
+                    - Epoch: 34 - Train_loss: 0.53933 - Train_acc: 0.83710 -  - Val_loss: 0.64324 - Val_acc: 0.88441  - T_Time: 107.30709 LR：0.00248035
+                    EarlyStopping counter: 5 out of 50
+
+                    - Epoch: 35 - Train_loss: 0.52940 - Train_acc: 0.83922 -  - Val_loss: 0.62881 - Val_acc: 0.88668  - T_Time: 107.68224 LR：0.00247893
+                    EarlyStopping counter: 6 out of 50
+
+                    - Epoch: 36 - Train_loss: 0.52593 - Train_acc: 0.83874 -  - Val_loss: 0.64672 - Val_acc: 0.71881  - T_Time: 107.97842 LR：0.00247746
+                    EarlyStopping counter: 7 out of 50
+
+                    - Epoch: 37 - Train_loss: 0.55389 - Train_acc: 0.82820 -  - Val_loss: 0.56193 - Val_acc: 0.87576  - T_Time: 107.40512 LR：0.00247593
+                    EarlyStopping counter: 8 out of 50
+
+                    - Epoch: 38 - Train_loss: 0.56448 - Train_acc: 0.82226 -  - Val_loss: 0.58770 - Val_acc: 0.87847  - T_Time: 106.54702 LR：0.00247436
+                    EarlyStopping counter: 9 out of 50
+
+                    - Epoch: 39 - Train_loss: 0.53945 - Train_acc: 0.83365 -  - Val_loss: 0.58705 - Val_acc: 0.88087  - T_Time: 107.20202 LR：0.00247274
+                    EarlyStopping counter: 10 out of 50
+
+                    - Epoch: 40 - Train_loss: 0.52798 - Train_acc: 0.83211 -  - Val_loss: 0.57257 - Val_acc: 0.86799  - T_Time: 107.76261 LR：0.00247107
+                    EarlyStopping counter: 11 out of 50
+
+                    - Epoch: 41 - Train_loss: 0.51956 - Train_acc: 0.83841 -  - Val_loss: 0.57851 - Val_acc: 0.88712  - T_Time: 107.88882 LR：0.00246935
+                    EarlyStopping counter: 12 out of 50
+
+                    - Epoch: 42 - Train_loss: 0.50374 - Train_acc: 0.84354 -  - Val_loss: 0.56907 - Val_acc: 0.87348  - T_Time: 108.33327 LR：0.00246758
+                    EarlyStopping counter: 13 out of 50
+
+                    - Epoch: 43 - Train_loss: 0.51592 - Train_acc: 0.84367 -  - Val_loss: 0.55817 - Val_acc: 0.86275  - T_Time: 107.82628 LR：0.00246576
+                    EarlyStopping counter: 14 out of 50
+
+                    - Epoch: 44 - Train_loss: 0.49947 - Train_acc: 0.83828 -  - Val_loss: 0.61413 - Val_acc: 0.81692  - T_Time: 106.48584 LR：0.00246390
+                    EarlyStopping counter: 15 out of 50
+
+                    - Epoch: 45 - Train_loss: 0.51102 - Train_acc: 0.83454 -  - Val_loss: 0.60892 - Val_acc: 0.88201  - T_Time: 106.66505 LR：0.00246198
+                    EarlyStopping counter: 16 out of 50
+
+                    - Epoch: 46 - Train_loss: 0.47261 - Train_acc: 0.84640 -  - Val_loss: 0.58167 - Val_acc: 0.83933  - T_Time: 107.38175 LR：0.00246002
+                    EarlyStopping counter: 17 out of 50
+
+                    - Epoch: 47 - Train_loss: 0.48656 - Train_acc: 0.83974 -  - Val_loss: 0.59173 - Val_acc: 0.88428  - T_Time: 107.63853 LR：0.00245800
+                    EarlyStopping counter: 18 out of 50
+
+                    - Epoch: 48 - Train_loss: 0.47499 - Train_acc: 0.84461 -  - Val_loss: 0.59388 - Val_acc: 0.87323  - T_Time: 107.23384 LR：0.00245594
+                    EarlyStopping counter: 19 out of 50
+
+                    - Epoch: 49 - Train_loss: 0.51102 - Train_acc: 0.84167 -  - Val_loss: 0.61737 - Val_acc: 0.80953  - T_Time: 106.37770 LR：0.00245383
+                    EarlyStopping counter: 20 out of 50
+
+                    - Epoch: 50 - Train_loss: 0.48354 - Train_acc: 0.83054 -  - Val_loss: 0.63204 - Val_acc: 0.87904  - T_Time: 107.06610 LR：0.00245167
+                    EarlyStopping counter: 21 out of 50
+
+                    - Epoch: 51 - Train_loss: 0.45775 - Train_acc: 0.84338 -  - Val_loss: 0.76589 - Val_acc: 0.87633  - T_Time: 107.97225 LR：0.00244947
+                    EarlyStopping counter: 22 out of 50
+
+                    - Epoch: 52 - Train_loss: 0.45376 - Train_acc: 0.84688 -  - Val_loss: 0.57846 - Val_acc: 0.85265  - T_Time: 107.72365 LR：0.00244721
+                    EarlyStopping counter: 23 out of 50
+
+                    - Epoch: 53 - Train_loss: 0.44815 - Train_acc: 0.84911 -  - Val_loss: 0.63999 - Val_acc: 0.86528  - T_Time: 106.11976 LR：0.00244491
+                    EarlyStopping counter: 24 out of 50
+
+                    - Epoch: 54 - Train_loss: 0.43007 - Train_acc: 0.85283 -  - Val_loss: 0.83352 - Val_acc: 0.87708  - T_Time: 106.77790 LR：0.00244256
+                    EarlyStopping counter: 25 out of 50
+
+                    - Epoch: 55 - Train_loss: 0.42112 - Train_acc: 0.85405 -  - Val_loss: 0.78303 - Val_acc: 0.86553  - T_Time: 107.75184 LR：0.00244016
+                    EarlyStopping counter: 26 out of 50
+
+                    - Epoch: 56 - Train_loss: 0.42165 - Train_acc: 0.85554 -  - Val_loss: 0.89583 - Val_acc: 0.88314  - T_Time: 104.83021 LR：0.00243771
+                    EarlyStopping counter: 27 out of 50
+
+                    - Epoch: 57 - Train_loss: 0.44011 - Train_acc: 0.84535 -  - Val_loss: 0.57455 - Val_acc: 0.84527  - T_Time: 109.31321 LR：0.00243522
+                    EarlyStopping counter: 28 out of 50
+
+                    - Epoch: 58 - Train_loss: 0.42471 - Train_acc: 0.84850 -  - Val_loss: 0.59410 - Val_acc: 0.84186  - T_Time: 106.08280 LR：0.00243268
+                    EarlyStopping counter: 29 out of 50
+
+                    - Epoch: 59 - Train_loss: 0.40133 - Train_acc: 0.85751 -  - Val_loss: 0.73076 - Val_acc: 0.87336  - T_Time: 105.06497 LR：0.00243009
+                    EarlyStopping counter: 30 out of 50
+
+                    - Epoch: 60 - Train_loss: 0.38179 - Train_acc: 0.86831 -  - Val_loss: 0.66077 - Val_acc: 0.85152  - T_Time: 105.82236 LR：0.00242745
+                    EarlyStopping counter: 31 out of 50
+
+                    - Epoch: 61 - Train_loss: 0.39426 - Train_acc: 0.86335 -  - Val_loss: 0.76911 - Val_acc: 0.68529  - T_Time: 105.94769 LR：0.00242477
+                    EarlyStopping counter: 32 out of 50
+
+                    - Epoch: 62 - Train_loss: 0.40882 - Train_acc: 0.86090 -  - Val_loss: 0.59662 - Val_acc: 0.84375  - T_Time: 106.70434 LR：0.00242204
+                    EarlyStopping counter: 33 out of 50
+
+                    - Epoch: 63 - Train_loss: 0.38611 - Train_acc: 0.87920 -  - Val_loss: 0.81402 - Val_acc: 0.85802  - T_Time: 106.90901 LR：0.00241926
+                    EarlyStopping counter: 34 out of 50
+
+                    - Epoch: 64 - Train_loss: 0.35526 - Train_acc: 0.88427 -  - Val_loss: 0.64586 - Val_acc: 0.85177  - T_Time: 105.06645 LR：0.00241643
+                    EarlyStopping counter: 35 out of 50
+
+                    - Epoch: 65 - Train_loss: 0.35109 - Train_acc: 0.88475 -  - Val_loss: 0.71846 - Val_acc: 0.86345  - T_Time: 106.88791 LR：0.00241356
+                    EarlyStopping counter: 36 out of 50
+
+                    - Epoch: 66 - Train_loss: 0.33121 - Train_acc: 0.89384 -  - Val_loss: 0.70027 - Val_acc: 0.86629  - T_Time: 105.69553 LR：0.00241064
+                    EarlyStopping counter: 37 out of 50
+
+                    - Epoch: 67 - Train_loss: 0.32274 - Train_acc: 0.89358 -  - Val_loss: 0.71257 - Val_acc: 0.86086  - T_Time: 108.75674
+
+                    
+                    
