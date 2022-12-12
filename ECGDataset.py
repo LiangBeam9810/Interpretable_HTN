@@ -241,8 +241,12 @@ class ECG_Dataset(Dataset):
         filter_highcut = 47.0
         filter_order = 1
         for i in tqdm(range(len(self.datas))):
-            self.datas[i] = bandpass_filter(self.datas[i], lowcut=filter_lowcut, highcut=filter_highcut, signal_freq=500, filter_order=filter_order)# type: ignore        
-        self.datas = self.amplitude_limiting(self.datas)
+            self.datas[i] = bandpass_filter(self.datas[i], lowcut=filter_lowcut, highcut=filter_highcut, signal_freq=500, filter_order=filter_order)# type: ignore   
+        self.datas = self.amplitude_limiting(self.datas,5000)
+        for i in range(12):
+            mean =  self.datas[:,i,:].mean()
+            var = self.datas[:,i,:].var()
+            self.datas[:,i,:] = (self.datas[:,i,:] - mean)/(self.datas[:,i,:].var()+1e-6)
     def __getitem__(self,index):
         # print(index)
         if(self.pair_flag):

@@ -50,12 +50,17 @@ if __name__ == '__main__':
     ALLDataset = ECGDataset.ECG_Dataset_Init('/workspace/data/Preprocess_HTN/data_like_pxl/',rebuild_flage= False,filter_age = 0)
     ALLDataset.report()  # type: ignore
     
-    torch.cuda.empty_cache()# 清空显卡cuda
-    NET = [Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.25),
-           Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.25),
-           Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.25),
-           Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.25),
-           Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.25),] # type: ignore
+    # torch.cuda.empty_cache()# 清空显卡cuda
+    # NET = [Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.25),
+    #        Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.25),
+    #        Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.25),
+    #        Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.25),
+    #        Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.25),] # type: ignore
+    NET = [Models.ECGNet(input_channel=1, num_classes=2,mark = False, res=True,se = True),
+           Models.ECGNet(input_channel=1, num_classes=2,mark = False, res=True,se = True),
+           Models.ECGNet(input_channel=1, num_classes=2,mark = False, res=True,se = True),
+           Models.ECGNet(input_channel=1, num_classes=2,mark = False, res=True,se = True),
+           Models.ECGNet(input_channel=1, num_classes=2,mark = False, res=True,se = True),]
     test_dataset = ECGDataset.ECG_Dataset(ALLDataset.testECGs,ALLDataset.testLabels,ALLDataset.testDf,preprocess= True,onehot_lable = False)  # type: ignore
     os.makedirs(model_path, exist_ok=True)  # type: ignore
     writer = SummaryWriter(log_path)  # type: ignore
@@ -98,9 +103,10 @@ if __name__ == '__main__':
                                                                                                 criterion = criterion,
                                                                                                 EPOCHS = 500,  
                                                                                                 PATIENCE = 50,
-                                                                                                LR_MAX = 5*1e-3,
-                                                                                                LR_MIN = 1e-5,
-                                                                                                pair_flag=False)
+                                                                                                LR_MAX = 1e-3,
+                                                                                                LR_MIN = 1e-6,
+                                                                                                pair_flag=False,
+                                                                                                warm_up_iter = 20)
         train_loss_sum[fold] = train_loss
         train_acc_sum[fold] = train_acc
         validate_loss_sum[fold] = validate_loss
