@@ -6,43 +6,22 @@ from torch.utils.data.dataset import Dataset
 from tqdm import tqdm
 import random
 from scipy.signal import butter, lfilter
-
 class ECG_Dataset_Init():
-    def __init__(self,data_root:str,filter_age = 0,rebuild_flage = False): 
+    def __init__(self,data_root:str,filter_age = 0,filter_department = None,rebuild_flage = False): 
         
         self.ECGs_path = data_root+'/ECG/'
         self.INFOs_path = data_root+'/INFO/'
         self.Qualitys_path = data_root+'/Q/'
         self.filter_age = filter_age
+        self.filter_department = filter_department
         if((not rebuild_flage) and (os.path.exists(data_root+'/INFOs.pkl'))):
             self.INFOsDf = pd.read_pickle(data_root+'/INFOs.pkl')
-            # print(self.INFOsDf.head(),'\n',len(self.INFOsDf))
-        else: #INFOs_df文件不存在，则重构INFOs_df
+            print(len(self.INFOsDf))
+        else: #INFOs_df文件不存在/rebuild_flage == Ture，则重构INFOs_df
             self.INFOsDf = self.rebuild_INFOs_Df()
             self.INFOsDf.to_pickle(data_root+'/INFOs.pkl')
-            
         self.INFOsDf = self.filter_INFOs_Df(self.INFOsDf)
-        self.testDf,self.TVDf = self.splite_TVandT(self.INFOsDf)    
-        
-        if((not rebuild_flage) and 
-           ((os.path.exists(data_root+'/testECGs.npy')) 
-           and (os.path.exists(data_root+'/testLabels.npy')) 
-           and (os.path.exists(data_root+'/TVECGs.npy')) 
-           and (os.path.exists(data_root+'/TVLabels.npy')))):   
-            self.testECGs = np.load(data_root+'/testECGs.npy')
-            self.testLabels = np.load(data_root+'/testLabels.npy')
-            self.TVECGs = np.load(data_root+'/TVECGs.npy')
-            self.TVLabels = np.load(data_root+'/TVLabels.npy')
-        else:
-            self.testECGs = self.get_ECGs_form_FilesList(self.testDf['ecgFN'].tolist())
-            self.testLabels = self.testDf['diagnose'].to_numpy()
-            self.TVECGs = self.get_ECGs_form_FilesList(self.TVDf['ecgFN'].tolist())
-            self.TVLabels = self.TVDf['diagnose'].to_numpy()
-            
-            np.save(data_root+'/testECGs.npy',self.testECGs)
-            np.save(data_root+'/testLabels.npy',self.testLabels)
-            np.save(data_root+'/TVECGs.npy',self.TVECGs)
-            np.save(data_root+'/TVLabels.npy',self.TVLabels)                
+        self.testDf,self.tvDf = self.splite_TVandT(self.INFOsDf)                   
     def filter_INFOs_Df(self,df_input):
         df = df_input.copy()
         print("{:^10} {:^10} {:^10}".format('  ','HTN','NHTN'))
@@ -50,7 +29,7 @@ class ECG_Dataset_Init():
         df = self.__filter__quality__(df)
         print("{:^10} {:^10} {:^10}".format('  ','HTN','NHTN'))
         print("{:^10} {:^10} {:^10}".format( 'nums',len(df[(df['diagnose'].str.contains('高血压') == True)]),len(df[~(df['diagnose'].str.contains('高血压') == True)]) ))
-        df = self.__filter__departmentORlabel__(df,'外科')
+        df = self.__filter__departmentORlabel__(df,)
         print("{:^10} {:^10} {:^10}".format('  ','HTN','NHTN'))
         print("{:^10} {:^10} {:^10}".format( 'nums',len(df[(df['diagnose'].str.contains('高血压') == True)]),len(df[~(df['diagnose'].str.contains('高血压') == True)]) ))
         df = self. __change_ages__(df)
@@ -60,7 +39,10 @@ class ECG_Dataset_Init():
         print("{:^10} {:^10} {:^10}".format('  ','HTN','NHTN'))
         print("{:^10} {:^10} {:^10}".format( 'nums',len(df[(df['diagnose'].str.contains('高血压') == True)]),len(df[~(df['diagnose'].str.contains('高血压') == True)]) ))
         df = self.__change__label__(df)
-        # df = self.__remove_duplicated__(df)
+        df = self.__remove_duplicated__(df)
+        print("{:^10} {:^10} {:^10}".format('  ','HTN','NHTN'))
+        print("{:^10} {:^10} {:^10}".format( 'nums',len(df[(df['diagnose']==1)]),len(df[~(df['diagnose']==0)]) ))
+        
         return df
     # 分割00、20->train&validate set; 21 ->testset
     def splite_TVandT(self,df_input):
@@ -111,35 +93,20 @@ class ECG_Dataset_Init():
         return df  
     #QC by q file 
     def __filter__quality__(self,df_input):
-        df = df_input.copy()
-        # df = df.dropna(subset=['q0']) #删除diagnose== nan
-        df["q0"] = pd.to_numeric(df["q0"],errors='coerce') #把Q改成数值型
-        df["q1"] = pd.to_numeric(df["q1"],errors='coerce') #把Q改成数值型
-        df["q2"] = pd.to_numeric(df["q2"],errors='coerce') #把Q改成数值型
-        df["q3"] = pd.to_numeric(df["q3"],errors='coerce') #把Q改成数值型
-        df["q4"] = pd.to_numeric(df["q4"],errors='coerce') #把Q改成数值型
-        df["q5"] = pd.to_numeric(df["q5"],errors='coerce') #把Q改成数值型
-        df["q6"] = pd.to_numeric(df["q6"],errors='coerce') #把Q改成数值型
-        df["q7"] = pd.to_numeric(df["q7"],errors='coerce') #把Q改成数值型
-        df["q8"] = pd.to_numeric(df["q8"],errors='coerce') #把Q改成数值型
-        df["q9"] = pd.to_numeric(df["q9"],errors='coerce') #把Q改成数值型
-        df["q10"] = pd.to_numeric(df["q10"],errors='coerce') #把Q改成数值型
-        df["q11"] = pd.to_numeric(df["q11"],errors='coerce') #把Q改成数值型
-        
-        df['q_sum'] =  (df[['q0','q1','q2','q3','q4','q5','q6','q7','q8','q9','q10','q11']]).sum(axis = 1) #对行所有q求和
+        df = df_input.copy()       
         df = df[
-                ( (df['q_sum'] < 1))
+                ( (df['q_sum'] == 0))
                 ]#q_sum<=1
         print('\n')
         print("{:^10} {:^10} {:^20}".format('  ','orginal','QC'))
         print("{:^10} {:^10} {:^20}".format('nums',len(df_input),len(df)))
         return df
     #department符合条件 或者 诊断为高血压的样本 
-    def __filter__departmentORlabel__(self,df_input,filter_department:str = None):  # type: ignore
+    def __filter__departmentORlabel__(self,df_input):  # type: ignore
         df_filter = df_input.copy()
-        if(filter_department):
+        if(self.filter_department):
             df_filter = df_filter[
-                ( (df_filter['diagnose'].str.contains('高血压') == True)| (df_filter['department'].str.contains(filter_department) == True))
+                ( (df_filter['diagnose'].str.contains('高血压') == True)| (df_filter['department'].str.contains(self.filter_department) == True))
                 ]#只选择外科
             print('\n')
             print("{:^10} {:^10} {:^20}".format('  ','orginal','filtered department'))
@@ -151,7 +118,7 @@ class ECG_Dataset_Init():
         if(self.filter_age):
             # df_filter = self.__change_ages__(df_filter)#把年龄改为数值型
             df_filter = df_filter[
-                   (df_filter['diagnose'].str.contains('高血压') == True) | ((df_filter['ages'].apply(int))<self.filter_age) 
+                    ((df_filter['ages'].apply(int))>self.filter_age) 
                 ]#删选年龄
             print('\n')
             print("{:^10} {:^10} {:^20}".format('  ','orginal','filtered ages'))
@@ -162,14 +129,16 @@ class ECG_Dataset_Init():
         df_remove = df_input.copy()
         print('\n')
         df1 = df_remove[df_remove['ID']=='']
+        df1 = df1.sort_values(by=['diagnose'], ascending=[False]) #按照诊断排序，HTN在前
         # print('df1 the same name&ages&gender:',len(df1[df1.duplicated(subset=['name','ages','gender'],keep=False ) ]))
         # print('df1 the same name&ages&gender & diagnose:',len(df1[df1.duplicated(subset=['name','ages','gender','diagnose'],keep=False )]))
-        df1 = df1.drop_duplicates(subset=['name','ages','gender'],keep='last')#没有ID号的，剔除姓名和年龄都一样的，即认为是同一个人，保存最后一个
+        df1 = df1.drop_duplicates(subset=['name','ages','gender'],keep='first')#没有ID号的，剔除姓名和年龄都一样的，即认为是同一个人，保存第一个（尽可能保留高血压患者）
         
-        df2 = df_remove[~(df_remove['ID']=='')] #有ID号的 ，相同ID号，保存最后一个
+        df2 = df_remove[~(df_remove['ID']=='')] #有ID号的 ，相同ID号，保存第一个
+        df2 = df2.sort_values(by=['diagnose'], ascending=[False])
         # print('df2 the same name&ages&gender:',len(df2[df2.duplicated(subset=['ID'],keep=False) ]))
         # print('df2 the same name&ages&gender & diagnose:',len(df2[df2.duplicated(subset=['ID','diagnose'],keep=False )]))
-        df2 = df2.drop_duplicates(subset=['ID'],keep='last')
+        df2 = df2.drop_duplicates(subset=['ID'],keep='first')
         
         df_remove =pd.concat([df1,df2],axis=0)
         print('\n')
@@ -179,8 +148,7 @@ class ECG_Dataset_Init():
     #创建INFOs_Df 包含样本信息、文件名、ECG各个质量情况
     def rebuild_INFOs_Df(self):
         INFOsList = os.listdir(self.INFOs_path)
-        INFOs_df = pd.DataFrame(index=range(len(INFOsList)),columns=['num','name','ages','gender','department','diagnose','ID','date','ecgFN',
-                                                                    'q0','q1','q2','q3','q4','q5','q6','q7','q8','q9','q10','q11']) 
+        INFOs_df = pd.DataFrame(index=range(len(INFOsList)),columns=['num','name','ages','gender','diagnose','department','ID','date','ecgFN','q_sum']) 
         i = 0
         for infoFN in tqdm(INFOsList):
             year = infoFN[:2] 
@@ -189,41 +157,43 @@ class ECG_Dataset_Init():
             ecgFN = str(infoFN[:-4]+'.npy')
             if(year == '00'):
                 info.extend(['','','',ecgFN])
-                
-                info[4], info[5] = info[5], info[4]  #交换4、5，使得 department 和 diagnose对应正确 ['序号','姓名','年龄','性别','临床诊断'] 
-            elif(year == '21' or year == '20'):
+            # elif(year == '21'):##################################################################################################################################################################
+            #     info[4], info[5] = info[5], info[4]  #交换4、5，使得 department 和 diagnose对应正确 ['序号','姓名','年龄','性别','申请部门']-> ['序号','姓名','年龄','性别','临床诊断']############
+            #     info.extend([ecgFN])#############################################################################################################################################################
+            elif(year == '20' or year == '21'):
                 info.extend([ecgFN])
-            try:
-                q = pd.read_pickle(self.Qualitys_path+infoFN)
-                q = (q.sum(axis = 0)).tolist()[:12] #前12个，不知道为啥有的Q文件读出来有13列 比如 00_10
-            except:
-                q = ['2']*12
-            info = info + q
-            INFOs_df.loc[i] = info  # type: ignore
+            if(os.path.exists(self.Qualitys_path+infoFN)):
+                try:
+                    q = pd.read_pickle(self.Qualitys_path+infoFN)
+                    q_sum = int (np.array(q)[:,:12].sum())
+                except:
+
+                    print('QC data err :', infoFN)
+                    q_sum = 36
+            else:
+                print(infoFN," Not Find")
+            info.append(q_sum)
+            INFOs_df.iloc[i] = info  # type: ignore
             i = i + 1
         # INFOs_df.to_pickle(data_root+'/INFOs.pkl')
         return INFOs_df
     def report(self):
         print("{:^10} {:^10} {:^10}".format('  ','HTN','NHTN'))
         print("{:^10} {:^10} {:^10}".format('TestSet',len(self.testDf[(self.testDf['diagnose']==1)]),len(self.testDf[(self.testDf['diagnose']==0)])))
-        print("{:^10} {:^10} {:^10}".format('TVSet',len(self.TVDf[(self.TVDf['diagnose']==1)]),len(self.TVDf[(self.TVDf['diagnose']==0)])))
+        print("{:^10} {:^10} {:^10}".format('TVSet',len(self.tvDf[(self.tvDf['diagnose']==1)]),len(self.tvDf[(self.tvDf['diagnose']==0)])))
         print("{:^10} {:^10} {:^10}".format('ALL',len(self.INFOsDf[(self.INFOsDf['diagnose']==1)]),len(self.INFOsDf[(self.INFOsDf['diagnose']==0)])))
-        print("{:^10} {:^10} {:^10}".format('  ','ECGs','Labels'))
-        print("{:^10} {:^10} {:^10}".format('TestShape', str(self.testECGs.shape),str(self.testLabels.shape)))
-        print("{:^10} {:^10} {:^10}".format('TVShape', str(self.TVECGs.shape),str(self.TVLabels.shape)))
-        print("{:^10} {:^10} {:^10}".format('  ','HTN','NHTN'))
-        print("{:^10} {:^10} {:^10}".format('TestSet', np.sum(self.testLabels==1),np.sum(self.testLabels==0) ) )
-        print("{:^10} {:^10} {:^10}".format('TVSet', np.sum(self.TVLabels==1),np.sum(self.TVLabels==0)  ) )
     
         
 class ECG_Dataset(Dataset):
-    def __init__(self,datas,labels,infos,preprocess = True,onehot_lable=False,pair_flag = False):
-        self.datas = datas
-        self.labels = labels
+    def __init__(self,data_root,infos,preprocess = True,onehot_lable=False):
+        self.ECGs_path = data_root+'/ECG/'
+        self.INFOs_path = data_root+'/INFO/'
+        self.Qualitys_path = data_root+'/Q/'
+        
         self.infos = infos
-        self.pair_flag = pair_flag
-        self.len = len(datas)
-
+        self.datas = self.get_ECGs_form_FilesList(self.infos['ecgFN'].tolist())
+        self.labels = self.infos['diagnose'].tolist()
+        self.len = len(self.datas)
         if(preprocess):
             self.preprocess()
         self.datas[np.isnan(self.datas)]=0
@@ -232,10 +202,13 @@ class ECG_Dataset(Dataset):
         self.labels = torch.from_numpy(np.array(self.labels)).long()
         if(onehot_lable):
             self.labels = torch.nn.functional.one_hot(self.labels).float()
-            
-        if(self.pair_flag):
-            self.pair_()
-            self.len = self.datas_paired.shape[0]
+    def get_ECGs_form_FilesList(self,FilesList):
+        data = np.zeros((len(FilesList),12,5000))
+        i = 0
+        for file in tqdm(FilesList):
+            data[i] = np.load(self.ECGs_path + file)
+            i = i+1
+        return  data
     def preprocess(self):
         # filter_lowcut = 1.0
         # filter_highcut = 47.0
@@ -248,11 +221,7 @@ class ECG_Dataset(Dataset):
         #     var = self.datas[:,i,:].var()
         #     self.datas[:,i,:] = (self.datas[:,i,:] - mean)/(self.datas[:,i,:].var()+1e-6)
     def __getitem__(self,index):
-        # print(index)
-        if(self.pair_flag):
-            return self.datas_paired[index],self.labels_paired[index]
-        else:
-            return self.datas[index],self.labels[index]
+        return self.datas[index],self.labels[index]
     def __len__(self):
         return self.len
     
@@ -267,54 +236,8 @@ class ECG_Dataset(Dataset):
         print("{:^10} {:^10} {:^10}".format('  ','HTN','NHTN'))
         print("{:^10} {:^10} {:^10}".format('Nums', np.all(self.labels == 1),np.all(self.labels == 0)))
     def info(self,index):
-        if(self.pair_flag):
-            return self.infos_paired.iloc[index]
-        else:
-            return self.infos.iloc[index]
-    def pair_(self):
-        datas = self.datas
-        labels = self.labels
-        infos = self.infos
-        HTN_index = (infos[(infos['diagnose'] == 1)].index.tolist())
-        HTN_num = HTN_index.__len__()
-        datas_paired = torch.zeros(HTN_num*2,12,5000).float()
-        labels_paired = torch.zeros(HTN_num*2).long()
-        infos_paired = pd.DataFrame(index=range(HTN_num*2),columns=infos.columns)
-        
-        #先将所有HTN的赋值给 paied 的前HTN_num个 
-        #要确保所有INDEX都是对用着self.datas self.labels self.infos 的index
-        datas_paired[:HTN_num] = datas[HTN_index]# type: ignore        
-        labels_paired[:HTN_num] = labels[HTN_index]
-        infos_paired.iloc[:HTN_num] = infos[infos['diagnose'] == 1]
-        for i in range(HTN_num):
-            info = infos_paired.iloc[i]
-            age = info.ages
-            gender = info.gender
-            candidate_index = (infos[(infos['diagnose'] == 0) & 
-                                    (infos['gender'] == gender ) &
-                                    ((infos['ages'] > age-6)&(infos['ages'] < age+6))]).index.tolist()
-            if(candidate_index.__len__()>0):
-                sample_index=random.sample(candidate_index,1)[0]
-                
-            else:
-                print('Couldn\'t find such sample like ', age, gender)
-                candidate_index = (infos[(infos['diagnose'] == 0) & 
-                                    (infos['gender'] == gender )]).index.tolist()
-                sample_index=random.sample(candidate_index,1)[0]
-            buffer= infos.iloc[sample_index]
-            raw = i + HTN_num # 行号
-            datas_paired[raw] = datas[sample_index]
-            labels_paired[raw] = labels[sample_index]
-            infos_paired.iloc[raw] = infos.iloc[sample_index]
-            # print(infos_paired.iloc[raw])
-        self.datas_paired = datas_paired.float()
-        self.labels_paired = labels_paired.long()
-        self.infos_paired = infos_paired
-        # print("{:^10} {:^10} {:^10}".format('  ','ECGs','Labels'))
-        # print("{:^10} {:^10} {:^10}".format('PairShape', str(self.datas_paired.shape),str(self.labels_paired.shape)))
-        # print("{:^10} {:^10} {:^10}".format('  ','HTN','NHTN'))
-        # print("{:^10} {:^10} {:^10}".format('Nums', ((self.labels_paired == 1).sum()),((self.labels_paired == 0).sum())))
-        # print('Dataset Len:',self.len)
+        return self.infos.iloc[index]
+    
     
 def bandpass_filter(data, lowcut, highcut, signal_freq, filter_order):
         """
@@ -334,7 +257,8 @@ def bandpass_filter(data, lowcut, highcut, signal_freq, filter_order):
         return y
     
 if __name__ == '__main__':
-    ALLDataset = ECG_Dataset_Init('./data_like_pxl')
+    ALLDataset = ECG_Dataset_Init('/workspace/data/Preprocess_HTN/data_like_pxl/',filter_age= 18,filter_department='外科',rebuild_flage=False)
+    print(ALLDataset.testDf.head())
     
         
         

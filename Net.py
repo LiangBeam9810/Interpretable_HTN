@@ -407,8 +407,8 @@ class MLBFNet(nn.Module):
         
         out = out.view(out.size(0), -1)
         self.last_out = self.fc(out)
-        # out = self.softmax(self.last_out)
-        return self.last_out
+        out = self.softmax(self.last_out)
+        return out
     
   
 class MLBFNet_GUR(nn.Module):
