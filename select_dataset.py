@@ -125,7 +125,7 @@ class splite_dataset():
     def __filter_NHTN_df__(self,df):
         df_filter = df.copy()
         df_filter = df_filter.dropna(subset=['years']) #删除years== nan
-        df_filter.loc[~(df_filter['years'].str.contains('岁')),'years']='0岁' #不含有岁的（天周月）改为"0岁"
+        df_filter.loc[~(df_filter['years'].str.contains('岁')==True),'years']='0岁' #不含有岁的（天周月）改为"0岁"
         df_filter['years'].replace(regex=True,inplace=True,to_replace=r'岁',value=r'') #删除"岁"
         # df_filter = df_filter[
         #     (((df_filter['years'].apply(int))<55) &(df_filter['department'].str.contains('外科')))|
