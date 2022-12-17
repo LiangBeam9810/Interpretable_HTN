@@ -95,7 +95,7 @@ class ECG_Dataset_Init():
     def __filter__quality__(self,df_input):
         df = df_input.copy()       
         df = df[
-                ( (df['q_sum'] == 0))
+                ( (df['q_sum'] < 4))&(df['q_sum']>=0)
                 ]#q_sum<=1
         print('\n')
         print("{:^10} {:^10} {:^20}".format('  ','orginal','QC'))
@@ -132,13 +132,20 @@ class ECG_Dataset_Init():
         df1 = df1.sort_values(by=['diagnose'], ascending=[False]) #按照诊断排序，HTN在前
         # print('df1 the same name&ages&gender:',len(df1[df1.duplicated(subset=['name','ages','gender'],keep=False ) ]))
         # print('df1 the same name&ages&gender & diagnose:',len(df1[df1.duplicated(subset=['name','ages','gender','diagnose'],keep=False )]))
-        df1 = df1.drop_duplicates(subset=['name','ages','gender'],keep='first')#没有ID号的，剔除姓名和年龄都一样的，即认为是同一个人，保存第一个（尽可能保留高血压患者）
+        # df1 = df1.drop_duplicates(subset=['name','ages','gender'],keep='first')#没有ID号的，剔除姓名和年龄都一样的，即认为是同一个人，保存第一个（尽可能保留高血压患者）
         
         df2 = df_remove[~(df_remove['ID']=='')] #有ID号的 ，相同ID号，保存第一个
         df2 = df2.sort_values(by=['diagnose'], ascending=[False])
+        #####################################################test
+        df2_0 = df2[df2['diagnose']==0] #所有非高血压
+        df2_1 = df2[df2['diagnose']==1] #所有高血压
+        duplicated_index = df2_0[[True if i in df2_1['ID'].tolist() else False for i in df2_0['ID']]].index
+        df2.loc[duplicated_index,'diagnose'] = 1
+        print("ERR labels num:",len(duplicated_index))
+        #####################################################test
         # print('df2 the same name&ages&gender:',len(df2[df2.duplicated(subset=['ID'],keep=False) ]))
         # print('df2 the same name&ages&gender & diagnose:',len(df2[df2.duplicated(subset=['ID','diagnose'],keep=False )]))
-        df2 = df2.drop_duplicates(subset=['ID'],keep='first')
+        # df2 = df2.drop_duplicates(subset=['ID'],keep='first')
         
         df_remove =pd.concat([df1,df2],axis=0)
         print('\n')

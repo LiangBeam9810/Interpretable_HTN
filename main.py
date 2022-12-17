@@ -102,16 +102,16 @@ if __name__ == '__main__':
     ALLDataset = ECGDataset.ECG_Dataset_Init('/workspace/data/Preprocess_HTN/data_like_pxl//',filter_age= 18,filter_department='外科',rebuild_flage=False)    
     ALLDataset.report()  # type: ignore
     torch.cuda.empty_cache()# 清空显卡cuda
-    NET = [Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.25),
-           Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.25),
-           Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.25),
-           Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.25),
-           Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.25),] # type: ignore
-    NET = [ Net.MLBFNet_GUR(True,res = True,se = True,Dropout_rate = 0.1),
-            Net.MLBFNet_GUR(True,res = True,se = True,Dropout_rate = 0.1),
-            Net.MLBFNet_GUR(True,res = True,se = True,Dropout_rate = 0.1),
-            Net.MLBFNet_GUR(True,res = True,se = True,Dropout_rate = 0.1),
-            Net.MLBFNet_GUR(True,res = True,se = True,Dropout_rate = 0.1)]
+    NET = [Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.3),
+           Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.3),
+           Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.3),
+           Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.3),
+           Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.3),] # type: ignore
+    # NET = [ Net.MLBFNet_GUR(True,res = True,se = True,Dropout_rate = 0.1),
+    #         Net.MLBFNet_GUR(True,res = True,se = True,Dropout_rate = 0.1),
+    #         Net.MLBFNet_GUR(True,res = True,se = True,Dropout_rate = 0.1),
+    #         Net.MLBFNet_GUR(True,res = True,se = True,Dropout_rate = 0.1),
+    #         Net.MLBFNet_GUR(True,res = True,se = True,Dropout_rate = 0.1)]
 
     test_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',ALLDataset.testDf)  # type: ignore
     os.makedirs(model_path, exist_ok=True)  # type: ignore
@@ -134,11 +134,11 @@ if __name__ == '__main__':
     for i in range(FOLDS):
         print(" "*10+ "Fold "+str(fold)+" of "+str(FOLDS) + ' :')
         tv_Df = ALLDataset.tvDf.copy()
-        validate_pair_Df = pair_HTN(tv_Df[(tv_Df['diagnose']==1)].iloc[validaate_size*i:validaate_size*i+validaate_size],tv_Df[(tv_Df['diagnose']==0)],Range_max = 15)
+        validate_pair_Df = pair_HTN(tv_Df[(tv_Df['diagnose']==1)].iloc[validaate_size*i:validaate_size*i+validaate_size],tv_Df[(tv_Df['diagnose']==0)],Range_max = 15,shuffle=True)
         train_Df = tv_Df.drop(index= validate_pair_Df.index)    #删掉validate_pair_Df 用于训练
         
-        # criterion = nn.CrossEntropyLoss()
-        criterion = LabelSmoothingCrossEntropy()
+        criterion = nn.CrossEntropyLoss()
+        # criterion = LabelSmoothingCrossEntropy()
         train_loss,train_acc,validate_loss,validate_acc,test_loss,test_acc = tarinning_one_flod(fold,NET[fold]
                                                                                                 ,train_Df,validate_pair_Df,test_dataset
                                                                                                 ,writer,model_path

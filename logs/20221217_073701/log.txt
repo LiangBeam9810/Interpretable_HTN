@@ -1,0 +1,1014 @@
+
+Training..
+
+          Fold 0 of 5 :
+                    - Epoch: 1 - Train_loss: 0.69383 - Train_acc: 0.49072 -  - Val_loss: 0.69351 - Val_acc: 0.50000  - T_Time: 37.67149 LR：0.00000000
+                    Validate:  0.3333333333333333 
+                     [  0 253] 
+                     [  0 253]
+                    test:  0.05982390543963335 
+                     [   0 7299] 
+                     [  0 496]
+                    --------------------------------------------------
+
+                    Validation  score to (inf --> -0.69350994).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 2 - Train_loss: 0.69619 - Train_acc: 0.50089 -  - Val_loss: 0.69441 - Val_acc: 0.49351  - T_Time: 33.92290 LR：0.00000000
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 3 - Train_loss: 0.69403 - Train_acc: 0.50621 -  - Val_loss: 0.69378 - Val_acc: 0.49014  - T_Time: 33.41320 LR：0.00000000
+                    EarlyStopping counter: 2 out of 50
+
+                    - Epoch: 4 - Train_loss: 0.69728 - Train_acc: 0.48221 -  - Val_loss: 0.69280 - Val_acc: 0.52139  - T_Time: 33.91810 LR：0.00000000
+                    Validate:  0.4684947089825743 
+                     [ 41 212] 
+                     [ 17 236]
+                    test:  0.15512330786315714 
+                     [ 790 6509] 
+                     [ 63 433]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.69350994 --> -0.69279873).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 5 - Train_loss: 0.69614 - Train_acc: 0.49112 -  - Val_loss: 0.69215 - Val_acc: 0.54135  - T_Time: 34.32008 LR：0.00000000
+                    Validate:  0.503100246721205 
+                     [ 83 170] 
+                     [ 72 181]
+                    test:  0.26973338458824947 
+                     [2036 5263] 
+                     [159 337]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.69279873 --> -0.69215353).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 6 - Train_loss: 0.67858 - Train_acc: 0.58761 -  - Val_loss: 0.66043 - Val_acc: 0.60962  - T_Time: 33.48289 LR：0.00010000
+                    Validate:  0.6070909331218608 
+                     [218  35] 
+                     [153 100]
+                    test:  0.5374287329940459 
+                     [6052 1247] 
+                     [314 182]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.69215353 --> -0.66042984).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 7 - Train_loss: 0.66137 - Train_acc: 0.61738 -  - Val_loss: 0.64466 - Val_acc: 0.63666  - T_Time: 33.76736 LR：0.00009997
+                    Validate:  0.6165944531658817 
+                     [228  25] 
+                     [156  97]
+                    test:  0.5543556854842198 
+                     [6304  995] 
+                     [327 169]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.66042984 --> -0.64466275).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 8 - Train_loss: 0.63975 - Train_acc: 0.64464 -  - Val_loss: 0.61267 - Val_acc: 0.63666  - T_Time: 32.24652 LR：0.00009989
+                    Validate:  0.6338127281523508 
+                     [201  52] 
+                     [129 124]
+                    test:  0.5316217842663318 
+                     [5725 1574] 
+                     [264 232]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.64466275 --> -0.61267494).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 9 - Train_loss: 0.61501 - Train_acc: 0.67870 -  - Val_loss: 0.59203 - Val_acc: 0.70950  - T_Time: 33.11738 LR：0.00009975
+                    Validate:  0.6935310552331828 
+                     [181  72] 
+                     [ 83 170]
+                    test:  0.5303762207261826 
+                     [5489 1810] 
+                     [216 280]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.61267494 --> -0.59202836).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 10 - Train_loss: 0.61240 - Train_acc: 0.68173 -  - Val_loss: 0.64429 - Val_acc: 0.64495  - T_Time: 32.97894 LR：0.00009956
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 11 - Train_loss: 0.59189 - Train_acc: 0.70677 -  - Val_loss: 0.63122 - Val_acc: 0.66346  - T_Time: 32.82408 LR：0.00009932
+                    EarlyStopping counter: 2 out of 50
+
+                    - Epoch: 12 - Train_loss: 0.58395 - Train_acc: 0.71376 -  - Val_loss: 0.57982 - Val_acc: 0.71130  - T_Time: 33.79189 LR：0.00009902
+                    Validate:  0.6844285282823489 
+                     [190  63] 
+                     [ 96 157]
+                    test:  0.5308945414678036 
+                     [5495 1804] 
+                     [216 280]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.59202836 --> -0.57981671).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 13 - Train_loss: 0.56667 - Train_acc: 0.72592 -  - Val_loss: 0.58786 - Val_acc: 0.70685  - T_Time: 33.94374 LR：0.00009867
+                    EarlyStopping counter: 1 out of 50
+
+lack sample like : Pandas(Index=51751, num=3257, name='史元昌', ages=98, gender='男', department='干部保健二科三区', diagnose=1, ID='271758', date='2020-11-20 16:04:58', ecgFN='20-3257_98-1_NHTN.npy', q_sum=0)
+                    - Epoch: 14 - Train_loss: 0.56888 - Train_acc: 0.72977 -  - Val_loss: 0.60265 - Val_acc: 0.69856  - T_Time: 33.61008 LR：0.00009826
+                    EarlyStopping counter: 2 out of 50
+
+                    - Epoch: 15 - Train_loss: 0.56114 - Train_acc: 0.73998 -  - Val_loss: 0.58071 - Val_acc: 0.72067  - T_Time: 33.55086 LR：0.00009780
+                    EarlyStopping counter: 3 out of 50
+
+                    - Epoch: 16 - Train_loss: 0.56649 - Train_acc: 0.73336 -  - Val_loss: 0.63421 - Val_acc: 0.66190  - T_Time: 33.80061 LR：0.00009729
+                    EarlyStopping counter: 4 out of 50
+
+                    - Epoch: 17 - Train_loss: 0.54918 - Train_acc: 0.74959 -  - Val_loss: 0.66172 - Val_acc: 0.63462  - T_Time: 34.09472 LR：0.00009673
+                    EarlyStopping counter: 5 out of 50
+
+                    - Epoch: 18 - Train_loss: 0.53873 - Train_acc: 0.76098 -  - Val_loss: 0.64065 - Val_acc: 0.65072  - T_Time: 34.66721 LR：0.00009612
+                    EarlyStopping counter: 6 out of 50
+
+                    - Epoch: 19 - Train_loss: 0.53224 - Train_acc: 0.76683 -  - Val_loss: 0.57082 - Val_acc: 0.74099  - T_Time: 33.96931 LR：0.00009545
+                    Validate:  0.7205919474946358 
+                     [208  45] 
+                     [ 95 158]
+                    test:  0.5577763332783816 
+                     [5795 1504] 
+                     [217 279]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.57981671 --> -0.57081631).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 20 - Train_loss: 0.51299 - Train_acc: 0.79027 -  - Val_loss: 0.56268 - Val_acc: 0.72332  - T_Time: 34.06139 LR：0.00009474
+                    Validate:  0.7207669457196867 
+                     [171  82] 
+                     [ 59 194]
+                    test:  0.49034844494553725 
+                     [4722 2577] 
+                     [146 350]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.57081631 --> -0.56267554).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 21 - Train_loss: 0.52482 - Train_acc: 0.77659 -  - Val_loss: 0.56344 - Val_acc: 0.72356  - T_Time: 34.11881 LR：0.00009398
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 22 - Train_loss: 0.50575 - Train_acc: 0.79889 -  - Val_loss: 0.60133 - Val_acc: 0.70276  - T_Time: 34.68870 LR：0.00009317
+                    EarlyStopping counter: 2 out of 50
+
+                    - Epoch: 23 - Train_loss: 0.49958 - Train_acc: 0.80684 -  - Val_loss: 0.65507 - Val_acc: 0.62368  - T_Time: 33.95574 LR：0.00009231
+                    EarlyStopping counter: 3 out of 50
+
+                    - Epoch: 24 - Train_loss: 0.49249 - Train_acc: 0.81771 -  - Val_loss: 0.62186 - Val_acc: 0.67752  - T_Time: 34.49743 LR：0.00009141
+                    EarlyStopping counter: 4 out of 50
+
+                    - Epoch: 25 - Train_loss: 0.50149 - Train_acc: 0.80514 -  - Val_loss: 0.60546 - Val_acc: 0.68666  - T_Time: 34.60364 LR：0.00009046
+                    EarlyStopping counter: 5 out of 50
+
+                    - Epoch: 26 - Train_loss: 0.49592 - Train_acc: 0.80947 -  - Val_loss: 0.57992 - Val_acc: 0.71526  - T_Time: 33.67728 LR：0.00008947
+                    EarlyStopping counter: 6 out of 50
+
+                    - Epoch: 27 - Train_loss: 0.46030 - Train_acc: 0.85281 -  - Val_loss: 0.66585 - Val_acc: 0.62392  - T_Time: 34.10357 LR：0.00008843
+                    EarlyStopping counter: 7 out of 50
+
+                    - Epoch: 28 - Train_loss: 0.46672 - Train_acc: 0.84397 -  - Val_loss: 0.56701 - Val_acc: 0.73738  - T_Time: 35.02929 LR：0.00008735
+                    EarlyStopping counter: 8 out of 50
+
+                    - Epoch: 29 - Train_loss: 0.46333 - Train_acc: 0.84630 -  - Val_loss: 0.58613 - Val_acc: 0.71863  - T_Time: 34.81646 LR：0.00008624
+                    EarlyStopping counter: 9 out of 50
+
+                    - Epoch: 30 - Train_loss: 0.45964 - Train_acc: 0.84819 -  - Val_loss: 0.58746 - Val_acc: 0.69291  - T_Time: 34.26300 LR：0.00008508
+                    EarlyStopping counter: 10 out of 50
+
+                    - Epoch: 31 - Train_loss: 0.45341 - Train_acc: 0.85717 -  - Val_loss: 0.57858 - Val_acc: 0.73269  - T_Time: 32.85439 LR：0.00008388
+                    EarlyStopping counter: 11 out of 50
+
+                    - Epoch: 32 - Train_loss: 0.45216 - Train_acc: 0.85888 -  - Val_loss: 0.58650 - Val_acc: 0.71971  - T_Time: 34.00443 LR：0.00008265
+                    EarlyStopping counter: 12 out of 50
+
+                    - Epoch: 33 - Train_loss: 0.44660 - Train_acc: 0.86198 -  - Val_loss: 0.64817 - Val_acc: 0.63774  - T_Time: 34.67111 LR：0.00008138
+                    EarlyStopping counter: 13 out of 50
+
+                    - Epoch: 34 - Train_loss: 0.43790 - Train_acc: 0.87474 -  - Val_loss: 0.55947 - Val_acc: 0.74231  - T_Time: 33.98197 LR：0.00008007
+                    Validate:  0.7300108307849134 
+                     [221  32] 
+                     [102 151]
+                    test:  0.5966080705449941 
+                     [6139 1160] 
+                     [211 285]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.56267554 --> -0.55947049).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 35 - Train_loss: 0.42484 - Train_acc: 0.88646 -  - Val_loss: 0.56562 - Val_acc: 0.73293  - T_Time: 33.78080 LR：0.00007874
+                    EarlyStopping counter: 1 out of 50
+
+lack sample like : Pandas(Index=51751, num=3257, name='史元昌', ages=98, gender='男', department='干部保健二科三区', diagnose=1, ID='271758', date='2020-11-20 16:04:58', ecgFN='20-3257_98-1_NHTN.npy', q_sum=0)
+                    - Epoch: 36 - Train_loss: 0.42745 - Train_acc: 0.88495 -  - Val_loss: 0.60612 - Val_acc: 0.68401  - T_Time: 33.81214 LR：0.00007737
+                    EarlyStopping counter: 2 out of 50
+
+lack sample like : Pandas(Index=51751, num=3257, name='史元昌', ages=98, gender='男', department='干部保健二科三区', diagnose=1, ID='271758', date='2020-11-20 16:04:58', ecgFN='20-3257_98-1_NHTN.npy', q_sum=0)
+                    - Epoch: 37 - Train_loss: 0.42947 - Train_acc: 0.88332 -  - Val_loss: 0.60957 - Val_acc: 0.68666  - T_Time: 33.15049 LR：0.00007597
+                    EarlyStopping counter: 3 out of 50
+
+                    - Epoch: 38 - Train_loss: 0.43230 - Train_acc: 0.87999 -  - Val_loss: 0.58327 - Val_acc: 0.70877  - T_Time: 33.95717 LR：0.00007455
+                    EarlyStopping counter: 4 out of 50
+
+lack sample like : Pandas(Index=51751, num=3257, name='史元昌', ages=98, gender='男', department='干部保健二科三区', diagnose=1, ID='271758', date='2020-11-20 16:04:58', ecgFN='20-3257_98-1_NHTN.npy', q_sum=0)
+                    - Epoch: 39 - Train_loss: 0.42785 - Train_acc: 0.88624 -  - Val_loss: 0.52486 - Val_acc: 0.77560  - T_Time: 34.82539 LR：0.00007309
+                    Validate:  0.7554643144804825 
+                     [172  81] 
+                     [ 42 211]
+                    test:  0.5132451508804314 
+                     [4892 2407] 
+                     [116 380]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.55947049 --> -0.52485705).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 40 - Train_loss: 0.41419 - Train_acc: 0.89453 -  - Val_loss: 0.50837 - Val_acc: 0.78810  - T_Time: 34.74279 LR：0.00007162
+                    Validate:  0.772527373725133 
+                     [203  50] 
+                     [ 65 188]
+                    test:  0.5780894010248838 
+                     [5809 1490] 
+                     [171 325]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.52485705 --> -0.50836598).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 41 - Train_loss: 0.40945 - Train_acc: 0.90440 -  - Val_loss: 0.51488 - Val_acc: 0.78810  - T_Time: 33.41699 LR：0.00007011
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 42 - Train_loss: 0.40944 - Train_acc: 0.90240 -  - Val_loss: 0.54788 - Val_acc: 0.75373  - T_Time: 34.51207 LR：0.00006859
+                    EarlyStopping counter: 2 out of 50
+
+                    - Epoch: 43 - Train_loss: 0.41144 - Train_acc: 0.90244 -  - Val_loss: 0.50488 - Val_acc: 0.80216  - T_Time: 33.05024 LR：0.00006705
+                    Validate:  0.7899592731829574 
+                     [213  40] 
+                     [ 66 187]
+                    test:  0.5783329244101246 
+                     [5835 1464] 
+                     [177 319]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.50836598 --> -0.50487754).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 44 - Train_loss: 0.40294 - Train_acc: 0.90710 -  - Val_loss: 0.52749 - Val_acc: 0.78293  - T_Time: 34.49976 LR：0.00006549
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 45 - Train_loss: 0.39201 - Train_acc: 0.92075 -  - Val_loss: 0.58169 - Val_acc: 0.70986  - T_Time: 34.48291 LR：0.00006391
+                    EarlyStopping counter: 2 out of 50
+
+                    - Epoch: 46 - Train_loss: 0.39180 - Train_acc: 0.91849 -  - Val_loss: 0.50609 - Val_acc: 0.81046  - T_Time: 33.51202 LR：0.00006231
+                    EarlyStopping counter: 3 out of 50
+
+                    - Epoch: 47 - Train_loss: 0.39660 - Train_acc: 0.91268 -  - Val_loss: 0.51050 - Val_acc: 0.79880  - T_Time: 34.50968 LR：0.00006070
+                    EarlyStopping counter: 4 out of 50
+
+                    - Epoch: 48 - Train_loss: 0.39955 - Train_acc: 0.90991 -  - Val_loss: 0.49950 - Val_acc: 0.80841  - T_Time: 34.95721 LR：0.00005908
+                    Validate:  0.797393420742718 
+                     [220  33] 
+                     [ 69 184]
+                    test:  0.5988492256291338 
+                     [6110 1189] 
+                     [199 297]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.50487754 --> -0.49949677).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 49 - Train_loss: 0.40146 - Train_acc: 0.90795 -  - Val_loss: 0.54964 - Val_acc: 0.74808  - T_Time: 34.24977 LR：0.00005746
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 50 - Train_loss: 0.39628 - Train_acc: 0.91742 -  - Val_loss: 0.50613 - Val_acc: 0.79303  - T_Time: 35.00222 LR：0.00005582
+                    EarlyStopping counter: 2 out of 50
+
+                    - Epoch: 51 - Train_loss: 0.38224 - Train_acc: 0.92655 -  - Val_loss: 0.52945 - Val_acc: 0.78425  - T_Time: 33.98025 LR：0.00005417
+                    EarlyStopping counter: 3 out of 50
+
+                    - Epoch: 52 - Train_loss: 0.38094 - Train_acc: 0.93443 -  - Val_loss: 0.51286 - Val_acc: 0.79279  - T_Time: 34.79820 LR：0.00005253
+                    EarlyStopping counter: 4 out of 50
+
+lack sample like : Pandas(Index=51751, num=3257, name='史元昌', ages=98, gender='男', department='干部保健二科三区', diagnose=1, ID='271758', date='2020-11-20 16:04:58', ecgFN='20-3257_98-1_NHTN.npy', q_sum=0)
+                    - Epoch: 53 - Train_loss: 0.37859 - Train_acc: 0.93639 -  - Val_loss: 0.56663 - Val_acc: 0.73353  - T_Time: 33.77164 LR：0.00005088
+                    EarlyStopping counter: 5 out of 50
+
+                    - Epoch: 54 - Train_loss: 0.38066 - Train_acc: 0.92944 -  - Val_loss: 0.53204 - Val_acc: 0.78161  - T_Time: 35.08553 LR：0.00004922
+                    EarlyStopping counter: 6 out of 50
+
+                    - Epoch: 55 - Train_loss: 0.37310 - Train_acc: 0.94290 -  - Val_loss: 0.55206 - Val_acc: 0.74651  - T_Time: 33.33233 LR：0.00004757
+                    EarlyStopping counter: 7 out of 50
+
+                    - Epoch: 56 - Train_loss: 0.36694 - Train_acc: 0.94819 -  - Val_loss: 0.53694 - Val_acc: 0.77200  - T_Time: 34.41330 LR：0.00004593
+                    EarlyStopping counter: 8 out of 50
+
+                    - Epoch: 57 - Train_loss: 0.37692 - Train_acc: 0.93646 -  - Val_loss: 0.53575 - Val_acc: 0.77488  - T_Time: 34.38264 LR：0.00004428
+                    EarlyStopping counter: 9 out of 50
+
+                    - Epoch: 58 - Train_loss: 0.37438 - Train_acc: 0.94268 -  - Val_loss: 0.50460 - Val_acc: 0.78137  - T_Time: 34.31782 LR：0.00004264
+                    EarlyStopping counter: 10 out of 50
+
+                    - Epoch: 59 - Train_loss: 0.37170 - Train_acc: 0.94053 -  - Val_loss: 0.49624 - Val_acc: 0.80685  - T_Time: 35.26788 LR：0.00004102
+                    Validate:  0.7962636477712061 
+                     [209  44] 
+                     [ 59 194]
+                    test:  0.5792412224150224 
+                     [5789 1510] 
+                     [163 333]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.49949677 --> -0.49624465).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 60 - Train_loss: 0.36872 - Train_acc: 0.94238 -  - Val_loss: 0.52199 - Val_acc: 0.77981  - T_Time: 34.36858 LR：0.00003940
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 61 - Train_loss: 0.36336 - Train_acc: 0.95141 -  - Val_loss: 0.55916 - Val_acc: 0.74675  - T_Time: 33.71585 LR：0.00003779
+                    EarlyStopping counter: 2 out of 50
+
+lack sample like : Pandas(Index=51751, num=3257, name='史元昌', ages=98, gender='男', department='干部保健二科三区', diagnose=1, ID='271758', date='2020-11-20 16:04:58', ecgFN='20-3257_98-1_NHTN.npy', q_sum=0)
+                    - Epoch: 62 - Train_loss: 0.35687 - Train_acc: 0.95858 -  - Val_loss: 0.52199 - Val_acc: 0.77200  - T_Time: 34.15836 LR：0.00003619
+                    EarlyStopping counter: 3 out of 50
+
+                    - Epoch: 63 - Train_loss: 0.36704 - Train_acc: 0.94504 -  - Val_loss: 0.53085 - Val_acc: 0.77933  - T_Time: 33.75508 LR：0.00003461
+                    EarlyStopping counter: 4 out of 50
+
+                    - Epoch: 64 - Train_loss: 0.36605 - Train_acc: 0.94970 -  - Val_loss: 0.51674 - Val_acc: 0.78786  - T_Time: 35.08760 LR：0.00003305
+                    EarlyStopping counter: 5 out of 50
+
+                    - Epoch: 65 - Train_loss: 0.35325 - Train_acc: 0.96250 -  - Val_loss: 0.51401 - Val_acc: 0.79856  - T_Time: 33.90803 LR：0.00003151
+                    EarlyStopping counter: 6 out of 50
+
+                    - Epoch: 66 - Train_loss: 0.35360 - Train_acc: 0.96146 -  - Val_loss: 0.47737 - Val_acc: 0.82608  - T_Time: 33.61507 LR：0.00002999
+                    Validate:  0.8003570493814138 
+                     [206  47] 
+                     [ 54 199]
+                    test:  0.5725514089870525 
+                     [5628 1671] 
+                     [138 358]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.49624465 --> -0.47737028).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 67 - Train_loss: 0.34909 - Train_acc: 0.96890 -  - Val_loss: 0.51566 - Val_acc: 0.79075  - T_Time: 33.66168 LR：0.00002848
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 68 - Train_loss: 0.35564 - Train_acc: 0.96076 -  - Val_loss: 0.51131 - Val_acc: 0.79411  - T_Time: 34.96379 LR：0.00002701
+                    EarlyStopping counter: 2 out of 50
+
+                    - Epoch: 69 - Train_loss: 0.35619 - Train_acc: 0.95828 -  - Val_loss: 0.52244 - Val_acc: 0.77981  - T_Time: 34.68346 LR：0.00002555
+                    EarlyStopping counter: 3 out of 50
+
+                    - Epoch: 70 - Train_loss: 0.34941 - Train_acc: 0.96720 -  - Val_loss: 0.52489 - Val_acc: 0.77464  - T_Time: 33.95299 LR：0.00002413
+                    EarlyStopping counter: 4 out of 50
+
+                    - Epoch: 71 - Train_loss: 0.35380 - Train_acc: 0.96024 -  - Val_loss: 0.49731 - Val_acc: 0.80998  - T_Time: 34.43678 LR：0.00002273
+                    EarlyStopping counter: 5 out of 50
+
+                    - Epoch: 72 - Train_loss: 0.35820 - Train_acc: 0.95470 -  - Val_loss: 0.53403 - Val_acc: 0.77332  - T_Time: 33.79603 LR：0.00002136
+                    EarlyStopping counter: 6 out of 50
+
+                    - Epoch: 73 - Train_loss: 0.35861 - Train_acc: 0.95518 -  - Val_loss: 0.51874 - Val_acc: 0.78762  - T_Time: 34.67547 LR：0.00002003
+                    EarlyStopping counter: 7 out of 50
+
+                    - Epoch: 74 - Train_loss: 0.35262 - Train_acc: 0.96313 -  - Val_loss: 0.50971 - Val_acc: 0.79099  - T_Time: 33.77869 LR：0.00001872
+                    EarlyStopping counter: 8 out of 50
+
+                    - Epoch: 75 - Train_loss: 0.34898 - Train_acc: 0.96683 -  - Val_loss: 0.47347 - Val_acc: 0.83546  - T_Time: 33.42421 LR：0.00001745
+                    Validate:  0.8107562270925275 
+                     [228  25] 
+                     [ 70 183]
+                    test:  0.6079411051652481 
+                     [6140 1159] 
+                     [187 309]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.47737028 --> -0.47347156).  Saving model ...
+                    --------------------------------------------------
+
+lack sample like : Pandas(Index=51751, num=3257, name='史元昌', ages=98, gender='男', department='干部保健二科三区', diagnose=1, ID='271758', date='2020-11-20 16:04:58', ecgFN='20-3257_98-1_NHTN.npy', q_sum=0)
+                    - Epoch: 76 - Train_loss: 0.35431 - Train_acc: 0.95814 -  - Val_loss: 0.50010 - Val_acc: 0.80661  - T_Time: 34.20285 LR：0.00001622
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 77 - Train_loss: 0.35654 - Train_acc: 0.95902 -  - Val_loss: 0.50887 - Val_acc: 0.79904  - T_Time: 34.09169 LR：0.00001502
+                    EarlyStopping counter: 2 out of 50
+
+                    - Epoch: 78 - Train_loss: 0.35099 - Train_acc: 0.96439 -  - Val_loss: 0.51772 - Val_acc: 0.78942  - T_Time: 34.17925 LR：0.00001386
+                    EarlyStopping counter: 3 out of 50
+
+                    - Epoch: 79 - Train_loss: 0.35855 - Train_acc: 0.95422 -  - Val_loss: 0.49857 - Val_acc: 0.80529  - T_Time: 34.08432 LR：0.00001275
+                    EarlyStopping counter: 4 out of 50
+
+                    - Epoch: 80 - Train_loss: 0.34780 - Train_acc: 0.96945 -  - Val_loss: 0.55664 - Val_acc: 0.75228  - T_Time: 34.24968 LR：0.00001167
+                    EarlyStopping counter: 5 out of 50
+
+                    - Epoch: 81 - Train_loss: 0.34734 - Train_acc: 0.96461 -  - Val_loss: 0.52422 - Val_acc: 0.78450  - T_Time: 33.69165 LR：0.00001063
+                    EarlyStopping counter: 6 out of 50
+
+                    - Epoch: 82 - Train_loss: 0.34895 - Train_acc: 0.96509 -  - Val_loss: 0.51020 - Val_acc: 0.80192  - T_Time: 34.75682 LR：0.00000964
+                    EarlyStopping counter: 7 out of 50
+
+                    - Epoch: 83 - Train_loss: 0.34784 - Train_acc: 0.96705 -  - Val_loss: 0.54097 - Val_acc: 0.76214  - T_Time: 33.82490 LR：0.00000869
+                    EarlyStopping counter: 8 out of 50
+
+                    - Epoch: 84 - Train_loss: 0.34756 - Train_acc: 0.96727 -  - Val_loss: 0.52601 - Val_acc: 0.77043  - T_Time: 34.16742 LR：0.00000779
+                    EarlyStopping counter: 9 out of 50
+
+                    - Epoch: 85 - Train_loss: 0.34602 - Train_acc: 0.96701 -  - Val_loss: 0.54178 - Val_acc: 0.76190  - T_Time: 33.45495 LR：0.00000693
+                    EarlyStopping counter: 10 out of 50
+
+                    - Epoch: 86 - Train_loss: 0.34837 - Train_acc: 0.96653 -  - Val_loss: 0.50081 - Val_acc: 0.81178  - T_Time: 34.24078 LR：0.00000612
+                    EarlyStopping counter: 11 out of 50
+
+lack sample like : Pandas(Index=51751, num=3257, name='史元昌', ages=98, gender='男', department='干部保健二科三区', diagnose=1, ID='271758', date='2020-11-20 16:04:58', ecgFN='20-3257_98-1_NHTN.npy', q_sum=0)
+                    - Epoch: 87 - Train_loss: 0.35391 - Train_acc: 0.95958 -  - Val_loss: 0.50153 - Val_acc: 0.80060  - T_Time: 33.21503 LR：0.00000536
+                    EarlyStopping counter: 12 out of 50
+
+                    - Epoch: 88 - Train_loss: 0.33653 - Train_acc: 0.97881 -  - Val_loss: 0.51338 - Val_acc: 0.78450  - T_Time: 33.45488 LR：0.00000465
+                    EarlyStopping counter: 13 out of 50
+
+                    - Epoch: 89 - Train_loss: 0.34469 - Train_acc: 0.96875 -  - Val_loss: 0.51907 - Val_acc: 0.77175  - T_Time: 33.33831 LR：0.00000398
+                    EarlyStopping counter: 14 out of 50
+
+                    - Epoch: 90 - Train_loss: 0.34596 - Train_acc: 0.97089 -  - Val_loss: 0.51704 - Val_acc: 0.78630  - T_Time: 33.72739 LR：0.00000337
+                    EarlyStopping counter: 15 out of 50
+
+                    - Epoch: 91 - Train_loss: 0.34454 - Train_acc: 0.96845 -  - Val_loss: 0.50173 - Val_acc: 0.79904  - T_Time: 33.20312 LR：0.00000281
+                    EarlyStopping counter: 16 out of 50
+
+                    - Epoch: 92 - Train_loss: 0.34524 - Train_acc: 0.96990 -  - Val_loss: 0.53765 - Val_acc: 0.76995  - T_Time: 33.17693 LR：0.00000230
+                    EarlyStopping counter: 17 out of 50
+
+                    - Epoch: 93 - Train_loss: 0.34667 - Train_acc: 0.96838 -  - Val_loss: 0.49886 - Val_acc: 0.80373  - T_Time: 33.72808 LR：0.00000184
+                    EarlyStopping counter: 18 out of 50
+
+                    - Epoch: 94 - Train_loss: 0.34024 - Train_acc: 0.97400 -  - Val_loss: 0.50952 - Val_acc: 0.79724  - T_Time: 33.49634 LR：0.00000143
+                    EarlyStopping counter: 19 out of 50
+
+                    - Epoch: 95 - Train_loss: 0.34222 - Train_acc: 0.97182 -  - Val_loss: 0.50495 - Val_acc: 0.79567  - T_Time: 33.62575 LR：0.00000108
+                    EarlyStopping counter: 20 out of 50
+
+                    - Epoch: 96 - Train_loss: 0.34368 - Train_acc: 0.97053 -  - Val_loss: 0.52971 - Val_acc: 0.77019  - T_Time: 32.92071 LR：0.00000078
+                    EarlyStopping counter: 21 out of 50
+
+                    - Epoch: 97 - Train_loss: 0.33849 - Train_acc: 0.97618 -  - Val_loss: 0.50747 - Val_acc: 0.79724  - T_Time: 33.43666 LR：0.00000054
+                    EarlyStopping counter: 22 out of 50
+
+                    - Epoch: 98 - Train_loss: 0.34617 - Train_acc: 0.96990 -  - Val_loss: 0.49849 - Val_acc: 0.79724  - T_Time: 33.99065 LR：0.00000035
+                    EarlyStopping counter: 23 out of 50
+
+                    - Epoch: 99 - Train_loss: 0.34418 - Train_acc: 0.96982 -  - Val_loss: 0.52130 - Val_acc: 0.78450  - T_Time: 32.55128 LR：0.00000021
+                    EarlyStopping counter: 24 out of 50
+
+                    - Epoch: 100 - Train_loss: 0.34739 - Train_acc: 0.96683 -  - Val_loss: 0.50433 - Val_acc: 0.80216  - T_Time: 33.87587 LR：0.00000013
+                    EarlyStopping counter: 25 out of 50
+
+                    - Epoch: 101 - Train_loss: 0.34355 - Train_acc: 0.96967 -  - Val_loss: 0.51671 - Val_acc: 0.78450  - T_Time: 33.43518 LR：0.00000010
+                    EarlyStopping counter: 26 out of 50
+
+                    - Epoch: 102 - Train_loss: 0.34128 - Train_acc: 0.97400 -  - Val_loss: 0.52533 - Val_acc: 0.77332  - T_Time: 33.23539 LR：0.00000013
+                    EarlyStopping counter: 27 out of 50
+
+                    - Epoch: 103 - Train_loss: 0.34095 - Train_acc: 0.97252 -  - Val_loss: 0.48952 - Val_acc: 0.81647  - T_Time: 33.12878 LR：0.00000021
+                    EarlyStopping counter: 28 out of 50
+
+                    - Epoch: 104 - Train_loss: 0.34716 - Train_acc: 0.96820 -  - Val_loss: 0.49886 - Val_acc: 0.80529  - T_Time: 34.79650 LR：0.00000035
+                    EarlyStopping counter: 29 out of 50
+
+lack sample like : Pandas(Index=51751, num=3257, name='史元昌', ages=98, gender='男', department='干部保健二科三区', diagnose=1, ID='271758', date='2020-11-20 16:04:58', ecgFN='20-3257_98-1_NHTN.npy', q_sum=0)
+                    - Epoch: 105 - Train_loss: 0.35155 - Train_acc: 0.96143 -  - Val_loss: 0.50038 - Val_acc: 0.80505  - T_Time: 33.35727 LR：0.00000054
+                    EarlyStopping counter: 30 out of 50
+
+                    - Epoch: 106 - Train_loss: 0.34404 - Train_acc: 0.96823 -  - Val_loss: 0.50642 - Val_acc: 0.80661  - T_Time: 32.00278 LR：0.00000078
+                    EarlyStopping counter: 31 out of 50
+
+                    - Epoch: 107 - Train_loss: 0.34781 - Train_acc: 0.96487 -  - Val_loss: 0.51506 - Val_acc: 0.78918  - T_Time: 34.19404 LR：0.00000108
+                    EarlyStopping counter: 32 out of 50
+
+                    - Epoch: 108 - Train_loss: 0.34672 - Train_acc: 0.96934 -  - Val_loss: 0.50492 - Val_acc: 0.80168  - T_Time: 33.62614 LR：0.00000143
+                    EarlyStopping counter: 33 out of 50
+
+                    - Epoch: 109 - Train_loss: 0.34449 - Train_acc: 0.97038 -  - Val_loss: 0.51446 - Val_acc: 0.78762  - T_Time: 32.63357 LR：0.00000184
+                    EarlyStopping counter: 34 out of 50
+
+                    - Epoch: 110 - Train_loss: 0.34630 - Train_acc: 0.96871 -  - Val_loss: 0.51085 - Val_acc: 0.79724  - T_Time: 33.92340 LR：0.00000230
+                    EarlyStopping counter: 35 out of 50
+
+                    - Epoch: 111 - Train_loss: 0.34678 - Train_acc: 0.96790 -  - Val_loss: 0.51458 - Val_acc: 0.78450  - T_Time: 32.34979 LR：0.00000281
+                    EarlyStopping counter: 36 out of 50
+
+                    - Epoch: 112 - Train_loss: 0.34932 - Train_acc: 0.96527 -  - Val_loss: 0.52695 - Val_acc: 0.77849  - T_Time: 33.42510 LR：0.00000337
+                    EarlyStopping counter: 37 out of 50
+
+                    - Epoch: 113 - Train_loss: 0.34578 - Train_acc: 0.96923 -  - Val_loss: 0.49606 - Val_acc: 0.80865  - T_Time: 33.46611 LR：0.00000398
+                    EarlyStopping counter: 38 out of 50
+
+lack sample like : Pandas(Index=51751, num=3257, name='史元昌', ages=98, gender='男', department='干部保健二科三区', diagnose=1, ID='271758', date='2020-11-20 16:04:58', ecgFN='20-3257_98-1_NHTN.npy', q_sum=0)
+                    - Epoch: 114 - Train_loss: 0.34427 - Train_acc: 0.97008 -  - Val_loss: 0.49647 - Val_acc: 0.80841  - T_Time: 33.77104 LR：0.00000465
+                    EarlyStopping counter: 39 out of 50
+
+                    - Epoch: 115 - Train_loss: 0.34650 - Train_acc: 0.96820 -  - Val_loss: 0.52598 - Val_acc: 0.78269  - T_Time: 34.17551 LR：0.00000536
+                    EarlyStopping counter: 40 out of 50
+
+                    - Epoch: 116 - Train_loss: 0.34522 - Train_acc: 0.96960 -  - Val_loss: 0.52152 - Val_acc: 0.79231  - T_Time: 32.89242 LR：0.00000612
+                    EarlyStopping counter: 41 out of 50
+
+                    - Epoch: 117 - Train_loss: 0.34298 - Train_acc: 0.97082 -  - Val_loss: 0.52721 - Val_acc: 0.78113  - T_Time: 33.31652 LR：0.00000693
+                    EarlyStopping counter: 42 out of 50
+
+                    - Epoch: 118 - Train_loss: 0.33953 - Train_acc: 0.97689 -  - Val_loss: 0.51724 - Val_acc: 0.77800  - T_Time: 34.58819 LR：0.00000779
+                    EarlyStopping counter: 43 out of 50
+
+                    - Epoch: 119 - Train_loss: 0.34594 - Train_acc: 0.96919 -  - Val_loss: 0.52350 - Val_acc: 0.77981  - T_Time: 33.98233 LR：0.00000869
+                    EarlyStopping counter: 44 out of 50
+
+                    - Epoch: 120 - Train_loss: 0.34162 - Train_acc: 0.97278 -  - Val_loss: 0.53450 - Val_acc: 0.77043  - T_Time: 32.52661 LR：0.00000964
+                    EarlyStopping counter: 45 out of 50
+
+                    - Epoch: 121 - Train_loss: 0.34280 - Train_acc: 0.97470 -  - Val_loss: 0.51145 - Val_acc: 0.79772  - T_Time: 33.51258 LR：0.00001063
+                    EarlyStopping counter: 46 out of 50
+
+                    - Epoch: 122 - Train_loss: 0.34993 - Train_acc: 0.96239 -  - Val_loss: 0.50553 - Val_acc: 0.79904  - T_Time: 33.55786 LR：0.00001167
+                    EarlyStopping counter: 47 out of 50
+
+                    - Epoch: 123 - Train_loss: 0.34634 - Train_acc: 0.96727 -  - Val_loss: 0.51128 - Val_acc: 0.78918  - T_Time: 33.66182 LR：0.00001275
+                    EarlyStopping counter: 48 out of 50
+
+                    - Epoch: 124 - Train_loss: 0.34362 - Train_acc: 0.97178 -  - Val_loss: 0.52833 - Val_acc: 0.76887  - T_Time: 34.11834 LR：0.00001386
+                    EarlyStopping counter: 49 out of 50
+
+lack sample like : Pandas(Index=51751, num=3257, name='史元昌', ages=98, gender='男', department='干部保健二科三区', diagnose=1, ID='271758', date='2020-11-20 16:04:58', ecgFN='20-3257_98-1_NHTN.npy', q_sum=0)
+                    - Epoch: 125 - Train_loss: 0.34816 - Train_acc: 0.96672 -  - Val_loss: 0.53241 - Val_acc: 0.76502  - T_Time: 34.25248 LR：0.00001502
+                    EarlyStopping counter: 50 out of 50
+
+                    Early stopping...
+          validate:  0.8107562270925275 
+           [228  25] 
+           [ 70 183]
+          test:  0.6078207157363962 
+           [6139 1160] 
+           [187 309]
+          Fold 0 Training Finished
+          ==================================================
+          ==================================================
+          train_loss 0.3531239101519951           train_acc 0.9600221893491123 
+          validate_loss 0.4985581189393997           validate_acc 0.8112980769230769 
+          test_loss 0.4777452337498568           test_acc 0.827340283939663
+          ==================================================
+          ==================================================
+          Fold 1 of 5 :
+                    - Epoch: 1 - Train_loss: 0.69640 - Train_acc: 0.49501 -  - Val_loss: 0.69305 - Val_acc: 0.50805  - T_Time: 33.92890 LR：0.00000000
+                    Validate:  0.3333333333333333 
+                     [  0 253] 
+                     [  0 253]
+                    test:  0.05982390543963335 
+                     [   0 7299] 
+                     [  0 496]
+                    --------------------------------------------------
+
+                    Validation  score to (inf --> -0.69305214).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 2 - Train_loss: 0.69729 - Train_acc: 0.50277 -  - Val_loss: 0.69159 - Val_acc: 0.53221  - T_Time: 34.14242 LR：0.00000000
+                    Validate:  0.3333333333333333 
+                     [  0 253] 
+                     [  0 253]
+                    test:  0.05982390543963335 
+                     [   0 7299] 
+                     [  0 496]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.69305214 --> -0.69158630).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 3 - Train_loss: 0.69755 - Train_acc: 0.49974 -  - Val_loss: 0.69139 - Val_acc: 0.53221  - T_Time: 34.28660 LR：0.00000000
+                    Validate:  0.3333333333333333 
+                     [  0 253] 
+                     [  0 253]
+                    test:  0.06046135739378643 
+                     [   6 7293] 
+                     [  2 494]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.69158630 --> -0.69138873).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 4 - Train_loss: 0.69871 - Train_acc: 0.49904 -  - Val_loss: 0.69476 - Val_acc: 0.49663  - T_Time: 33.59463 LR：0.00000000
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 5 - Train_loss: 0.69515 - Train_acc: 0.50314 -  - Val_loss: 0.69204 - Val_acc: 0.51274  - T_Time: 32.70317 LR：0.00000000
+                    EarlyStopping counter: 2 out of 50
+
+                    - Epoch: 6 - Train_loss: 0.68145 - Train_acc: 0.56413 -  - Val_loss: 0.64948 - Val_acc: 0.62572  - T_Time: 33.55965 LR：0.00010000
+                    Validate:  0.6174066924066923 
+                     [202  51] 
+                     [137 116]
+                    test:  0.5063771420150711 
+                     [5508 1791] 
+                     [282 214]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.69138873 --> -0.64947861).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 7 - Train_loss: 0.65613 - Train_acc: 0.60618 -  - Val_loss: 0.64656 - Val_acc: 0.62464  - T_Time: 33.86493 LR：0.00009997
+                    Validate:  0.5560131396194801 
+                     [239  14] 
+                     [185  68]
+                    test:  0.5733495384231718 
+                     [6769  530] 
+                     [376 120]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.64947861 --> -0.64655876).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 8 - Train_loss: 0.63254 - Train_acc: 0.65270 -  - Val_loss: 0.62167 - Val_acc: 0.64111  - T_Time: 34.17549 LR：0.00009989
+                    Validate:  0.6580693798313354 
+                     [164  89] 
+                     [ 84 169]
+                    test:  0.48656619806275003 
+                     [4850 2449] 
+                     [192 304]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.64655876 --> -0.62167476).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 9 - Train_loss: 0.60932 - Train_acc: 0.67800 -  - Val_loss: 0.63398 - Val_acc: 0.65252  - T_Time: 33.11173 LR：0.00009975
+                    EarlyStopping counter: 1 out of 50
+
+lack sample like : Pandas(Index=51751, num=3257, name='史元昌', ages=98, gender='男', department='干部保健二科三区', diagnose=1, ID='271758', date='2020-11-20 16:04:58', ecgFN='20-3257_98-1_NHTN.npy', q_sum=0)
+                    - Epoch: 10 - Train_loss: 0.59702 - Train_acc: 0.69512 -  - Val_loss: 0.62546 - Val_acc: 0.66346  - T_Time: 33.52165 LR：0.00009956
+                    EarlyStopping counter: 2 out of 50
+
+                    - Epoch: 11 - Train_loss: 0.58563 - Train_acc: 0.70300 -  - Val_loss: 0.60290 - Val_acc: 0.68738  - T_Time: 33.96407 LR：0.00009932
+                    Validate:  0.6712671726695083 
+                     [201  52] 
+                     [112 141]
+                    test:  0.5294665013667441 
+                     [5614 1685] 
+                     [246 250]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.62167476 --> -0.60289864).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 12 - Train_loss: 0.58463 - Train_acc: 0.70917 -  - Val_loss: 0.66358 - Val_acc: 0.62236  - T_Time: 33.09493 LR：0.00009902
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 13 - Train_loss: 0.57909 - Train_acc: 0.71757 -  - Val_loss: 0.59665 - Val_acc: 0.69123  - T_Time: 33.38372 LR：0.00009867
+                    Validate:  0.6414579955563562 
+                     [125 128] 
+                     [ 49 204]
+                    test:  0.39262825598474776 
+                     [3329 3970] 
+                     [ 96 400]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.60289864 --> -0.59665376).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 14 - Train_loss: 0.57580 - Train_acc: 0.72060 -  - Val_loss: 0.59969 - Val_acc: 0.69183  - T_Time: 34.31772 LR：0.00009826
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 15 - Train_loss: 0.56679 - Train_acc: 0.73088 -  - Val_loss: 0.59122 - Val_acc: 0.69183  - T_Time: 33.34060 LR：0.00009780
+                    Validate:  0.6910044625381665 
+                     [187  66] 
+                     [ 90 163]
+                    test:  0.49465153970826575 
+                     [5002 2297] 
+                     [204 292]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.59665376 --> -0.59121992).  Saving model ...
+                    --------------------------------------------------
+
+lack sample like : Pandas(Index=51751, num=3257, name='史元昌', ages=98, gender='男', department='干部保健二科三区', diagnose=1, ID='271758', date='2020-11-20 16:04:58', ecgFN='20-3257_98-1_NHTN.npy', q_sum=0)
+                    - Epoch: 16 - Train_loss: 0.55187 - Train_acc: 0.75070 -  - Val_loss: 0.62965 - Val_acc: 0.66010  - T_Time: 34.42698 LR：0.00009729
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 17 - Train_loss: 0.54471 - Train_acc: 0.75836 -  - Val_loss: 0.55908 - Val_acc: 0.75264  - T_Time: 34.28481 LR：0.00009673
+                    Validate:  0.7068503875362091 
+                     [191  62] 
+                     [ 86 167]
+                    test:  0.5037846770928384 
+                     [5027 2272] 
+                     [182 314]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.59121992 --> -0.55908075).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 18 - Train_loss: 0.53228 - Train_acc: 0.76938 -  - Val_loss: 0.60498 - Val_acc: 0.68425  - T_Time: 33.65854 LR：0.00009612
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 19 - Train_loss: 0.52296 - Train_acc: 0.77788 -  - Val_loss: 0.58146 - Val_acc: 0.70901  - T_Time: 34.00167 LR：0.00009545
+                    EarlyStopping counter: 2 out of 50
+
+                    - Epoch: 20 - Train_loss: 0.52091 - Train_acc: 0.78162 -  - Val_loss: 0.64948 - Val_acc: 0.65457  - T_Time: 33.46485 LR：0.00009474
+                    EarlyStopping counter: 3 out of 50
+
+                    - Epoch: 21 - Train_loss: 0.52288 - Train_acc: 0.77933 -  - Val_loss: 0.65564 - Val_acc: 0.63666  - T_Time: 33.40141 LR：0.00009398
+                    EarlyStopping counter: 4 out of 50
+
+                    - Epoch: 22 - Train_loss: 0.51652 - Train_acc: 0.78754 -  - Val_loss: 0.58998 - Val_acc: 0.71106  - T_Time: 32.87844 LR：0.00009317
+                    EarlyStopping counter: 5 out of 50
+
+                    - Epoch: 23 - Train_loss: 0.51457 - Train_acc: 0.78691 -  - Val_loss: 0.61506 - Val_acc: 0.67488  - T_Time: 34.62510 LR：0.00009231
+                    EarlyStopping counter: 6 out of 50
+
+                    - Epoch: 24 - Train_loss: 0.50072 - Train_acc: 0.80773 -  - Val_loss: 0.56691 - Val_acc: 0.71418  - T_Time: 33.73494 LR：0.00009141
+                    EarlyStopping counter: 7 out of 50
+
+                    - Epoch: 25 - Train_loss: 0.48554 - Train_acc: 0.82149 -  - Val_loss: 0.55550 - Val_acc: 0.74231  - T_Time: 34.09211 LR：0.00009046
+                    Validate:  0.7325665783162942 
+                     [161  92] 
+                     [ 42 211]
+                    test:  0.4501419788350913 
+                     [4130 3169] 
+                     [122 374]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.55908075 --> -0.55550395).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 26 - Train_loss: 0.48667 - Train_acc: 0.82049 -  - Val_loss: 0.59382 - Val_acc: 0.71611  - T_Time: 32.25499 LR：0.00008947
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 27 - Train_loss: 0.48148 - Train_acc: 0.82674 -  - Val_loss: 0.56757 - Val_acc: 0.72596  - T_Time: 34.22779 LR：0.00008843
+                    EarlyStopping counter: 2 out of 50
+
+                    - Epoch: 28 - Train_loss: 0.47110 - Train_acc: 0.83861 -  - Val_loss: 0.57608 - Val_acc: 0.73293  - T_Time: 33.78802 LR：0.00008735
+                    EarlyStopping counter: 3 out of 50
+
+                    - Epoch: 29 - Train_loss: 0.46795 - Train_acc: 0.83913 -  - Val_loss: 0.66051 - Val_acc: 0.63041  - T_Time: 34.06430 LR：0.00008624
+                    EarlyStopping counter: 4 out of 50
+
+                    - Epoch: 30 - Train_loss: 0.46817 - Train_acc: 0.84197 -  - Val_loss: 0.56542 - Val_acc: 0.74255  - T_Time: 34.04770 LR：0.00008508
+                    EarlyStopping counter: 5 out of 50
+
+                    - Epoch: 31 - Train_loss: 0.45492 - Train_acc: 0.85740 -  - Val_loss: 0.59831 - Val_acc: 0.69808  - T_Time: 34.10971 LR：0.00008388
+                    EarlyStopping counter: 6 out of 50
+
+                    - Epoch: 32 - Train_loss: 0.45354 - Train_acc: 0.85451 -  - Val_loss: 0.59523 - Val_acc: 0.70793  - T_Time: 34.62446 LR：0.00008265
+                    EarlyStopping counter: 7 out of 50
+
+                    - Epoch: 33 - Train_loss: 0.44711 - Train_acc: 0.86391 -  - Val_loss: 0.56311 - Val_acc: 0.73269  - T_Time: 34.82525 LR：0.00008138
+                    EarlyStopping counter: 8 out of 50
+
+lack sample like : Pandas(Index=51751, num=3257, name='史元昌', ages=98, gender='男', department='干部保健二科三区', diagnose=1, ID='271758', date='2020-11-20 16:04:58', ecgFN='20-3257_98-1_NHTN.npy', q_sum=0)
+                    - Epoch: 34 - Train_loss: 0.44021 - Train_acc: 0.87289 -  - Val_loss: 0.55598 - Val_acc: 0.74387  - T_Time: 34.82476 LR：0.00008007
+                    EarlyStopping counter: 9 out of 50
+
+                    - Epoch: 35 - Train_loss: 0.43885 - Train_acc: 0.87282 -  - Val_loss: 0.65099 - Val_acc: 0.64712  - T_Time: 33.93376 LR：0.00007874
+                    EarlyStopping counter: 10 out of 50
+
+                    - Epoch: 36 - Train_loss: 0.42423 - Train_acc: 0.88332 -  - Val_loss: 0.60459 - Val_acc: 0.69363  - T_Time: 33.98017 LR：0.00007737
+                    EarlyStopping counter: 11 out of 50
+
+                    - Epoch: 37 - Train_loss: 0.42589 - Train_acc: 0.88802 -  - Val_loss: 0.60367 - Val_acc: 0.68041  - T_Time: 34.28326 LR：0.00007597
+                    EarlyStopping counter: 12 out of 50
+
+                    - Epoch: 38 - Train_loss: 0.42644 - Train_acc: 0.88362 -  - Val_loss: 0.58276 - Val_acc: 0.71190  - T_Time: 34.43485 LR：0.00007455
+                    EarlyStopping counter: 13 out of 50
+
+                    - Epoch: 39 - Train_loss: 0.42118 - Train_acc: 0.88798 -  - Val_loss: 0.64654 - Val_acc: 0.65541  - T_Time: 33.99287 LR：0.00007309
+                    EarlyStopping counter: 14 out of 50
+
+                    - Epoch: 40 - Train_loss: 0.41549 - Train_acc: 0.89697 -  - Val_loss: 0.60355 - Val_acc: 0.69315  - T_Time: 34.54322 LR：0.00007162
+                    EarlyStopping counter: 15 out of 50
+
+                    - Epoch: 41 - Train_loss: 0.41366 - Train_acc: 0.89541 -  - Val_loss: 0.59430 - Val_acc: 0.69784  - T_Time: 34.99464 LR：0.00007011
+                    EarlyStopping counter: 16 out of 50
+
+                    - Epoch: 42 - Train_loss: 0.41481 - Train_acc: 0.89626 -  - Val_loss: 0.62657 - Val_acc: 0.67079  - T_Time: 33.72035 LR：0.00006859
+                    EarlyStopping counter: 17 out of 50
+
+                    - Epoch: 43 - Train_loss: 0.41159 - Train_acc: 0.90055 -  - Val_loss: 0.57362 - Val_acc: 0.73269  - T_Time: 33.85622 LR：0.00006705
+                    EarlyStopping counter: 18 out of 50
+
+                    - Epoch: 44 - Train_loss: 0.39757 - Train_acc: 0.91494 -  - Val_loss: 0.60566 - Val_acc: 0.70433  - T_Time: 34.12764 LR：0.00006549
+                    EarlyStopping counter: 19 out of 50
+
+                    - Epoch: 45 - Train_loss: 0.39323 - Train_acc: 0.92267 -  - Val_loss: 0.60622 - Val_acc: 0.70901  - T_Time: 33.69247 LR：0.00006391
+                    EarlyStopping counter: 20 out of 50
+
+                    - Epoch: 46 - Train_loss: 0.39486 - Train_acc: 0.91808 -  - Val_loss: 0.54068 - Val_acc: 0.75505  - T_Time: 33.54537 LR：0.00006231
+                    Validate:  0.740000862924451 
+                     [171  82] 
+                     [ 49 204]
+                    test:  0.5133894778438787 
+                     [5004 2295] 
+                     [146 350]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.55550395 --> -0.54068174).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 47 - Train_loss: 0.39896 - Train_acc: 0.91435 -  - Val_loss: 0.55997 - Val_acc: 0.74387  - T_Time: 34.18999 LR：0.00006070
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 48 - Train_loss: 0.39370 - Train_acc: 0.91712 -  - Val_loss: 0.60535 - Val_acc: 0.69603  - T_Time: 34.94831 LR：0.00005908
+                    EarlyStopping counter: 2 out of 50
+
+                    - Epoch: 49 - Train_loss: 0.38896 - Train_acc: 0.92585 -  - Val_loss: 0.56645 - Val_acc: 0.73894  - T_Time: 34.35058 LR：0.00005746
+                    EarlyStopping counter: 3 out of 50
+
+                    - Epoch: 50 - Train_loss: 0.38531 - Train_acc: 0.92848 -  - Val_loss: 0.57598 - Val_acc: 0.71526  - T_Time: 34.86107 LR：0.00005582
+                    EarlyStopping counter: 4 out of 50
+
+                    - Epoch: 51 - Train_loss: 0.38956 - Train_acc: 0.92415 -  - Val_loss: 0.56160 - Val_acc: 0.73245  - T_Time: 35.45773 LR：0.00005417
+                    EarlyStopping counter: 5 out of 50
+
+                    - Epoch: 52 - Train_loss: 0.37224 - Train_acc: 0.94460 -  - Val_loss: 0.59058 - Val_acc: 0.70481  - T_Time: 33.20054 LR：0.00005253
+                    EarlyStopping counter: 6 out of 50
+
+                    - Epoch: 53 - Train_loss: 0.37912 - Train_acc: 0.93528 -  - Val_loss: 0.57238 - Val_acc: 0.73582  - T_Time: 33.54258 LR：0.00005088
+                    EarlyStopping counter: 7 out of 50
+
+                    - Epoch: 54 - Train_loss: 0.37951 - Train_acc: 0.93454 -  - Val_loss: 0.57104 - Val_acc: 0.72067  - T_Time: 35.19142 LR：0.00004922
+                    EarlyStopping counter: 8 out of 50
+
+                    - Epoch: 55 - Train_loss: 0.38745 - Train_acc: 0.92585 -  - Val_loss: 0.56178 - Val_acc: 0.74099  - T_Time: 34.83047 LR：0.00004757
+                    EarlyStopping counter: 9 out of 50
+
+                    - Epoch: 56 - Train_loss: 0.37568 - Train_acc: 0.94068 -  - Val_loss: 0.57763 - Val_acc: 0.72175  - T_Time: 34.23877 LR：0.00004593
+                    EarlyStopping counter: 10 out of 50
+
+                    - Epoch: 57 - Train_loss: 0.37576 - Train_acc: 0.93783 -  - Val_loss: 0.53639 - Val_acc: 0.75769  - T_Time: 35.35656 LR：0.00004428
+                    Validate:  0.7648212158493957 
+                     [193  60] 
+                     [ 59 194]
+                    test:  0.5477103246958448 
+                     [5421 1878] 
+                     [152 344]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.54068174 --> -0.53639226).  Saving model ...
+                    --------------------------------------------------
+
+lack sample like : Pandas(Index=51751, num=3257, name='史元昌', ages=98, gender='男', department='干部保健二科三区', diagnose=1, ID='271758', date='2020-11-20 16:04:58', ecgFN='20-3257_98-1_NHTN.npy', q_sum=0)
+                    - Epoch: 58 - Train_loss: 0.36854 - Train_acc: 0.94504 -  - Val_loss: 0.57113 - Val_acc: 0.73089  - T_Time: 33.60003 LR：0.00004264
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 59 - Train_loss: 0.36701 - Train_acc: 0.94486 -  - Val_loss: 0.51349 - Val_acc: 0.80036  - T_Time: 34.68152 LR：0.00004102
+                    Validate:  0.7964312760318062 
+                     [227  26] 
+                     [ 76 177]
+                    test:  0.6045454094091273 
+                     [6194 1105] 
+                     [208 288]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.53639226 --> -0.51348704).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 60 - Train_loss: 0.37241 - Train_acc: 0.94127 -  - Val_loss: 0.55176 - Val_acc: 0.75276  - T_Time: 33.77054 LR：0.00003940
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 61 - Train_loss: 0.37748 - Train_acc: 0.93635 -  - Val_loss: 0.58980 - Val_acc: 0.71683  - T_Time: 34.02396 LR：0.00003779
+                    EarlyStopping counter: 2 out of 50
+
+                    - Epoch: 62 - Train_loss: 0.36905 - Train_acc: 0.94675 -  - Val_loss: 0.51682 - Val_acc: 0.78630  - T_Time: 34.26131 LR：0.00003619
+                    EarlyStopping counter: 3 out of 50
+
+                    - Epoch: 63 - Train_loss: 0.36710 - Train_acc: 0.94578 -  - Val_loss: 0.51483 - Val_acc: 0.78522  - T_Time: 33.75136 LR：0.00003461
+                    EarlyStopping counter: 4 out of 50
+
+lack sample like : Pandas(Index=51751, num=3257, name='史元昌', ages=98, gender='男', department='干部保健二科三区', diagnose=1, ID='271758', date='2020-11-20 16:04:58', ecgFN='20-3257_98-1_NHTN.npy', q_sum=0)
+                    - Epoch: 64 - Train_loss: 0.35986 - Train_acc: 0.95351 -  - Val_loss: 0.54748 - Val_acc: 0.75613  - T_Time: 33.97000 LR：0.00003305
+                    EarlyStopping counter: 5 out of 50
+
+                    - Epoch: 65 - Train_loss: 0.36412 - Train_acc: 0.95044 -  - Val_loss: 0.56262 - Val_acc: 0.74075  - T_Time: 33.76148 LR：0.00003151
+                    EarlyStopping counter: 6 out of 50
+
+                    - Epoch: 66 - Train_loss: 0.36672 - Train_acc: 0.94963 -  - Val_loss: 0.58174 - Val_acc: 0.72464  - T_Time: 34.19001 LR：0.00002999
+                    EarlyStopping counter: 7 out of 50
+
+lack sample like : Pandas(Index=51751, num=3257, name='史元昌', ages=98, gender='男', department='干部保健二科三区', diagnose=1, ID='271758', date='2020-11-20 16:04:58', ecgFN='20-3257_98-1_NHTN.npy', q_sum=0)
+                    - Epoch: 67 - Train_loss: 0.35649 - Train_acc: 0.95784 -  - Val_loss: 0.56885 - Val_acc: 0.72776  - T_Time: 33.88488 LR：0.00002848
+                    EarlyStopping counter: 8 out of 50
+
+                    - Epoch: 68 - Train_loss: 0.36000 - Train_acc: 0.95403 -  - Val_loss: 0.55009 - Val_acc: 0.75409  - T_Time: 34.74743 LR：0.00002701
+                    EarlyStopping counter: 9 out of 50
+
+                    - Epoch: 69 - Train_loss: 0.35585 - Train_acc: 0.95854 -  - Val_loss: 0.51455 - Val_acc: 0.79567  - T_Time: 34.06878 LR：0.00002555
+                    EarlyStopping counter: 10 out of 50
+
+                    - Epoch: 70 - Train_loss: 0.36196 - Train_acc: 0.94919 -  - Val_loss: 0.55156 - Val_acc: 0.75793  - T_Time: 34.94470 LR：0.00002413
+                    EarlyStopping counter: 11 out of 50
+
+lack sample like : Pandas(Index=51751, num=3257, name='史元昌', ages=98, gender='男', department='干部保健二科三区', diagnose=1, ID='271758', date='2020-11-20 16:04:58', ecgFN='20-3257_98-1_NHTN.npy', q_sum=0)
+                    - Epoch: 71 - Train_loss: 0.35574 - Train_acc: 0.96006 -  - Val_loss: 0.57485 - Val_acc: 0.71839  - T_Time: 34.69709 LR：0.00002273
+                    EarlyStopping counter: 12 out of 50
+
+                    - Epoch: 72 - Train_loss: 0.35374 - Train_acc: 0.96317 -  - Val_loss: 0.53558 - Val_acc: 0.77536  - T_Time: 35.08801 LR：0.00002136
+                    EarlyStopping counter: 13 out of 50
+
+lack sample like : Pandas(Index=51751, num=3257, name='史元昌', ages=98, gender='男', department='干部保健二科三区', diagnose=1, ID='271758', date='2020-11-20 16:04:58', ecgFN='20-3257_98-1_NHTN.npy', q_sum=0)
+                    - Epoch: 73 - Train_loss: 0.35233 - Train_acc: 0.96243 -  - Val_loss: 0.55639 - Val_acc: 0.75433  - T_Time: 33.84364 LR：0.00002003
+                    EarlyStopping counter: 14 out of 50
+
+                    - Epoch: 74 - Train_loss: 0.35495 - Train_acc: 0.95999 -  - Val_loss: 0.55849 - Val_acc: 0.75060  - T_Time: 34.67357 LR：0.00001872
+                    EarlyStopping counter: 15 out of 50
+
+                    - Epoch: 75 - Train_loss: 0.36181 - Train_acc: 0.95055 -  - Val_loss: 0.56209 - Val_acc: 0.75637  - T_Time: 34.13751 LR：0.00001745
+                    EarlyStopping counter: 16 out of 50
+
+                    - Epoch: 76 - Train_loss: 0.34997 - Train_acc: 0.96361 -  - Val_loss: 0.58060 - Val_acc: 0.72151  - T_Time: 34.45294 LR：0.00001622
+                    EarlyStopping counter: 17 out of 50
+
+                    - Epoch: 77 - Train_loss: 0.35297 - Train_acc: 0.96239 -  - Val_loss: 0.57290 - Val_acc: 0.72596  - T_Time: 33.66736 LR：0.00001502
+                    EarlyStopping counter: 18 out of 50
+
+                    - Epoch: 78 - Train_loss: 0.35279 - Train_acc: 0.95976 -  - Val_loss: 0.51994 - Val_acc: 0.79459  - T_Time: 34.47041 LR：0.00001386
+                    EarlyStopping counter: 19 out of 50
+
+                    - Epoch: 79 - Train_loss: 0.34551 - Train_acc: 0.96990 -  - Val_loss: 0.49011 - Val_acc: 0.81563  - T_Time: 33.62496 LR：0.00001275
+                    Validate:  0.7630070651742478 
+                     [226  27] 
+                     [ 91 162]
+                    test:  0.5988200859510865 
+                     [6203 1096] 
+                     [222 274]
+                    --------------------------------------------------
+
+                    Validation  score to (-0.51348704 --> -0.49011017).  Saving model ...
+                    --------------------------------------------------
+
+                    - Epoch: 80 - Train_loss: 0.34814 - Train_acc: 0.96653 -  - Val_loss: 0.52396 - Val_acc: 0.77536  - T_Time: 34.14194 LR：0.00001167
+                    EarlyStopping counter: 1 out of 50
+
+                    - Epoch: 81 - Train_loss: 0.35406 - Train_acc: 0.95780 -  - Val_loss: 0.55601 - Val_acc: 0.74387  - T_Time: 35.20692 LR：0.00001063
+                    EarlyStopping counter: 2 out of 50
+
+                    - Epoch: 82 - Train_loss: 0.34795 - Train_acc: 0.96797 -  - Val_loss: 0.57506 - Val_acc: 0.72308  - T_Time: 34.16172 LR：0.00000964
+                    EarlyStopping counter: 3 out of 50
+
+                    - Epoch: 83 - Train_loss: 0.35421 - Train_acc: 0.95947 -  - Val_loss: 0.54525 - Val_acc: 0.75613  - T_Time: 34.13444 LR：0.00000869
+                    EarlyStopping counter: 4 out of 50
+
+                    - Epoch: 84 - Train_loss: 0.34284 - Train_acc: 0.97404 -  - Val_loss: 0.53656 - Val_acc: 0.76418  - T_Time: 34.01365 LR：0.00000779
+                    EarlyStopping counter: 5 out of 50
+
+                    - Epoch: 85 - Train_loss: 0.34642 - Train_acc: 0.96945 -  - Val_loss: 0.53943 - Val_acc: 0.76262  - T_Time: 34.28064 LR：0.00000693
+                    EarlyStopping counter: 6 out of 50
+
+                    - Epoch: 86 - Train_loss: 0.34650 - Train_acc: 0.96794 -  - Val_loss: 0.58297 - Val_acc: 0.71454  - T_Time: 33.36538 LR：0.00000612
+                    EarlyStopping counter: 7 out of 50
+
+                    - Epoch: 87 - Train_loss: 0.34900 - Train_acc: 0.96483 -  - Val_loss: 0.57584 - Val_acc: 0.72644  - T_Time: 33.61557 LR：0.00000536
+                    EarlyStopping counter: 8 out of 50
+
+                    - Epoch: 88 - Train_loss: 0.35076 - Train_acc: 0.96261 -  - Val_loss: 0.56394 - Val_acc: 0.73606  - T_Time: 34.68203 LR：0.00000465
+                    EarlyStopping counter: 9 out of 50
+
+                    - Epoch: 89 - Train_loss: 0.34455 - Train_acc: 0.97160 -  - Val_loss: 0.55178 - Val_acc: 0.74543  - T_Time: 34.41421 LR：0.00000398
+                    EarlyStopping counter: 10 out of 50
+
+                    - Epoch: 90 - Train_loss: 0.35155 - Train_acc: 0.96324 -  - Val_loss: 0.55561 - Val_acc: 0.75120  - T_Time: 33.71104 LR：0.00000337
+                    EarlyStopping counter: 11 out of 50
+
+                    - Epoch: 91 - Train_loss: 0.34148 - Train_acc: 0.97348 -  - Val_loss: 0.50196 - Val_acc: 0.80264  - T_Time: 33.29912 LR：0.00000281
+                    EarlyStopping counter: 12 out of 50
+
+                    - Epoch: 92 - Train_loss: 0.34544 - Train_acc: 0.97138 -  - Val_loss: 0.55970 - Val_acc: 0.74159  - T_Time: 33.29312 LR：0.00000230
+                    EarlyStopping counter: 13 out of 50
+
+                    - Epoch: 93 - Train_loss: 0.35147 - Train_acc: 0.96102 -  - Val_loss: 0.51190 - Val_acc: 0.79147  - T_Time: 34.14941 LR：0.00000184
+                    EarlyStopping counter: 14 out of 50
+
+lack sample like : Pandas(Index=51751, num=3257, name='史元昌', ages=98, gender='男', department='干部保健二科三区', diagnose=1, ID='271758', date='2020-11-20 16:04:58', ecgFN='20-3257_98-1_NHTN.npy', q_sum=0)
+                    - Epoch: 94 - Train_loss: 0.33899 - Train_acc: 0.97641 -  - Val_loss: 0.51941 - Val_acc: 0.78654  - T_Time: 33.22462 LR：0.00000143
+                    EarlyStopping counter: 15 out of 50
+
+                    - Epoch: 95 - Train_loss: 0.34408 - Train_acc: 0.97012 -  - Val_loss: 0.51450 - Val_acc: 0.78654  - T_Time: 34.43507 LR：0.00000108
+                    EarlyStopping counter: 16 out of 50
+
+                    - Epoch: 96 - Train_loss: 0.34503 - Train_acc: 0.96775 -  - Val_loss: 0.53125 - Val_acc: 0.77380  - T_Time: 34.62385 LR：0.00000078
+                    EarlyStopping counter: 17 out of 50
+
+                    - Epoch: 97 - Train_loss: 0.34580 - Train_acc: 0.96823 -  - Val_loss: 0.51526 - Val_acc: 0.79123  - T_Time: 34.53297 LR：0.00000054
+                    EarlyStopping counter: 18 out of 50
+
+                    - Epoch: 98 - Train_loss: 0.34383 - Train_acc: 0.97089 -  - Val_loss: 0.52474 - Val_acc: 0.77716  - T_Time: 33.40119 LR：0.00000035
+                    EarlyStopping counter: 19 out of 50
+
+                    - Epoch: 99 - Train_loss: 0.34356 - Train_acc: 0.97030 -  - Val_loss: 0.52739 - Val_acc: 0.78029  - T_Time: 34.15705 LR：0.00000021
+                    EarlyStopping counter: 20 out of 50
+
+                    - Epoch: 100 - Train_loss: 0.34567 - Train_acc: 0.96938 -  - Val_loss: 0.51683 - Val_acc: 0.78678  - T_Time: 33.94357 LR：0.00000013
+                    EarlyStopping counter: 21 out of 50
+
+                    - Epoch: 101 - Train_loss: 0.34493 - Train_acc: 0.97152 -  - Val_loss: 0.53666 - Val_acc: 0.75120  - T_Time: 33.99125 LR：0.00000010
+                    EarlyStopping counter: 22 out of 50
