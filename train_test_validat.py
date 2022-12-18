@@ -40,7 +40,7 @@ def pair_HTN(INPUT_HTN_Df,INPUT_NHTN_Df,Range_max = 10,shuffle = False):
     return pair_Df
 
 
-def tarinning_one_flod(fold,Model,train_Df ,val_Df,test_dataset,writer,save_model_path,BATCH_SIZE,DEVICE,
+def tarinning_one_flod(fold,Model,train_dataset ,val_dataset,test_dataset,writer,save_model_path,BATCH_SIZE,DEVICE,
                         criterion = torch.nn.CrossEntropyLoss(),
                         EPOCHS = 100,  
                         PATIENCE = 10,
@@ -55,23 +55,32 @@ def tarinning_one_flod(fold,Model,train_Df ,val_Df,test_dataset,writer,save_mode
                         
                         ):
     
-    val_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',val_Df)
-    if(not pair_flag):
-        train_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',train_Df)
-        train_dataloader = Data.DataLoader(dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=True,num_workers=num_workers,pin_memory=True)
+    # val_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',val_Df)
     # if(not pair_flag):
-    #     target = train_dataset.labels
-    #     class_sample_count = np.array([len(np.where(target == t)[0]) for t in np.unique(target)])
-    #     weight = 1. / class_sample_count
-    #     samples_weight = np.array([weight[t] for t in target])
-    #     samples_weight = torch.from_numpy(samples_weight)
-    #     samples_weight = samples_weight.double()
-    #     sampler = Data.WeightedRandomSampler(samples_weight, len(samples_weight))  # type: ignore
-    #     train_dataloader = Data.DataLoader(dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=False,num_workers=num_workers,pin_memory=True,sampler=sampler)#
+    #     train_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',train_Df)
+    #     train_dataloader = Data.DataLoader(dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=True,num_workers=num_workers,pin_memory=True)
+    if(not pair_flag):
+        target = train_dataset.labels
+        class_sample_count = np.array([len(np.where(target == t)[0]) for t in np.unique(target)])
+        weight = 1. / class_sample_count
+        samples_weight = np.array([weight[t] for t in target])
+        samples_weight = torch.from_numpy(samples_weight)
+        samples_weight = samples_weight.double()
+        sampler_train = Data.WeightedRandomSampler(samples_weight, len(samples_weight))  # type: ignore
+        train_dataloader = Data.DataLoader(dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=False,num_workers=num_workers,pin_memory=True,sampler=sampler_train)#
         
-    valid_dataloader = Data.DataLoader(dataset=val_dataset, batch_size=BATCH_SIZE, shuffle=True,num_workers=num_workers,pin_memory=True)
+        target = val_dataset.labels
+        class_sample_count = np.array([len(np.where(target == t)[0]) for t in np.unique(target)])
+        weight = 1. / class_sample_count
+        samples_weight = np.array([weight[t] for t in target])
+        samples_weight = torch.from_numpy(samples_weight)
+        samples_weight = samples_weight.double()
+        sampler_val = Data.WeightedRandomSampler(samples_weight, len(samples_weight))  # type: ignore
+        valid_dataloader = Data.DataLoader(dataset=val_dataset, batch_size=BATCH_SIZE, shuffle=False,num_workers=num_workers,pin_memory=True,sampler=sampler_val)
+    else:    
+        valid_dataloader = Data.DataLoader(dataset=val_dataset, batch_size=BATCH_SIZE, shuffle=shuffle,num_workers=num_workers,pin_memory=True)
+        train_dataloader = Data.DataLoader(dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=shuffle,num_workers=num_workers,pin_memory=True)
     test_dataloader = Data.DataLoader(dataset=test_dataset, batch_size=BATCH_SIZE, shuffle=True,num_workers=num_workers,pin_memory=True)
-    
     early_stopping = EarlyStopping(PATIENCE, verbose=True, model_path=save_model_path, delta=0, positive=False)
     optimizer  = torch.optim.Adam(Model.parameters(), lr=LR_MAX,weight_decay=weight_decay) 
     criterion =  criterion.to(DEVICE)
@@ -86,23 +95,16 @@ def tarinning_one_flod(fold,Model,train_Df ,val_Df,test_dataset,writer,save_mode
     best_valida_loss = np.inf
     Model.to(DEVICE)
     for epoch in range(1,EPOCHS):
-        if(pair_flag):# 每次重新抽取train_pair_Df（train_Df 是已经除去了val_Df的tv_Df）
-            train_pair_Df = pair_HTN(train_Df[(train_Df['diagnose']==1)],train_Df[(train_Df['diagnose']==0)],Range_max = 15,shuffle=True)
-            train_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',train_pair_Df)
-            train_dataloader = Data.DataLoader(dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=True,num_workers=num_workers,pin_memory=True)
+        # if(pair_flag):# 每次重新抽取train_pair_Df（train_Df 是已经除去了val_Df的tv_Df）
+        #     train_pair_Df = pair_HTN(train_Df[(train_Df['diagnose']==1)],train_Df[(train_Df['diagnose']==0)],Range_max = 15,shuffle=True)
+        #     train_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',train_pair_Df)
+        #     train_dataloader = Data.DataLoader(dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=True,num_workers=num_workers,pin_memory=True)
         time_all=0
         start_time = time.time()
         
-        y_true,y_pred,train_loss,train_acc = train_model(train_dataloader, Model, criterion, optimizer,DEVICE,onehot_lable=onehot_lable) # type: ignore # 训练模型
-        
-        # F1_score_train =f1_score(y_true, y_pred, average='macro')#F1分数
-        # C0 = confusion_matrix(y_true,y_pred)
-        
+        y_true,y_pred,train_loss,train_acc = train_model(train_dataloader, Model, criterion, optimizer,DEVICE,onehot_lable=onehot_lable) # type: ignore # 训练模型        
         y_true,y_pred,validate_loss,validate_acc = eval_model(valid_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
         time_all = time.time()-start_time
-        # F1_score_valid =f1_score(y_true, y_pred, average='macro')#F1分数
-        # C1 = confusion_matrix(y_true,y_pred)
-        # print(" "*20+'Validate: ',F1_score_valid,'\n'+" "*20,C1[0],'\n'+" "*20,C1[1])
         
         writer.add_scalars(main_tag=str(fold)+'_Loss',tag_scalar_dict={'train': train_loss,'validate': validate_loss},global_step=epoch)
         writer.add_scalars(main_tag=str(fold)+'_Accuracy',tag_scalar_dict={'train': train_acc,'validate': validate_acc},global_step=epoch)

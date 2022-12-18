@@ -127,30 +127,36 @@ if __name__ == '__main__':
     validate_acc_sum = [0]*FOLDS
     test_loss_sum = [0]*FOLDS
     test_acc_sum = [0]*FOLDS
+    
+    strKFold = StratifiedKFold(n_splits=FOLDS, shuffle=True)  # shuffle 参数用于确定在分类前是否对数据进行打乱清洗
 
 
     print('\nTraining..\n')
-    validaate_size = len(ALLDataset.tvDf[(ALLDataset.tvDf['diagnose']==1)])//FOLDS
-    for i in range(FOLDS):
+    # validaate_size = len(ALLDataset.tvDf[(ALLDataset.tvDf['diagnose']==1)])//FOLDS
+    # for i in range(FOLDS):
+    tv_Lables = np.array(ALLDataset.tvDf['diagnose'].tolist())# type: ignore    
+    tv_Df = ALLDataset.tvDf.copy()
+    for train_index, val_index in strKFold.split(np.zeros(len(tv_Lables)),tv_Lables):
         print(" "*10+ "Fold "+str(fold)+" of "+str(FOLDS) + ' :')
-        tv_Df = ALLDataset.tvDf.copy()
-        validate_pair_Df = pair_HTN(tv_Df[(tv_Df['diagnose']==1)].iloc[validaate_size*i:validaate_size*i+validaate_size],tv_Df[(tv_Df['diagnose']==0)],Range_max = 15,shuffle=True)
-        train_Df = tv_Df.drop(index= validate_pair_Df.index)    #删掉validate_pair_Df 用于训练
-        
+        # print("TRAIN:", train_index, "TEST:", val_index)
+        train_infos = tv_Df.iloc[train_index].reset_index(drop=True) # type: ignore        
+        val_infos = tv_Df.iloc[val_index].reset_index(drop=True) # type: ignore  
+        train_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',train_infos) 
+        validate_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',val_infos) 
         criterion = nn.CrossEntropyLoss()
         # criterion = LabelSmoothingCrossEntropy()
         train_loss,train_acc,validate_loss,validate_acc,test_loss,test_acc = tarinning_one_flod(fold,NET[fold]
-                                                                                                ,train_Df,validate_pair_Df,test_dataset
+                                                                                                ,train_dataset,validate_dataset,test_dataset
                                                                                                 ,writer,model_path
                                                                                                 ,BATCH_SIZE = BATCH_SIZE,
                                                                                                 DEVICE=DEVICE,
                                                                                                 criterion = criterion,
                                                                                                 EPOCHS = 200,  
-                                                                                                PATIENCE = 50,
+                                                                                                PATIENCE = 20,
                                                                                                 LR_MAX = 1e-3,
                                                                                                 LR_MIN = 1e-6,
                                                                                                 onehot_lable= False,
-                                                                                                pair_flag= True,
+                                                                                                pair_flag= False,
                                                                                                 warm_up_iter = 5
                                                                                                 )
         train_loss_sum[fold] = train_loss
