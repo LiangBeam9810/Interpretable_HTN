@@ -98,9 +98,11 @@ EPOCHS = 100
 PATIENCE = 10
 LR = 0.01
 
+notion = " Use binary F1. \n Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.3). \n Sample HTN to fit NHTN numbers"
+    
+    
 if __name__ == '__main__':
     ALLDataset = ECGDataset.ECG_Dataset_Init('/workspace/data/Preprocess_HTN/data_like_pxl//',filter_age= 18,filter_department='外科',rebuild_flage=False)    
-    ALLDataset.report()  # type: ignore
     torch.cuda.empty_cache()# 清空显卡cuda
     NET = [Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.3),
            Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.3),
@@ -112,14 +114,13 @@ if __name__ == '__main__':
     #         Net.MLBFNet_GUR(True,res = True,se = True,Dropout_rate = 0.1),
     #         Net.MLBFNet_GUR(True,res = True,se = True,Dropout_rate = 0.1),
     #         Net.MLBFNet_GUR(True,res = True,se = True,Dropout_rate = 0.1)]
-
-    test_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',ALLDataset.testDf)  # type: ignore
     os.makedirs(model_path, exist_ok=True)  # type: ignore
     writer = SummaryWriter(log_path)  # type: ignore
     # writer.add_graph(NET[0], torch.zeros((1,12,5000)))  #模型及模型输入数据
     sys.stdout = logger.Logger(log_path+'/log.txt')
     torch.cuda.empty_cache()# 清空显卡cuda
-
+    ALLDataset.report()  # type: ignore    
+    test_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',ALLDataset.testDf)  # type: ignore    
     fold = 0
     train_loss_sum =[0]*FOLDS
     train_acc_sum = [0]*FOLDS
@@ -131,7 +132,7 @@ if __name__ == '__main__':
     strKFold = StratifiedKFold(n_splits=FOLDS, shuffle=True)  # shuffle 参数用于确定在分类前是否对数据进行打乱清洗
 
 
-    print('\nTraining..\n')
+    print(notion)
     # validaate_size = len(ALLDataset.tvDf[(ALLDataset.tvDf['diagnose']==1)])//FOLDS
     # for i in range(FOLDS):
     tv_Lables = np.array(ALLDataset.tvDf['diagnose'].tolist())# type: ignore    
@@ -152,7 +153,7 @@ if __name__ == '__main__':
                                                                                                 DEVICE=DEVICE,
                                                                                                 criterion = criterion,
                                                                                                 EPOCHS = 200,  
-                                                                                                PATIENCE = 20,
+                                                                                                PATIENCE = 10,
                                                                                                 LR_MAX = 1e-3,
                                                                                                 LR_MIN = 1e-6,
                                                                                                 onehot_lable= False,

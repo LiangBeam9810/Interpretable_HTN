@@ -95,7 +95,7 @@ class ECG_Dataset_Init():
     def __filter__quality__(self,df_input):
         df = df_input.copy()       
         df = df[
-                ( (df['q_sum'] < 4))&(df['q_sum']>=0)
+                (df['q_sum']==0)
                 ]#q_sum<=1
         print('\n')
         print("{:^10} {:^10} {:^20}".format('  ','orginal','QC'))

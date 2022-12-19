@@ -220,13 +220,6 @@ def gen_baseline_wander(
     )
     return bw # type: ignore
 
-
-
-
-
-
-
-
 def mark_input(input,mark_lenth=500):
     batchsize,channelsize,sqenlenth = input.shape
     mark = torch.zeros([mark_lenth]).to(input.device)

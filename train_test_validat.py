@@ -1,6 +1,6 @@
 import numpy as np
 import torch
-from sklearn.metrics import f1_score
+from sklearn.metrics import f1_score, precision_score,recall_score
 import math
 import time
 import torch.utils.data as Data
@@ -81,7 +81,7 @@ def tarinning_one_flod(fold,Model,train_dataset ,val_dataset,test_dataset,writer
         valid_dataloader = Data.DataLoader(dataset=val_dataset, batch_size=BATCH_SIZE, shuffle=shuffle,num_workers=num_workers,pin_memory=True)
         train_dataloader = Data.DataLoader(dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=shuffle,num_workers=num_workers,pin_memory=True)
     test_dataloader = Data.DataLoader(dataset=test_dataset, batch_size=BATCH_SIZE, shuffle=True,num_workers=num_workers,pin_memory=True)
-    early_stopping = EarlyStopping(PATIENCE, verbose=True, model_path=save_model_path, delta=0, positive=False)
+    early_stopping = EarlyStopping(PATIENCE, verbose=True, model_path=save_model_path, delta=0, positive=True)
     optimizer  = torch.optim.Adam(Model.parameters(), lr=LR_MAX,weight_decay=weight_decay) 
     criterion =  criterion.to(DEVICE)
     
@@ -106,13 +106,17 @@ def tarinning_one_flod(fold,Model,train_dataset ,val_dataset,test_dataset,writer
         y_true,y_pred,train_loss,train_acc = train_model(train_dataloader, Model, criterion, optimizer,DEVICE,onehot_lable=onehot_lable) # type: ignore # 训练模型       
          
         y_true,y_pred,validate_loss,validate_acc = eval_model(valid_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
-        F1_score_valid =f1_score(y_true, y_pred, average='macro')#F1分数
+        F1_score_valid =f1_score(y_true, y_pred, average='binary')#F1分数
+        p_valid = precision_score(y_true, y_pred, average='binary')
+        r_valid = recall_score(y_true, y_pred, average='binary')   
         C1 = confusion_matrix(y_true,y_pred)
-        print(" "*20+'Validate: ',F1_score_valid,'\n'+" "*20,C1[0],'\n'+" "*20,C1[1])
+        print(" "*20+'Validate: ',F1_score_valid,'\n'+" "*20,C1[0],'\n'+" "*20,C1[1],'\n'+" "*20,"precision: ",p_valid,"recall: ",r_valid)
         y_true,y_pred,test_loss,test_acc = eval_model(test_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
-        F1_score_test =f1_score(y_true, y_pred, average='macro')#F1分数
+        F1_score_test =f1_score(y_true, y_pred, average='binary')#F1分数
+        p_test = precision_score(y_true, y_pred, average='binary')
+        r_test = recall_score(y_true, y_pred, average='binary') 
         C = confusion_matrix(y_true,y_pred)
-        print(" "*20+'test: ',F1_score_test,'\n'+" "*20,C[0],'\n'+" "*20,C[1])
+        print(" "*20+'test: ',F1_score_test,'\n'+" "*20,C[0],'\n'+" "*20,C[1],'\n'+" "*20,"precision: ",p_test,"recall: ",r_test)
         time_all = time.time()-start_time
         
         writer.add_scalars(main_tag=str(fold)+'_Loss',tag_scalar_dict={'train': train_loss,'validate': validate_loss},global_step=epoch)
@@ -121,16 +125,14 @@ def tarinning_one_flod(fold,Model,train_dataset ,val_dataset,test_dataset,writer
         print(" "*20+'- Epoch: %d - Train_loss: %.5f - Train_acc: %.5f -  - Val_loss: %.5f - Val_acc: %.5f  - T_Time: %.5f' %(epoch,train_loss,train_acc,validate_loss,validate_acc,time_all),'LR：%.8f' %optimizer.state_dict()['param_groups'][0]['lr'])
         
         if(F1_score_test>best_F1_score_test):
-             print(" "*20+'Save best test. ')
-             torch.save(Model.state_dict(), save_model_path+'/BestTestF1_' + str(fold) + '.pt')
-             
-             
-            
+            best_F1_score_test = F1_score_test
+            print(" "*20+'Save best test. ')
+            torch.save(Model.state_dict(), save_model_path+'/BestTestF1_' + str(fold) + '.pt')
             
         scheduler.step() # 学习率迭代
         
         #是否满足早停法条件
-        if(early_stopping(validate_loss,Model,fold)):
+        if(early_stopping(F1_score_valid,Model,fold)):
             print(" "*20+"Early stopping...")
             break
         
@@ -141,12 +143,12 @@ def tarinning_one_flod(fold,Model,train_dataset ,val_dataset,test_dataset,writer
     y_true,y_pred,train_loss,train_acc = train_model(train_dataloader, Model, criterion, optimizer,DEVICE,onehot_lable=onehot_lable) # type: ignore # 模型
     Model.load_state_dict(torch.load(best_model_path))
     y_true,y_pred,validate_loss,validate_acc = eval_model(valid_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
-    F1_score_valid =f1_score(y_true, y_pred, average='macro')#F1分数
+    F1_score_valid =f1_score(y_true, y_pred, average='binary')#F1分数
     C1 = confusion_matrix(y_true,y_pred)
     print(" "*10+'validate: ',F1_score_valid,'\n'+" "*10,C1[0],'\n'+" "*10,C1[1])
     
     y_true,y_pred,test_loss,test_acc = eval_model(test_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
-    F1_score_test =f1_score(y_true, y_pred, average='macro')#F1分数
+    F1_score_test =f1_score(y_true, y_pred, average='binary')#F1分数
     C = confusion_matrix(y_true,y_pred)
     print(" "*10+'test: ',F1_score_test,'\n'+" "*10,C[0],'\n'+" "*10,C[1])
     print(" "*10+'Fold %d Training Finished' %(fold))
