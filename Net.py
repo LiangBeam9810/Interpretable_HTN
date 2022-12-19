@@ -2,6 +2,16 @@ import torch
 import torch.nn as nn
 import Models
 from self_attention import *
+import augmenters
+
+
+
+
+
+
+
+
+
 
 class ResSeBlock1d(nn.Module):
 
@@ -357,14 +367,19 @@ class MLBFNet(nn.Module):
         self.avgpool = nn.AdaptiveAvgPool1d(1)
         self.fc = nn.Linear(self.inplanes*len(self.sizes),num_class)
         self.softmax = nn.Softmax(-1)
-    def forward(self, x):
+    def forward(self, x: torch.Tensor):
         batch_size, channels,seq_len = x.shape
         #x = x+(Models.create_1d_absolute_sin_cos_embedding(batch_size,channels,seq_len)).to(x.device)#位置编码
         if(self.mark):
             if self.training:
+                
                 if(torch.rand(1)>0.5):
                     mark_lenth = torch.randint(int(seq_len/10),int(seq_len/5),[1])
-                    x = Models.mark_input(x,mark_lenth=int(mark_lenth[0]))
+                    x = augmenters.mark_input(x,mark_lenth=int(mark_lenth[0]))
+                elif(torch.rand(1)>0.5):
+                    x.add_(augmenters.gen_baseline_wander(x,500,prob=torch.rand(1)))# type: ignore 
+                    
+                    
         x0 = self.layers0(x[:,:1,:])
         x1 = self.layers1(x[:,1:2,:])
         x2 = self.layers2(x[:,2:3,:])
@@ -590,7 +605,7 @@ class MLBFNet_GUR(nn.Module):
             if self.training:
                 if(torch.rand(1)>0.5): #mark
                     mark_lenth = torch.randint(int(seq_len/10),int(seq_len/5),[1])
-                    x = Models.mark_input(x,mark_lenth=int(mark_lenth[0]))
+                    x = augmenters.mark_input(x,mark_lenth=int(mark_lenth[0]))
 
         x0 = self.layers0(x[:,:1,:])
         x1 = self.layers1(x[:,1:2,:])

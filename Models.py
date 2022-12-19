@@ -145,16 +145,6 @@ class CNN_ATT(nn.Module):
         x = self.linear_unit(x)
         return x
 
-def mark_input(input,mark_lenth=500):
-    batchsize,channelsize,sqenlenth = input.shape
-    mark = torch.zeros([mark_lenth]).to(input.device)
-    for i in range(batchsize):
-        mark_index = torch.randint(mark_lenth,sqenlenth-mark_lenth,[1])
-        #print(mark_index)
-        for j in range(channelsize):
-            input[i,j,mark_index:mark_index+mark_lenth]=mark
-    return input
-
 class CNN(nn.Module):
 
     def __init__(self):

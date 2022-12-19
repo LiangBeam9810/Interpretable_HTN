@@ -93,6 +93,7 @@ def tarinning_one_flod(fold,Model,train_dataset ,val_dataset,test_dataset,writer
         (lr_min + 0.5*(lr_max-lr_min)*(1.0+math.cos( (cur_iter-warm_up_iter)/(T_max-warm_up_iter)*math.pi)))/0.01
     scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda=lambda0)
     best_valida_loss = np.inf
+    best_F1_score_test = 0
     Model.to(DEVICE)
     for epoch in range(1,EPOCHS):
         # if(pair_flag):# 每次重新抽取train_pair_Df（train_Df 是已经除去了val_Df的tv_Df）
@@ -102,8 +103,16 @@ def tarinning_one_flod(fold,Model,train_dataset ,val_dataset,test_dataset,writer
         time_all=0
         start_time = time.time()
         
-        y_true,y_pred,train_loss,train_acc = train_model(train_dataloader, Model, criterion, optimizer,DEVICE,onehot_lable=onehot_lable) # type: ignore # 训练模型        
+        y_true,y_pred,train_loss,train_acc = train_model(train_dataloader, Model, criterion, optimizer,DEVICE,onehot_lable=onehot_lable) # type: ignore # 训练模型       
+         
         y_true,y_pred,validate_loss,validate_acc = eval_model(valid_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
+        F1_score_valid =f1_score(y_true, y_pred, average='macro')#F1分数
+        C1 = confusion_matrix(y_true,y_pred)
+        print(" "*20+'Validate: ',F1_score_valid,'\n'+" "*20,C1[0],'\n'+" "*20,C1[1])
+        y_true,y_pred,test_loss,test_acc = eval_model(test_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
+        F1_score_test =f1_score(y_true, y_pred, average='macro')#F1分数
+        C = confusion_matrix(y_true,y_pred)
+        print(" "*20+'test: ',F1_score_test,'\n'+" "*20,C[0],'\n'+" "*20,C[1])
         time_all = time.time()-start_time
         
         writer.add_scalars(main_tag=str(fold)+'_Loss',tag_scalar_dict={'train': train_loss,'validate': validate_loss},global_step=epoch)
@@ -111,16 +120,11 @@ def tarinning_one_flod(fold,Model,train_dataset ,val_dataset,test_dataset,writer
         writer.add_scalars(main_tag=str(fold)+'_LearningRate',tag_scalar_dict={'LR': optimizer.state_dict()['param_groups'][0]['lr']},global_step=epoch)      
         print(" "*20+'- Epoch: %d - Train_loss: %.5f - Train_acc: %.5f -  - Val_loss: %.5f - Val_acc: %.5f  - T_Time: %.5f' %(epoch,train_loss,train_acc,validate_loss,validate_acc,time_all),'LR：%.8f' %optimizer.state_dict()['param_groups'][0]['lr'])
         
-        if(best_valida_loss>validate_loss):
-            best_valida_loss = validate_loss
-            F1_score_valid =f1_score(y_true, y_pred, average='macro')#F1分数
-            C1 = confusion_matrix(y_true,y_pred)
-            print(" "*20+'Validate: ',F1_score_valid,'\n'+" "*20,C1[0],'\n'+" "*20,C1[1])
-            
-            y_true,y_pred,test_loss,test_acc = eval_model(test_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
-            F1_score_test =f1_score(y_true, y_pred, average='macro')#F1分数
-            C = confusion_matrix(y_true,y_pred)
-            print(" "*20+'test: ',F1_score_test,'\n'+" "*20,C[0],'\n'+" "*20,C[1])
+        if(F1_score_test>best_F1_score_test):
+             print(" "*20+'Save best test. ')
+             torch.save(Model.state_dict(), save_model_path+'/BestTestF1_' + str(fold) + '.pt')
+             
+             
             
             
         scheduler.step() # 学习率迭代
