@@ -80,13 +80,14 @@ def tarinning_one_flod(fold,Model,train_dataset ,val_dataset,test_dataset,writer
     optimizer  = torch.optim.Adam(Model.parameters(), lr=LR_MAX) 
     criterion =  criterion.to(DEVICE)
     
-    warm_up_iter = warm_up_iter
-    T_max = EPOCHS//4	# 周期
-    lr_max = LR_MAX	# 最大值
-    lr_min = LR_MIN	# 最小值
-    lambda0 = lambda cur_iter: ((lr_max-lr_min)/warm_up_iter*1.)*(cur_iter)+lr_min if  cur_iter < warm_up_iter else \
-        (lr_min + 0.5*(lr_max-lr_min)*(1.0+math.cos( (cur_iter-warm_up_iter)/(T_max-warm_up_iter)*math.pi)))/0.01
-    scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda=lambda0)
+    # warm_up_iter = warm_up_iter
+    # T_max = EPOCHS//4	# 周期
+    # lr_max = LR_MAX	# 最大值
+    # lr_min = LR_MIN	# 最小值
+    # lambda0 = lambda cur_iter: ((lr_max-lr_min)/warm_up_iter*1.)*(cur_iter)+lr_min if  cur_iter < warm_up_iter else \
+    #     (lr_min + 0.5*(lr_max-lr_min)*(1.0+math.cos( (cur_iter-warm_up_iter)/(T_max-warm_up_iter)*math.pi)))/0.01
+    # scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda=lambda0)
+    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.1, patience=10, verbose=False, threshold=0.0001, threshold_mode='rel', cooldown=0, min_lr=0, eps=1e-08)
     best_valida_loss = np.inf
     best_F1_score_test = 0
     Model.to(DEVICE)
@@ -118,10 +119,10 @@ def tarinning_one_flod(fold,Model,train_dataset ,val_dataset,test_dataset,writer
         if(F1_score_test>best_F1_score_test):
             best_F1_score_test = F1_score_test
             
-            print(" "*20+'Save best model for test (F1=). ',best_F1_score_test)
-            torch.save(Model.state_dict(), save_model_path+'/BestTestF1_' + str(fold) + '.pt')
+            print(" "*20+'The best model for test (F1= . ',best_F1_score_test,')')
+            # torch.save(Model.state_dict(), save_model_path+'/BestTestF1_' + str(fold) + '.pt')
             
-        scheduler.step() # 学习率迭代
+        scheduler.step(metrics=validate_loss) # 学习率迭代
         
         #是否满足早停法条件
         if(early_stopping(F1_score_valid,Model,fold)):

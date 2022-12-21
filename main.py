@@ -60,13 +60,14 @@ DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 print(DEVICE)
 
 BATCH_SIZE = 160
-FOLDS = 6
-EPOCHS = 200  
+FOLDS = 5
+EPOCHS = 300  
 PATIENCE = 50
 LR = 0.001
 
 PAIR =True
 notion ="####"*10 +\
+        "\n#ReduceLROnPlateau "  +\
         "\n#The reset and delete list (main in test)" +\
         "\n#qc == 0" +\
         "\n#pair HTN" +\
@@ -107,6 +108,7 @@ if __name__ == '__main__':
     test_loss_sum = [0]*FOLDS
     test_acc_sum = [0]*FOLDS    
     criterion = nn.CrossEntropyLoss()
+    
     # if not PAIR:
     #     test_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',ALLDataset.testDf)  # type: ignore  
     # else:
@@ -188,7 +190,7 @@ if __name__ == '__main__':
         " "*10+"test_acc",test_acc)
         print(" "*10+'='*50)
         print(" "*10+'='*50)
-        if(fold >= 2): break
+        # if(fold >= 2): break
     print(" "*5+'='*50)
     
     print("train_loss",train_loss_sum,
