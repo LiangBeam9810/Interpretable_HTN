@@ -6,6 +6,76 @@ from torch.utils.data.dataset import Dataset
 from tqdm import tqdm
 import random
 from scipy.signal import butter, lfilter
+
+reset_list = [
+                '848023',
+                '848316',
+                '578148',
+                '736912',
+                '847065',
+                '849400',
+                '839738',
+                '309738',
+                '496939',
+                '847724',
+                '847377',
+                '848996',
+                '850179',
+                '844904',
+                '848473',
+]
+delete_list = [
+        '848037',
+        '415049',
+        '850177',
+        '266407',
+        '669894',
+        '889066',
+        '894868',
+        '803805',
+        '550313',
+        '894868',
+        '359970',
+        '897967',
+        '853511',
+        '853850',
+        '857377',
+        '859578',
+        '856421',
+        '858013',
+        '858013',
+        '489584',
+        '857662',
+        '785010',
+        '863228',
+        '863469',
+        '489584',
+        '862288',
+        '416469',
+        '870767',
+        '871718',
+        '871718',
+        '884307',
+        '884307',
+        '883577',
+        '883577',
+        '883488',
+        '848816',
+        '862660',
+        '735458',
+        '735458',
+        '889644',
+        '889644',
+        '538060',
+        '870667',
+        '851396',
+        '851419',
+        '873289',
+        '342741',
+        '280452',
+        '901544',
+]
+
 class ECG_Dataset_Init():
     def __init__(self,data_root:str,filter_age = 0,filter_department = None,rebuild_flage = False): 
         
@@ -92,7 +162,7 @@ class ECG_Dataset_Init():
         
         return df  
     #QC by q file 
-    def __filter__quality__(self,df_input):
+    def __filter__quality__(self,df_input:pd.DataFrame):
         df = df_input.copy()       
         df = df[
                 (df['q_sum']==0)
@@ -100,6 +170,14 @@ class ECG_Dataset_Init():
         print('\n')
         print("{:^10} {:^10} {:^20}".format('  ','orginal','QC'))
         print("{:^10} {:^10} {:^20}".format('nums',len(df_input),len(df)))
+        #将确认为HTN的错误样本的标签重置###reset lable 
+        reset_index = df[[True if i in reset_list else False for i in df['ID']]].index
+        print("reset size",len(reset_index))
+        df.loc[reset_index,'diagnose'] = 1
+        # #将确认有问题的样本剔除 
+        delete_index = df[[True if i in delete_list else False for i in df['ID']]].index
+        print("delete size",len(delete_index))
+        df = df.drop(index = delete_index)
         return df
     #department符合条件 或者 诊断为高血压的样本 
     def __filter__departmentORlabel__(self,df_input):  # type: ignore
@@ -130,13 +208,9 @@ class ECG_Dataset_Init():
         print('\n')
         df1 = df_remove[df_remove['ID']=='']
         df1 = df1.sort_values(by=['diagnose'], ascending=[False]) #按照诊断排序，HTN在前
-        # print('df1 the same name&ages&gender:',len(df1[df1.duplicated(subset=['name','ages','gender'],keep=False ) ]))
-        # print('df1 the same name&ages&gender & diagnose:',len(df1[df1.duplicated(subset=['name','ages','gender','diagnose'],keep=False )]))
-        # df1 = df1.drop_duplicates(subset=['name','ages','gender'],keep='first')#没有ID号的，剔除姓名和年龄都一样的，即认为是同一个人，保存第一个（尽可能保留高血压患者）
-        
-        df2 = df_remove[~(df_remove['ID']=='')] #有ID号的 ，相同ID号，保存第一个
+        df2 = df_remove[~(df_remove['ID']=='')] #有ID号的 ，相同ID号
         df2 = df2.sort_values(by=['diagnose'], ascending=[False])
-        #####################################################test
+        #####################################################test 把ID号相同但诊断标签不一致的全部改为HTN
         df2_0 = df2[df2['diagnose']==0] #所有非高血压
         df2_1 = df2[df2['diagnose']==1] #所有高血压
         duplicated_index = df2_0[[True if i in df2_1['ID'].tolist() else False for i in df2_0['ID']]].index
@@ -146,8 +220,13 @@ class ECG_Dataset_Init():
         # print('df2 the same name&ages&gender:',len(df2[df2.duplicated(subset=['ID'],keep=False) ]))
         # print('df2 the same name&ages&gender & diagnose:',len(df2[df2.duplicated(subset=['ID','diagnose'],keep=False )]))
         # df2 = df2.drop_duplicates(subset=['ID'],keep='first')
-        
         df_remove =pd.concat([df1,df2],axis=0)
+        
+        df1 = df_remove[(df_remove['diagnose'] == 1)] #
+        df2 = df_remove[(~(df_remove.duplicated(subset=['ID'],keep=False)))&(df_remove['diagnose'] == 0)]
+        df3 = df_remove[((df_remove.duplicated(subset=['ID'],keep=False)))&(df_remove['diagnose'] == 0)].drop_duplicates(subset=['ID'],keep='last')
+        
+        df_remove =pd.concat([df1,df2,df3],axis=0)
         print('\n')
         print("{:^10} {:^10} {:^20}".format('  ','orginal','removed duplicated'))
         print("{:^10} {:^10} {:^20}".format('nums',len(df_input),len(df_remove)))
@@ -244,8 +323,7 @@ class ECG_Dataset(Dataset):
         print("{:^10} {:^10} {:^10}".format('Nums', np.all(self.labels == 1),np.all(self.labels == 0)))
     def info(self,index):
         return self.infos.iloc[index]
-    
-    
+
 def bandpass_filter(data, lowcut, highcut, signal_freq, filter_order):
         """
         Method responsible for creating and applying Butterworth filter.

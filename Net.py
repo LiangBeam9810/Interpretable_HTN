@@ -85,7 +85,7 @@ class ResSeBlock2d(nn.Module):
         self.conv12d = nn.Conv2d(inplanes, outplanes, kernel_size, stride=(1,stride), dilation=dilation,
                                padding=((kernel_size[0]-1)//2,(kernel_size[1]-1)//2), bias=False)
         self.bn1 = nn.BatchNorm2d(inplanes)
-        self.relu = nn.ReLU(inplace=True)
+        self.relu = nn.LeakyReLU(inplace=True)
         self.dropout = nn.Dropout(p=0.2)
         self.conv22d = nn.Conv2d(outplanes, outplanes, kernel_size=kernel_size, stride=(1,1), dilation=(1,1),
                                padding=((kernel_size[0]-1)//2,(kernel_size[1]-1)//2), bias=False)
@@ -156,7 +156,7 @@ class channels_branch_CNN(nn.Module):
         self.se = se
         self.conv0 = nn.Conv2d(1,32,(1,51),(1,2),(0,25))
         self.bn = nn.BatchNorm2d(32)
-        self.relu = nn.ReLU(inplace=True)
+        self.relu = nn.LeakyReLU(inplace=True)
         self.conv1 = ResSeBlock2d(inplanes=32,outplanes=32,stride=2,kernel_size=(1,15),res=self.res,se=self.se)
         self.conv2 = ResSeBlock2d(inplanes=32,outplanes=32,stride=2,kernel_size=(1,15),res=self.res,se=self.se)
         self.conv3 = ResSeBlock2d(inplanes=32,outplanes=32,stride=2,kernel_size=(1,15),res=self.res,se=self.se)
@@ -247,7 +247,7 @@ class MLBFNet(nn.Module):
         
         self.conv0 = nn.Conv2d(1,16,(1,51),(1,2),(0,25))
         self.bn = nn.BatchNorm2d(16)
-        self.relu = nn.ReLU(inplace=True)
+        self.relu = nn.LeakyReLU(inplace=True)
         self.conv1 = ResSeBlock2d(inplanes=16,outplanes=16,stride=2,kernel_size=(1,15),res=self.res,se=self.se)
         self.conv2 = ResSeBlock2d(inplanes=16,outplanes=16,stride=2,kernel_size=(1,15),res=self.res,se=self.se)
         self.conv3 = ResSeBlock2d(inplanes=16,outplanes=16,stride=2,kernel_size=(1,15),res=self.res,se=self.se)
@@ -372,12 +372,11 @@ class MLBFNet(nn.Module):
         #x = x+(Models.create_1d_absolute_sin_cos_embedding(batch_size,channels,seq_len)).to(x.device)#位置编码
         if(self.mark):
             if self.training:
-                
                 if(torch.rand(1)>0.5):
                     mark_lenth = torch.randint(int(seq_len/10),int(seq_len/5),[1])
                     x = augmenters.mark_input(x,mark_lenth=int(mark_lenth[0]))
-                # elif(torch.rand(1)>0.5):
-                #     x.add_(augmenters.gen_baseline_wander(x,500,prob=torch.rand(1)))# type: ignore 
+                elif(torch.rand(1)>0.9):
+                     x.add_(augmenters.gen_baseline_wander(x,500,prob=torch.rand(1)))# type: ignore 
                     
                     
         x0 = self.layers0(x[:,:1,:])
@@ -439,7 +438,7 @@ class MLBFNet_GUR(nn.Module):
         
         self.conv0 = nn.Conv2d(1,16,(1,51),(1,2),(0,25))
         self.bn = nn.BatchNorm2d(16)
-        self.relu = nn.ReLU(inplace=True)
+        self.relu = nn.LeakyReLU(inplace=True)
         self.conv1 = ResSeBlock2d(inplanes=16,outplanes=16,stride=2,kernel_size=(1,15),res=self.res,se=self.se)
         self.conv2 = ResSeBlock2d(inplanes=16,outplanes=16,stride=2,kernel_size=(1,15),res=self.res,se=self.se)
         self.conv3 = ResSeBlock2d(inplanes=16,outplanes=16,stride=2,kernel_size=(1,15),res=self.res,se=self.se)

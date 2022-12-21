@@ -27,7 +27,7 @@ import sys
 import logger
 
 
-from torch.utils.tensorboard import SummaryWriter
+from torch.utils.tensorboard import SummaryWriter  # type: ignore
 
 def linear_combination(x, y, epsilon): 
     return epsilon*x + (1-epsilon)*y
@@ -50,38 +50,6 @@ class LabelSmoothingCrossEntropy(nn.Module):
 
 
 
-def pair_HTN(INPUT_HTN_Df,INPUT_NHTN_Df,Range_max = 10,shuffle = False):
-    HTN_Df = ((INPUT_HTN_Df).copy())
-    NHTN_Df = ((INPUT_NHTN_Df).copy())#即抽即删,抽出一条删一条
-    if(shuffle): #打乱
-        HTN_Df = (HTN_Df.sample(frac=1))
-        NHTN_Df = (NHTN_Df.sample(frac=1))
-    # pair_Df = INFOs_df = pd.DataFrame(index=range(len(HTN_Df)*2),columns=HTN_Df.columns)   #所有的HNT和抽取出来的NHTN都存放入其中
-    pair_Df = HTN_Df #先将所有HTN存放入其中
-    index = len(HTN_Df)
-    for info in HTN_Df.itertuples():
-        age = info.ages
-        gender = info.gender
-        candidate_NHTN_Df = pd.DataFrame()
-        
-        for Range in range(1,Range_max): # 在 ±Range_max 范围内搜寻ages，且gender相同的NHTN样本
-            candidate_NHTN_Df = NHTN_Df[(NHTN_Df['ages']>age-Range)&(NHTN_Df['ages']<age+Range)&(NHTN_Df['gender']==gender)]
-            if(len(candidate_NHTN_Df) > 0):
-                break
-        
-        if(len(candidate_NHTN_Df)<1):# ±Range_max 范围内都没有，那么就从所有NHTN样本（删除掉之前被抽到的）中抽一个
-            print("lack sample like :",info)
-            candidate_NHTN_Df = NHTN_Df
-        NHTN_data_buff = candidate_NHTN_Df.sample(n=1) #从candida中随机抽样一个
-        # pair_Df.iloc[index] = NHTN_data_buff.iloc[0]
-        pair_Df = pair_Df.append(NHTN_data_buff)
-        # print(age,',',NHTN_data_buff['ages'])
-        # print(NHTN_data_buff.index)
-        NHTN_Df = NHTN_Df.drop(index= (NHTN_data_buff.index))
-        index = index +1
-    return pair_Df
-
-
 time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime()) 
 model_path = './model/'+time_str
 log_path = './logs/'+  time_str
@@ -92,13 +60,22 @@ DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 print(DEVICE)
 
 BATCH_SIZE = 160
+FOLDS = 6
+EPOCHS = 200  
+PATIENCE = 50
+LR = 0.001
 
-FOLDS = 5
-EPOCHS = 100  
-PATIENCE = 10
-LR = 0.01
-
-notion = " Use binary F1. \n Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.3). \n Sample HTN to fit NHTN numbers"
+PAIR =True
+notion ="####"*10 +\
+        "\n#The reset and delete list (main in test)" +\
+        "\n#qc == 0" +\
+        "\n#pair HTN" +\
+        "\n#use adam with 0 weight decay" +\
+        "\n#Shuffle before k-fold train"+\
+        "\n#Use binary F1. "  +\
+        "\n#Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.3)." +\
+        "\n#Sample HTN to fit NHTN numbers (test,val,train)" +\
+        "\n"+"####"*10
     
     
 if __name__ == '__main__':
@@ -118,48 +95,81 @@ if __name__ == '__main__':
     writer = SummaryWriter(log_path)  # type: ignore
     # writer.add_graph(NET[0], torch.zeros((1,12,5000)))  #模型及模型输入数据
     sys.stdout = logger.Logger(log_path+'/log.txt')
+    print(notion)
+    
     torch.cuda.empty_cache()# 清空显卡cuda
     ALLDataset.report()  # type: ignore    
-    test_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',ALLDataset.testDf)  # type: ignore    
     fold = 0
     train_loss_sum =[0]*FOLDS
     train_acc_sum = [0]*FOLDS
     validate_loss_sum = [0]*FOLDS
     validate_acc_sum = [0]*FOLDS
     test_loss_sum = [0]*FOLDS
-    test_acc_sum = [0]*FOLDS
+    test_acc_sum = [0]*FOLDS    
+    criterion = nn.CrossEntropyLoss()
+    # if not PAIR:
+    #     test_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',ALLDataset.testDf)  # type: ignore  
+    # else:
+    #     test_DF = ALLDataset.testDf.copy().reset_index(drop=True)
+    #     test_pair_Df = pair_HTN(test_DF[(test_DF['diagnose']==1)],test_DF[(test_DF['diagnose']==0)],Range_max = 15)  
+    #     test_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',test_pair_Df)  # type: ignore    
+    test_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',ALLDataset.testDf)  # type: ignore  
     
-    strKFold = StratifiedKFold(n_splits=FOLDS, shuffle=True)  # shuffle 参数用于确定在分类前是否对数据进行打乱清洗
-
-
-    print(notion)
-    # validaate_size = len(ALLDataset.tvDf[(ALLDataset.tvDf['diagnose']==1)])//FOLDS
-    # for i in range(FOLDS):
-    tv_Lables = np.array(ALLDataset.tvDf['diagnose'].tolist())# type: ignore    
-    tv_Df = ALLDataset.tvDf.copy()
-    for train_index, val_index in strKFold.split(np.zeros(len(tv_Lables)),tv_Lables):
+    tv_Df = (ALLDataset.tvDf.copy()).reset_index(drop=True)
+    tv_Df = tv_Df.sample(frac=1)  #Shuffle before k-fold train
+    validaate_size = len(tv_Df[(tv_Df['diagnose']==1)])//FOLDS # validatesize for each fold
+    for i in range(FOLDS):
         print(" "*10+ "Fold "+str(fold)+" of "+str(FOLDS) + ' :')
-        # print("TRAIN:", train_index, "TEST:", val_index)
-        train_infos = tv_Df.iloc[train_index].reset_index(drop=True) # type: ignore        
-        val_infos = tv_Df.iloc[val_index].reset_index(drop=True) # type: ignore  
-        train_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',train_infos) 
-        validate_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',val_infos) 
-        criterion = nn.CrossEntropyLoss()
-        # criterion = LabelSmoothingCrossEntropy()
+        tv_Df_buffer = tv_Df.copy() 
+        validate_pair_Df = pair_HTN(tv_Df_buffer[(tv_Df_buffer['diagnose']==1)].iloc[validaate_size*i:validaate_size*i+validaate_size],tv_Df_buffer[(tv_Df_buffer['diagnose']==0)],Range_max = 15,shuffle=True)
+        validate_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',validate_pair_Df)  # type: ignore
+        tv_Df_buffer = tv_Df_buffer.drop(index= validate_pair_Df.index)    #删掉validate_pair_Df 用于训练
+        train_pair_Df = pair_HTN(tv_Df_buffer[(tv_Df_buffer['diagnose']==1)],tv_Df_buffer[(tv_Df_buffer['diagnose']==0)],Range_max = 15,shuffle=True)
+        train_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',train_pair_Df)
+        
         train_loss,train_acc,validate_loss,validate_acc,test_loss,test_acc = tarinning_one_flod(fold,NET[fold]
                                                                                                 ,train_dataset,validate_dataset,test_dataset
                                                                                                 ,writer,model_path
                                                                                                 ,BATCH_SIZE = BATCH_SIZE,
                                                                                                 DEVICE=DEVICE,
                                                                                                 criterion = criterion,
-                                                                                                EPOCHS = 200,  
-                                                                                                PATIENCE = 10,
-                                                                                                LR_MAX = 1e-3,
+                                                                                                EPOCHS = EPOCHS,  
+                                                                                                PATIENCE = PATIENCE,
+                                                                                                LR_MAX = LR,
                                                                                                 LR_MIN = 1e-6,
                                                                                                 onehot_lable= False,
-                                                                                                pair_flag= False,
-                                                                                                warm_up_iter = 5
+                                                                                                pair_flag= PAIR,
+                                                                                                warm_up_iter = 5,
+                                                                                                num_workers= 4,
+                                                                                                train_Df = tv_Df_buffer
                                                                                                 )
+    # strKFold = StratifiedKFold(n_splits=FOLDS, shuffle=True)  # shuffle 参数用于确定在分类前是否对数据进行打乱清洗      
+    # tv_Df = (ALLDataset.tvDf.copy()).reset_index(drop=True)
+    # tv_Df = tv_Df.sample(frac=1)#Shuffle before k-fold train
+    # tv_Lables = np.array(tv_Df['diagnose'].tolist())# type: ignore 
+    # for train_index, val_index in strKFold.split(np.zeros(len(tv_Lables)),tv_Lables):
+    #     print(" "*10+ "Fold "+str(fold)+" of "+str(FOLDS) + ' :')
+    #     train_infos = tv_Df.iloc[train_index].reset_index(drop=True) # type: ignore        
+    #     val_infos = tv_Df.iloc[val_index].reset_index(drop=True) # type: ignore  
+    #     train_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',train_infos) 
+    #     validate_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',val_infos) 
+    #     criterion = nn.CrossEntropyLoss()
+    #     train_loss,train_acc,validate_loss,validate_acc,test_loss,test_acc = tarinning_one_flod(fold,NET[fold]
+    #                                                                                             ,train_dataset,validate_dataset,test_dataset
+    #                                                                                             ,writer,model_path
+    #                                                                                             ,BATCH_SIZE = BATCH_SIZE,
+    #                                                                                             DEVICE=DEVICE,
+    #                                                                                             criterion = criterion,
+    #                                                                                             EPOCHS = 200,  
+    #                                                                                             PATIENCE = 10,
+    #                                                                                             LR_MAX = 1e-3,
+    #                                                                                             LR_MIN = 1e-6,
+    #                                                                                             onehot_lable= False,
+    #                                                                                             pair_flag= False,
+    #                                                                                             warm_up_iter = 5,
+    #                                                                                             num_workers= 4
+    #                                                                                             )
+   
         train_loss_sum[fold] = train_loss
         train_acc_sum[fold] = train_acc
         validate_loss_sum[fold] = validate_loss
@@ -178,6 +188,7 @@ if __name__ == '__main__':
         " "*10+"test_acc",test_acc)
         print(" "*10+'='*50)
         print(" "*10+'='*50)
+        if(fold >= 2): break
     print(" "*5+'='*50)
     
     print("train_loss",train_loss_sum,

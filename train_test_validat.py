@@ -24,13 +24,13 @@ def pair_HTN(INPUT_HTN_Df,INPUT_NHTN_Df,Range_max = 10,shuffle = False):
         
         for Range in range(1,Range_max): # 在 ±Range_max 范围内搜寻ages，且gender相同的NHTN样本
             candidate_NHTN_Df = NHTN_Df[(NHTN_Df['ages']>age-Range)&(NHTN_Df['ages']<age+Range)&(NHTN_Df['gender']==gender)]
-            if(len(candidate_NHTN_Df) > 0):
+            if(len(candidate_NHTN_Df) > 3):
                 break
         
         if(len(candidate_NHTN_Df)<1):# ±Range_max 范围内都没有，那么就从所有NHTN样本（删除掉之前被抽到的）中抽一个
             print("lack sample like :",info)
             candidate_NHTN_Df = NHTN_Df
-        NHTN_data_buff = candidate_NHTN_Df.sample(n=1) #从candida中随机抽样一个
+        NHTN_data_buff = candidate_NHTN_Df.sample(n=1) #从candidate中随机抽样一个
         # pair_Df.iloc[index] = NHTN_data_buff.iloc[0]
         pair_Df = pair_Df.append(NHTN_data_buff)
         # print(age,',',NHTN_data_buff['ages'])
@@ -52,13 +52,12 @@ def tarinning_one_flod(fold,Model,train_dataset ,val_dataset,test_dataset,writer
                         shuffle = True,
                         onehot_lable = False,
                         pair_flag = False,
-                        
+                        train_Df:pd.DataFrame = None# type: ignore                        
                         ):
     
-    # val_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',val_Df)
-    # if(not pair_flag):
-    #     train_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',train_Df)
-    #     train_dataloader = Data.DataLoader(dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=True,num_workers=num_workers,pin_memory=True)
+    
+    
+    
     if(not pair_flag):
         target = train_dataset.labels
         class_sample_count = np.array([len(np.where(target == t)[0]) for t in np.unique(target)])
@@ -66,40 +65,32 @@ def tarinning_one_flod(fold,Model,train_dataset ,val_dataset,test_dataset,writer
         samples_weight = np.array([weight[t] for t in target])
         samples_weight = torch.from_numpy(samples_weight)
         samples_weight = samples_weight.double()
-        sampler_train = Data.WeightedRandomSampler(samples_weight, len(samples_weight))  # type: ignore
+        sampler_train = Data.WeightedRandomSampler(samples_weight, 2*len(samples_weight))  # type: ignore
         train_dataloader = Data.DataLoader(dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=False,num_workers=num_workers,pin_memory=True,sampler=sampler_train)#
-        
-        target = val_dataset.labels
-        class_sample_count = np.array([len(np.where(target == t)[0]) for t in np.unique(target)])
-        weight = 1. / class_sample_count
-        samples_weight = np.array([weight[t] for t in target])
-        samples_weight = torch.from_numpy(samples_weight)
-        samples_weight = samples_weight.double()
-        sampler_val = Data.WeightedRandomSampler(samples_weight, len(samples_weight))  # type: ignore
-        valid_dataloader = Data.DataLoader(dataset=val_dataset, batch_size=BATCH_SIZE, shuffle=False,num_workers=num_workers,pin_memory=True,sampler=sampler_val)
-    else:    
-        valid_dataloader = Data.DataLoader(dataset=val_dataset, batch_size=BATCH_SIZE, shuffle=shuffle,num_workers=num_workers,pin_memory=True)
+    
+        # valid_dataloader = Data.DataLoader(dataset=val_dataset, batch_size=BATCH_SIZE, shuffle=shuffle,num_workers=num_workers,pin_memory=True)
+        # test_dataloader = Data.DataLoader(dataset=test_dataset, batch_size=BATCH_SIZE, shuffle=True,num_workers=num_workers,pin_memory=True)   
+    else:
         train_dataloader = Data.DataLoader(dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=shuffle,num_workers=num_workers,pin_memory=True)
-    test_dataloader = Data.DataLoader(dataset=test_dataset, batch_size=BATCH_SIZE, shuffle=True,num_workers=num_workers,pin_memory=True)
+        
+    valid_dataloader = Data.DataLoader(dataset=val_dataset, batch_size=BATCH_SIZE, shuffle=shuffle,num_workers=num_workers,pin_memory=True)
+    test_dataloader = Data.DataLoader(dataset=test_dataset, batch_size=BATCH_SIZE, shuffle=shuffle,num_workers=num_workers,pin_memory=True)  
+    
     early_stopping = EarlyStopping(PATIENCE, verbose=True, model_path=save_model_path, delta=0, positive=True)
-    optimizer  = torch.optim.Adam(Model.parameters(), lr=LR_MAX,weight_decay=weight_decay) 
+    optimizer  = torch.optim.Adam(Model.parameters(), lr=LR_MAX) 
     criterion =  criterion.to(DEVICE)
     
     warm_up_iter = warm_up_iter
-    T_max = EPOCHS//2	# 周期
+    T_max = EPOCHS//4	# 周期
     lr_max = LR_MAX	# 最大值
     lr_min = LR_MIN	# 最小值
-    lambda0 = lambda cur_iter: lr_min if  cur_iter < warm_up_iter else \
+    lambda0 = lambda cur_iter: ((lr_max-lr_min)/warm_up_iter*1.)*(cur_iter)+lr_min if  cur_iter < warm_up_iter else \
         (lr_min + 0.5*(lr_max-lr_min)*(1.0+math.cos( (cur_iter-warm_up_iter)/(T_max-warm_up_iter)*math.pi)))/0.01
     scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda=lambda0)
     best_valida_loss = np.inf
     best_F1_score_test = 0
     Model.to(DEVICE)
     for epoch in range(1,EPOCHS):
-        # if(pair_flag):# 每次重新抽取train_pair_Df（train_Df 是已经除去了val_Df的tv_Df）
-        #     train_pair_Df = pair_HTN(train_Df[(train_Df['diagnose']==1)],train_Df[(train_Df['diagnose']==0)],Range_max = 15,shuffle=True)
-        #     train_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',train_pair_Df)
-        #     train_dataloader = Data.DataLoader(dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=True,num_workers=num_workers,pin_memory=True)
         time_all=0
         start_time = time.time()
         
@@ -122,11 +113,12 @@ def tarinning_one_flod(fold,Model,train_dataset ,val_dataset,test_dataset,writer
         writer.add_scalars(main_tag=str(fold)+'_Loss',tag_scalar_dict={'train': train_loss,'validate': validate_loss},global_step=epoch)
         writer.add_scalars(main_tag=str(fold)+'_Accuracy',tag_scalar_dict={'train': train_acc,'validate': validate_acc},global_step=epoch)
         writer.add_scalars(main_tag=str(fold)+'_LearningRate',tag_scalar_dict={'LR': optimizer.state_dict()['param_groups'][0]['lr']},global_step=epoch)      
-        print(" "*20+'- Epoch: %d - Train_loss: %.5f - Train_acc: %.5f -  - Val_loss: %.5f - Val_acc: %.5f  - T_Time: %.5f' %(epoch,train_loss,train_acc,validate_loss,validate_acc,time_all),'LR：%.8f' %optimizer.state_dict()['param_groups'][0]['lr'])
+        print(" "*20+'- Epoch: %d - Train_loss: %.5f - Train_acc: %.5f -  - Val_loss: %.5f - Val_acc: %.5f  - T_Time: %.5f' %(epoch,train_loss,train_acc,validate_loss,validate_acc,time_all),'LR：%.10f' %optimizer.state_dict()['param_groups'][0]['lr'])
         
         if(F1_score_test>best_F1_score_test):
             best_F1_score_test = F1_score_test
-            print(" "*20+'Save best test. ')
+            
+            print(" "*20+'Save best model for test (F1=). ',best_F1_score_test)
             torch.save(Model.state_dict(), save_model_path+'/BestTestF1_' + str(fold) + '.pt')
             
         scheduler.step() # 学习率迭代
@@ -135,6 +127,11 @@ def tarinning_one_flod(fold,Model,train_dataset ,val_dataset,test_dataset,writer
         if(early_stopping(F1_score_valid,Model,fold)):
             print(" "*20+"Early stopping...")
             break
+        
+        if(pair_flag ):# 每次重新抽取train_pair_Df（train_Df 是已经除去了val_Df的tv_Df
+                train_pair_Df = pair_HTN(train_Df[(train_Df['diagnose']==1)],train_Df[(train_Df['diagnose']==0)],Range_max = 15,shuffle=True)
+                train_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',train_pair_Df)
+                train_dataloader = Data.DataLoader(dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=shuffle,num_workers=num_workers,pin_memory=True)
         
     # 计算此flod 在testset上的效果
     best_model_path = save_model_path+'/parameter_EarlyStoping_' + str(fold) + '.pt' #此fold最优参数
