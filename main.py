@@ -62,11 +62,12 @@ print(DEVICE)
 BATCH_SIZE = 160
 FOLDS = 5
 EPOCHS = 300  
-PATIENCE = 50
+PATIENCE = 35
 LR = 0.001
 
 PAIR =True
 notion ="####"*10 +\
+        "\n#LabelSmoothingCrossEntropy "  +\
         "\n#ReduceLROnPlateau "  +\
         "\n#The reset and delete list (main in test)" +\
         "\n#qc == 0" +\
@@ -107,7 +108,8 @@ if __name__ == '__main__':
     validate_acc_sum = [0]*FOLDS
     test_loss_sum = [0]*FOLDS
     test_acc_sum = [0]*FOLDS    
-    criterion = nn.CrossEntropyLoss()
+    # criterion = nn.CrossEntropyLoss()
+    criterion = LabelSmoothingCrossEntropy()
     
     # if not PAIR:
     #     test_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',ALLDataset.testDf)  # type: ignore  
