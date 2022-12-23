@@ -116,8 +116,9 @@ if __name__ == '__main__':
     # else:
     #     test_DF = ALLDataset.testDf.copy().reset_index(drop=True)
     #     test_pair_Df = pair_HTN(test_DF[(test_DF['diagnose']==1)],test_DF[(test_DF['diagnose']==0)],Range_max = 15)  
-    #     test_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',test_pair_Df)  # type: ignore    
-    test_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',ALLDataset.testDf)  # type: ignore  
+    #     test_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',test_pair_Df)  # type: ignore   
+    test_pair_Df = pair_HTN(ALLDataset.testDf[(ALLDataset.testDf['diagnose']==1)],ALLDataset.testDf[(ALLDataset.testDf['diagnose']==0)],Range_max = 15,shuffle=True) 
+    test_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',test_pair_Df)  # type: ignore  
     
     tv_Df = (ALLDataset.tvDf.copy()).reset_index(drop=True)
     tv_Df = tv_Df.sample(frac=1)  #Shuffle before k-fold train
