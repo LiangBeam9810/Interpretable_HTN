@@ -40,7 +40,7 @@ def pair_HTN(INPUT_HTN_Df,INPUT_NHTN_Df,Range_max = 10,shuffle = False):
     return pair_Df
 
 
-def tarinning_one_flod(fold,Model,train_dataset ,val_dataset,test_dataset,writer,save_model_path,BATCH_SIZE,DEVICE,
+def tarinning_one_flod(fold,Model,train_dataset:ECGDataset.ECG_Dataset ,val_dataset:ECGDataset.ECG_Dataset,test_dataset:ECGDataset.ECG_Dataset,writer,save_model_path,log_path,BATCH_SIZE,DEVICE,
                         criterion = torch.nn.CrossEntropyLoss(),
                         EPOCHS = 100,  
                         PATIENCE = 10,
@@ -74,22 +74,21 @@ def tarinning_one_flod(fold,Model,train_dataset ,val_dataset,test_dataset,writer
         train_dataloader = Data.DataLoader(dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=shuffle,num_workers=num_workers,pin_memory=True)
         
     valid_dataloader = Data.DataLoader(dataset=val_dataset, batch_size=BATCH_SIZE, shuffle=shuffle,num_workers=num_workers,pin_memory=True)
-    test_dataloader = Data.DataLoader(dataset=test_dataset, batch_size=BATCH_SIZE, shuffle=shuffle,num_workers=num_workers,pin_memory=True)  
+    test_dataloader = Data.DataLoader(dataset=test_dataset, batch_size=BATCH_SIZE, shuffle=False,num_workers=num_workers,pin_memory=True)  
     
-    early_stopping = EarlyStopping(PATIENCE, verbose=True, model_path=save_model_path, delta=0, positive=True)
+    early_stopping = EarlyStopping(PATIENCE, verbose=True, model_path=save_model_path, delta=0, positive=False)
     optimizer  = torch.optim.Adam(Model.parameters(), lr=LR_MAX) 
     criterion =  criterion.to(DEVICE)
     
-    # warm_up_iter = warm_up_iter
+    warm_up_iter = warm_up_iter
     # T_max = EPOCHS//4	# 周期
-    # lr_max = LR_MAX	# 最大值
-    # lr_min = LR_MIN	# 最小值
-    # lambda0 = lambda cur_iter: ((lr_max-lr_min)/warm_up_iter*1.)*(cur_iter)+lr_min if  cur_iter < warm_up_iter else \
-    #     (lr_min + 0.5*(lr_max-lr_min)*(1.0+math.cos( (cur_iter-warm_up_iter)/(T_max-warm_up_iter)*math.pi)))/0.01
+    lr_max = LR_MAX	# 最大值
+    lr_min = LR_MIN	# 最小值
+    lambda0 = lambda cur_iter: (((lr_max-lr_min)/warm_up_iter*1.)*(cur_iter)+lr_min)/lr_max if  cur_iter < warm_up_iter else 1
     # scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda=lambda0)
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.1, patience=10, verbose=False, threshold=0.0001, threshold_mode='rel', cooldown=0, min_lr=0, eps=1e-08)
-    best_valida_loss = np.inf
-    best_F1_score_test = 0
+    best_loss = np.inf
+    best_F1_scoret = 0
     Model.to(DEVICE)
     for epoch in range(1,EPOCHS):
         time_all=0
@@ -103,12 +102,12 @@ def tarinning_one_flod(fold,Model,train_dataset ,val_dataset,test_dataset,writer
         r_valid = recall_score(y_true, y_pred, average='binary')   
         C1 = confusion_matrix(y_true,y_pred)
         print(" "*20+'Validate: ',F1_score_valid,'\n'+" "*20,C1[0],'\n'+" "*20,C1[1],'\n'+" "*20,"precision: ",p_valid,"recall: ",r_valid)
-        y_true,y_pred,test_loss,test_acc = eval_model(test_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
-        F1_score_test =f1_score(y_true, y_pred, average='binary')#F1分数
-        p_test = precision_score(y_true, y_pred, average='binary')
-        r_test = recall_score(y_true, y_pred, average='binary') 
-        C = confusion_matrix(y_true,y_pred)
-        print(" "*20+'test: ',F1_score_test,'\n'+" "*20,C[0],'\n'+" "*20,C[1],'\n'+" "*20,"precision: ",p_test,"recall: ",r_test)
+        # y_true,y_pred,test_loss,test_acc = eval_model(test_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
+        # F1_score_test =f1_score(y_true, y_pred, average='binary')#F1分数
+        # p_test = precision_score(y_true, y_pred, average='binary')
+        # r_test = recall_score(y_true, y_pred, average='binary') 
+        # C = confusion_matrix(y_true,y_pred)
+        # print(" "*20+'test: ',F1_score_test,'\n'+" "*20,C[0],'\n'+" "*20,C[1],'\n'+" "*20,"precision: ",p_test,"recall: ",r_test)
         time_all = time.time()-start_time
         
         writer.add_scalars(main_tag=str(fold)+'_Loss',tag_scalar_dict={'train': train_loss,'validate': validate_loss},global_step=epoch)
@@ -116,20 +115,19 @@ def tarinning_one_flod(fold,Model,train_dataset ,val_dataset,test_dataset,writer
         writer.add_scalars(main_tag=str(fold)+'_LearningRate',tag_scalar_dict={'LR': optimizer.state_dict()['param_groups'][0]['lr']},global_step=epoch)      
         print(" "*20+'- Epoch: %d - Train_loss: %.5f - Train_acc: %.5f -  - Val_loss: %.5f - Val_acc: %.5f  - T_Time: %.5f' %(epoch,train_loss,train_acc,validate_loss,validate_acc,time_all),'LR：%.10f' %optimizer.state_dict()['param_groups'][0]['lr'])
         
-        if(F1_score_test>best_F1_score_test):
-            best_F1_score_test = F1_score_test
-            
-            print(" "*20+'The best model for test (F1= . ',best_F1_score_test,')')
-            # torch.save(Model.state_dict(), save_model_path+'/BestTestF1_' + str(fold) + '.pt')
+        if(F1_score_valid>best_F1_scoret):
+            best_F1_scoret = F1_score_valid
+            print(" "*20+'-- -- The best model for validate (F1= . ',best_F1_scoret,') -- --')
+            torch.save(Model.state_dict(), save_model_path+'/BestF1_' + str(fold) + '.pt')
             
         scheduler.step(metrics=validate_loss) # 学习率迭代
         
         #是否满足早停法条件
-        if(early_stopping(F1_score_valid,Model,fold)):
+        if(early_stopping(validate_loss,Model,fold)):
             print(" "*20+"Early stopping...")
             break
         
-        if(pair_flag ):# 每次重新抽取train_pair_Df（train_Df 是已经除去了val_Df的tv_Df
+        if(pair_flag ):# 每次重新抽取train_pair_Df (train_Df 是已经除去了val_Df的tv_Df)
                 train_pair_Df = pair_HTN(train_Df[(train_Df['diagnose']==1)],train_Df[(train_Df['diagnose']==0)],Range_max = 15,shuffle=True)
                 train_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',train_pair_Df)
                 train_dataloader = Data.DataLoader(dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=shuffle,num_workers=num_workers,pin_memory=True)
@@ -140,17 +138,33 @@ def tarinning_one_flod(fold,Model,train_dataset ,val_dataset,test_dataset,writer
     
     y_true,y_pred,train_loss,train_acc = train_model(train_dataloader, Model, criterion, optimizer,DEVICE,onehot_lable=onehot_lable) # type: ignore # 模型
     Model.load_state_dict(torch.load(best_model_path))
+    
     y_true,y_pred,validate_loss,validate_acc = eval_model(valid_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
     F1_score_valid =f1_score(y_true, y_pred, average='binary')#F1分数
     C1 = confusion_matrix(y_true,y_pred)
     print(" "*10+'validate: ',F1_score_valid,'\n'+" "*10,C1[0],'\n'+" "*10,C1[1])
     
-    y_true,y_pred,test_loss,test_acc = eval_model(test_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
+    
+    y_true,y_pred,y_out,test_loss,test_acc = test_model(test_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
     F1_score_test =f1_score(y_true, y_pred, average='binary')#F1分数
     C = confusion_matrix(y_true,y_pred)
+    # tn, fp, fn, tp = confusion_matrix(y_true,y_pred).ravel()
+    precision_test = precision_score(y_true, y_pred, average='binary')
+    recall_test = recall_score(y_true, y_pred, average='binary') 
+    save_test_infos(log_path+'/Test_answer_'+str(fold)+'.csv',test_dataset, y_true,y_pred,y_out)
+    
     print(" "*10+'test: ',F1_score_test,'\n'+" "*10,C[0],'\n'+" "*10,C[1])
-    print(" "*10+'Fold %d Training Finished' %(fold))
-    return train_loss,train_acc,validate_loss,validate_acc,test_loss,test_acc
+    # print(" "*10+'Fold %d Training Finished' %(fold))
+    return train_loss,train_acc,validate_loss,validate_acc,test_loss,test_acc,precision_test,recall_test
+
+def save_test_infos(csv_path,test_dataset:ECGDataset.ECG_Dataset,y_true:list,y_pred:list,y_out:list):
+    ouputs_Df = pd.DataFrame(np.array(y_out),columns=["out0","out1"])
+    preds_Df = pd.DataFrame(np.array(y_pred),columns=["pred"])
+    target_Df = pd.DataFrame(np.array(y_true),columns=["target"])
+    test_infors_Df = (test_dataset.infos.copy()).reset_index()
+    test_infors_Df = pd.concat([test_infors_Df,target_Df,preds_Df,ouputs_Df],axis = 1)
+    test_infors_Df.to_csv(csv_path)
+    return 
 
 
 def tarinning_one_flod_mutilabels(fold,Model,train_dataset,val_dataset,test_dataset,writer,save_model_path,BATCH_SIZE,DEVICE,
@@ -266,15 +280,15 @@ def train_model(train_loader,model,criterion,optimizer,device,onehot_lable = Fal
         #print("labels:",labels)
         _,pred = outputs.max(1) # 求概率最大值对应的标签
         if(onehot_lable):
-            _,taget = labels.max(1)
+            _,target = labels.max(1)
         else:
-            taget = labels
+            target = labels
         #print(pred)
-        num_correct = (pred == taget).sum().item()
-        acc = num_correct/len(taget) # 计算准确率
+        num_correct = (pred == target).sum().item()
+        acc = num_correct/len(target) # 计算准确率
         train_loss.append(loss.item())
         train_acc.append(acc)
-        # y_ture.extend((taget.to('cpu').detach().numpy().flatten()).tolist())
+        # y_ture.extend((target.to('cpu').detach().numpy().flatten()).tolist())
         # y_pred.extend((pred.to('cpu').detach().numpy().flatten()).tolist())
     return y_ture,y_pred,np.mean(train_loss),np.mean(train_acc)
 
@@ -294,17 +308,49 @@ def eval_model(test_loader,criterion,model,device,onehot_lable=False):
             #print("labels:",labels)
             _,pred = outputs.max(1) # 求概率最大值对应的标签
             if(onehot_lable):
-                _,taget = labels.max(1)
+                _,target = labels.max(1)
             else:
-                taget = labels
+                target = labels
             #print("pred:",pred)
-            num_correct = (pred == taget).sum().item()
-            acc = num_correct/len(taget)
+            num_correct = (pred == target).sum().item()
+            acc = num_correct/len(target)
             test_loss.append(loss.item())
             test_acc.append(acc)
-            y_ture.extend((taget.to('cpu').detach().numpy().flatten()).tolist())
+            y_ture.extend((target.to('cpu').detach().numpy().flatten()).tolist())
             y_pred.extend((pred.to('cpu').detach().numpy().flatten()).tolist())
     return y_ture,y_pred,np.mean(test_loss),np.mean(test_acc),
+
+def test_model(test_loader,criterion,model,device,onehot_lable=False):
+    
+    test_loss = []
+    test_acc = []   
+    y_ture = []
+    y_pred = []
+    y_output = [] 
+    for i,data in enumerate(test_loader,0):
+        model.eval()
+        with torch.no_grad():
+            inputs,labels = data[0].to(device),data[1].to(device)
+            outputs = model(inputs)
+            loss = criterion(outputs,labels)
+            #print("output:",outputs)
+            #print("labels:",labels)
+            _,pred = outputs.max(1) # 求概率最大值对应的标签
+            if(onehot_lable):
+                _,target = labels.max(1)
+            else:
+                target = labels
+            #print("pred:",pred)
+            num_correct = (pred == target).sum().item()
+            acc = num_correct/len(target)
+            test_loss.append(loss.item())
+            test_acc.append(acc)
+            y_ture.extend((target.to('cpu').detach().numpy()).tolist())
+            y_pred.extend((pred.to('cpu').detach().numpy()).tolist())
+            y_output.extend((outputs.to('cpu').detach().numpy().tolist()))
+    return y_ture,y_pred,y_output,np.mean(test_loss),np.mean(test_acc)
+
+
 
 def eval_model_possibility(test_loader,criterion,model,device):
     test_loss = []
@@ -361,7 +407,7 @@ def train_model_mutilabels(train_loader,model,criterion,optimizer,device,onehot_
         acc = (sum(row.all().int().item() for row in (pred == labels)))/(len(labels)*1.0) # 计算准确率(全对才算对)
         train_loss.append(loss.item())
         train_acc.append(acc)
-        # y_ture.extend((taget.to('cpu').detach().numpy().flatten()).tolist())
+        # y_ture.extend((target.to('cpu').detach().numpy().flatten()).tolist())
         # y_pred.extend((pred.to('cpu').detach().numpy().flatten()).tolist())
     return y_ture,y_pred,np.mean(train_loss),np.mean(train_acc)
 

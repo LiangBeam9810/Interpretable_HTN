@@ -253,82 +253,82 @@ class MLBFNet(nn.Module):
         self.conv3 = ResSeBlock2d(inplanes=16,outplanes=16,stride=2,kernel_size=(1,15),res=self.res,se=self.se)
         
         self.layers0 = nn.Sequential(
-            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
+            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(15,15), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
         )
         self.layers1 = nn.Sequential(
-            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
+            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(15,15), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
 
         )
         self.layers2 = nn.Sequential(
-            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
+            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(15,15), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
 
         )
         self.layers3 = nn.Sequential(
-            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
+            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(15,15), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
 
         )
         self.layers4 = nn.Sequential(
-            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
+            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(15,15), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
 
         )
         self.layers5 = nn.Sequential(
-            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
+            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(15,15), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
 
         )
         self.layers6 = nn.Sequential(
-            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
+            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(15,15), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
         )
         self.layers7 = nn.Sequential(
-            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
+            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(15,15), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
 
         )
         self.layers8 = nn.Sequential(
-            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
+            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(15,15), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
 
         )
         self.layers9 = nn.Sequential(
-            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
+            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(15,15), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
 
         )
         self.layers10 = nn.Sequential(
-            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
+            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(15,15), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
 
         )
         self.layers11 = nn.Sequential(
-            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
+            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(15,15), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
@@ -365,7 +365,10 @@ class MLBFNet(nn.Module):
             self.layers_list_1d.append(layers)    
         self.dorp = nn.Dropout(p = Dropout_rate)
         self.avgpool = nn.AdaptiveAvgPool1d(1)
-        self.fc = nn.Linear(self.inplanes*len(self.sizes),num_class)
+        self.fc1 = nn.Linear(self.inplanes*len(self.sizes),512)
+        self.fc2 = nn.Linear(512,128)
+        self.fc3 = nn.Linear(128,num_class)
+        
         self.softmax = nn.Softmax(-1)
     def forward(self, x: torch.Tensor):
         batch_size, channels,seq_len = x.shape
@@ -420,9 +423,12 @@ class MLBFNet(nn.Module):
         out = torch.cat(xs, dim=1)#[N,3*D,L]
         
         out = out.view(out.size(0), -1)
-        self.last_out = self.fc(out)
-        out = self.softmax(self.last_out)
-        return out
+        out = torch.nn.functional.leaky_relu(self.fc1(out))
+        out = torch.nn.functional.leaky_relu(self.fc2(out))
+        self.last_out = self.fc3(out)
+        
+        # out = self.softmax(self.last_out)
+        return self.last_out
     
   
 class MLBFNet_GUR(nn.Module):

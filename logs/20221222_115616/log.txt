@@ -1,5 +1,5 @@
 ########################################
-#LabelSmoothingCrossEntropy 
+#LabelSmoothingCrossEntropy 0.1
 #ReduceLROnPlateau 
 #The reset and delete list (main in test)
 #qc == 0
