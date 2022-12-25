@@ -81,7 +81,7 @@ notion ="####"*10 +\
     
     
 if __name__ == '__main__':
-    epsilon_list = [0.005,0.01,0.1,0.25]
+    epsilon_list = [0.005,0.005,0.005,0.005,0.001]
     for i in range(len(epsilon_list)):
         
         time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime()) 
