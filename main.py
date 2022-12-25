@@ -59,10 +59,10 @@ EcgLength_num = 5000
 DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 print(DEVICE)
 
-BATCH_SIZE = 128
+BATCH_SIZE = 160
 FOLDS = 3
-EPOCHS = 300  
-PATIENCE = 35
+EPOCHS = 150  
+PATIENCE = 30
 LR = 0.001
 
 PAIR =True
@@ -81,7 +81,7 @@ notion ="####"*10 +\
     
     
 if __name__ == '__main__':
-    epsilon_list = [0.01,0.05,0.1,0.2]
+    epsilon_list = [0.005,0.01,0.1,0.25]
     for i in range(len(epsilon_list)):
         
         time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime()) 
@@ -122,8 +122,8 @@ if __name__ == '__main__':
         #     test_DF = ALLDataset.testDf.copy().reset_index(drop=True)
         #     test_pair_Df = pair_HTN(test_DF[(test_DF['diagnose']==1)],test_DF[(test_DF['diagnose']==0)],Range_max = 15)  
         #     test_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',test_pair_Df)  # type: ignore   
-        test_pair_Df = pair_HTN(ALLDataset.testDf[(ALLDataset.testDf['diagnose']==1)],ALLDataset.testDf[(ALLDataset.testDf['diagnose']==0)],Range_max = 15,shuffle=True) 
-        test_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',test_pair_Df)  # type: ignore  
+        # test_pair_Df = pair_HTN(ALLDataset.testDf[(ALLDataset.testDf['diagnose']==1)],ALLDataset.testDf[(ALLDataset.testDf['diagnose']==0)],Range_max = 15,shuffle=True) 
+        test_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',ALLDataset.testDf)  # type: ignore  
         
         tv_Df = (ALLDataset.tvDf.copy()).reset_index(drop=True)
         tv_Df = tv_Df.sample(frac=1)  #Shuffle before k-fold train
@@ -186,7 +186,8 @@ if __name__ == '__main__':
         " "*5+"validate_acc",validate_acc_sum,
         "\n" + " "*5+"test_loss",test_loss_sum,
         " "*5+"test_acc",test_acc_sum,
-        '\n'+" "*5+"test_precision",precision_test_sum," mean:",(np.array(precision_test_sum)).mean()
+        '\n'+" "*5+"test_precision",precision_test_sum," mean:",(np.array(precision_test_sum)).mean(),
         '\n'+" "*5+"test_recall",recall_test_sum," mean:",(np.array(recall_test_sum)).mean())
         print(" "*5+'='*50)
         print('Training Finished')
+        # sys.stdout.log.close()

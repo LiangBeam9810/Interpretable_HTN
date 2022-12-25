@@ -9,7 +9,10 @@ class Logger(object):
     def write(self, message):
         self.terminal.write(message)
         self.log.write(message)
- 
+        
+    def close(self):
+        self.log.close()
+        
     def flush(self):
         pass
 
