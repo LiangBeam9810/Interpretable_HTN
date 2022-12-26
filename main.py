@@ -29,11 +29,20 @@ import logger
 
 from torch.utils.tensorboard import SummaryWriter  # type: ignore
 
+def seed_torch(seed=1029):
+	random.seed(seed)
+	os.environ['PYTHONHASHSEED'] = str(seed) # 为了禁止hash随机化，使得实验可复现
+	np.random.seed(seed)
+	torch.manual_seed(seed)
+	torch.cuda.manual_seed(seed)
+	# torch.cuda.manual_seed_all(seed) # if you are using multi-GPU.
+	# torch.backends.cudnn.benchmark = False 
+	# torch.backends.cudnn.deterministic = True
+
 def linear_combination(x, y, epsilon): 
     return epsilon*x + (1-epsilon)*y
 def reduce_loss(loss, reduction='mean'):
     return loss.mean() if reduction=='mean' else loss.sum() if reduction=='sum' else loss
-
 
 class LabelSmoothingCrossEntropy(nn.Module):
     def __init__(self, epsilon:float=0.1, reduction='mean'):
@@ -53,7 +62,7 @@ class LabelSmoothingCrossEntropy(nn.Module):
 # time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime()) 
 # model_path = './model/'+time_str
 # log_path = './logs/'+  time_str
-
+seed_torch(2022)
 EcgChannles_num = 12
 EcgLength_num = 5000
 DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -67,6 +76,7 @@ LR = 0.001
 
 PAIR =True
 notion ="####"*10 +\
+        "\n#random seed 2022 "  +\
         "\n#LabelSmoothingCrossEntropy "  +\
         "\n#ReduceLROnPlateau "  +\
         "\n#The reset and delete list (main in test)" +\
@@ -81,7 +91,7 @@ notion ="####"*10 +\
     
     
 if __name__ == '__main__':
-    epsilon_list = [0.005,0.005,0.005,0.005,0.001]
+    epsilon_list = [0.005,0.005]
     for i in range(len(epsilon_list)):
         
         time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime()) 
