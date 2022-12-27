@@ -76,7 +76,7 @@ LR = 0.001
 
 PAIR =True
 notion ="####"*10 +\
-        "\n#"  +\
+        "\n# Adam L2 "+\
         "\n#CrossEntropyLoss "  +\
         "\n#ReduceLROnPlateau "  +\
         "\n#The reset and delete list (main in test)" +\
@@ -91,14 +91,15 @@ notion ="####"*10 +\
     
     
 if __name__ == '__main__':
-    epsilon_list = [0.005,0.005,0.005,0.005,0.005]
-    for i in range(len(epsilon_list)):
+    L2_list = [0.0001,0.001,0.01,0.1,1]
+    for i in range(len(L2_list)):
         
         time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime()) 
         model_path = './model/'+time_str
         log_path = './logs/'+  time_str
         
-        epsilon = epsilon_list[i]
+        # epsilon = epsilon_list[i]
+        L2 = L2_list[i]
         # criterion = LabelSmoothingCrossEntropy(epsilon=epsilon)
         criterion =nn.CrossEntropyLoss()
         ALLDataset = ECGDataset.ECG_Dataset_Init('/workspace/data/Preprocess_HTN/data_like_pxl//',filter_age= 18,filter_department='外科',rebuild_flage=False)    
@@ -112,7 +113,7 @@ if __name__ == '__main__':
         writer = SummaryWriter(log_path)  # type: ignore
         sys.stdout = logger.Logger(log_path+'/log.txt')
         print(notion)
-        print("\n\n epsilon = ",epsilon)
+        print("\n\n L2 = ",L2)
         
         torch.cuda.empty_cache()# 清空显卡cuda
         ALLDataset.report()  # type: ignore    
@@ -162,7 +163,8 @@ if __name__ == '__main__':
                                                                                                     pair_flag= PAIR,
                                                                                                     warm_up_iter = 5,
                                                                                                     num_workers= 4,
-                                                                                                    train_Df = tv_Df_buffer
+                                                                                                    train_Df = tv_Df_buffer,
+                                                                                                    weight_decay= L2,
                                                                                                     )
     
             train_loss_sum[fold] = train_loss

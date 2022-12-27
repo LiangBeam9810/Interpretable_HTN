@@ -77,7 +77,7 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGDataset.ECG_Dataset ,val_data
     test_dataloader = Data.DataLoader(dataset=test_dataset, batch_size=BATCH_SIZE, shuffle=False,num_workers=num_workers,pin_memory=True)  
     
     early_stopping = EarlyStopping(PATIENCE, verbose=True, model_path=save_model_path, delta=0, positive=False)
-    optimizer  = torch.optim.Adam(Model.parameters(), lr=LR_MAX) 
+    optimizer  = torch.optim.Adam(Model.parameters(), lr=LR_MAX,weight_decay=weight_decay) 
     criterion =  criterion.to(DEVICE)
     
     warm_up_iter = warm_up_iter
