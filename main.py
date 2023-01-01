@@ -38,6 +38,7 @@ def seed_torch(seed=1029):
 	# torch.cuda.manual_seed_all(seed) # if you are using multi-GPU.
 	# torch.backends.cudnn.benchmark = False 
 	# torch.backends.cudnn.deterministic = True
+    # torch.backends.cudnn.enabled = False
 
 def linear_combination(x, y, epsilon): 
     return epsilon*x + (1-epsilon)*y
@@ -62,21 +63,23 @@ class LabelSmoothingCrossEntropy(nn.Module):
 # time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime()) 
 # model_path = './model/'+time_str
 # log_path = './logs/'+  time_str
-# seed_torch(2022)
+
+seed_torch(2022)
+
 EcgChannles_num = 12
 EcgLength_num = 5000
 DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 print(DEVICE)
 
-BATCH_SIZE = 160
-FOLDS = 3
+BATCH_SIZE = 128
+FOLDS = 10
 EPOCHS = 150  
-PATIENCE = 30
+PATIENCE = 20
 LR = 0.001
 
 PAIR =True
 notion ="####"*10 +\
-        "\n# Adam L2 "+\
+        "\n# Adam L2 ,10 foldcorss"+\
         "\n#CrossEntropyLoss "  +\
         "\n#ReduceLROnPlateau "  +\
         "\n#The reset and delete list (main in test)" +\
@@ -89,14 +92,16 @@ notion ="####"*10 +\
         "\n#Sample HTN to fit NHTN numbers (test,val,train)" +\
         "\n"+"####"*10
     
-    
+time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime()) 
+log_root = './logs/'+  time_str+'/'
+model_root =  './model/'+time_str+'/'
 if __name__ == '__main__':
-    L2_list = [0.0001,0.001,0.01,0.1,1]
+    L2_list = [0.005,0.005,0.005]
     for i in range(len(L2_list)):
-        
+        seed_torch(2022)
         time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime()) 
-        model_path = './model/'+time_str
-        log_path = './logs/'+  time_str
+        model_path = model_root + time_str
+        log_path = log_root +  time_str
         
         # epsilon = epsilon_list[i]
         L2 = L2_list[i]
@@ -108,7 +113,12 @@ if __name__ == '__main__':
             Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.3),
             Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.3),
             Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.3),
-            Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.3),] # type: ignore
+            Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.3),
+            Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.3),
+            Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.3),
+            Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.3),
+            Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.3),
+            Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.3)] # type: ignore
         os.makedirs(model_path, exist_ok=True)  # type: ignore
         writer = SummaryWriter(log_path)  # type: ignore
         sys.stdout = logger.Logger(log_path+'/log.txt')
@@ -137,10 +147,11 @@ if __name__ == '__main__':
         test_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',ALLDataset.testDf)  # type: ignore  
         
         tv_Df = (ALLDataset.tvDf.copy()).reset_index(drop=True)
-        tv_Df = tv_Df.sample(frac=1)  #Shuffle before k-fold train
+        tv_Df = tv_Df.sample(frac=1).reset_index(drop=True)  #Shuffle before k-fold train
         validaate_size = len(tv_Df[(tv_Df['diagnose']==1)])//FOLDS # validatesize for each fold
         for fold in range(FOLDS):
             print(" "*10+ "Fold "+str(fold)+" of "+str(FOLDS) + ' :')
+            seed_torch(2022) # reset random seed every fold, keep sequent
             tv_Df_buffer = tv_Df.copy() 
             validate_pair_Df = pair_HTN(tv_Df_buffer[(tv_Df_buffer['diagnose']==1)].iloc[validaate_size*fold:validaate_size*fold+validaate_size],tv_Df_buffer[(tv_Df_buffer['diagnose']==0)],Range_max = 15,shuffle=True)
             validate_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',validate_pair_Df)  # type: ignore
