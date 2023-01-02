@@ -72,14 +72,14 @@ DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 print(DEVICE)
 
 BATCH_SIZE = 128
-FOLDS = 10
+FOLDS = 5
 EPOCHS = 150  
 PATIENCE = 20
 LR = 0.001
 
 PAIR =True
 notion ="####"*10 +\
-        "\n# Adam L2 ,10 foldcorss"+\
+        "\n# Adam L2 0.05,5 foldcorss"+\
         "\n#CrossEntropyLoss "  +\
         "\n#ReduceLROnPlateau "  +\
         "\n#The reset and delete list (main in test)" +\
@@ -121,7 +121,7 @@ if __name__ == '__main__':
             Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.3)] # type: ignore
         os.makedirs(model_path, exist_ok=True)  # type: ignore
         writer = SummaryWriter(log_path)  # type: ignore
-        sys.stdout = logger.Logger(log_path+'/log.txt')
+        # sys.stdout = logger.Logger(log_path+'/log.txt')
         print(notion)
         print("\n\n L2 = ",L2)
         

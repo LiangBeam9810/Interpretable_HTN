@@ -291,7 +291,7 @@ class ECG_Dataset(Dataset):
     def get_ECGs_form_FilesList(self,FilesList):
         data = np.zeros((len(FilesList),12,5000))
         i = 0
-        for file in tqdm(FilesList):
+        for file in (FilesList):
             data[i] = np.load(self.ECGs_path + file)
             i = i+1
         return  data
