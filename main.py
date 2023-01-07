@@ -29,7 +29,7 @@ import logger
 
 from torch.utils.tensorboard import SummaryWriter  # type: ignore
 
-def seed_torch(seed=1029):
+def seed_torch(seed=2023):
 	random.seed(seed)
 	os.environ['PYTHONHASHSEED'] = str(seed) # 为了禁止hash随机化，使得实验可复现
 	np.random.seed(seed)
@@ -64,7 +64,7 @@ class LabelSmoothingCrossEntropy(nn.Module):
 # model_path = './model/'+time_str
 # log_path = './logs/'+  time_str
 
-seed_torch(2022)
+seed_torch(2023)
 
 EcgChannles_num = 12
 EcgLength_num = 5000
@@ -79,7 +79,7 @@ LR = 0.001
 
 PAIR =True
 notion ="####"*10 +\
-        "\n# Adam L2 0.05,5 foldcorss"+\
+        "\n# seed_torch(2023),Adam L2 0.0075,0.0075,0.0075,0.008,0.008,0.008,5 foldcorss"+\
         "\n#CrossEntropyLoss "  +\
         "\n#ReduceLROnPlateau "  +\
         "\n#The reset and delete list (main in test)" +\
@@ -96,9 +96,10 @@ time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime())
 log_root = './logs/'+  time_str+'/'
 model_root =  './model/'+time_str+'/'
 if __name__ == '__main__':
-    L2_list = [0.005,0.005,0.005]
+    L2_list = [0.007,0.007,0.007,0.0075,0.0075,0.0075,0.008,0.008,0.008]
+    
     for i in range(len(L2_list)):
-        seed_torch(2022)
+        seed_torch(2023)
         time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime()) 
         model_path = model_root + time_str
         log_path = log_root +  time_str
@@ -157,7 +158,7 @@ if __name__ == '__main__':
         validaate_size = len(tv_Df[(tv_Df['diagnose']==1)])//FOLDS # validatesize for each fold
         for fold in range(FOLDS):
             print(" "*10+ "Fold "+str(fold)+" of "+str(FOLDS) + ' :')
-            seed_torch(2022) # reset random seed every fold, keep sequent
+            seed_torch(2023) # reset random seed every fold, keep sequent
             tv_Df_buffer = tv_Df.copy() 
             validate_pair_Df = pair_HTN(tv_Df_buffer[(tv_Df_buffer['diagnose']==1)].iloc[validaate_size*fold:validaate_size*fold+validaate_size],tv_Df_buffer[(tv_Df_buffer['diagnose']==0)],Range_max = 15,shuffle=True)
             validate_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',validate_pair_Df)  # type: ignore
