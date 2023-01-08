@@ -79,7 +79,7 @@ LR = 0.001
 
 PAIR =True
 notion ="####"*10 +\
-        "\n# seed_torch(2023),Adam L2 0.0075,0.0075,0.0075,0.008,0.008,0.008,5 foldcorss"+\
+        "\n# seed_torch(2023),    L2_list = [0.007,0.007,0.007,0.007,0.007] BATCH_SIZE = [32,64,96,128,150],5 foldcorss"+\
         "\n#CrossEntropyLoss "  +\
         "\n#ReduceLROnPlateau "  +\
         "\n#The reset and delete list (main in test)" +\
@@ -96,8 +96,8 @@ time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime())
 log_root = './logs/'+  time_str+'/'
 model_root =  './model/'+time_str+'/'
 if __name__ == '__main__':
-    L2_list = [0.007,0.007,0.007,0.0075,0.0075,0.0075,0.008,0.008,0.008]
-    
+    L2_list = [0.007,0.007,0.007,0.007,0.007]
+    BS_list = [32,64,96,128,150]
     for i in range(len(L2_list)):
         seed_torch(2023)
         time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime()) 
@@ -151,7 +151,6 @@ if __name__ == '__main__':
         test_size = len(all_dataset[(all_dataset['diagnose']==1)])//FOLDS
         test_pair_Df = pair_HTN(all_dataset[(all_dataset['diagnose']==1)].iloc[:test_size],all_dataset[(all_dataset['diagnose']==0)],Range_max = 15,shuffle=True)
         test_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',test_pair_Df)  # type: ignore
-        
         tv_Df = ((all_dataset).drop(index= test_pair_Df.index)).reset_index(drop=True)
         # tv_Df = (ALLDataset.tvDf.copy()).reset_index(drop=True)
         tv_Df = tv_Df.sample(frac=1).reset_index(drop=True)  #Shuffle before k-fold train
@@ -170,7 +169,7 @@ if __name__ == '__main__':
                                                                                                     ,train_dataset,validate_dataset,test_dataset
                                                                                                     ,writer,model_path
                                                                                                     ,log_path
-                                                                                                    ,BATCH_SIZE = BATCH_SIZE,
+                                                                                                    ,BATCH_SIZE = BS_list[fold],
                                                                                                     DEVICE=DEVICE,
                                                                                                     criterion = criterion,
                                                                                                     EPOCHS = EPOCHS,  
