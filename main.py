@@ -35,9 +35,9 @@ def seed_torch(seed=2023):
 	np.random.seed(seed)
 	torch.manual_seed(seed)
 	torch.cuda.manual_seed(seed)
-	# torch.cuda.manual_seed_all(seed) # if you are using multi-GPU.
-	# torch.backends.cudnn.benchmark = False 
-	# torch.backends.cudnn.deterministic = True
+	torch.cuda.manual_seed_all(seed) # if you are using multi-GPU.
+	torch.backends.cudnn.benchmark = False 
+	torch.backends.cudnn.deterministic = True
     # torch.backends.cudnn.enabled = False
 
 def linear_combination(x, y, epsilon): 
@@ -74,7 +74,7 @@ print(DEVICE)
 BATCH_SIZE = 128
 FOLDS = 5
 EPOCHS = 150  
-PATIENCE = 20
+PATIENCE = 150
 LR = 0.001
 
 PAIR =True
@@ -106,6 +106,8 @@ if __name__ == '__main__':
         
         # epsilon = epsilon_list[i]
         L2 = L2_list[i]
+        BATCH_SIZE = BS_list[i]
+        BATCH_SIZE = 128
         # criterion = LabelSmoothingCrossEntropy(epsilon=epsilon)
         criterion =nn.CrossEntropyLoss()
         ALLDataset = ECGDataset.ECG_Dataset_Init('/workspace/data/Preprocess_HTN/data_like_pxl//',filter_age= 18,filter_department='外科',rebuild_flage=False)    
@@ -169,7 +171,7 @@ if __name__ == '__main__':
                                                                                                     ,train_dataset,validate_dataset,test_dataset
                                                                                                     ,writer,model_path
                                                                                                     ,log_path
-                                                                                                    ,BATCH_SIZE = BS_list[fold],
+                                                                                                    ,BATCH_SIZE = BATCH_SIZE,
                                                                                                     DEVICE=DEVICE,
                                                                                                     criterion = criterion,
                                                                                                     EPOCHS = EPOCHS,  
