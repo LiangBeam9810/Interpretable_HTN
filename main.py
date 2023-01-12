@@ -73,8 +73,8 @@ print(DEVICE)
 
 BATCH_SIZE = 128
 FOLDS = 5
-EPOCHS = 150  
-PATIENCE = 150
+EPOCHS = 100  
+PATIENCE = 100
 LR = 0.001
 
 PAIR =True
@@ -107,7 +107,7 @@ if __name__ == '__main__':
         # epsilon = epsilon_list[i]
         L2 = L2_list[i]
         BATCH_SIZE = BS_list[i]
-        BATCH_SIZE = 128
+        # BATCH_SIZE = 128
         # criterion = LabelSmoothingCrossEntropy(epsilon=epsilon)
         criterion =nn.CrossEntropyLoss()
         ALLDataset = ECGDataset.ECG_Dataset_Init('/workspace/data/Preprocess_HTN/data_like_pxl//',filter_age= 18,filter_department='外科',rebuild_flage=False)    

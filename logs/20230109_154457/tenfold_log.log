@@ -51,7 +51,7 @@ ERR labels num: 17
  testset      307        4208   
  T&V set      992        6097   
 ########################################
-# seed_torch(2023),    L2_list = [0.007,0.007,0.007,0.007,0.007] BATCH_SIZE = [32,64,96,128,150],5 foldcorss
+# seed_torch(2023),    L2_list = [0.007,0.007,0.007,0.007,0.007] BATCH_SIZE = [128,128,128,128,128],5 foldcorss
 #CrossEntropyLoss 
 #ReduceLROnPlateau 
 #The reset and delete list (main in test)
@@ -5645,7 +5645,7 @@ ERR labels num: 17
  testset      307        4208   
  T&V set      992        6097   
 ########################################
-# seed_torch(2023),    L2_list = [0.007,0.007,0.007,0.007,0.007] BATCH_SIZE = [32,64,96,128,150],5 foldcorss
+# seed_torch(2023),    L2_list = [0.007,0.007,0.007,0.007,0.007] BATCH_SIZE = [128,128,128,128,128]  ,5 foldcorss
 #CrossEntropyLoss 
 #ReduceLROnPlateau 
 #The reset and delete list (main in test)
@@ -11273,7 +11273,7 @@ ERR labels num: 17
  testset      307        4208   
  T&V set      992        6097   
 ########################################
-# seed_torch(2023),    L2_list = [0.007,0.007,0.007,0.007,0.007] BATCH_SIZE = [32,64,96,128,150],5 foldcorss
+# seed_torch(2023),    L2_list = [0.007,0.007,0.007,0.007,0.007] BATCH_SIZE = [128,128,128,128,128]  ,5 foldcorss
 #CrossEntropyLoss 
 #ReduceLROnPlateau 
 #The reset and delete list (main in test)
