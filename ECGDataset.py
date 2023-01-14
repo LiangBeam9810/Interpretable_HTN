@@ -118,7 +118,7 @@ class ECG_Dataset_Init():
     def splite_TVandT(self,df_input):
         df = df_input.copy()
         df = df[['num','name','ages','gender','department','diagnose','ID','date','ecgFN','q_sum']]
-        test_df = df[(df['ecgFN'].str[:3]=='21-')]
+        test_df = df[(df['ecgFN'].str[:3]=='21-')|(df['ecgFN'].str[:3]=='22-')]
         TV_df = df[(df['ecgFN'].str[:3]=='00-') | (df['ecgFN'].str[:3]=='20-')]
         # df1 = test_df.drop_duplicates(subset=['ID'],keep='last')#有ID号的
         # df2 = TV_df.drop_duplicates(subset=['ID'],keep='last')#有ID号的
@@ -246,8 +246,11 @@ class ECG_Dataset_Init():
             # elif(year == '21'):##################################################################################################################################################################
             #     info[4], info[5] = info[5], info[4]  #交换4、5，使得 department 和 diagnose对应正确 ['序号','姓名','年龄','性别','申请部门']-> ['序号','姓名','年龄','性别','临床诊断']############
             #     info.extend([ecgFN])#############################################################################################################################################################
-            elif(year == '20' or year == '21'):
+            elif(year == '20' or year == '21' or year == '22'):
                 info.extend([ecgFN])
+            else:
+                print("Error years!")
+                return
             if(os.path.exists(self.Qualitys_path+infoFN)):
                 try:
                     q = pd.read_pickle(self.Qualitys_path+infoFN)

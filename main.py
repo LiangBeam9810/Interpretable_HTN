@@ -71,7 +71,7 @@ EcgLength_num = 5000
 DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 print(DEVICE)
 
-BATCH_SIZE = 128
+BATCH_SIZE = 64
 FOLDS = 5
 EPOCHS = 100  
 PATIENCE = 100
@@ -79,7 +79,7 @@ LR = 0.001
 
 PAIR =True
 notion ="####"*10 +\
-        "\n# seed_torch(2023),    L2_list = [0.007,0.007,0.007,0.007,0.007] BATCH_SIZE = [32,64,96,128,150],5 foldcorss"+\
+        "\n# seed_torch(2023),    L2_list = [0.007,0.007,0.007,0.007,0.007,0.007] BATCH_SIZE = [64,64,64,150,150,150],5 foldcorss"+\
         "\n#CrossEntropyLoss "  +\
         "\n#ReduceLROnPlateau "  +\
         "\n#The reset and delete list (main in test)" +\
@@ -90,14 +90,16 @@ notion ="####"*10 +\
         "\n#Use binary F1. "  +\
         "\n#Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.3). lead_branch (3,3)->(15,15). add two relu-fc"  +\
         "\n#Sample HTN to fit NHTN numbers (test,val,train)" +\
-        "\n"+"####"*10
-    
+        "\n"+"####"*10 +\
+        "\n"
+        
+print(notion) 
 time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime()) 
 log_root = './logs/'+  time_str+'/'
 model_root =  './model/'+time_str+'/'
 if __name__ == '__main__':
-    L2_list = [0.007,0.007,0.007,0.007,0.007]
-    BS_list = [32,64,96,128,150]
+    L2_list = [0.007,0.007,0.007,0.007,0.007,0.007]
+    BS_list = [64,64,64,150,150,150]
     for i in range(len(L2_list)):
         seed_torch(2023)
         time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime()) 
@@ -124,10 +126,10 @@ if __name__ == '__main__':
             Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.3)] # type: ignore
         os.makedirs(model_path, exist_ok=True)  # type: ignore
         writer = SummaryWriter(log_path)  # type: ignore
-        # sys.stdout = logger.Logger(log_path+'/log.txt')
-        print(notion)
-        print("\n\n L2 = ",L2)
+        # sys.stdout = logger.Logger(log_path+'/log.txt'
         
+        print("\n\n L2 = ",L2)
+        print("\nBatchsize = ",BATCH_SIZE)
         torch.cuda.empty_cache()# 清空显卡cuda
         ALLDataset.report()  # type: ignore    
         fold = 0
