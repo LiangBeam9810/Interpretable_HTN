@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import augmenters
 
 class BasicBlock1d(nn.Module):
     expansion = 1
@@ -64,9 +65,13 @@ class ResNet1d(nn.Module):
     def forward(self, x):
         batch_size, channels,seq_len = x.shape
         # x = x+(create_1d_absolute_sin_cos_embedding(batch_size,channels,seq_len)).to(x.device)#位置编码
+
         if self.training:
-            mark_lenth = torch.randint(int(seq_len/10),int(seq_len/5),[1])
-            x = mark_input(x,mark_lenth=int(mark_lenth[0]))
+            if(torch.rand(1)>0.5):
+                mark_lenth = torch.randint(int(seq_len/10),int(seq_len/5),[1])
+                x = augmenters.mark_input(x,mark_lenth=int(mark_lenth[0]))
+            elif(torch.rand(1)>0.9):
+                    x.add_(augmenters.gen_baseline_wander(x,500,prob=torch.rand(1)))# type: ignore 
         x = self.conv1(x)
         x = self.bn1(x)
         x = self.relu(x)
