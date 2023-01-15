@@ -378,7 +378,7 @@ class MLBFNet(nn.Module):
                 if(torch.rand(1)>0.5):
                     mark_lenth = torch.randint(int(seq_len/10),int(seq_len/5),[1])
                     x = augmenters.mark_input(x,mark_lenth=int(mark_lenth[0]))
-                elif(torch.rand(1)>0.9):
+                elif(torch.rand(1)>0.5):
                      x.add_(augmenters.gen_baseline_wander(x,500,prob=torch.rand(1)))# type: ignore 
                     
                     

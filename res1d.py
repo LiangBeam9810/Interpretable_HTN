@@ -93,3 +93,7 @@ def resnet18(input_channels=12, inplanes=64, num_classes=9):
 def resnet34(input_channels=12, inplanes=64, num_classes=9):
     model = ResNet1d(BasicBlock1d, [3, 4, 6, 3], input_channels, inplanes, num_classes)
     return model
+
+def resnet50(input_channels=12, inplanes=64, num_classes=9):
+    model = ResNet1d(BasicBlock1d, [3, 4, 6, 3], input_channels, inplanes, num_classes)
+    return model

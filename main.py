@@ -118,9 +118,6 @@ if __name__ == '__main__':
         ALLDataset = ECGDataset.ECG_Dataset_Init('/workspace/data/Preprocess_HTN/data_like_pxl//',filter_age= 18,filter_department='外科',rebuild_flage=False)    
         torch.cuda.empty_cache()# 清空显卡cuda
         NET = [
-            res1d.resnet34(12,128,2),
-            res1d.resnet34(12,128,2),
-            res1d.resnet34(12,128,2),
             Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.3),
             Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.3),
             Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.3),

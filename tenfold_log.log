@@ -10228,3 +10228,42 @@ Batchsize =  128
                     - Epoch: 24 - Train_loss: 0.54864 - Train_acc: 0.71875 -  - Val_loss: 0.85075 - Val_acc: 0.63782  - T_Time: 28.96885 LR：0.0010000000
                     EarlyStopping counter: 1 out of 100
 
+                    Validate:  0.0 
+                     [180   0] 
+                     [180   0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 25 - Train_loss: 0.59938 - Train_acc: 0.69661 -  - Val_loss: 0.97445 - Val_acc: 0.49760  - T_Time: 31.66237 LR：0.0010000000
+                    EarlyStopping counter: 2 out of 100
+
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+                    Validate:  0.6477272727272727 
+                     [122  58] 
+                     [ 66 114] 
+                     precision:  0.6627906976744186 recall:  0.6333333333333333
+                    - Epoch: 26 - Train_loss: 0.55661 - Train_acc: 0.70833 -  - Val_loss: 0.63698 - Val_acc: 0.65244  - T_Time: 27.05546 LR：0.0010000000
+                    EarlyStopping counter: 3 out of 100
+
+                    Validate:  0.12244897959183675 
+                     [176   4] 
+                     [168  12] 
+                     precision:  0.75 recall:  0.06666666666666667
+                    - Epoch: 27 - Train_loss: 0.55870 - Train_acc: 0.71680 -  - Val_loss: 0.72626 - Val_acc: 0.52684  - T_Time: 29.69569 LR：0.0010000000
+                    EarlyStopping counter: 4 out of 100
+
+                    Validate:  0.29729729729729726 
+                     [171   9] 
+                     [147  33] 
+                     precision:  0.7857142857142857 recall:  0.18333333333333332
+                    - Epoch: 28 - Train_loss: 0.57464 - Train_acc: 0.70703 -  - Val_loss: 0.68875 - Val_acc: 0.56490  - T_Time: 33.26443 LR：0.0010000000
+                    EarlyStopping counter: 5 out of 100
+
+                    Validate:  0.0 
+                     [180   0] 
+                     [180   0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 29 - Train_loss: 0.55463 - Train_acc: 0.73177 -  - Val_loss: 0.70938 - Val_acc: 0.50240  - T_Time: 29.78988 LR：0.0010000000
+                    EarlyStopping counter: 6 out of 100
+
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
