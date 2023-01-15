@@ -210,6 +210,7 @@ class ECG_Dataset_Init():
         df1 = df1.sort_values(by=['diagnose'], ascending=[False]) #按照诊断排序，HTN在前
         df2 = df_remove[~(df_remove['ID']=='')] #有ID号的 ，相同ID号
         df2 = df2.sort_values(by=['diagnose'], ascending=[False])
+        
         #####################################################test 把ID号相同但诊断标签不一致的全部改为HTN
         df2_0 = df2[df2['diagnose']==0] #所有非高血压
         df2_1 = df2[df2['diagnose']==1] #所有高血压
@@ -217,16 +218,21 @@ class ECG_Dataset_Init():
         df2.loc[duplicated_index,'diagnose'] = 1
         print("ERR labels num:",len(duplicated_index))
         #####################################################test
-        # print('df2 the same name&ages&gender:',len(df2[df2.duplicated(subset=['ID'],keep=False) ]))
-        # print('df2 the same name&ages&gender & diagnose:',len(df2[df2.duplicated(subset=['ID','diagnose'],keep=False )]))
-        # df2 = df2.drop_duplicates(subset=['ID'],keep='first')
+        
+        
+        
+        
         df_remove =pd.concat([df1,df2],axis=0)
         
-        df1 = df_remove[(df_remove['diagnose'] == 1)] #
-        df2 = df_remove[(~(df_remove.duplicated(subset=['ID'],keep=False)))&(df_remove['diagnose'] == 0)]
-        df3 = df_remove[((df_remove.duplicated(subset=['ID'],keep=False)))&(df_remove['diagnose'] == 0)].drop_duplicates(subset=['ID'],keep='last')
+        df1 = df_remove[(df_remove['diagnose'] == 1)] #所有高血压样本
+        df2 = df_remove[(~(df_remove.duplicated(subset=['ID'],keep=False)))&(df_remove['diagnose'] == 0)]#所有非高血压样本 但不包含有重复的部分
+        df3 = df_remove[((df_remove.duplicated(subset=['ID'],keep=False)))&(df_remove['diagnose'] == 0)].drop_duplicates(subset=['ID'],keep='last')#所有非高血压样本且有重复的部分,仅保留最后一个的部分
         
         df_remove =pd.concat([df1,df2,df3],axis=0)
+        #####################################################test 删除姓名性别 年龄完全相同的人
+        df_remove = df_remove.drop_duplicates(subset=['name','ages','gender'],keep='last')
+        #####################################################test
+        
         print('\n')
         print("{:^10} {:^10} {:^20}".format('  ','orginal','removed duplicated'))
         print("{:^10} {:^10} {:^20}".format('nums',len(df_input),len(df_remove)))

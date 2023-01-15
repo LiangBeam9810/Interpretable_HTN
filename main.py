@@ -79,7 +79,8 @@ LR = 0.001
 
 PAIR =True
 notion ="####"*10 +\
-        "\n# seed_torch(2023),    L2_list = [0.007,0.007,0.007,0.007,0.007,0.007] BATCH_SIZE = [64,64,64,150,150,150],5 foldcorss"+\
+        "\n#delete all have the same name&sex&ages" +\
+        "\n# seed_torch(2023),    L2_list = [0.007,0.007,0.007,0.0075,0.0075,0.0075]BATCH_SIZE = 128,5 foldcorss"+\
         "\n#CrossEntropyLoss "  +\
         "\n#ReduceLROnPlateau "  +\
         "\n#The reset and delete list (main in test)" +\
@@ -98,8 +99,8 @@ time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime())
 log_root = './logs/'+  time_str+'/'
 model_root =  './model/'+time_str+'/'
 if __name__ == '__main__':
-    L2_list = [0.007,0.007,0.007,0.007,0.007,0.007]
-    BS_list = [64,64,64,150,150,150]
+    L2_list = [0.007,0.007,0.007]
+    BS_list = [128,128,128]
     for i in range(len(L2_list)):
         seed_torch(2023)
         time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime()) 
