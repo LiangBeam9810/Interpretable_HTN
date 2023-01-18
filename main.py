@@ -167,9 +167,10 @@ if __name__ == '__main__':
             print(" "*10+ "Fold "+str(fold)+" of "+str(FOLDS) + ' :')
             seed_torch(2023) # reset random seed every fold, keep sequent
             tv_Df_buffer = tv_Df.copy() 
-            validate_pair_Df = pair_HTN(tv_Df_buffer[(tv_Df_buffer['diagnose']==1)].iloc[validaate_size*fold:validaate_size*fold+validaate_size],tv_Df_buffer[(tv_Df_buffer['diagnose']==0)],Range_max = 15,shuffle=True)
-            validate_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',validate_pair_Df)  # type: ignore
-            tv_Df_buffer = tv_Df_buffer.drop(index= validate_pair_Df.index)    #删掉validate_pair_Df 用于训练
+            # validate_pair_Df = pair_HTN(tv_Df_buffer[(tv_Df_buffer['diagnose']==1)].iloc[validaate_size*fold:validaate_size*fold+validaate_size],tv_Df_buffer[(tv_Df_buffer['diagnose']==0)],Range_max = 15,shuffle=True)
+            # validate_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',validate_pair_Df)  # type: ignore
+            # tv_Df_buffer = tv_Df_buffer.drop(index= validate_pair_Df.index)    #删掉validate_pair_Df 用于训练
+            validate_dataset = test_dataset
             train_pair_Df = pair_HTN(tv_Df_buffer[(tv_Df_buffer['diagnose']==1)],tv_Df_buffer[(tv_Df_buffer['diagnose']==0)],Range_max = 15,shuffle=True)
             train_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',train_pair_Df)
             
