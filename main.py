@@ -75,14 +75,14 @@ print(DEVICE)
 
 BATCH_SIZE = 64
 FOLDS = 5
-EPOCHS = 100  
-PATIENCE = 100
+EPOCHS = 150  
+PATIENCE = 150
 LR = 0.001
 
 PAIR =True
 notion ="####"*10 +\
         "\n#delete all have the same name&sex&ages" +\
-        "\n# seed_torch(2023),    L2_list = 0.007 BATCH_SIZE = 128 ,5 foldcorss 2 times"+\
+        "\n# seed_torch(2023),    L2_list = 0.007 BATCH_SIZE = 128 ,5 foldcorss 1 times"+\
         "\n#CrossEntropyLoss "  +\
         "\n#ReduceLROnPlateau "  +\
         "\n#The reset and delete list (main in test)" +\
@@ -101,8 +101,8 @@ time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime())
 log_root = './logs/'+  time_str+'/'
 model_root =  './model/'+time_str+'/'
 if __name__ == '__main__':
-    L2_list = [0.007,0.007]
-    BS_list = [128,128]
+    L2_list = [0.007]
+    BS_list = [128]
     for i in range(len(L2_list)):
         seed_torch(2023)
         time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime()) 
