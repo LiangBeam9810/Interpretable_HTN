@@ -253,82 +253,82 @@ class MLBFNet(nn.Module):
         self.conv3 = ResSeBlock2d(inplanes=16,outplanes=16,stride=2,kernel_size=(1,15),res=self.res,se=self.se)
         
         self.layers0 = nn.Sequential(
-            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(15,15), res=self.res,se=self.se),
+            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
         )
         self.layers1 = nn.Sequential(
-            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(15,15), res=self.res,se=self.se),
+            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
 
         )
         self.layers2 = nn.Sequential(
-            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(15,15), res=self.res,se=self.se),
+            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
 
         )
         self.layers3 = nn.Sequential(
-            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(15,15), res=self.res,se=self.se),
+            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
 
         )
         self.layers4 = nn.Sequential(
-            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(15,15), res=self.res,se=self.se),
+            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
 
         )
         self.layers5 = nn.Sequential(
-            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(15,15), res=self.res,se=self.se),
+            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
 
         )
         self.layers6 = nn.Sequential(
-            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(15,15), res=self.res,se=self.se),
+            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
         )
         self.layers7 = nn.Sequential(
-            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(15,15), res=self.res,se=self.se),
+            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
 
         )
         self.layers8 = nn.Sequential(
-            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(15,15), res=self.res,se=self.se),
+            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
 
         )
         self.layers9 = nn.Sequential(
-            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(15,15), res=self.res,se=self.se),
+            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
 
         )
         self.layers10 = nn.Sequential(
-            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(15,15), res=self.res,se=self.se),
+            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
 
         )
         self.layers11 = nn.Sequential(
-            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(15,15), res=self.res,se=self.se),
+            ResSeBlock1d(inplanes=1,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),
             ResSeBlock1d(inplanes=16,outplanes=16,stride=2, kernel_size=(3,3), res=self.res,se=self.se),

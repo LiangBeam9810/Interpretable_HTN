@@ -75,12 +75,14 @@ print(DEVICE)
 
 BATCH_SIZE = 64
 FOLDS = 5
-EPOCHS = 100  
-PATIENCE = 100
-LR = 0.001
+EPOCHS = 200  
+PATIENCE = 50
+LR = 0.0005
 
 PAIR =True
 notion ="####"*10 +\
+        "\n#LR = 0.0005" +\
+        "\n#pair HTN candidate >0 break " +\
         "\n#delete all have the same name&sex&ages" +\
         "\n# seed_torch(2023),    L2_list = 0.007 BATCH_SIZE = 128 ,5 foldcorss 2 times"+\
         "\n#CrossEntropyLoss "  +\
@@ -91,7 +93,7 @@ notion ="####"*10 +\
         "\n#use adam with 0 weight decay" +\
         "\n#Shuffle before k-fold train"+\
         "\n#Use binary F1. "  +\
-        "\n#Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.3). lead_branch (3,3)->(15,15). add two relu-fc"  +\
+        "\n#Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.3). lead_branch (3,3). add two relu-fc"  +\
         "\n#Sample HTN to fit NHTN numbers (test,val,train)" +\
         "\n"+"####"*10 +\
         "\n"
