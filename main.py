@@ -75,12 +75,13 @@ print(DEVICE)
 
 BATCH_SIZE = 64
 FOLDS = 5
-EPOCHS = 150  
-PATIENCE = 150
-LR = 0.001
+EPOCHS = 200  
+PATIENCE = 200
+LR = 0.00005
 
 PAIR =True
 notion ="####"*10 +\
+        "\n#cossin LR decay" +\
         "\n#delete all have the same name&sex&ages" +\
         "\n# seed_torch(2023),    L2_list = 0.007 BATCH_SIZE = 128 ,5 foldcorss 1 times"+\
         "\n#CrossEntropyLoss "  +\
@@ -187,7 +188,7 @@ if __name__ == '__main__':
                                                                                                     LR_MIN = 1e-6,
                                                                                                     onehot_lable= False,
                                                                                                     pair_flag= PAIR,
-                                                                                                    warm_up_iter = 5,
+                                                                                                    warm_up_iter = 15,
                                                                                                     num_workers= 0,
                                                                                                     train_Df = tv_Df_buffer,
                                                                                                     weight_decay= L2,
