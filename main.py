@@ -148,31 +148,27 @@ if __name__ == '__main__':
         precision_test_sum = [0]*FOLDS    
         recall_test_sum = [0]*FOLDS    
         
-        # if not PAIR:
-        #     test_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',ALLDataset.testDf)  # type: ignore  
-        # else:
-        #     test_DF = ALLDataset.testDf.copy().reset_index(drop=True)
-        #     test_pair_Df = pair_HTN(test_DF[(test_DF['diagnose']==1)],test_DF[(test_DF['diagnose']==0)],Range_max = 15)  
-        #     test_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',test_pair_Df)  # type: ignore   
-        # test_pair_Df = pair_HTN(ALLDataset.testDf[(ALLDataset.testDf['diagnose']==1)],ALLDataset.testDf[(ALLDataset.testDf['diagnose']==0)],Range_max = 15,shuffle=True) 
+
         all_dataset = ALLDataset.INFOsDf.copy()
         all_dataset = all_dataset.sample(frac=1).reset_index(drop=True) 
-        # test_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',ALLDataset.testDf)  # type: ignore  
         test_size = len(all_dataset[(all_dataset['diagnose']==1)])//FOLDS
         test_pair_Df = pair_HTN(all_dataset[(all_dataset['diagnose']==1)].iloc[:test_size],all_dataset[(all_dataset['diagnose']==0)],Range_max = 15,shuffle=True)
         test_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',test_pair_Df)  # type: ignore
         tv_Df = ((all_dataset).drop(index= test_pair_Df.index)).reset_index(drop=True)
-        # tv_Df = (ALLDataset.tvDf.copy()).reset_index(drop=True)
         tv_Df = tv_Df.sample(frac=1).reset_index(drop=True)  #Shuffle before k-fold train
         validaate_size = len(tv_Df[(tv_Df['diagnose']==1)])//FOLDS # validatesize for each fold
         for fold in range(FOLDS):
             print(" "*10+ "Fold "+str(fold)+" of "+str(FOLDS) + ' :')
             seed_torch(2023) # reset random seed every fold, keep sequent
             tv_Df_buffer = tv_Df.copy() 
-            # validate_pair_Df = pair_HTN(tv_Df_buffer[(tv_Df_buffer['diagnose']==1)].iloc[validaate_size*fold:validaate_size*fold+validaate_size],tv_Df_buffer[(tv_Df_buffer['diagnose']==0)],Range_max = 15,shuffle=True)
-            # validate_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',validate_pair_Df)  # type: ignore
-            # tv_Df_buffer = tv_Df_buffer.drop(index= validate_pair_Df.index)    #删掉validate_pair_Df 用于训练
-            validate_dataset = test_dataset
+            ####################################使用validate_dataset
+            validate_pair_Df = pair_HTN(tv_Df_buffer[(tv_Df_buffer['diagnose']==1)].iloc[validaate_size*fold:validaate_size*fold+validaate_size],tv_Df_buffer[(tv_Df_buffer['diagnose']==0)],Range_max = 15,shuffle=True)
+            validate_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',validate_pair_Df)  # type: ignore
+            tv_Df_buffer = tv_Df_buffer.drop(index= validate_pair_Df.index)    #删掉validate_pair_Df 用于训练
+            ##################不使用validate_dataset
+            # validate_dataset = test_dataset
+            #######################################
+            
             train_pair_Df = pair_HTN(tv_Df_buffer[(tv_Df_buffer['diagnose']==1)],tv_Df_buffer[(tv_Df_buffer['diagnose']==0)],Range_max = 15,shuffle=True)
             train_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',train_pair_Df)
             
@@ -230,4 +226,3 @@ if __name__ == '__main__':
         '\n'+" "*5+"test_recall",recall_test_sum," mean:",(np.array(recall_test_sum)).mean())
         print(" "*5+'='*50)
         print('Training Finished')
-        # sys.stdout.log.close()

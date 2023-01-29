@@ -84,8 +84,6 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGDataset.ECG_Dataset ,val_data
     # T_max = EPOCHS//4	# 周期
     lr_max = LR_MAX	# 最大值
     lr_min = LR_MIN	# 最小值
-    lambda0 = lambda cur_iter: (((lr_max-lr_min)/warm_up_iter*1.)*(cur_iter)+lr_min)/lr_max if  cur_iter < warm_up_iter else 1
-    # scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda=lambda0)
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.1, patience=10, verbose=False, threshold=0.0001, threshold_mode='rel', cooldown=0, min_lr=0, eps=1e-08)
     best_loss = np.inf
     best_F1_scoret = 0
@@ -102,12 +100,12 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGDataset.ECG_Dataset ,val_data
         r_valid = recall_score(y_true, y_pred, average='binary')   
         C1 = confusion_matrix(y_true,y_pred)
         print(" "*20+'Validate: ',F1_score_valid,'\n'+" "*20,C1[0],'\n'+" "*20,C1[1],'\n'+" "*20,"precision: ",p_valid,"recall: ",r_valid)
-        # y_true,y_pred,test_loss,test_acc = eval_model(test_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
-        # F1_score_test =f1_score(y_true, y_pred, average='binary')#F1分数
-        # p_test = precision_score(y_true, y_pred, average='binary')
-        # r_test = recall_score(y_true, y_pred, average='binary') 
-        # C = confusion_matrix(y_true,y_pred)
-        # print(" "*20+'test: ',F1_score_test,'\n'+" "*20,C[0],'\n'+" "*20,C[1],'\n'+" "*20,"precision: ",p_test,"recall: ",r_test)
+        y_true,y_pred,test_loss,test_acc = eval_model(test_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
+        F1_score_test =f1_score(y_true, y_pred, average='binary')#F1分数
+        p_test = precision_score(y_true, y_pred, average='binary')
+        r_test = recall_score(y_true, y_pred, average='binary') 
+        C = confusion_matrix(y_true,y_pred)
+        print(" "*20+'test: ',F1_score_test,'\n'+" "*20,C[0],'\n'+" "*20,C[1],'\n'+" "*20,"precision: ",p_test,"recall: ",r_test)
         time_all = time.time()-start_time
         
         writer.add_scalars(main_tag=str(fold)+'_Loss',tag_scalar_dict={'train': train_loss,'validate': validate_loss},global_step=epoch)
