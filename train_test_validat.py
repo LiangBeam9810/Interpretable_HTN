@@ -7,40 +7,55 @@ import torch.utils.data as Data
 import ECGDataset
 from sklearn.metrics import confusion_matrix, multilabel_confusion_matrix
 import pandas as pd
+import ECGHandle
 
-def pair_HTN(INPUT_HTN_Df,INPUT_NHTN_Df,Range_max = 10,shuffle = False):
+def pair_HTN(INPUT_HTN_Df,INPUT_NHTN_Df,Range_max = 5,shuffle = False,pair_num = 3):
     HTN_Df = ((INPUT_HTN_Df).copy())
     NHTN_Df = ((INPUT_NHTN_Df).copy())#即抽即删,抽出一条删一条
     if(shuffle): #打乱
         HTN_Df = (HTN_Df.sample(frac=1))
         NHTN_Df = (NHTN_Df.sample(frac=1))
-    # pair_Df = INFOs_df = pd.DataFrame(index=range(len(HTN_Df)*2),columns=HTN_Df.columns)   #所有的HNT和抽取出来的NHTN都存放入其中
     pair_Df = HTN_Df #先将所有HTN存放入其中
-    index = len(HTN_Df)
-    for info in HTN_Df.itertuples():
-        age = info.ages
+    for info in HTN_Df.itertuples(): #遍历每一个HTN样本 寻找与之配对的样本
+        age = info.age
         gender = info.gender
         candidate_NHTN_Df = pd.DataFrame()
-        
-        for Range in range(1,Range_max): # 在 ±Range_max 范围内搜寻ages，且gender相同的NHTN样本
-            candidate_NHTN_Df = NHTN_Df[(NHTN_Df['ages']>age-Range)&(NHTN_Df['ages']<age+Range)&(NHTN_Df['gender']==gender)]
-            if(len(candidate_NHTN_Df) > 0):
+        for Range in range(1,Range_max): #在 ±Range_max 范围内搜寻ages，且gender相同的NHTN样本
+            candidate_NHTN_Df = NHTN_Df[(NHTN_Df['age']>age-Range)&(NHTN_Df['age']<age+Range)&(NHTN_Df['gender']==gender)]
+            if(len(candidate_NHTN_Df)>=pair_num):#候选>0时，即使跳出，确保抽取出的样本年龄尽可能与其相近
                 break
-        
-        if(len(candidate_NHTN_Df)<1):# ±Range_max 范围内都没有，那么就从所有NHTN样本（删除掉之前被抽到的）中抽一个
+        if(len(candidate_NHTN_Df)<pair_num):# ±Range_max 范围内都没有，那么就从所有NHTN样本（已经删除了之前被抽到的）中抽 pair_num 个
             print("lack sample like :",info)
             candidate_NHTN_Df = NHTN_Df
-        NHTN_data_buff = candidate_NHTN_Df.sample(n=1) #从candidate中随机抽样一个
-        # pair_Df.iloc[index] = NHTN_data_buff.iloc[0]
+        NHTN_data_buff = candidate_NHTN_Df.sample(n=pair_num) #从candidate中随机抽样 pair_num 个样本 ,带来了随机性！！！
         pair_Df = pair_Df.append(NHTN_data_buff)
-        # print(age,',',NHTN_data_buff['ages'])
-        # print(NHTN_data_buff.index)
-        NHTN_Df = NHTN_Df.drop(index= (NHTN_data_buff.index))
-        index = index +1
-    return pair_Df
+        NHTN_Df = NHTN_Df.drop(index= (NHTN_data_buff.index))#删除抽中的那个样本
+    return pair_Df    #输出配对完之后的DF
+
+# 将Input_DF中从star_index:HTN_pair_size 个label==1的ID 进行配对
+def Pair_ID(Input_DF,HTN_pair_rate:float,star_index:int = 0,Range_max:int = 5,shuffle:bool = False,pair_num:int = 3, ):
+    HTN_data = Input_DF[(Input_DF['label']==1) ].copy()
+    NHTN_data = Input_DF[(Input_DF['label']==0) ].copy()
+    HTN_ID_list = HTN_data['ID'].unique().tolist() #所有的HTN的ID号
+    HTN_size = HTN_data['ID'].unique().__len__()
+    HTN_pair_size = int(HTN_size*HTN_pair_rate) 
+    HTN_ID_pair_list = HTN_ID_list[star_index:star_index+HTN_pair_size]#选取用来pair的ID号 从star_index 到star_index+HTN_pair_size
+    HTN_pair_index = HTN_data[[True if i in HTN_ID_pair_list else False for i in HTN_data['ID']]].index
+    HTN_pair_data = HTN_data.loc[HTN_pair_index].copy()
+    pair_ID_list = pair_HTN(HTN_pair_data.drop_duplicates(['ID'],keep='first'),NHTN_data.drop_duplicates(['ID'],keep='first'),
+                            Range_max=Range_max,
+                            pair_num=pair_num,
+                            shuffle=shuffle)['ID'].tolist()#按照年龄和性别对每个ID号去配对 (先去除重复ID)
+    pair_index = Input_DF[[True if i in pair_ID_list else False for i in Input_DF['ID']]].index
+    pair_df = Input_DF.loc[pair_index].copy()
+    left_index = Input_DF[[False if i in pair_ID_list else True for i in Input_DF['ID']]].index #不在test_ID_list的ID 即为tv的
+    left_df = Input_DF.loc[left_index].copy()
+    return pair_df,left_df
 
 
-def tarinning_one_flod(fold,Model,train_dataset:ECGDataset.ECG_Dataset ,val_dataset:ECGDataset.ECG_Dataset,test_dataset:ECGDataset.ECG_Dataset,writer,save_model_path,log_path,BATCH_SIZE,DEVICE,
+
+
+def tarinning_one_flod(fold,Model,train_dataset:ECGHandle.ECG_Dataset ,val_dataset:ECGHandle.ECG_Dataset,test_dataset:ECGHandle.ECG_Dataset,writer,save_model_path,log_path,BATCH_SIZE,DEVICE,
                         criterion = torch.nn.CrossEntropyLoss(),
                         EPOCHS = 100,  
                         PATIENCE = 10,
@@ -52,7 +67,8 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGDataset.ECG_Dataset ,val_data
                         shuffle = True,
                         onehot_lable = False,
                         pair_flag = False,
-                        train_Df:pd.DataFrame = None# type: ignore                        
+                        train_Df:pd.DataFrame = None,# type: ignore      
+                        data_path = ''                  
                         ):
     
     
@@ -126,8 +142,8 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGDataset.ECG_Dataset ,val_data
             break
         
         if(pair_flag ):# 每次重新抽取train_pair_Df (train_Df 是已经除去了val_Df的tv_Df)
-                train_pair_Df = pair_HTN(train_Df[(train_Df['diagnose']==1)],train_Df[(train_Df['diagnose']==0)],Range_max = 15,shuffle=True)
-                train_dataset = ECGDataset.ECG_Dataset('/workspace/data/Preprocess_HTN/data_like_pxl//',train_pair_Df)
+                train_pair_df,_ = Pair_ID(train_Df,1,star_index=0,Range_max=15,pair_num=1,shuffle=True)
+                train_dataset = ECGHandle.ECG_Dataset(data_path,train_pair_df ,preprocess = True)
                 train_dataloader = Data.DataLoader(dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=shuffle,num_workers=num_workers,pin_memory=True)
         
     # 计算此flod 在testset上的效果
@@ -155,7 +171,7 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGDataset.ECG_Dataset ,val_data
     # print(" "*10+'Fold %d Training Finished' %(fold))
     return train_loss,train_acc,validate_loss,validate_acc,test_loss,test_acc,precision_test,recall_test
 
-def save_test_infos(csv_path,test_dataset:ECGDataset.ECG_Dataset,y_true:list,y_pred:list,y_out:list):
+def save_test_infos(csv_path,test_dataset:ECGHandle.ECG_Dataset,y_true:list,y_pred:list,y_out:list):
     ouputs_Df = pd.DataFrame(np.array(y_out),columns=["out0","out1"])
     preds_Df = pd.DataFrame(np.array(y_pred),columns=["pred"])
     target_Df = pd.DataFrame(np.array(y_true),columns=["target"])
