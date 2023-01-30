@@ -29,8 +29,21 @@ import gc
 import sys
 import logger
 
+import os
+import shutil
 
 from torch.utils.tensorboard import SummaryWriter  # type: ignore
+
+
+def mycopyfile(srcfile,dstpath):                       # 复制函数
+    if not os.path.isfile(srcfile):
+        print ("%s not exist!"%(srcfile))
+    else:
+        fpath,fname=os.path.split(srcfile)             # 分离文件名和路径
+        if not os.path.exists(dstpath):
+            os.makedirs(dstpath)                       # 创建路径
+        shutil.copy(srcfile, dstpath + fname)          # 复制文件
+        print ("copy %s -> %s"%(srcfile, dstpath + fname))
 
 def seed_torch(seed=2023):
 	random.seed(seed)
@@ -102,7 +115,7 @@ if __name__ == '__main__':
         ALL_data = ECGHandle.filter_ages(ALL_data,18)
         ALL_data = ECGHandle.correct_label(ALL_data)
         ALL_data = ECGHandle.correct_age(ALL_data)
-        ALL_data = ECGHandle.filter_diagnose(ALL_data,'起搏')
+        ALL_data = ECGHandle.filter_diagnose(ALL_data,'房颤')
         ALL_data = ALL_data.rename(columns={'住院号':'ID','年龄':'age','性别':'gender','姓名':'name'}) 
         
         
@@ -218,3 +231,4 @@ if __name__ == '__main__':
         print(" "*5+'='*50)
         print('Training Finished')
         # sys.stdout.log.close()
+        mycopyfile('./log.log',log_root)

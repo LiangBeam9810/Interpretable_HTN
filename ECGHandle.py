@@ -150,14 +150,20 @@ def correct_age(df_input): # 把住院号相同但年龄不一致的全部改为
 def filter_diagnose(df_input,remove_diagnose = ''): 
     df_filter = df_input.copy()
     if(remove_diagnose):
-        df_filter = df_filter[
-              (  ~(df_filter['诊断'].str.contains(remove_diagnose) == True) )#不含有该诊断 )#不含有该诊断
-            ]#只选择外科
+        fitler_ID_list = df_filter[(df_filter['诊断'].str.contains(remove_diagnose) == True)]['住院号'].tolist()
+        fitler_index = df_filter[[True if i in fitler_ID_list else False for i in df_filter['住院号']]].index #选取出所有含有该ID的样本
+        df_remove = df_filter.loc[(fitler_index)]
+        no_fitler_index = df_filter[[False if i in fitler_ID_list else True for i in df_filter['住院号']]].index #选取出所有不含有该ID的样本
+        df_filter = df_filter.loc[(no_fitler_index)]
+        
         print('\n')
-        print("{:^10} {:^10} {:^20}".format('  ','orginal','remove diagnose'+remove_diagnose))
+        print("{:^10} {:^10} {:^20}".format('  ','orginal','remove diagnose' + remove_diagnose))
         print("{:^10} {:^10} {:^20}".format('nums',len(df_input),len(df_filter)))
         print("{:^10} {:^10} {:^20}".format('  ','HTN','NHTN'))
         print("{:^10} {:^10} {:^20}".format('nums',len(df_filter[(df_filter['label']==1)]),len(df_filter[(df_filter['label']==0)])))
+        print("{:^10} {:^10} {:^20}".format('  ','remove HTN','remove NHTN'))
+        print("{:^10} {:^10} {:^20}".format('nums',len(df_remove[(df_remove['label']==1)]),len(df_remove[(df_remove['label']==0)])))
+    return df_filter
     return df_filter
 
 class ECG_Dataset(Dataset):
