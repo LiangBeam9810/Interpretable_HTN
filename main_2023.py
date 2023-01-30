@@ -65,12 +65,12 @@ BATCH_SIZE = 64
 L2 = 0.07
 FOLDS = 5
 EPOCHS = 200  
-PATIENCE = 50
+PATIENCE = 25
 LR = 0.0005
 PAIR =True
 
 notion ="####"*10 +\
-        "\n#testset use year == 22" +\
+        "\n#don't  correct_age" +\
         "\n#LR = 0.0005" +\
         "\n#pair HTN candidate >0 break " +\
         "\n#delete all have the same name&sex&ages" +\
@@ -114,8 +114,12 @@ if __name__ == '__main__':
         ALL_data = ECGHandle.filter_departmentORlabel(ALL_data,'外科')
         ALL_data = ECGHandle.filter_ages(ALL_data,18)
         ALL_data = ECGHandle.correct_label(ALL_data)
-        ALL_data = ECGHandle.correct_age(ALL_data)
+        # ALL_data = ECGHandle.correct_age(ALL_data)
+        
+        # ALL_data = ECGHandle.filter_diagnose(ALL_data,'起搏')
         ALL_data = ECGHandle.filter_diagnose(ALL_data,'房颤')
+        # ALL_data = ECGHandle.filter_diagnose(ALL_data,'阻滞')
+        
         ALL_data = ALL_data.rename(columns={'住院号':'ID','年龄':'age','性别':'gender','姓名':'name'}) 
         
         
