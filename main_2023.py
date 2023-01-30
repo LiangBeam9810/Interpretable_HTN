@@ -57,10 +57,11 @@ LR = 0.0005
 PAIR =True
 
 notion ="####"*10 +\
+        "\n#testset use year == 22" +\
         "\n#LR = 0.0005" +\
         "\n#pair HTN candidate >0 break " +\
         "\n#delete all have the same name&sex&ages" +\
-        "\n# seed_torch(2023),    L2_list = 0.007 BATCH_SIZE = 128 ,5 foldcorss 2 times"+\
+        "\n# seed_torch(2023),    L2_list = 0.007 BATCH_SIZE = 128 ,5 foldcorss 1 times"+\
         "\n#CrossEntropyLoss "  +\
         "\n#ReduceLROnPlateau "  +\
         "\n#The reset and delete list (main in test)" +\
@@ -101,6 +102,7 @@ if __name__ == '__main__':
         ALL_data = ECGHandle.filter_ages(ALL_data,18)
         ALL_data = ECGHandle.correct_label(ALL_data)
         ALL_data = ECGHandle.correct_age(ALL_data)
+        ALL_data = ECGHandle.filter_diagnose(ALL_data,'起搏')
         ALL_data = ALL_data.rename(columns={'住院号':'ID','年龄':'age','性别':'gender','姓名':'name'}) 
         
         
@@ -132,12 +134,16 @@ if __name__ == '__main__':
         test_acc_sum = [0]*FOLDS    
         precision_test_sum = [0]*FOLDS    
         recall_test_sum = [0]*FOLDS    
-        
         seed_torch(2023)
         ALL_data_buffer = ALL_data.copy()
         ALL_data_buffer = ALL_data_buffer.sample(frac=1).reset_index(drop=True) #打乱顺序
-        
+        ####################################################################随机选取test
         test_df,tv_df = Pair_ID(ALL_data,0.2,Range_max=15,pair_num=1)
+        ###################################################################
+        # #####################################################################按年份选取test
+        # test_df = ALL_data_buffer[ALL_data_buffer['year']==22]
+        # tv_df = ALL_data_buffer[~(ALL_data_buffer['year']==22)]
+        # ####################################################################
         test_dataset = ECGHandle.ECG_Dataset(data_root,test_df,preprocess = True)
         for fold in range(FOLDS):
             print(" "*10+ "Fold "+str(fold)+" of "+str(FOLDS) + ' :')
@@ -148,7 +154,7 @@ if __name__ == '__main__':
             NHTN_tv_df = tv_df[(tv_df['label']==0) ].copy()
             HTN_ID_tv_list = HTN_tv_df['ID'].unique().tolist() #tvset中所有的HTN的ID号
             HTN_tv_size = HTN_tv_df['ID'].unique().__len__()
-            HTN_validate_size = int(HTN_tv_size*0.2)
+            HTN_validate_size = int(HTN_tv_size//FOLDS)
             validate_start_index = HTN_validate_size*fold #star index for validate
             validate_df,tarin_df = Pair_ID(tv_df_buffer,0.2,star_index=validate_start_index,Range_max=15,pair_num=1)
             validate_dataset = ECGHandle.ECG_Dataset(data_root,validate_df,preprocess = True)

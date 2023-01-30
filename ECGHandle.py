@@ -151,10 +151,10 @@ def filter_diagnose(df_input,remove_diagnose = ''):
     df_filter = df_input.copy()
     if(remove_diagnose):
         df_filter = df_filter[
-            (  (df_filter['诊断'].str.contains(remove_diagnose) == False) )#不含有该诊断
+              (  ~(df_filter['诊断'].str.contains(remove_diagnose) == True) )#不含有该诊断 )#不含有该诊断
             ]#只选择外科
         print('\n')
-        print("{:^10} {:^10} {:^20}".format('  ','orginal','remove diagnose'))
+        print("{:^10} {:^10} {:^20}".format('  ','orginal','remove diagnose'+remove_diagnose))
         print("{:^10} {:^10} {:^20}".format('nums',len(df_input),len(df_filter)))
         print("{:^10} {:^10} {:^20}".format('  ','HTN','NHTN'))
         print("{:^10} {:^10} {:^20}".format('nums',len(df_filter[(df_filter['label']==1)]),len(df_filter[(df_filter['label']==0)])))
