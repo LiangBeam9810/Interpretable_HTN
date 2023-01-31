@@ -240,4 +240,7 @@ if __name__ == '__main__':
         print(" "*5+'='*50)
         print('Training Finished')
         # sys.stdout.log.close()
+        
+        
+        time.sleep(300)#等待.log 打印完
         mycopyfile('./log.log',log_root)
