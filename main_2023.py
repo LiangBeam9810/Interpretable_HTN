@@ -70,7 +70,7 @@ LR = 0.0005
 PAIR =True
 
 notion ="####"*10 +\
-        "\n#filter_diagnose(ALL_data,'房颤') then  remove_duplicated" +\
+        "\n#filter_diagnose(ALL_data,'阻滞') then  remove_duplicated" +\
         "\n#LR = 0.0005" +\
         "\n#pair HTN candidate >0 break " +\
         "\n#delete all have the same name&sex&ages" +\
@@ -121,8 +121,8 @@ if __name__ == '__main__':
         ALL_data = ECGHandle.correct_age(ALL_data)
         
         # ALL_data = ECGHandle.filter_diagnose(ALL_data,'起搏')
-        ALL_data = ECGHandle.filter_diagnose(ALL_data,'房颤')
-        # ALL_data = ECGHandle.filter_diagnose(ALL_data,'阻滞')
+        # ALL_data = ECGHandle.filter_diagnose(ALL_data,'房颤')
+        ALL_data = ECGHandle.filter_diagnose(ALL_data,'阻滞')
         ALL_data = ECGHandle.remove_duplicated(ALL_data)
         
         ALL_data = ALL_data.rename(columns={'住院号':'ID','年龄':'age','性别':'gender','姓名':'name'}) 
