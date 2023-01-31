@@ -70,7 +70,7 @@ LR = 0.0005
 PAIR =True
 
 notion ="####"*10 +\
-        "\n#don't  correct_age" +\
+        "\n#filter_diagnose " +\
         "\n#LR = 0.0005" +\
         "\n#pair HTN candidate >0 break " +\
         "\n#delete all have the same name&sex&ages" +\
@@ -108,14 +108,18 @@ if __name__ == '__main__':
         criterion =nn.CrossEntropyLoss()
         
         ALL_data = pd.read_csv(data_root+'/All_data_handled_ID_range_age_IDimputate.csv',low_memory=False)
+        
+        
         ALL_data = ECGHandle.change_label(ALL_data)
         ALL_data = ECGHandle.filter_ID(ALL_data)
         ALL_data = ECGHandle.filter_QC(ALL_data)
-        ALL_data = ECGHandle.filter_departmentORlabel(ALL_data,'外科')
-        ALL_data = ECGHandle.filter_ages(ALL_data,18)
-        ALL_data = ECGHandle.correct_label(ALL_data)
-        # ALL_data = ECGHandle.correct_age(ALL_data)
         
+        ALL_data = ECGHandle.filter_ages(ALL_data,18)
+        ALL_data = ECGHandle.filter_departmentORlabel(ALL_data,'外科')
+        
+        ALL_data = ECGHandle.correct_label(ALL_data)
+        ALL_data = ECGHandle.correct_age(ALL_data)
+        ALL_data = ECGHandle.remove_duplicated(ALL_data)
         # ALL_data = ECGHandle.filter_diagnose(ALL_data,'起搏')
         ALL_data = ECGHandle.filter_diagnose(ALL_data,'房颤')
         # ALL_data = ECGHandle.filter_diagnose(ALL_data,'阻滞')

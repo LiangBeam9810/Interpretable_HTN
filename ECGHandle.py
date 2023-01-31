@@ -24,7 +24,57 @@ reset_list = [
                 '844904',
                 '848473',
 ]
-
+delete_list = [
+        '848037',
+        '415049',
+        '850177',
+        '266407',
+        '669894',
+        '889066',
+        '894868',
+        '803805',
+        '550313',
+        '894868',
+        '359970',
+        '897967',
+        '853511',
+        '853850',
+        '857377',
+        '859578',
+        '856421',
+        '858013',
+        '858013',
+        '489584',
+        '857662',
+        '785010',
+        '863228',
+        '863469',
+        '489584',
+        '862288',
+        '416469',
+        '870767',
+        '871718',
+        '871718',
+        '884307',
+        '884307',
+        '883577',
+        '883577',
+        '883488',
+        '848816',
+        '862660',
+        '735458',
+        '735458',
+        '889644',
+        '889644',
+        '538060',
+        '870667',
+        '851396',
+        '851419',
+        '873289',
+        '342741',
+        '280452',
+        '901544',
+]
 
 
 def change_ages(df_input): #把年龄改成 数值型
@@ -164,6 +214,17 @@ def filter_diagnose(df_input,remove_diagnose = ''):
         print("{:^10} {:^10} {:^20}".format('  ','remove HTN','remove NHTN'))
         print("{:^10} {:^10} {:^20}".format('nums',len(df_remove[(df_remove['label']==1)]),len(df_remove[(df_remove['label']==0)])))
     return df_filter
+def remove_duplicated(df_input):
+    df_filter = df_input.copy()
+    print('\n')
+    #####################################################test 删除姓名性别 年龄完全相同的人
+    df_filter = df_filter.drop_duplicates(subset=['姓名','年龄','性别'],keep='last')
+    #####################################################test
+    print('\n')
+    print("{:^10} {:^10} {:^20}".format('  ','orginal','removed duplicated'))
+    print("{:^10} {:^10} {:^20}".format('nums',len(df_input),len(df_filter)))
+    print("{:^10} {:^10} {:^20}".format('  ','HTN','NHTN'))
+    print("{:^10} {:^10} {:^20}".format('nums',len(df_filter[(df_filter['label']==1)]),len(df_filter[(df_filter['label']==0)])))
     return df_filter
 
 class ECG_Dataset(Dataset):
