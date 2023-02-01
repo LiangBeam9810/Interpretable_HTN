@@ -214,6 +214,20 @@ def filter_diagnose(df_input,remove_diagnose = ''):
         print("{:^10} {:^10} {:^20}".format('  ','remove HTN','remove NHTN'))
         print("{:^10} {:^10} {:^20}".format('nums',len(df_remove[(df_remove['label']==1)]),len(df_remove[(df_remove['label']==0)])))
     return df_filter
+
+def keep_diagnose(df_input,keep_diagnose = ''): 
+    df_filter = df_input.copy()
+    if(keep_diagnose):
+        fitler_ID_list = df_filter[(df_filter['诊断'].str.contains(keep_diagnose) == True)]['住院号'].tolist()
+        fitler_index = df_filter[[True if i in fitler_ID_list else False for i in df_filter['住院号']]].index #选取出所有含有keep_diagnose的ID 的 样本
+        df_filter = df_filter.loc[(fitler_index)]
+        print('\n')
+        print("{:^10} {:^10} {:^20}".format('  ','orginal','keep diagnose' + keep_diagnose))
+        print("{:^10} {:^10} {:^20}".format('nums',len(df_input),len(df_filter)))
+        print("{:^10} {:^10} {:^20}".format('  ','HTN','NHTN'))
+        print("{:^10} {:^10} {:^20}".format('nums',len(df_filter[(df_filter['label']==1)]),len(df_filter[(df_filter['label']==0)])))
+    return df_filter    
+        
 def remove_duplicated(df_input):
     df_filter = df_input.copy()
     print('\n')

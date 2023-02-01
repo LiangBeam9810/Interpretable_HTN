@@ -1,0 +1,2836 @@
+nohup: ignoring input
+cuda:0
+########################################
+#keep 正常心电图
+#LR = 0.0005
+#pair HTN candidate >0 break 
+#delete all have the same name&sex&ages
+# seed_torch(2023),    L2_list = 0.007 BATCH_SIZE = 128 ,5 foldcorss 1 times
+#CrossEntropyLoss 
+#ReduceLROnPlateau 
+#The reset and delete list (main in test)
+#qc == 0
+#pair HTN
+#use adam with 0 weight decay
+#Shuffle before k-fold train
+#Use binary F1. 
+#Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.3). lead_branch (3,3). add two relu-fc
+#Sample HTN to fit NHTN numbers (test,val,train)
+########################################
+
+
+
+            orginal   removed diagnose NaN
+   nums      200082          199997       
+              HTN             NHTN        
+   nums       3273           196724       
+
+
+            orginal      removed ID NaN   
+   nums      199997          199995       
+              HTN             NHTN        
+   nums       3273           196722       
+
+
+            orginal            QC         
+   nums      199995          72845        
+              HTN             NHTN        
+   nums       1497           71348        
+
+
+            orginal      filtered ages    
+   nums      72845           69819        
+              HTN             NHTN        
+   nums       1477           68342        
+
+
+            orginal   filtered department 
+   nums      69819           15344        
+              HTN             NHTN        
+   nums       1477           13867        
+
+
+     reset num:       10  
+  ERR labels num:     27  
+            orginal      correct label    
+   nums      15344           15344        
+              HTN             NHTN        
+   nums       1513           13831        
+
+
+   ERR ages num:      831 
+            orginal       correct age     
+   nums      15344           15344        
+              HTN             NHTN        
+   nums       1513           13831        
+
+
+            orginal    keep diagnose正常心电图 
+   nums      15344            9490        
+              HTN             NHTN        
+   nums       474             9016        
+
+
+ L2 =  0.007
+
+Batchsize =  128
+          Fold 0 of 5 :
+                    Validate:  0.0 
+                     [64  0] 
+                     [65  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 1 - Train_loss: 0.69371 - Train_acc: 0.51316 -  - Val_loss: 0.68922 - Val_acc: 0.74609  - T_Time: 14.35270 LR：0.0005000000
+                    --------------------------------------------------
+
+                    Validation  score to (inf --> -0.68922064).  Saving model ...
+                    --------------------------------------------------
+
+                    Validate:  0.0 
+                     [64  0] 
+                     [65  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 2 - Train_loss: 0.68011 - Train_acc: 0.55874 -  - Val_loss: 0.68786 - Val_acc: 0.74609  - T_Time: 9.82853 LR：0.0005000000
+                    --------------------------------------------------
+
+                    Validation  score to (-0.68922064 --> -0.68786186).  Saving model ...
+                    --------------------------------------------------
+
+                    Validate:  0.0 
+                     [64  0] 
+                     [65  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 3 - Train_loss: 0.67423 - Train_acc: 0.53050 -  - Val_loss: 0.70617 - Val_acc: 0.25000  - T_Time: 9.82203 LR：0.0005000000
+                    EarlyStopping counter: 1 out of 25
+
+                    Validate:  0.0 
+                     [64  0] 
+                     [65  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 4 - Train_loss: 0.66495 - Train_acc: 0.57269 -  - Val_loss: 0.71836 - Val_acc: 0.25000  - T_Time: 9.97509 LR：0.0005000000
+                    EarlyStopping counter: 2 out of 25
+
+                    Validate:  0.0 
+                     [64  0] 
+                     [65  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 5 - Train_loss: 0.65291 - Train_acc: 0.59654 -  - Val_loss: 0.73505 - Val_acc: 0.25000  - T_Time: 10.39841 LR：0.0005000000
+                    EarlyStopping counter: 3 out of 25
+
+                    Validate:  0.0 
+                     [64  0] 
+                     [65  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 6 - Train_loss: 0.63630 - Train_acc: 0.63021 -  - Val_loss: 0.65569 - Val_acc: 0.74609  - T_Time: 10.21211 LR：0.0005000000
+                    --------------------------------------------------
+
+                    Validation  score to (-0.68786186 --> -0.65568900).  Saving model ...
+                    --------------------------------------------------
+
+                    Validate:  0.0 
+                     [64  0] 
+                     [65  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 7 - Train_loss: 0.61561 - Train_acc: 0.65055 -  - Val_loss: 0.65543 - Val_acc: 0.74609  - T_Time: 10.05321 LR：0.0005000000
+                    --------------------------------------------------
+
+                    Validation  score to (-0.65568900 --> -0.65542758).  Saving model ...
+                    --------------------------------------------------
+
+                    Validate:  0.0 
+                     [64  0] 
+                     [65  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 8 - Train_loss: 0.62467 - Train_acc: 0.67173 -  - Val_loss: 0.77872 - Val_acc: 0.25000  - T_Time: 9.90546 LR：0.0005000000
+                    EarlyStopping counter: 1 out of 25
+
+                    Validate:  0.0 
+                     [64  0] 
+                     [65  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 9 - Train_loss: 0.57355 - Train_acc: 0.71157 -  - Val_loss: 0.83289 - Val_acc: 0.25000  - T_Time: 9.93256 LR：0.0005000000
+                    EarlyStopping counter: 2 out of 25
+
+                    Validate:  0.0 
+                     [64  0] 
+                     [65  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 10 - Train_loss: 0.55486 - Train_acc: 0.71146 -  - Val_loss: 1.00412 - Val_acc: 0.25000  - T_Time: 9.84710 LR：0.0005000000
+                    EarlyStopping counter: 3 out of 25
+
+                    Validate:  0.6559139784946236 
+                     [ 4 60] 
+                     [ 4 61] 
+                     precision:  0.5041322314049587 recall:  0.9384615384615385
+                    test:  0.6341463414634146 
+                     [ 9 84] 
+                     [ 6 78] 
+                     precision:  0.48148148148148145 recall:  0.9285714285714286
+                    - Epoch: 11 - Train_loss: 0.52890 - Train_acc: 0.70864 -  - Val_loss: 0.84787 - Val_acc: 0.25391  - T_Time: 9.62969 LR：0.0005000000
+                    -- -- The best model for validate (F1= .  0.6559139784946236 ) -- --
+                    EarlyStopping counter: 4 out of 25
+
+                    Validate:  0.08571428571428573 
+                     [62  2] 
+                     [62  3] 
+                     precision:  0.6 recall:  0.046153846153846156
+                    test:  0.022988505747126436 
+                     [91  2] 
+                     [83  1] 
+                     precision:  0.3333333333333333 recall:  0.011904761904761904
+                    - Epoch: 12 - Train_loss: 0.53094 - Train_acc: 0.71719 -  - Val_loss: 0.80039 - Val_acc: 0.25391  - T_Time: 9.87011 LR：0.0005000000
+                    EarlyStopping counter: 5 out of 25
+
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+                    Validate:  0.05714285714285715 
+                     [61  3] 
+                     [63  2] 
+                     precision:  0.4 recall:  0.03076923076923077
+                    test:  0.10869565217391304 
+                     [90  3] 
+                     [79  5] 
+                     precision:  0.625 recall:  0.05952380952380952
+                    - Epoch: 13 - Train_loss: 0.56867 - Train_acc: 0.69630 -  - Val_loss: 0.69915 - Val_acc: 0.24609  - T_Time: 10.75199 LR：0.0005000000
+                    EarlyStopping counter: 6 out of 25
+
+                    Validate:  0.0 
+                     [64  0] 
+                     [65  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.023529411764705882 
+                     [93  0] 
+                     [83  1] 
+                     precision:  1.0 recall:  0.011904761904761904
+                    - Epoch: 14 - Train_loss: 0.56492 - Train_acc: 0.73182 -  - Val_loss: 1.47335 - Val_acc: 0.25000  - T_Time: 10.74545 LR：0.0005000000
+                    EarlyStopping counter: 7 out of 25
+
+                    Validate:  0.029850746268656723 
+                     [63  1] 
+                     [64  1] 
+                     precision:  0.5 recall:  0.015384615384615385
+                    test:  0.023529411764705882 
+                     [93  0] 
+                     [83  1] 
+                     precision:  1.0 recall:  0.011904761904761904
+                    - Epoch: 15 - Train_loss: 0.50138 - Train_acc: 0.77059 -  - Val_loss: 0.59133 - Val_acc: 0.74609  - T_Time: 9.69641 LR：0.0005000000
+                    --------------------------------------------------
+
+                    Validation  score to (-0.65542758 --> -0.59133221).  Saving model ...
+                    --------------------------------------------------
+
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+                    Validate:  0.0 
+                     [64  0] 
+                     [65  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 16 - Train_loss: 0.55919 - Train_acc: 0.71590 -  - Val_loss: 0.61774 - Val_acc: 0.74609  - T_Time: 10.73618 LR：0.0005000000
+                    EarlyStopping counter: 1 out of 25
+
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+                    Validate:  0.0 
+                     [64  0] 
+                     [65  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 17 - Train_loss: 0.53836 - Train_acc: 0.74713 -  - Val_loss: 2.22909 - Val_acc: 0.25000  - T_Time: 10.79727 LR：0.0005000000
+                    EarlyStopping counter: 2 out of 25
+
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+                    Validate:  0.08823529411764706 
+                     [64  0] 
+                     [62  3] 
+                     precision:  1.0 recall:  0.046153846153846156
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 18 - Train_loss: 0.53326 - Train_acc: 0.74642 -  - Val_loss: 0.57410 - Val_acc: 0.75781  - T_Time: 10.66688 LR：0.0005000000
+                    --------------------------------------------------
+
+                    Validation  score to (-0.59133221 --> -0.57409583).  Saving model ...
+                    --------------------------------------------------
+
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+                    Validate:  0.40449438202247195 
+                     [58  6] 
+                     [47 18] 
+                     precision:  0.75 recall:  0.27692307692307694
+                    test:  0.4385964912280702 
+                     [88  5] 
+                     [59 25] 
+                     precision:  0.8333333333333334 recall:  0.2976190476190476
+                    - Epoch: 19 - Train_loss: 0.48837 - Train_acc: 0.77224 -  - Val_loss: 0.48667 - Val_acc: 0.79297  - T_Time: 12.77779 LR：0.0005000000
+                    --------------------------------------------------
+
+                    Validation  score to (-0.57409583 --> -0.48666733).  Saving model ...
+                    --------------------------------------------------
+
+                    Validate:  0.29629629629629634 
+                     [60  4] 
+                     [53 12] 
+                     precision:  0.75 recall:  0.18461538461538463
+                    test:  0.20618556701030924 
+                     [90  3] 
+                     [74 10] 
+                     precision:  0.7692307692307693 recall:  0.11904761904761904
+                    - Epoch: 20 - Train_loss: 0.52068 - Train_acc: 0.73554 -  - Val_loss: 0.57675 - Val_acc: 0.77734  - T_Time: 17.79844 LR：0.0005000000
+                    EarlyStopping counter: 1 out of 25
+
+                    Validate:  0.5233644859813084 
+                     [50 14] 
+                     [37 28] 
+                     precision:  0.6666666666666666 recall:  0.4307692307692308
+                    test:  0.6455696202531644 
+                     [70 23] 
+                     [33 51] 
+                     precision:  0.6891891891891891 recall:  0.6071428571428571
+                    - Epoch: 21 - Train_loss: 0.43046 - Train_acc: 0.82315 -  - Val_loss: 1.82453 - Val_acc: 0.30469  - T_Time: 10.07612 LR：0.0005000000
+                    EarlyStopping counter: 2 out of 25
+
+                    Validate:  0.6666666666666666 
+                     [39 25] 
+                     [20 45] 
+                     precision:  0.6428571428571429 recall:  0.6923076923076923
+                    test:  0.6979166666666666 
+                     [52 41] 
+                     [17 67] 
+                     precision:  0.6203703703703703 recall:  0.7976190476190477
+                    - Epoch: 22 - Train_loss: 0.53374 - Train_acc: 0.75729 -  - Val_loss: 0.43080 - Val_acc: 0.82422  - T_Time: 10.95241 LR：0.0005000000
+                    -- -- The best model for validate (F1= .  0.6666666666666666 ) -- --
+                    --------------------------------------------------
+
+                    Validation  score to (-0.48666733 --> -0.43080015).  Saving model ...
+                    --------------------------------------------------
+
+                    Validate:  0.4222222222222222 
+                     [58  6] 
+                     [46 19] 
+                     precision:  0.76 recall:  0.2923076923076923
+                    test:  0.4137931034482759 
+                     [85  8] 
+                     [60 24] 
+                     precision:  0.75 recall:  0.2857142857142857
+                    - Epoch: 23 - Train_loss: 0.46946 - Train_acc: 0.77540 -  - Val_loss: 0.78420 - Val_acc: 0.79688  - T_Time: 10.01210 LR：0.0005000000
+                    EarlyStopping counter: 1 out of 25
+
+                    Validate:  0.5252525252525253 
+                     [56  8] 
+                     [39 26] 
+                     precision:  0.7647058823529411 recall:  0.4
+                    test:  0.5714285714285715 
+                     [82 11] 
+                     [46 38] 
+                     precision:  0.7755102040816326 recall:  0.4523809523809524
+                    - Epoch: 24 - Train_loss: 0.38284 - Train_acc: 0.83858 -  - Val_loss: 0.46111 - Val_acc: 0.81641  - T_Time: 9.88375 LR：0.0005000000
+                    EarlyStopping counter: 2 out of 25
+
+                    Validate:  0.0 
+                     [64  0] 
+                     [65  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.046511627906976744 
+                     [93  0] 
+                     [82  2] 
+                     precision:  1.0 recall:  0.023809523809523808
+                    - Epoch: 25 - Train_loss: 0.33801 - Train_acc: 0.84918 -  - Val_loss: 0.75020 - Val_acc: 0.74609  - T_Time: 9.97292 LR：0.0005000000
+                    EarlyStopping counter: 3 out of 25
+
+                    Validate:  0.05714285714285715 
+                     [61  3] 
+                     [63  2] 
+                     precision:  0.4 recall:  0.03076923076923077
+                    test:  0.15384615384615385 
+                     [93  0] 
+                     [77  7] 
+                     precision:  1.0 recall:  0.08333333333333333
+                    - Epoch: 26 - Train_loss: 0.40095 - Train_acc: 0.82604 -  - Val_loss: 3.26342 - Val_acc: 0.24609  - T_Time: 10.43723 LR：0.0005000000
+                    EarlyStopping counter: 4 out of 25
+
+                    Validate:  0.29629629629629634 
+                     [60  4] 
+                     [53 12] 
+                     precision:  0.75 recall:  0.18461538461538463
+                    test:  0.2376237623762376 
+                     [88  5] 
+                     [72 12] 
+                     precision:  0.7058823529411765 recall:  0.14285714285714285
+                    - Epoch: 27 - Train_loss: 0.32109 - Train_acc: 0.88288 -  - Val_loss: 0.64953 - Val_acc: 0.77734  - T_Time: 10.00900 LR：0.0005000000
+                    EarlyStopping counter: 5 out of 25
+
+                    Validate:  0.1388888888888889 
+                     [62  2] 
+                     [60  5] 
+                     precision:  0.7142857142857143 recall:  0.07692307692307693
+                    test:  0.10869565217391304 
+                     [90  3] 
+                     [79  5] 
+                     precision:  0.625 recall:  0.05952380952380952
+                    - Epoch: 28 - Train_loss: 0.38188 - Train_acc: 0.83274 -  - Val_loss: 4.08089 - Val_acc: 0.26172  - T_Time: 9.91403 LR：0.0005000000
+                    EarlyStopping counter: 6 out of 25
+
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+                    Validate:  0.23076923076923078 
+                     [60  4] 
+                     [56  9] 
+                     precision:  0.6923076923076923 recall:  0.13846153846153847
+                    test:  0.2772277227722772 
+                     [90  3] 
+                     [70 14] 
+                     precision:  0.8235294117647058 recall:  0.16666666666666666
+                    - Epoch: 29 - Train_loss: 0.56387 - Train_acc: 0.75284 -  - Val_loss: 2.80569 - Val_acc: 0.26953  - T_Time: 11.62155 LR：0.0005000000
+                    EarlyStopping counter: 7 out of 25
+
+                    Validate:  0.46808510638297873 
+                     [57  7] 
+                     [43 22] 
+                     precision:  0.7586206896551724 recall:  0.3384615384615385
+                    test:  0.47933884297520657 
+                     [85  8] 
+                     [55 29] 
+                     precision:  0.7837837837837838 recall:  0.34523809523809523
+                    - Epoch: 30 - Train_loss: 0.46674 - Train_acc: 0.79050 -  - Val_loss: 0.94109 - Val_acc: 0.30859  - T_Time: 10.83839 LR：0.0005000000
+                    EarlyStopping counter: 8 out of 25
+
+                    Validate:  0.059701492537313446 
+                     [64  0] 
+                     [63  2] 
+                     precision:  1.0 recall:  0.03076923076923077
+                    test:  0.06666666666666667 
+                     [90  3] 
+                     [81  3] 
+                     precision:  0.5 recall:  0.03571428571428571
+                    - Epoch: 31 - Train_loss: 0.37722 - Train_acc: 0.85406 -  - Val_loss: 0.73598 - Val_acc: 0.75391  - T_Time: 10.09691 LR：0.0005000000
+                    EarlyStopping counter: 9 out of 25
+
+                    Validate:  0.059701492537313446 
+                     [64  0] 
+                     [63  2] 
+                     precision:  1.0 recall:  0.03076923076923077
+                    test:  0.0898876404494382 
+                     [92  1] 
+                     [80  4] 
+                     precision:  0.8 recall:  0.047619047619047616
+                    - Epoch: 32 - Train_loss: 0.38974 - Train_acc: 0.83451 -  - Val_loss: 0.84780 - Val_acc: 0.75391  - T_Time: 9.94018 LR：0.0005000000
+                    EarlyStopping counter: 10 out of 25
+
+                    Validate:  0.0 
+                     [63  1] 
+                     [65  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.023529411764705882 
+                     [93  0] 
+                     [83  1] 
+                     precision:  1.0 recall:  0.011904761904761904
+                    - Epoch: 33 - Train_loss: 0.40183 - Train_acc: 0.85110 -  - Val_loss: 1.19039 - Val_acc: 0.74219  - T_Time: 10.36914 LR：0.0005000000
+                    EarlyStopping counter: 11 out of 25
+
+                    Validate:  0.0 
+                     [63  1] 
+                     [65  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.046511627906976744 
+                     [93  0] 
+                     [82  2] 
+                     precision:  1.0 recall:  0.023809523809523808
+                    - Epoch: 34 - Train_loss: 0.33105 - Train_acc: 0.85925 -  - Val_loss: 2.73453 - Val_acc: 0.24609  - T_Time: 10.40179 LR：0.0000500000
+                    EarlyStopping counter: 12 out of 25
+
+                    Validate:  0.0 
+                     [63  1] 
+                     [65  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0909090909090909 
+                     [93  0] 
+                     [80  4] 
+                     precision:  1.0 recall:  0.047619047619047616
+                    - Epoch: 35 - Train_loss: 0.34517 - Train_acc: 0.85074 -  - Val_loss: 1.55066 - Val_acc: 0.24609  - T_Time: 10.83986 LR：0.0000500000
+                    EarlyStopping counter: 13 out of 25
+
+                    Validate:  0.0 
+                     [63  1] 
+                     [65  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.046511627906976744 
+                     [93  0] 
+                     [82  2] 
+                     precision:  1.0 recall:  0.023809523809523808
+                    - Epoch: 36 - Train_loss: 0.35414 - Train_acc: 0.85180 -  - Val_loss: 3.17393 - Val_acc: 0.24609  - T_Time: 10.60555 LR：0.0000500000
+                    EarlyStopping counter: 14 out of 25
+
+                    Validate:  0.029850746268656723 
+                     [63  1] 
+                     [64  1] 
+                     precision:  0.5 recall:  0.015384615384615385
+                    test:  0.0909090909090909 
+                     [93  0] 
+                     [80  4] 
+                     precision:  1.0 recall:  0.047619047619047616
+                    - Epoch: 37 - Train_loss: 0.35371 - Train_acc: 0.84941 -  - Val_loss: 0.79041 - Val_acc: 0.74609  - T_Time: 11.04163 LR：0.0000500000
+                    EarlyStopping counter: 15 out of 25
+
+                    Validate:  0.05882352941176471 
+                     [63  1] 
+                     [63  2] 
+                     precision:  0.6666666666666666 recall:  0.03076923076923077
+                    test:  0.13186813186813187 
+                     [92  1] 
+                     [78  6] 
+                     precision:  0.8571428571428571 recall:  0.07142857142857142
+                    - Epoch: 38 - Train_loss: 0.23646 - Train_acc: 0.91981 -  - Val_loss: 2.81925 - Val_acc: 0.25391  - T_Time: 10.61387 LR：0.0000500000
+                    EarlyStopping counter: 16 out of 25
+
+                    Validate:  0.1388888888888889 
+                     [62  2] 
+                     [60  5] 
+                     precision:  0.7142857142857143 recall:  0.07692307692307693
+                    test:  0.17204301075268819 
+                     [92  1] 
+                     [76  8] 
+                     precision:  0.8888888888888888 recall:  0.09523809523809523
+                    - Epoch: 39 - Train_loss: 0.20311 - Train_acc: 0.93979 -  - Val_loss: 0.77793 - Val_acc: 0.75781  - T_Time: 10.59693 LR：0.0000500000
+                    EarlyStopping counter: 17 out of 25
+
+                    Validate:  0.13698630136986303 
+                     [61  3] 
+                     [60  5] 
+                     precision:  0.625 recall:  0.07692307692307693
+                    test:  0.16666666666666666 
+                     [89  4] 
+                     [76  8] 
+                     precision:  0.6666666666666666 recall:  0.09523809523809523
+                    - Epoch: 40 - Train_loss: 0.22146 - Train_acc: 0.93063 -  - Val_loss: 0.73965 - Val_acc: 0.75391  - T_Time: 10.58412 LR：0.0000500000
+                    EarlyStopping counter: 18 out of 25
+
+                    Validate:  0.2564102564102564 
+                     [61  3] 
+                     [55 10] 
+                     precision:  0.7692307692307693 recall:  0.15384615384615385
+                    test:  0.25742574257425743 
+                     [89  4] 
+                     [71 13] 
+                     precision:  0.7647058823529411 recall:  0.15476190476190477
+                    - Epoch: 41 - Train_loss: 0.20897 - Train_acc: 0.92168 -  - Val_loss: 0.71164 - Val_acc: 0.77344  - T_Time: 10.09158 LR：0.0000500000
+                    EarlyStopping counter: 19 out of 25
+
+                    Validate:  0.2368421052631579 
+                     [62  2] 
+                     [56  9] 
+                     precision:  0.8181818181818182 recall:  0.13846153846153847
+                    test:  0.3238095238095238 
+                     [89  4] 
+                     [67 17] 
+                     precision:  0.8095238095238095 recall:  0.20238095238095238
+                    - Epoch: 42 - Train_loss: 0.23409 - Train_acc: 0.90844 -  - Val_loss: 1.06540 - Val_acc: 0.77344  - T_Time: 11.26957 LR：0.0000500000
+                    EarlyStopping counter: 20 out of 25
+
+                    Validate:  0.2784810126582279 
+                     [61  3] 
+                     [54 11] 
+                     precision:  0.7857142857142857 recall:  0.16923076923076924
+                    test:  0.28846153846153844 
+                     [88  5] 
+                     [69 15] 
+                     precision:  0.75 recall:  0.17857142857142858
+                    - Epoch: 43 - Train_loss: 0.15026 - Train_acc: 0.94402 -  - Val_loss: 2.84121 - Val_acc: 0.28125  - T_Time: 10.48914 LR：0.0000500000
+                    EarlyStopping counter: 21 out of 25
+
+                    Validate:  0.2564102564102564 
+                     [61  3] 
+                     [55 10] 
+                     precision:  0.7692307692307693 recall:  0.15384615384615385
+                    test:  0.3853211009174312 
+                     [89  4] 
+                     [63 21] 
+                     precision:  0.84 recall:  0.25
+                    - Epoch: 44 - Train_loss: 0.28004 - Train_acc: 0.89526 -  - Val_loss: 2.93796 - Val_acc: 0.27734  - T_Time: 12.04397 LR：0.0000500000
+                    EarlyStopping counter: 22 out of 25
+
+                    Validate:  0.3 
+                     [61  3] 
+                     [53 12] 
+                     precision:  0.8 recall:  0.18461538461538463
+                    test:  0.4107142857142857 
+                     [88  5] 
+                     [61 23] 
+                     precision:  0.8214285714285714 recall:  0.27380952380952384
+                    - Epoch: 45 - Train_loss: 0.22739 - Train_acc: 0.92111 -  - Val_loss: 1.79518 - Val_acc: 0.28516  - T_Time: 11.53338 LR：0.0000050000
+                    EarlyStopping counter: 23 out of 25
+
+                    Validate:  0.2784810126582279 
+                     [61  3] 
+                     [54 11] 
+                     precision:  0.7857142857142857 recall:  0.16923076923076924
+                    test:  0.4247787610619469 
+                     [88  5] 
+                     [60 24] 
+                     precision:  0.8275862068965517 recall:  0.2857142857142857
+                    - Epoch: 46 - Train_loss: 0.41785 - Train_acc: 0.84900 -  - Val_loss: 0.72660 - Val_acc: 0.77734  - T_Time: 11.88129 LR：0.0000050000
+                    EarlyStopping counter: 24 out of 25
+
+                    Validate:  0.2564102564102564 
+                     [61  3] 
+                     [55 10] 
+                     precision:  0.7692307692307693 recall:  0.15384615384615385
+                    test:  0.4786324786324786 
+                     [88  5] 
+                     [56 28] 
+                     precision:  0.8484848484848485 recall:  0.3333333333333333
+                    - Epoch: 47 - Train_loss: 0.26976 - Train_acc: 0.88272 -  - Val_loss: 0.77429 - Val_acc: 0.77344  - T_Time: 11.38841 LR：0.0000050000
+                    EarlyStopping counter: 25 out of 25
+
+                    Early stopping...
+          validate:  0.6666666666666666 
+           [39 25] 
+           [20 45]
+          test:  0.6979166666666666 
+           [52 41] 
+           [17 67]
+          ==================================================
+          ==================================================
+          train_loss 0.4755709171295166           train_acc 0.767650462962963 
+          validate_loss 1.1603355705738068           validate_acc 0.328125 
+          test_loss 0.69950070977211           test_acc 0.6474808673469388 
+          test_precision 0.6203703703703703 
+          test_recall 0.7976190476190477
+          ==================================================
+          ==================================================
+          Fold 0 Training Finished
+          Fold 1 of 5 :
+                    Validate:  0.6883720930232557 
+                     [ 0 67] 
+                     [ 0 74] 
+                     precision:  0.524822695035461 recall:  1.0
+                    test:  0.6436781609195402 
+                     [ 0 93] 
+                     [ 0 84] 
+                     precision:  0.4745762711864407 recall:  1.0
+                    - Epoch: 1 - Train_loss: 0.69235 - Train_acc: 0.53826 -  - Val_loss: 0.69322 - Val_acc: 0.49639  - T_Time: 12.56107 LR：0.0005000000
+                    -- -- The best model for validate (F1= .  0.6883720930232557 ) -- --
+                    --------------------------------------------------
+
+                    Validation  score to (inf --> -0.69321817).  Saving model ...
+                    --------------------------------------------------
+
+                    Validate:  0.6883720930232557 
+                     [ 0 67] 
+                     [ 0 74] 
+                     precision:  0.524822695035461 recall:  1.0
+                    test:  0.6436781609195402 
+                     [ 0 93] 
+                     [ 0 84] 
+                     precision:  0.4745762711864407 recall:  1.0
+                    - Epoch: 2 - Train_loss: 0.68726 - Train_acc: 0.53758 -  - Val_loss: 0.69321 - Val_acc: 0.49639  - T_Time: 10.50598 LR：0.0005000000
+                    --------------------------------------------------
+
+                    Validation  score to (-0.69321817 --> -0.69321418).  Saving model ...
+                    --------------------------------------------------
+
+                    Validate:  0.0 
+                     [67  0] 
+                     [74  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 3 - Train_loss: 0.68552 - Train_acc: 0.54038 -  - Val_loss: 0.69338 - Val_acc: 0.43450  - T_Time: 10.38922 LR：0.0005000000
+                    EarlyStopping counter: 1 out of 25
+
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+                    Validate:  0.3400000000000001 
+                     [58  9] 
+                     [57 17] 
+                     precision:  0.6538461538461539 recall:  0.22972972972972974
+                    test:  0.2975206611570248 
+                     [74 19] 
+                     [66 18] 
+                     precision:  0.4864864864864865 recall:  0.21428571428571427
+                    - Epoch: 4 - Train_loss: 0.67671 - Train_acc: 0.55731 -  - Val_loss: 0.69316 - Val_acc: 0.46575  - T_Time: 11.14965 LR：0.0005000000
+                    --------------------------------------------------
+
+                    Validation  score to (-0.69321418 --> -0.69315854).  Saving model ...
+                    --------------------------------------------------
+
+                    Validate:  0.0 
+                     [67  0] 
+                     [74  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 5 - Train_loss: 0.65074 - Train_acc: 0.62720 -  - Val_loss: 0.69367 - Val_acc: 0.50361  - T_Time: 10.34202 LR：0.0005000000
+                    EarlyStopping counter: 1 out of 25
+
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+                    Validate:  0.0 
+                     [67  0] 
+                     [74  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 6 - Train_loss: 0.64380 - Train_acc: 0.62368 -  - Val_loss: 0.69549 - Val_acc: 0.50361  - T_Time: 11.24172 LR：0.0005000000
+                    EarlyStopping counter: 2 out of 25
+
+                    Validate:  0.6883720930232557 
+                     [ 0 67] 
+                     [ 0 74] 
+                     precision:  0.524822695035461 recall:  1.0
+                    test:  0.6436781609195402 
+                     [ 0 93] 
+                     [ 0 84] 
+                     precision:  0.4745762711864407 recall:  1.0
+                    - Epoch: 7 - Train_loss: 0.60796 - Train_acc: 0.64969 -  - Val_loss: 6.57365 - Val_acc: 0.49639  - T_Time: 10.89868 LR：0.0005000000
+                    EarlyStopping counter: 3 out of 25
+
+                    Validate:  0.6597938144329898 
+                     [11 56] 
+                     [10 64] 
+                     precision:  0.5333333333333333 recall:  0.8648648648648649
+                    test:  0.642570281124498 
+                     [ 8 85] 
+                     [ 4 80] 
+                     precision:  0.48484848484848486 recall:  0.9523809523809523
+                    - Epoch: 8 - Train_loss: 0.63618 - Train_acc: 0.67304 -  - Val_loss: 0.69557 - Val_acc: 0.56941  - T_Time: 10.65697 LR：0.0005000000
+                    EarlyStopping counter: 4 out of 25
+
+                    Validate:  0.0 
+                     [67  0] 
+                     [74  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 9 - Train_loss: 0.57470 - Train_acc: 0.69996 -  - Val_loss: 0.85022 - Val_acc: 0.53816  - T_Time: 10.58267 LR：0.0005000000
+                    EarlyStopping counter: 5 out of 25
+
+                    Validate:  0.0 
+                     [67  0] 
+                     [74  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 10 - Train_loss: 0.56806 - Train_acc: 0.69983 -  - Val_loss: 1.45714 - Val_acc: 0.46905  - T_Time: 10.20298 LR：0.0005000000
+                    EarlyStopping counter: 6 out of 25
+
+                    Validate:  0.0 
+                     [67  0] 
+                     [74  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 11 - Train_loss: 0.54612 - Train_acc: 0.70793 -  - Val_loss: 1.33468 - Val_acc: 0.43450  - T_Time: 11.09484 LR：0.0005000000
+                    EarlyStopping counter: 7 out of 25
+
+                    Validate:  0.0 
+                     [67  0] 
+                     [74  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.04597701149425287 
+                     [92  1] 
+                     [82  2] 
+                     precision:  0.6666666666666666 recall:  0.023809523809523808
+                    - Epoch: 12 - Train_loss: 0.54578 - Train_acc: 0.72587 -  - Val_loss: 1.16104 - Val_acc: 0.39994  - T_Time: 10.31831 LR：0.0005000000
+                    EarlyStopping counter: 8 out of 25
+
+                    Validate:  0.026666666666666665 
+                     [67  0] 
+                     [73  1] 
+                     precision:  1.0 recall:  0.013513513513513514
+                    test:  0.08888888888888889 
+                     [91  2] 
+                     [80  4] 
+                     precision:  0.6666666666666666 recall:  0.047619047619047616
+                    - Epoch: 13 - Train_loss: 0.46985 - Train_acc: 0.79249 -  - Val_loss: 0.94371 - Val_acc: 0.50751  - T_Time: 10.31066 LR：0.0000500000
+                    EarlyStopping counter: 9 out of 25
+
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+                    Validate:  0.4339622641509434 
+                     [58  9] 
+                     [51 23] 
+                     precision:  0.71875 recall:  0.3108108108108108
+                    test:  0.43103448275862066 
+                     [86  7] 
+                     [59 25] 
+                     precision:  0.78125 recall:  0.2976190476190476
+                    - Epoch: 14 - Train_loss: 0.58784 - Train_acc: 0.71842 -  - Val_loss: 0.75408 - Val_acc: 0.48918  - T_Time: 11.78490 LR：0.0000500000
+                    EarlyStopping counter: 10 out of 25
+
+                    Validate:  0.42307692307692313 
+                     [59  8] 
+                     [52 22] 
+                     precision:  0.7333333333333333 recall:  0.2972972972972973
+                    test:  0.45762711864406774 
+                     [86  7] 
+                     [57 27] 
+                     precision:  0.7941176470588235 recall:  0.32142857142857145
+                    - Epoch: 15 - Train_loss: 0.44350 - Train_acc: 0.80219 -  - Val_loss: 0.69670 - Val_acc: 0.55829  - T_Time: 10.62959 LR：0.0000500000
+                    EarlyStopping counter: 11 out of 25
+
+                    Validate:  0.4380952380952381 
+                     [59  8] 
+                     [51 23] 
+                     precision:  0.7419354838709677 recall:  0.3108108108108108
+                    test:  0.4482758620689655 
+                     [87  6] 
+                     [58 26] 
+                     precision:  0.8125 recall:  0.30952380952380953
+                    - Epoch: 16 - Train_loss: 0.43442 - Train_acc: 0.81667 -  - Val_loss: 0.72153 - Val_acc: 0.59675  - T_Time: 10.31915 LR：0.0000500000
+                    EarlyStopping counter: 12 out of 25
+
+                    Validate:  0.5984251968503936 
+                     [52 15] 
+                     [36 38] 
+                     precision:  0.7169811320754716 recall:  0.5135135135135135
+                    test:  0.6338028169014084 
+                     [80 13] 
+                     [39 45] 
+                     precision:  0.7758620689655172 recall:  0.5357142857142857
+                    - Epoch: 17 - Train_loss: 0.60255 - Train_acc: 0.69656 -  - Val_loss: 0.65738 - Val_acc: 0.59345  - T_Time: 12.11068 LR：0.0000500000
+                    --------------------------------------------------
+
+                    Validation  score to (-0.69315854 --> -0.65737775).  Saving model ...
+                    --------------------------------------------------
+
+                    Validate:  0.5619834710743802 
+                     [54 13] 
+                     [40 34] 
+                     precision:  0.723404255319149 recall:  0.4594594594594595
+                    test:  0.6029411764705882 
+                     [82 11] 
+                     [43 41] 
+                     precision:  0.7884615384615384 recall:  0.4880952380952381
+                    - Epoch: 18 - Train_loss: 0.41090 - Train_acc: 0.81625 -  - Val_loss: 0.77755 - Val_acc: 0.55108  - T_Time: 10.11495 LR：0.0000500000
+                    EarlyStopping counter: 1 out of 25
+
+                    Validate:  0.5777777777777778 
+                     [45 22] 
+                     [35 39] 
+                     precision:  0.639344262295082 recall:  0.527027027027027
+                    test:  0.6503067484662577 
+                     [67 26] 
+                     [31 53] 
+                     precision:  0.6708860759493671 recall:  0.6309523809523809
+                    - Epoch: 19 - Train_loss: 0.51183 - Train_acc: 0.75094 -  - Val_loss: 0.64925 - Val_acc: 0.67368  - T_Time: 11.14536 LR：0.0000500000
+                    --------------------------------------------------
+
+                    Validation  score to (-0.65737775 --> -0.64924815).  Saving model ...
+                    --------------------------------------------------
+
+                    Validate:  0.6060606060606061 
+                     [49 18] 
+                     [34 40] 
+                     precision:  0.6896551724137931 recall:  0.5405405405405406
+                    test:  0.6626506024096386 
+                     [66 27] 
+                     [29 55] 
+                     precision:  0.6707317073170732 recall:  0.6547619047619048
+                    - Epoch: 20 - Train_loss: 0.38105 - Train_acc: 0.84797 -  - Val_loss: 0.72451 - Val_acc: 0.58954  - T_Time: 10.58723 LR：0.0000500000
+                    EarlyStopping counter: 1 out of 25
+
+                    Validate:  0.6277372262773723 
+                     [47 20] 
+                     [31 43] 
+                     precision:  0.6825396825396826 recall:  0.581081081081081
+                    test:  0.6588235294117646 
+                     [63 30] 
+                     [28 56] 
+                     precision:  0.6511627906976745 recall:  0.6666666666666666
+                    - Epoch: 21 - Train_loss: 0.40916 - Train_acc: 0.82213 -  - Val_loss: 0.68691 - Val_acc: 0.62800  - T_Time: 10.41785 LR：0.0000500000
+                    EarlyStopping counter: 2 out of 25
+
+                    Validate:  0.6482758620689655 
+                     [43 24] 
+                     [27 47] 
+                     precision:  0.6619718309859155 recall:  0.6351351351351351
+                    test:  0.6892655367231638 
+                     [61 32] 
+                     [23 61] 
+                     precision:  0.6559139784946236 recall:  0.7261904761904762
+                    - Epoch: 22 - Train_loss: 0.36904 - Train_acc: 0.84144 -  - Val_loss: 0.64149 - Val_acc: 0.69712  - T_Time: 10.51557 LR：0.0000500000
+                    --------------------------------------------------
+
+                    Validation  score to (-0.64924815 --> -0.64148661).  Saving model ...
+                    --------------------------------------------------
+
+                    Validate:  0.6883116883116882 
+                     [40 27] 
+                     [21 53] 
+                     precision:  0.6625 recall:  0.7162162162162162
+                    test:  0.712041884816754 
+                     [54 39] 
+                     [16 68] 
+                     precision:  0.6355140186915887 recall:  0.8095238095238095
+                    - Epoch: 23 - Train_loss: 0.33306 - Train_acc: 0.86460 -  - Val_loss: 0.51028 - Val_acc: 0.77794  - T_Time: 10.42652 LR：0.0000500000
+                    --------------------------------------------------
+
+                    Validation  score to (-0.64148661 --> -0.51028487).  Saving model ...
+                    --------------------------------------------------
+
+                    Validate:  0.6533333333333333 
+                     [40 27] 
+                     [25 49] 
+                     precision:  0.6447368421052632 recall:  0.6621621621621622
+                    test:  0.6927374301675978 
+                     [60 33] 
+                     [22 62] 
+                     precision:  0.6526315789473685 recall:  0.7380952380952381
+                    - Epoch: 24 - Train_loss: 0.31225 - Train_acc: 0.87377 -  - Val_loss: 0.90103 - Val_acc: 0.48588  - T_Time: 10.58301 LR：0.0000500000
+                    EarlyStopping counter: 1 out of 25
+
+                    Validate:  0.48695652173913045 
+                     [54 13] 
+                     [46 28] 
+                     precision:  0.6829268292682927 recall:  0.3783783783783784
+                    test:  0.5972222222222221 
+                     [76 17] 
+                     [41 43] 
+                     precision:  0.7166666666666667 recall:  0.5119047619047619
+                    - Epoch: 25 - Train_loss: 0.39387 - Train_acc: 0.84579 -  - Val_loss: 1.04231 - Val_acc: 0.56220  - T_Time: 12.05018 LR：0.0000500000
+                    EarlyStopping counter: 2 out of 25
+
+                    Validate:  0.4424778761061947 
+                     [53 14] 
+                     [49 25] 
+                     precision:  0.6410256410256411 recall:  0.33783783783783783
+                    test:  0.5864661654135339 
+                     [83 10] 
+                     [45 39] 
+                     precision:  0.7959183673469388 recall:  0.4642857142857143
+                    - Epoch: 26 - Train_loss: 0.29578 - Train_acc: 0.87872 -  - Val_loss: 0.98022 - Val_acc: 0.58113  - T_Time: 10.82254 LR：0.0000500000
+                    EarlyStopping counter: 3 out of 25
+
+                    Validate:  0.5 
+                     [51 16] 
+                     [44 30] 
+                     precision:  0.6521739130434783 recall:  0.40540540540540543
+                    test:  0.5112781954887218 
+                     [78 15] 
+                     [50 34] 
+                     precision:  0.6938775510204082 recall:  0.40476190476190477
+                    - Epoch: 27 - Train_loss: 0.33242 - Train_acc: 0.86943 -  - Val_loss: 1.11841 - Val_acc: 0.66196  - T_Time: 11.62089 LR：0.0000500000
+                    EarlyStopping counter: 4 out of 25
+
+                    Validate:  0.5365853658536585 
+                     [51 16] 
+                     [41 33] 
+                     precision:  0.673469387755102 recall:  0.44594594594594594
+                    test:  0.6493506493506493 
+                     [73 20] 
+                     [34 50] 
+                     precision:  0.7142857142857143 recall:  0.5952380952380952
+                    - Epoch: 28 - Train_loss: 0.40434 - Train_acc: 0.83270 -  - Val_loss: 0.99689 - Val_acc: 0.60457  - T_Time: 11.53757 LR：0.0000500000
+                    EarlyStopping counter: 5 out of 25
+
+                    Validate:  0.6368715083798883 
+                     [19 48] 
+                     [17 57] 
+                     precision:  0.5428571428571428 recall:  0.7702702702702703
+                    test:  0.701923076923077 
+                     [42 51] 
+                     [11 73] 
+                     precision:  0.5887096774193549 recall:  0.8690476190476191
+                    - Epoch: 29 - Train_loss: 0.26744 - Train_acc: 0.89426 -  - Val_loss: 0.97215 - Val_acc: 0.53876  - T_Time: 10.43478 LR：0.0000500000
+                    EarlyStopping counter: 6 out of 25
+
+                    Validate:  0.6211180124223602 
+                     [30 37] 
+                     [24 50] 
+                     precision:  0.5747126436781609 recall:  0.6756756756756757
+                    test:  0.7157894736842104 
+                     [55 38] 
+                     [16 68] 
+                     precision:  0.6415094339622641 recall:  0.8095238095238095
+                    - Epoch: 30 - Train_loss: 0.22097 - Train_acc: 0.91920 -  - Val_loss: 0.81837 - Val_acc: 0.58894  - T_Time: 10.99410 LR：0.0000500000
+                    EarlyStopping counter: 7 out of 25
+
+                    Validate:  0.45217391304347826 
+                     [52 15] 
+                     [48 26] 
+                     precision:  0.6341463414634146 recall:  0.35135135135135137
+                    test:  0.5714285714285714 
+                     [77 16] 
+                     [44 40] 
+                     precision:  0.7142857142857143 recall:  0.47619047619047616
+                    - Epoch: 31 - Train_loss: 0.26255 - Train_acc: 0.88730 -  - Val_loss: 1.29786 - Val_acc: 0.54657  - T_Time: 10.67246 LR：0.0000500000
+                    EarlyStopping counter: 8 out of 25
+
+                    Validate:  0.3564356435643564 
+                     [58  9] 
+                     [56 18] 
+                     precision:  0.6666666666666666 recall:  0.24324324324324326
+                    test:  0.42975206611570244 
+                     [82 11] 
+                     [58 26] 
+                     precision:  0.7027027027027027 recall:  0.30952380952380953
+                    - Epoch: 32 - Train_loss: 0.48432 - Train_acc: 0.80825 -  - Val_loss: 1.13265 - Val_acc: 0.57332  - T_Time: 11.89668 LR：0.0000500000
+                    EarlyStopping counter: 9 out of 25
+
+                    Validate:  0.3636363636363637 
+                     [60  7] 
+                     [56 18] 
+                     precision:  0.72 recall:  0.24324324324324326
+                    test:  0.3620689655172414 
+                     [82 11] 
+                     [63 21] 
+                     precision:  0.65625 recall:  0.25
+                    - Epoch: 33 - Train_loss: 0.25344 - Train_acc: 0.90900 -  - Val_loss: 1.13538 - Val_acc: 0.61569  - T_Time: 10.26501 LR：0.0000500000
+                    EarlyStopping counter: 10 out of 25
+
+                    Validate:  0.5354330708661417 
+                     [48 19] 
+                     [40 34] 
+                     precision:  0.6415094339622641 recall:  0.4594594594594595
+                    test:  0.6357615894039734 
+                     [74 19] 
+                     [36 48] 
+                     precision:  0.7164179104477612 recall:  0.5714285714285714
+                    - Epoch: 34 - Train_loss: 0.24543 - Train_acc: 0.91204 -  - Val_loss: 1.26308 - Val_acc: 0.56220  - T_Time: 10.41505 LR：0.0000500000
+                    EarlyStopping counter: 11 out of 25
+
+                    Validate:  0.5555555555555555 
+                     [50 17] 
+                     [39 35] 
+                     precision:  0.6730769230769231 recall:  0.47297297297297297
+                    test:  0.5594405594405594 
+                     [74 19] 
+                     [44 40] 
+                     precision:  0.6779661016949152 recall:  0.47619047619047616
+                    - Epoch: 35 - Train_loss: 0.23041 - Train_acc: 0.91603 -  - Val_loss: 1.32774 - Val_acc: 0.60847  - T_Time: 10.81309 LR：0.0000050000
+                    EarlyStopping counter: 12 out of 25
+
+                    Validate:  0.5378151260504201 
+                     [54 13] 
+                     [42 32] 
+                     precision:  0.7111111111111111 recall:  0.43243243243243246
+                    test:  0.6174496644295303 
+                     [74 19] 
+                     [38 46] 
+                     precision:  0.7076923076923077 recall:  0.5476190476190477
+                    - Epoch: 36 - Train_loss: 0.32213 - Train_acc: 0.85975 -  - Val_loss: 1.12997 - Val_acc: 0.64694  - T_Time: 11.06977 LR：0.0000050000
+                    EarlyStopping counter: 13 out of 25
+
+                    Validate:  0.5 
+                     [51 16] 
+                     [44 30] 
+                     precision:  0.6521739130434783 recall:  0.40540540540540543
+                    test:  0.5633802816901408 
+                     [75 18] 
+                     [44 40] 
+                     precision:  0.6896551724137931 recall:  0.47619047619047616
+                    - Epoch: 37 - Train_loss: 0.22748 - Train_acc: 0.92716 -  - Val_loss: 1.31905 - Val_acc: 0.55829  - T_Time: 10.85703 LR：0.0000050000
+                    EarlyStopping counter: 14 out of 25
+
+                    Validate:  0.46017699115044247 
+                     [54 13] 
+                     [48 26] 
+                     precision:  0.6666666666666666 recall:  0.35135135135135137
+                    test:  0.6206896551724138 
+                     [77 16] 
+                     [39 45] 
+                     precision:  0.7377049180327869 recall:  0.5357142857142857
+                    - Epoch: 38 - Train_loss: 0.31816 - Train_acc: 0.87748 -  - Val_loss: 1.93536 - Val_acc: 0.45072  - T_Time: 11.21244 LR：0.0000050000
+                    EarlyStopping counter: 15 out of 25
+
+                    Validate:  0.4615384615384615 
+                     [51 16] 
+                     [47 27] 
+                     precision:  0.627906976744186 recall:  0.36486486486486486
+                    test:  0.6351351351351351 
+                     [76 17] 
+                     [37 47] 
+                     precision:  0.734375 recall:  0.5595238095238095
+                    - Epoch: 39 - Train_loss: 0.20771 - Train_acc: 0.93105 -  - Val_loss: 1.26240 - Val_acc: 0.58113  - T_Time: 10.25167 LR：0.0000050000
+                    EarlyStopping counter: 16 out of 25
+
+                    Validate:  0.4695652173913044 
+                     [53 14] 
+                     [47 27] 
+                     precision:  0.6585365853658537 recall:  0.36486486486486486
+                    test:  0.6133333333333334 
+                     [73 20] 
+                     [38 46] 
+                     precision:  0.696969696969697 recall:  0.5476190476190477
+                    - Epoch: 40 - Train_loss: 0.20216 - Train_acc: 0.92954 -  - Val_loss: 1.48289 - Val_acc: 0.51983  - T_Time: 10.55536 LR：0.0000050000
+                    EarlyStopping counter: 17 out of 25
+
+                    Validate:  0.47787610619469023 
+                     [55 12] 
+                     [47 27] 
+                     precision:  0.6923076923076923 recall:  0.36486486486486486
+                    test:  0.6315789473684211 
+                     [73 20] 
+                     [36 48] 
+                     precision:  0.7058823529411765 recall:  0.5714285714285714
+                    - Epoch: 41 - Train_loss: 0.42288 - Train_acc: 0.81721 -  - Val_loss: 0.96891 - Val_acc: 0.63131  - T_Time: 11.87811 LR：0.0000050000
+                    EarlyStopping counter: 18 out of 25
+
+                    Validate:  0.49572649572649563 
+                     [53 14] 
+                     [45 29] 
+                     precision:  0.6744186046511628 recall:  0.3918918918918919
+                    test:  0.6266666666666667 
+                     [74 19] 
+                     [37 47] 
+                     precision:  0.7121212121212122 recall:  0.5595238095238095
+                    - Epoch: 42 - Train_loss: 0.21046 - Train_acc: 0.93592 -  - Val_loss: 1.15398 - Val_acc: 0.59675  - T_Time: 10.23261 LR：0.0000050000
+                    EarlyStopping counter: 19 out of 25
+
+                    Validate:  0.47368421052631576 
+                     [54 13] 
+                     [47 27] 
+                     precision:  0.675 recall:  0.36486486486486486
+                    test:  0.6164383561643835 
+                     [76 17] 
+                     [39 45] 
+                     precision:  0.7258064516129032 recall:  0.5357142857142857
+                    - Epoch: 43 - Train_loss: 0.44549 - Train_acc: 0.80367 -  - Val_loss: 0.83135 - Val_acc: 0.69651  - T_Time: 12.17911 LR：0.0000050000
+                    EarlyStopping counter: 20 out of 25
+
+                    Validate:  0.48695652173913045 
+                     [54 13] 
+                     [46 28] 
+                     precision:  0.6829268292682927 recall:  0.3783783783783784
+                    test:  0.6486486486486486 
+                     [77 16] 
+                     [36 48] 
+                     precision:  0.75 recall:  0.5714285714285714
+                    - Epoch: 44 - Train_loss: 0.16571 - Train_acc: 0.95354 -  - Val_loss: 1.08211 - Val_acc: 0.59675  - T_Time: 10.77638 LR：0.0000050000
+                    EarlyStopping counter: 21 out of 25
+
+                    Validate:  0.49572649572649563 
+                     [53 14] 
+                     [45 29] 
+                     precision:  0.6744186046511628 recall:  0.3918918918918919
+                    test:  0.6580645161290323 
+                     [73 20] 
+                     [33 51] 
+                     precision:  0.7183098591549296 recall:  0.6071428571428571
+                    - Epoch: 45 - Train_loss: 0.31158 - Train_acc: 0.86108 -  - Val_loss: 1.28081 - Val_acc: 0.56220  - T_Time: 11.10568 LR：0.0000050000
+                    EarlyStopping counter: 22 out of 25
+
+                    Validate:  0.4958677685950413 
+                     [50 17] 
+                     [44 30] 
+                     precision:  0.6382978723404256 recall:  0.40540540540540543
+                    test:  0.6749999999999999 
+                     [71 22] 
+                     [30 54] 
+                     precision:  0.7105263157894737 recall:  0.6428571428571429
+                    - Epoch: 46 - Train_loss: 0.17200 - Train_acc: 0.94859 -  - Val_loss: 0.81599 - Val_acc: 0.65805  - T_Time: 10.40532 LR：0.0000005000
+                    EarlyStopping counter: 23 out of 25
+
+                    Validate:  0.4958677685950413 
+                     [50 17] 
+                     [44 30] 
+                     precision:  0.6382978723404256 recall:  0.40540540540540543
+                    test:  0.6666666666666667 
+                     [71 22] 
+                     [31 53] 
+                     precision:  0.7066666666666667 recall:  0.6309523809523809
+                    - Epoch: 47 - Train_loss: 0.29291 - Train_acc: 0.89802 -  - Val_loss: 1.13167 - Val_acc: 0.55439  - T_Time: 11.71435 LR：0.0000005000
+                    EarlyStopping counter: 24 out of 25
+
+                    Validate:  0.47058823529411764 
+                     [50 17] 
+                     [46 28] 
+                     precision:  0.6222222222222222 recall:  0.3783783783783784
+                    test:  0.6193548387096774 
+                     [70 23] 
+                     [36 48] 
+                     precision:  0.676056338028169 recall:  0.5714285714285714
+                    - Epoch: 48 - Train_loss: 0.20939 - Train_acc: 0.93125 -  - Val_loss: 1.33864 - Val_acc: 0.51202  - T_Time: 10.85809 LR：0.0000005000
+                    EarlyStopping counter: 25 out of 25
+
+                    Early stopping...
+          validate:  0.6883116883116882 
+           [40 27] 
+           [21 53]
+          test:  0.712041884816754 
+           [54 39] 
+           [16 68]
+          ==================================================
+          ==================================================
+          train_loss 0.3348374366760254           train_acc 0.8653124999999999 
+          validate_loss 0.6325013041496277           validate_acc 0.7088341346153846 
+          test_loss 0.6105384528636932           test_acc 0.6843909438775511 
+          test_precision 0.6355140186915887 
+          test_recall 0.8095238095238095
+          ==================================================
+          ==================================================
+          Fold 1 Training Finished
+          Fold 2 of 5 :
+                    Validate:  0.6728110599078341 
+                     [ 0 71] 
+                     [ 0 73] 
+                     precision:  0.5069444444444444 recall:  1.0
+                    test:  0.6436781609195402 
+                     [ 0 93] 
+                     [ 0 84] 
+                     precision:  0.4745762711864407 recall:  1.0
+                    - Epoch: 1 - Train_loss: 0.69257 - Train_acc: 0.54250 -  - Val_loss: 0.69205 - Val_acc: 0.53125  - T_Time: 12.70307 LR：0.0005000000
+                    -- -- The best model for validate (F1= .  0.6728110599078341 ) -- --
+                    --------------------------------------------------
+
+                    Validation  score to (inf --> -0.69204885).  Saving model ...
+                    --------------------------------------------------
+
+                    Validate:  0.6728110599078341 
+                     [ 0 71] 
+                     [ 0 73] 
+                     precision:  0.5069444444444444 recall:  1.0
+                    test:  0.6436781609195402 
+                     [ 0 93] 
+                     [ 0 84] 
+                     precision:  0.4745762711864407 recall:  1.0
+                    - Epoch: 2 - Train_loss: 0.68866 - Train_acc: 0.53219 -  - Val_loss: 0.69322 - Val_acc: 0.50391  - T_Time: 10.41400 LR：0.0005000000
+                    EarlyStopping counter: 1 out of 25
+
+                    Validate:  0.0 
+                     [71  0] 
+                     [73  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 3 - Train_loss: 0.67962 - Train_acc: 0.57546 -  - Val_loss: 0.69324 - Val_acc: 0.49609  - T_Time: 10.95544 LR：0.0005000000
+                    EarlyStopping counter: 2 out of 25
+
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+                    Validate:  0.0 
+                     [71  0] 
+                     [73  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 4 - Train_loss: 0.66789 - Train_acc: 0.60309 -  - Val_loss: 0.68910 - Val_acc: 0.55078  - T_Time: 11.12713 LR：0.0005000000
+                    --------------------------------------------------
+
+                    Validation  score to (-0.69204885 --> -0.68910310).  Saving model ...
+                    --------------------------------------------------
+
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+                    Validate:  0.0 
+                     [71  0] 
+                     [73  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 5 - Train_loss: 0.67000 - Train_acc: 0.57254 -  - Val_loss: 0.69373 - Val_acc: 0.49609  - T_Time: 11.46154 LR：0.0005000000
+                    EarlyStopping counter: 1 out of 25
+
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+                    Validate:  0.675925925925926 
+                     [ 1 70] 
+                     [ 0 73] 
+                     precision:  0.5104895104895105 recall:  1.0
+                    test:  0.6436781609195402 
+                     [ 0 93] 
+                     [ 0 84] 
+                     precision:  0.4745762711864407 recall:  1.0
+                    - Epoch: 6 - Train_loss: 0.67825 - Train_acc: 0.59658 -  - Val_loss: 0.69501 - Val_acc: 0.48047  - T_Time: 11.33062 LR：0.0005000000
+                    -- -- The best model for validate (F1= .  0.675925925925926 ) -- --
+                    EarlyStopping counter: 2 out of 25
+
+                    Validate:  0.0 
+                     [71  0] 
+                     [73  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 7 - Train_loss: 0.62604 - Train_acc: 0.64241 -  - Val_loss: 0.69614 - Val_acc: 0.49609  - T_Time: 10.87103 LR：0.0005000000
+                    EarlyStopping counter: 3 out of 25
+
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+                    Validate:  0.0 
+                     [71  0] 
+                     [73  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 8 - Train_loss: 0.64757 - Train_acc: 0.65184 -  - Val_loss: 0.71781 - Val_acc: 0.49609  - T_Time: 12.15784 LR：0.0005000000
+                    EarlyStopping counter: 4 out of 25
+
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+                    Validate:  0.0 
+                     [71  0] 
+                     [73  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 9 - Train_loss: 0.63061 - Train_acc: 0.64083 -  - Val_loss: 0.76468 - Val_acc: 0.44141  - T_Time: 10.78915 LR：0.0005000000
+                    EarlyStopping counter: 5 out of 25
+
+                    Validate:  0.0 
+                     [71  0] 
+                     [73  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 10 - Train_loss: 0.59001 - Train_acc: 0.68809 -  - Val_loss: 0.76990 - Val_acc: 0.52344  - T_Time: 10.05114 LR：0.0005000000
+                    EarlyStopping counter: 6 out of 25
+
+                    Validate:  0.0 
+                     [70  1] 
+                     [73  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 11 - Train_loss: 0.57083 - Train_acc: 0.69660 -  - Val_loss: 0.75876 - Val_acc: 0.51953  - T_Time: 10.39036 LR：0.0005000000
+                    EarlyStopping counter: 7 out of 25
+
+                    Validate:  0.0 
+                     [71  0] 
+                     [73  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 12 - Train_loss: 0.54642 - Train_acc: 0.74020 -  - Val_loss: 0.82827 - Val_acc: 0.46875  - T_Time: 10.56277 LR：0.0005000000
+                    EarlyStopping counter: 8 out of 25
+
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+                    Validate:  0.027027027027027025 
+                     [71  0] 
+                     [72  1] 
+                     precision:  1.0 recall:  0.0136986301369863
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 13 - Train_loss: 0.55580 - Train_acc: 0.70736 -  - Val_loss: 2.87766 - Val_acc: 0.44531  - T_Time: 10.99174 LR：0.0005000000
+                    EarlyStopping counter: 9 out of 25
+
+                    Validate:  0.22727272727272727 
+                     [66  5] 
+                     [63 10] 
+                     precision:  0.6666666666666666 recall:  0.136986301369863
+                    test:  0.15053763440860213 
+                     [91  2] 
+                     [77  7] 
+                     precision:  0.7777777777777778 recall:  0.08333333333333333
+                    - Epoch: 14 - Train_loss: 0.53632 - Train_acc: 0.73715 -  - Val_loss: 1.02382 - Val_acc: 0.51562  - T_Time: 10.42525 LR：0.0005000000
+                    EarlyStopping counter: 10 out of 25
+
+                    Validate:  0.4247787610619469 
+                     [55 16] 
+                     [49 24] 
+                     precision:  0.6 recall:  0.3287671232876712
+                    test:  0.4848484848484849 
+                     [77 16] 
+                     [52 32] 
+                     precision:  0.6666666666666666 recall:  0.38095238095238093
+                    - Epoch: 15 - Train_loss: 0.51145 - Train_acc: 0.73728 -  - Val_loss: 0.73404 - Val_acc: 0.55469  - T_Time: 10.51585 LR：0.0005000000
+                    EarlyStopping counter: 11 out of 25
+
+                    Validate:  0.606896551724138 
+                     [43 28] 
+                     [29 44] 
+                     precision:  0.6111111111111112 recall:  0.6027397260273972
+                    test:  0.6666666666666666 
+                     [63 30] 
+                     [27 57] 
+                     precision:  0.6551724137931034 recall:  0.6785714285714286
+                    - Epoch: 16 - Train_loss: 0.49011 - Train_acc: 0.77445 -  - Val_loss: 0.68295 - Val_acc: 0.66797  - T_Time: 10.44601 LR：0.0000500000
+                    --------------------------------------------------
+
+                    Validation  score to (-0.68910310 --> -0.68295309).  Saving model ...
+                    --------------------------------------------------
+
+                    Validate:  0.606896551724138 
+                     [43 28] 
+                     [29 44] 
+                     precision:  0.6111111111111112 recall:  0.6027397260273972
+                    test:  0.6625766871165644 
+                     [68 25] 
+                     [30 54] 
+                     precision:  0.6835443037974683 recall:  0.6428571428571429
+                    - Epoch: 17 - Train_loss: 0.44585 - Train_acc: 0.79878 -  - Val_loss: 1.05143 - Val_acc: 0.53125  - T_Time: 10.36765 LR：0.0000500000
+                    EarlyStopping counter: 1 out of 25
+
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+                    Validate:  0.453781512605042 
+                     [52 19] 
+                     [46 27] 
+                     precision:  0.5869565217391305 recall:  0.3698630136986301
+                    test:  0.48780487804878053 
+                     [84  9] 
+                     [54 30] 
+                     precision:  0.7692307692307693 recall:  0.35714285714285715
+                    - Epoch: 18 - Train_loss: 0.48331 - Train_acc: 0.76603 -  - Val_loss: 1.07835 - Val_acc: 0.66406  - T_Time: 11.50506 LR：0.0000500000
+                    EarlyStopping counter: 2 out of 25
+
+                    Validate:  0.47863247863247854 
+                     [55 16] 
+                     [45 28] 
+                     precision:  0.6363636363636364 recall:  0.3835616438356164
+                    test:  0.48387096774193544 
+                     [83 10] 
+                     [54 30] 
+                     precision:  0.75 recall:  0.35714285714285715
+                    - Epoch: 19 - Train_loss: 0.42803 - Train_acc: 0.80263 -  - Val_loss: 1.29304 - Val_acc: 0.51562  - T_Time: 10.27713 LR：0.0000500000
+                    EarlyStopping counter: 3 out of 25
+
+                    Validate:  0.5299145299145299 
+                     [58 13] 
+                     [42 31] 
+                     precision:  0.7045454545454546 recall:  0.4246575342465753
+                    test:  0.5496183206106869 
+                     [82 11] 
+                     [48 36] 
+                     precision:  0.7659574468085106 recall:  0.42857142857142855
+                    - Epoch: 20 - Train_loss: 0.38095 - Train_acc: 0.83080 -  - Val_loss: 1.17526 - Val_acc: 0.56641  - T_Time: 10.53555 LR：0.0000500000
+                    EarlyStopping counter: 4 out of 25
+
+                    Validate:  0.5225225225225225 
+                     [62  9] 
+                     [44 29] 
+                     precision:  0.7631578947368421 recall:  0.3972602739726027
+                    test:  0.48780487804878053 
+                     [84  9] 
+                     [54 30] 
+                     precision:  0.7692307692307693 recall:  0.35714285714285715
+                    - Epoch: 21 - Train_loss: 0.36756 - Train_acc: 0.83589 -  - Val_loss: 1.08896 - Val_acc: 0.62891  - T_Time: 10.41268 LR：0.0000500000
+                    EarlyStopping counter: 5 out of 25
+
+                    Validate:  0.5045045045045046 
+                     [61 10] 
+                     [45 28] 
+                     precision:  0.7368421052631579 recall:  0.3835616438356164
+                    test:  0.4482758620689655 
+                     [87  6] 
+                     [58 26] 
+                     precision:  0.8125 recall:  0.30952380952380953
+                    - Epoch: 22 - Train_loss: 0.44058 - Train_acc: 0.80345 -  - Val_loss: 0.98307 - Val_acc: 0.64844  - T_Time: 11.81650 LR：0.0000500000
+                    EarlyStopping counter: 6 out of 25
+
+                    Validate:  0.4672897196261682 
+                     [62  9] 
+                     [48 25] 
+                     precision:  0.7352941176470589 recall:  0.3424657534246575
+                    test:  0.417391304347826 
+                     [86  7] 
+                     [60 24] 
+                     precision:  0.7741935483870968 recall:  0.2857142857142857
+                    - Epoch: 23 - Train_loss: 0.37638 - Train_acc: 0.84134 -  - Val_loss: 0.90465 - Val_acc: 0.66797  - T_Time: 10.16097 LR：0.0000500000
+                    EarlyStopping counter: 7 out of 25
+
+                    Validate:  0.404040404040404 
+                     [65  6] 
+                     [53 20] 
+                     precision:  0.7692307692307693 recall:  0.273972602739726
+                    test:  0.3333333333333333 
+                     [87  6] 
+                     [66 18] 
+                     precision:  0.75 recall:  0.21428571428571427
+                    - Epoch: 24 - Train_loss: 0.31357 - Train_acc: 0.87813 -  - Val_loss: 1.06160 - Val_acc: 0.68750  - T_Time: 10.47610 LR：0.0000500000
+                    EarlyStopping counter: 8 out of 25
+
+                    Validate:  0.36363636363636365 
+                     [63  8] 
+                     [55 18] 
+                     precision:  0.6923076923076923 recall:  0.2465753424657534
+                    test:  0.2692307692307692 
+                     [87  6] 
+                     [70 14] 
+                     precision:  0.7 recall:  0.16666666666666666
+                    - Epoch: 25 - Train_loss: 0.30323 - Train_acc: 0.87929 -  - Val_loss: 1.05875 - Val_acc: 0.53516  - T_Time: 9.98535 LR：0.0000500000
+                    EarlyStopping counter: 9 out of 25
+
+                    Validate:  0.3191489361702127 
+                     [65  6] 
+                     [58 15] 
+                     precision:  0.7142857142857143 recall:  0.2054794520547945
+                    test:  0.33027522935779813 
+                     [86  7] 
+                     [66 18] 
+                     precision:  0.72 recall:  0.21428571428571427
+                    - Epoch: 26 - Train_loss: 0.29100 - Train_acc: 0.88925 -  - Val_loss: 1.44704 - Val_acc: 0.58594  - T_Time: 10.41803 LR：0.0000500000
+                    EarlyStopping counter: 10 out of 25
+
+                    Validate:  0.3368421052631579 
+                     [65  6] 
+                     [57 16] 
+                     precision:  0.7272727272727273 recall:  0.2191780821917808
+                    test:  0.36036036036036034 
+                     [86  7] 
+                     [64 20] 
+                     precision:  0.7407407407407407 recall:  0.23809523809523808
+                    - Epoch: 27 - Train_loss: 0.37170 - Train_acc: 0.86432 -  - Val_loss: 1.62822 - Val_acc: 0.53516  - T_Time: 10.87895 LR：0.0000500000
+                    EarlyStopping counter: 11 out of 25
+
+                    Validate:  0.3838383838383838 
+                     [64  7] 
+                     [54 19] 
+                     precision:  0.7307692307692307 recall:  0.2602739726027397
+                    test:  0.4406779661016949 
+                     [85  8] 
+                     [58 26] 
+                     precision:  0.7647058823529411 recall:  0.30952380952380953
+                    - Epoch: 28 - Train_loss: 0.25448 - Train_acc: 0.90558 -  - Val_loss: 1.20660 - Val_acc: 0.59766  - T_Time: 10.74874 LR：0.0000050000
+                    EarlyStopping counter: 12 out of 25
+
+                    Validate:  0.4423076923076923 
+                     [63  8] 
+                     [50 23] 
+                     precision:  0.7419354838709677 recall:  0.3150684931506849
+                    test:  0.47933884297520657 
+                     [85  8] 
+                     [55 29] 
+                     precision:  0.7837837837837838 recall:  0.34523809523809523
+                    - Epoch: 29 - Train_loss: 0.35146 - Train_acc: 0.85884 -  - Val_loss: 1.24911 - Val_acc: 0.60938  - T_Time: 10.77762 LR：0.0000050000
+                    EarlyStopping counter: 13 out of 25
+
+                    Validate:  0.38 
+                     [63  8] 
+                     [54 19] 
+                     precision:  0.7037037037037037 recall:  0.2602739726027397
+                    test:  0.2745098039215686 
+                     [89  4] 
+                     [70 14] 
+                     precision:  0.7777777777777778 recall:  0.16666666666666666
+                    - Epoch: 30 - Train_loss: 0.42776 - Train_acc: 0.82314 -  - Val_loss: 1.26165 - Val_acc: 0.56641  - T_Time: 12.22306 LR：0.0000050000
+                    EarlyStopping counter: 14 out of 25
+
+                    Validate:  0.4117647058823529 
+                     [63  8] 
+                     [52 21] 
+                     precision:  0.7241379310344828 recall:  0.2876712328767123
+                    test:  0.3893805309734514 
+                     [86  7] 
+                     [62 22] 
+                     precision:  0.7586206896551724 recall:  0.2619047619047619
+                    - Epoch: 31 - Train_loss: 0.28042 - Train_acc: 0.89233 -  - Val_loss: 1.40671 - Val_acc: 0.54688  - T_Time: 10.49490 LR：0.0000050000
+                    EarlyStopping counter: 15 out of 25
+
+                    Validate:  0.44859813084112143 
+                     [61 10] 
+                     [49 24] 
+                     precision:  0.7058823529411765 recall:  0.3287671232876712
+                    test:  0.5555555555555556 
+                     [86  7] 
+                     [49 35] 
+                     precision:  0.8333333333333334 recall:  0.4166666666666667
+                    - Epoch: 32 - Train_loss: 0.23943 - Train_acc: 0.91725 -  - Val_loss: 1.25284 - Val_acc: 0.55078  - T_Time: 11.64809 LR：0.0000050000
+                    EarlyStopping counter: 16 out of 25
+
+                    Validate:  0.4313725490196078 
+                     [64  7] 
+                     [51 22] 
+                     precision:  0.7586206896551724 recall:  0.3013698630136986
+                    test:  0.34545454545454546 
+                     [86  7] 
+                     [65 19] 
+                     precision:  0.7307692307692307 recall:  0.2261904761904762
+                    - Epoch: 33 - Train_loss: 0.34075 - Train_acc: 0.86462 -  - Val_loss: 1.66803 - Val_acc: 0.55469  - T_Time: 11.45401 LR：0.0000050000
+                    EarlyStopping counter: 17 out of 25
+
+                    Validate:  0.404040404040404 
+                     [65  6] 
+                     [53 20] 
+                     precision:  0.7692307692307693 recall:  0.273972602739726
+                    test:  0.375 
+                     [86  7] 
+                     [63 21] 
+                     precision:  0.75 recall:  0.25
+                    - Epoch: 34 - Train_loss: 0.25025 - Train_acc: 0.91412 -  - Val_loss: 1.25410 - Val_acc: 0.60547  - T_Time: 10.52604 LR：0.0000050000
+                    EarlyStopping counter: 18 out of 25
+
+                    Validate:  0.35416666666666663 
+                     [65  6] 
+                     [56 17] 
+                     precision:  0.7391304347826086 recall:  0.2328767123287671
+                    test:  0.2912621359223301 
+                     [89  4] 
+                     [69 15] 
+                     precision:  0.7894736842105263 recall:  0.17857142857142858
+                    - Epoch: 35 - Train_loss: 0.42820 - Train_acc: 0.83117 -  - Val_loss: 1.59458 - Val_acc: 0.59375  - T_Time: 11.28134 LR：0.0000050000
+                    EarlyStopping counter: 19 out of 25
+
+                    Validate:  0.3368421052631579 
+                     [65  6] 
+                     [57 16] 
+                     precision:  0.7272727272727273 recall:  0.2191780821917808
+                    test:  0.3177570093457944 
+                     [87  6] 
+                     [67 17] 
+                     precision:  0.7391304347826086 recall:  0.20238095238095238
+                    - Epoch: 36 - Train_loss: 0.25626 - Train_acc: 0.91362 -  - Val_loss: 1.87302 - Val_acc: 0.48047  - T_Time: 9.99317 LR：0.0000050000
+                    EarlyStopping counter: 20 out of 25
+
+                    Validate:  0.4081632653061224 
+                     [66  5] 
+                     [53 20] 
+                     precision:  0.8 recall:  0.273972602739726
+                    test:  0.36363636363636365 
+                     [87  6] 
+                     [64 20] 
+                     precision:  0.7692307692307693 recall:  0.23809523809523808
+                    - Epoch: 37 - Train_loss: 0.26200 - Train_acc: 0.89917 -  - Val_loss: 1.26804 - Val_acc: 0.63672  - T_Time: 10.33484 LR：0.0000050000
+                    EarlyStopping counter: 21 out of 25
+
+                    Validate:  0.4242424242424242 
+                     [66  5] 
+                     [52 21] 
+                     precision:  0.8076923076923077 recall:  0.2876712328767123
+                    test:  0.4444444444444445 
+                     [86  7] 
+                     [58 26] 
+                     precision:  0.7878787878787878 recall:  0.30952380952380953
+                    - Epoch: 38 - Train_loss: 0.24390 - Train_acc: 0.90878 -  - Val_loss: 1.26076 - Val_acc: 0.66797  - T_Time: 10.34702 LR：0.0000050000
+                    EarlyStopping counter: 22 out of 25
+
+                    Validate:  0.45098039215686275 
+                     [65  6] 
+                     [50 23] 
+                     precision:  0.7931034482758621 recall:  0.3150684931506849
+                    test:  0.4444444444444445 
+                     [86  7] 
+                     [58 26] 
+                     precision:  0.7878787878787878 recall:  0.30952380952380953
+                    - Epoch: 39 - Train_loss: 0.33922 - Train_acc: 0.86262 -  - Val_loss: 1.59650 - Val_acc: 0.56250  - T_Time: 11.35003 LR：0.0000005000
+                    EarlyStopping counter: 23 out of 25
+
+                    Validate:  0.45098039215686275 
+                     [65  6] 
+                     [50 23] 
+                     precision:  0.7931034482758621 recall:  0.3150684931506849
+                    test:  0.48333333333333345 
+                     [86  7] 
+                     [55 29] 
+                     precision:  0.8055555555555556 recall:  0.34523809523809523
+                    - Epoch: 40 - Train_loss: 0.26750 - Train_acc: 0.89316 -  - Val_loss: 1.48917 - Val_acc: 0.53516  - T_Time: 10.52512 LR：0.0000005000
+                    EarlyStopping counter: 24 out of 25
+
+                    Validate:  0.45098039215686275 
+                     [65  6] 
+                     [50 23] 
+                     precision:  0.7931034482758621 recall:  0.3150684931506849
+                    test:  0.4918032786885246 
+                     [85  8] 
+                     [54 30] 
+                     precision:  0.7894736842105263 recall:  0.35714285714285715
+                    - Epoch: 41 - Train_loss: 0.21561 - Train_acc: 0.93031 -  - Val_loss: 1.12248 - Val_acc: 0.56250  - T_Time: 10.70460 LR：0.0000005000
+                    EarlyStopping counter: 25 out of 25
+
+                    Early stopping...
+          validate:  0.606896551724138 
+           [43 28] 
+           [29 44]
+          test:  0.6666666666666666 
+           [63 30] 
+           [27 57]
+          ==================================================
+          ==================================================
+          train_loss 0.45319697856903074           train_acc 0.7896875 
+          validate_loss 1.0224177539348602           validate_acc 0.5859375 
+          test_loss 0.583134651184082           test_acc 0.6891741071428572 
+          test_precision 0.6551724137931034 
+          test_recall 0.6785714285714286
+          ==================================================
+          ==================================================
+          Fold 2 Training Finished
+          Fold 3 of 5 :
+                    Validate:  0.0 
+                     [74  0] 
+                     [79  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 1 - Train_loss: 0.69755 - Train_acc: 0.48601 -  - Val_loss: 0.69364 - Val_acc: 0.46609  - T_Time: 12.45027 LR：0.0005000000
+                    --------------------------------------------------
+
+                    Validation  score to (inf --> -0.69364285).  Saving model ...
+                    --------------------------------------------------
+
+                    Validate:  0.0 
+                     [74  0] 
+                     [79  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 2 - Train_loss: 0.69243 - Train_acc: 0.49185 -  - Val_loss: 0.69380 - Val_acc: 0.46609  - T_Time: 9.97452 LR：0.0005000000
+                    EarlyStopping counter: 1 out of 25
+
+                    Validate:  0.6810344827586208 
+                     [ 0 74] 
+                     [ 0 79] 
+                     precision:  0.5163398692810458 recall:  1.0
+                    test:  0.6436781609195402 
+                     [ 0 93] 
+                     [ 0 84] 
+                     precision:  0.4745762711864407 recall:  1.0
+                    - Epoch: 3 - Train_loss: 0.68322 - Train_acc: 0.57795 -  - Val_loss: 0.69282 - Val_acc: 0.51781  - T_Time: 10.45859 LR：0.0005000000
+                    -- -- The best model for validate (F1= .  0.6810344827586208 ) -- --
+                    --------------------------------------------------
+
+                    Validation  score to (-0.69364285 --> -0.69282314).  Saving model ...
+                    --------------------------------------------------
+
+                    Validate:  0.6810344827586208 
+                     [ 0 74] 
+                     [ 0 79] 
+                     precision:  0.5163398692810458 recall:  1.0
+                    test:  0.6436781609195402 
+                     [ 0 93] 
+                     [ 0 84] 
+                     precision:  0.4745762711864407 recall:  1.0
+                    - Epoch: 4 - Train_loss: 0.68127 - Train_acc: 0.53281 -  - Val_loss: 0.69295 - Val_acc: 0.51781  - T_Time: 10.52926 LR：0.0005000000
+                    EarlyStopping counter: 1 out of 25
+
+                    Validate:  0.0 
+                     [74  0] 
+                     [79  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 5 - Train_loss: 0.66630 - Train_acc: 0.59607 -  - Val_loss: 0.69430 - Val_acc: 0.49828  - T_Time: 10.40262 LR：0.0005000000
+                    EarlyStopping counter: 2 out of 25
+
+                    Validate:  0.0 
+                     [74  0] 
+                     [79  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 6 - Train_loss: 0.63902 - Train_acc: 0.63908 -  - Val_loss: 0.69820 - Val_acc: 0.49828  - T_Time: 10.57938 LR：0.0005000000
+                    EarlyStopping counter: 3 out of 25
+
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+                    Validate:  0.0 
+                     [74  0] 
+                     [79  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 7 - Train_loss: 0.66274 - Train_acc: 0.63050 -  - Val_loss: 0.71864 - Val_acc: 0.46609  - T_Time: 12.70607 LR：0.0005000000
+                    EarlyStopping counter: 4 out of 25
+
+                    Validate:  0.0 
+                     [74  0] 
+                     [79  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [92  1] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 8 - Train_loss: 0.61841 - Train_acc: 0.65300 -  - Val_loss: 0.68477 - Val_acc: 0.46609  - T_Time: 10.21603 LR：0.0005000000
+                    --------------------------------------------------
+
+                    Validation  score to (-0.69282314 --> -0.68476596).  Saving model ...
+                    --------------------------------------------------
+
+                    Validate:  0.6842105263157895 
+                     [ 3 71] 
+                     [ 1 78] 
+                     precision:  0.5234899328859061 recall:  0.9873417721518988
+                    test:  0.6303501945525292 
+                     [ 1 92] 
+                     [ 3 81] 
+                     precision:  0.4682080924855491 recall:  0.9642857142857143
+                    - Epoch: 9 - Train_loss: 0.57780 - Train_acc: 0.68906 -  - Val_loss: 0.69300 - Val_acc: 0.49344  - T_Time: 10.31842 LR：0.0005000000
+                    -- -- The best model for validate (F1= .  0.6842105263157895 ) -- --
+                    EarlyStopping counter: 1 out of 25
+
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+                    Validate:  0.07058823529411765 
+                     [71  3] 
+                     [76  3] 
+                     precision:  0.5 recall:  0.0379746835443038
+                    test:  0.04545454545454545 
+                     [91  2] 
+                     [82  2] 
+                     precision:  0.5 recall:  0.023809523809523808
+                    - Epoch: 10 - Train_loss: 0.67638 - Train_acc: 0.62174 -  - Val_loss: 0.70513 - Val_acc: 0.43391  - T_Time: 11.96412 LR：0.0005000000
+                    EarlyStopping counter: 2 out of 25
+
+                    Validate:  0.6839826839826839 
+                     [ 1 73] 
+                     [ 0 79] 
+                     precision:  0.5197368421052632 recall:  1.0
+                    test:  0.6436781609195402 
+                     [ 0 93] 
+                     [ 0 84] 
+                     precision:  0.4745762711864407 recall:  1.0
+                    - Epoch: 11 - Train_loss: 0.60645 - Train_acc: 0.66406 -  - Val_loss: 0.81306 - Val_acc: 0.42516  - T_Time: 10.55534 LR：0.0005000000
+                    EarlyStopping counter: 3 out of 25
+
+                    Validate:  0.6960352422907489 
+                     [ 5 69] 
+                     [ 0 79] 
+                     precision:  0.5337837837837838 recall:  1.0
+                    test:  0.6431372549019607 
+                     [ 4 89] 
+                     [ 2 82] 
+                     precision:  0.47953216374269003 recall:  0.9761904761904762
+                    - Epoch: 12 - Train_loss: 0.56422 - Train_acc: 0.73125 -  - Val_loss: 0.67318 - Val_acc: 0.55344  - T_Time: 10.60487 LR：0.0005000000
+                    -- -- The best model for validate (F1= .  0.6960352422907489 ) -- --
+                    --------------------------------------------------
+
+                    Validation  score to (-0.68476596 --> -0.67318133).  Saving model ...
+                    --------------------------------------------------
+
+                    Validate:  0.024999999999999998 
+                     [74  0] 
+                     [78  1] 
+                     precision:  1.0 recall:  0.012658227848101266
+                    test:  0.0 
+                     [92  1] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 13 - Train_loss: 0.59882 - Train_acc: 0.67680 -  - Val_loss: 1.64142 - Val_acc: 0.50219  - T_Time: 11.34258 LR：0.0005000000
+                    EarlyStopping counter: 1 out of 25
+
+                    Validate:  0.0 
+                     [74  0] 
+                     [79  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 14 - Train_loss: 0.55290 - Train_acc: 0.70277 -  - Val_loss: 1.22875 - Val_acc: 0.56266  - T_Time: 10.11810 LR：0.0005000000
+                    EarlyStopping counter: 2 out of 25
+
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+                    Validate:  0.0 
+                     [74  0] 
+                     [79  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 15 - Train_loss: 0.58688 - Train_acc: 0.69014 -  - Val_loss: 1.37012 - Val_acc: 0.56266  - T_Time: 11.28043 LR：0.0005000000
+                    EarlyStopping counter: 3 out of 25
+
+                    Validate:  0.23913043478260868 
+                     [72  2] 
+                     [68 11] 
+                     precision:  0.8461538461538461 recall:  0.13924050632911392
+                    test:  0.1836734693877551 
+                     [88  5] 
+                     [75  9] 
+                     precision:  0.6428571428571429 recall:  0.10714285714285714
+                    - Epoch: 16 - Train_loss: 0.53340 - Train_acc: 0.74844 -  - Val_loss: 0.84229 - Val_acc: 0.59781  - T_Time: 10.42315 LR：0.0005000000
+                    EarlyStopping counter: 4 out of 25
+
+                    Validate:  0.5 
+                     [66  8] 
+                     [50 29] 
+                     precision:  0.7837837837837838 recall:  0.3670886075949367
+                    test:  0.44628099173553715 
+                     [83 10] 
+                     [57 27] 
+                     precision:  0.7297297297297297 recall:  0.32142857142857145
+                    - Epoch: 17 - Train_loss: 0.50522 - Train_acc: 0.75352 -  - Val_loss: 0.74076 - Val_acc: 0.66078  - T_Time: 11.12973 LR：0.0005000000
+                    EarlyStopping counter: 5 out of 25
+
+                    Validate:  0.5931034482758619 
+                     [51 23] 
+                     [36 43] 
+                     precision:  0.6515151515151515 recall:  0.5443037974683544
+                    test:  0.496551724137931 
+                     [68 25] 
+                     [48 36] 
+                     precision:  0.5901639344262295 recall:  0.42857142857142855
+                    - Epoch: 18 - Train_loss: 0.49351 - Train_acc: 0.75852 -  - Val_loss: 0.74655 - Val_acc: 0.67297  - T_Time: 10.74324 LR：0.0005000000
+                    EarlyStopping counter: 6 out of 25
+
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+                    Validate:  0.6710526315789473 
+                     [52 22] 
+                     [28 51] 
+                     precision:  0.6986301369863014 recall:  0.6455696202531646
+                    test:  0.6024096385542169 
+                     [61 32] 
+                     [34 50] 
+                     precision:  0.6097560975609756 recall:  0.5952380952380952
+                    - Epoch: 19 - Train_loss: 0.55191 - Train_acc: 0.73750 -  - Val_loss: 0.68287 - Val_acc: 0.64375  - T_Time: 11.26469 LR：0.0005000000
+                    EarlyStopping counter: 7 out of 25
+
+                    Validate:  0.7309644670050761 
+                     [28 46] 
+                     [ 7 72] 
+                     precision:  0.6101694915254238 recall:  0.9113924050632911
+                    test:  0.647887323943662 
+                     [33 60] 
+                     [15 69] 
+                     precision:  0.5348837209302325 recall:  0.8214285714285714
+                    - Epoch: 20 - Train_loss: 0.55072 - Train_acc: 0.75434 -  - Val_loss: 0.62177 - Val_acc: 0.63203  - T_Time: 11.37194 LR：0.0005000000
+                    -- -- The best model for validate (F1= .  0.7309644670050761 ) -- --
+                    --------------------------------------------------
+
+                    Validation  score to (-0.67318133 --> -0.62177411).  Saving model ...
+                    --------------------------------------------------
+
+                    Validate:  0.625 
+                     [65  9] 
+                     [39 40] 
+                     precision:  0.8163265306122449 recall:  0.5063291139240507
+                    test:  0.5179856115107914 
+                     [74 19] 
+                     [48 36] 
+                     precision:  0.6545454545454545 recall:  0.42857142857142855
+                    - Epoch: 21 - Train_loss: 0.50348 - Train_acc: 0.78202 -  - Val_loss: 0.66537 - Val_acc: 0.68375  - T_Time: 10.49651 LR：0.0005000000
+                    EarlyStopping counter: 1 out of 25
+
+                    Validate:  0.5797101449275363 
+                     [55 19] 
+                     [39 40] 
+                     precision:  0.6779661016949152 recall:  0.5063291139240507
+                    test:  0.5714285714285715 
+                     [67 26] 
+                     [40 44] 
+                     precision:  0.6285714285714286 recall:  0.5238095238095238
+                    - Epoch: 22 - Train_loss: 0.47051 - Train_acc: 0.75788 -  - Val_loss: 0.75517 - Val_acc: 0.59641  - T_Time: 10.55830 LR：0.0005000000
+                    EarlyStopping counter: 2 out of 25
+
+                    Validate:  0.38461538461538464 
+                     [69  5] 
+                     [59 20] 
+                     precision:  0.8 recall:  0.25316455696202533
+                    test:  0.36697247706422015 
+                     [88  5] 
+                     [64 20] 
+                     precision:  0.8 recall:  0.23809523809523808
+                    - Epoch: 23 - Train_loss: 0.42548 - Train_acc: 0.79423 -  - Val_loss: 1.19335 - Val_acc: 0.54078  - T_Time: 11.03324 LR：0.0005000000
+                    EarlyStopping counter: 3 out of 25
+
+                    Validate:  0.11904761904761907 
+                     [74  0] 
+                     [74  5] 
+                     precision:  1.0 recall:  0.06329113924050633
+                    test:  0.06666666666666667 
+                     [90  3] 
+                     [81  3] 
+                     precision:  0.5 recall:  0.03571428571428571
+                    - Epoch: 24 - Train_loss: 0.46343 - Train_acc: 0.80518 -  - Val_loss: 1.06952 - Val_acc: 0.50172  - T_Time: 10.86816 LR：0.0005000000
+                    EarlyStopping counter: 4 out of 25
+
+                    Validate:  0.7046632124352331 
+                     [28 46] 
+                     [11 68] 
+                     precision:  0.5964912280701754 recall:  0.8607594936708861
+                    test:  0.6262626262626264 
+                     [41 52] 
+                     [22 62] 
+                     precision:  0.543859649122807 recall:  0.7380952380952381
+                    - Epoch: 25 - Train_loss: 0.51129 - Train_acc: 0.74347 -  - Val_loss: 0.63688 - Val_acc: 0.68078  - T_Time: 10.93497 LR：0.0005000000
+                    EarlyStopping counter: 5 out of 25
+
+                    Validate:  0.5 
+                     [72  2] 
+                     [52 27] 
+                     precision:  0.9310344827586207 recall:  0.34177215189873417
+                    test:  0.3684210526315789 
+                     [84  9] 
+                     [63 21] 
+                     precision:  0.7 recall:  0.25
+                    - Epoch: 26 - Train_loss: 0.49866 - Train_acc: 0.77006 -  - Val_loss: 0.74147 - Val_acc: 0.62813  - T_Time: 11.57967 LR：0.0005000000
+                    EarlyStopping counter: 6 out of 25
+
+                    Validate:  0.024999999999999998 
+                     [74  0] 
+                     [78  1] 
+                     precision:  1.0 recall:  0.012658227848101266
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 27 - Train_loss: 0.46538 - Train_acc: 0.79816 -  - Val_loss: 1.18748 - Val_acc: 0.47000  - T_Time: 11.44619 LR：0.0005000000
+                    EarlyStopping counter: 7 out of 25
+
+                    Validate:  0.5972222222222222 
+                     [52 22] 
+                     [36 43] 
+                     precision:  0.6615384615384615 recall:  0.5443037974683544
+                    test:  0.5125 
+                     [58 35] 
+                     [43 41] 
+                     precision:  0.5394736842105263 recall:  0.4880952380952381
+                    - Epoch: 28 - Train_loss: 0.44670 - Train_acc: 0.79705 -  - Val_loss: 0.64777 - Val_acc: 0.61250  - T_Time: 10.66383 LR：0.0005000000
+                    EarlyStopping counter: 8 out of 25
+
+                    Validate:  0.53125 
+                     [59 15] 
+                     [45 34] 
+                     precision:  0.6938775510204082 recall:  0.43037974683544306
+                    test:  0.4427480916030534 
+                     [75 18] 
+                     [55 29] 
+                     precision:  0.6170212765957447 recall:  0.34523809523809523
+                    - Epoch: 29 - Train_loss: 0.39544 - Train_acc: 0.83765 -  - Val_loss: 0.73855 - Val_acc: 0.60469  - T_Time: 10.63744 LR：0.0005000000
+                    EarlyStopping counter: 9 out of 25
+
+                    Validate:  0.6516853932584269 
+                     [33 41] 
+                     [21 58] 
+                     precision:  0.5858585858585859 recall:  0.7341772151898734
+                    test:  0.5948717948717949 
+                     [40 53] 
+                     [26 58] 
+                     precision:  0.5225225225225225 recall:  0.6904761904761905
+                    - Epoch: 30 - Train_loss: 0.33067 - Train_acc: 0.85800 -  - Val_loss: 0.85019 - Val_acc: 0.58078  - T_Time: 10.61441 LR：0.0005000000
+                    EarlyStopping counter: 10 out of 25
+
+                    Validate:  0.3738317757009346 
+                     [66  8] 
+                     [59 20] 
+                     precision:  0.7142857142857143 recall:  0.25316455696202533
+                    test:  0.3114754098360656 
+                     [74 19] 
+                     [65 19] 
+                     precision:  0.5 recall:  0.2261904761904762
+                    - Epoch: 31 - Train_loss: 0.30855 - Train_acc: 0.87333 -  - Val_loss: 1.78155 - Val_acc: 0.56125  - T_Time: 10.29335 LR：0.0005000000
+                    EarlyStopping counter: 11 out of 25
+
+                    Validate:  0.45614035087719296 
+                     [65  9] 
+                     [53 26] 
+                     precision:  0.7428571428571429 recall:  0.3291139240506329
+                    test:  0.3969465648854962 
+                     [72 21] 
+                     [58 26] 
+                     precision:  0.5531914893617021 recall:  0.30952380952380953
+                    - Epoch: 32 - Train_loss: 0.36799 - Train_acc: 0.84401 -  - Val_loss: 1.52491 - Val_acc: 0.58078  - T_Time: 10.98647 LR：0.0000500000
+                    EarlyStopping counter: 12 out of 25
+
+                    Validate:  0.5648854961832062 
+                     [59 15] 
+                     [42 37] 
+                     precision:  0.7115384615384616 recall:  0.46835443037974683
+                    test:  0.5 
+                     [69 24] 
+                     [48 36] 
+                     precision:  0.6 recall:  0.42857142857142855
+                    - Epoch: 33 - Train_loss: 0.32714 - Train_acc: 0.85344 -  - Val_loss: 1.15252 - Val_acc: 0.60031  - T_Time: 11.07322 LR：0.0000500000
+                    EarlyStopping counter: 13 out of 25
+
+                    Validate:  0.6268656716417911 
+                     [61 13] 
+                     [37 42] 
+                     precision:  0.7636363636363637 recall:  0.5316455696202531
+                    test:  0.5165562913907285 
+                     [65 28] 
+                     [45 39] 
+                     precision:  0.582089552238806 recall:  0.4642857142857143
+                    - Epoch: 34 - Train_loss: 0.27366 - Train_acc: 0.88756 -  - Val_loss: 1.04643 - Val_acc: 0.61156  - T_Time: 10.70278 LR：0.0000500000
+                    EarlyStopping counter: 14 out of 25
+
+                    Validate:  0.6222222222222222 
+                     [60 14] 
+                     [37 42] 
+                     precision:  0.75 recall:  0.5316455696202531
+                    test:  0.4895104895104895 
+                     [69 24] 
+                     [49 35] 
+                     precision:  0.5932203389830508 recall:  0.4166666666666667
+                    - Epoch: 35 - Train_loss: 0.24843 - Train_acc: 0.91125 -  - Val_loss: 0.71113 - Val_acc: 0.72031  - T_Time: 10.22251 LR：0.0000500000
+                    EarlyStopping counter: 15 out of 25
+
+                    Validate:  0.5322580645161289 
+                     [62 12] 
+                     [46 33] 
+                     precision:  0.7333333333333333 recall:  0.4177215189873418
+                    test:  0.4525547445255475 
+                     [71 22] 
+                     [53 31] 
+                     precision:  0.5849056603773585 recall:  0.36904761904761907
+                    - Epoch: 36 - Train_loss: 0.20055 - Train_acc: 0.92939 -  - Val_loss: 0.87904 - Val_acc: 0.62859  - T_Time: 10.36896 LR：0.0000500000
+                    EarlyStopping counter: 16 out of 25
+
+                    Validate:  0.5806451612903226 
+                     [65  9] 
+                     [43 36] 
+                     precision:  0.8 recall:  0.45569620253164556
+                    test:  0.48920863309352525 
+                     [72 21] 
+                     [50 34] 
+                     precision:  0.6181818181818182 recall:  0.40476190476190477
+                    - Epoch: 37 - Train_loss: 0.21416 - Train_acc: 0.90165 -  - Val_loss: 0.82503 - Val_acc: 0.70031  - T_Time: 10.29510 LR：0.0000500000
+                    EarlyStopping counter: 17 out of 25
+
+                    Validate:  0.5691056910569106 
+                     [65  9] 
+                     [44 35] 
+                     precision:  0.7954545454545454 recall:  0.4430379746835443
+                    test:  0.4925373134328358 
+                     [76 17] 
+                     [51 33] 
+                     precision:  0.66 recall:  0.39285714285714285
+                    - Epoch: 38 - Train_loss: 0.17476 - Train_acc: 0.94082 -  - Val_loss: 0.90926 - Val_acc: 0.63203  - T_Time: 10.52712 LR：0.0000500000
+                    EarlyStopping counter: 18 out of 25
+
+                    Validate:  0.4672897196261682 
+                     [71  3] 
+                     [54 25] 
+                     precision:  0.8928571428571429 recall:  0.31645569620253167
+                    test:  0.3539823008849557 
+                     [84  9] 
+                     [64 20] 
+                     precision:  0.6896551724137931 recall:  0.23809523809523808
+                    - Epoch: 39 - Train_loss: 0.21448 - Train_acc: 0.92356 -  - Val_loss: 1.27776 - Val_acc: 0.61641  - T_Time: 10.90060 LR：0.0000500000
+                    EarlyStopping counter: 19 out of 25
+
+                    Validate:  0.6470588235294117 
+                     [61 13] 
+                     [35 44] 
+                     precision:  0.7719298245614035 recall:  0.5569620253164557
+                    test:  0.5034965034965035 
+                     [70 23] 
+                     [48 36] 
+                     precision:  0.6101694915254238 recall:  0.42857142857142855
+                    - Epoch: 40 - Train_loss: 0.16000 - Train_acc: 0.93906 -  - Val_loss: 0.95457 - Val_acc: 0.68375  - T_Time: 10.36946 LR：0.0000500000
+                    EarlyStopping counter: 20 out of 25
+
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+                    Validate:  0.6153846153846154 
+                     [63 11] 
+                     [39 40] 
+                     precision:  0.7843137254901961 recall:  0.5063291139240507
+                    test:  0.5034965034965035 
+                     [70 23] 
+                     [48 36] 
+                     precision:  0.6101694915254238 recall:  0.42857142857142855
+                    - Epoch: 41 - Train_loss: 0.28228 - Train_acc: 0.89863 -  - Val_loss: 1.05485 - Val_acc: 0.65984  - T_Time: 11.43766 LR：0.0000500000
+                    EarlyStopping counter: 21 out of 25
+
+                    Validate:  0.5 
+                     [69  5] 
+                     [51 28] 
+                     precision:  0.8484848484848485 recall:  0.35443037974683544
+                    test:  0.42372881355932207 
+                     [84  9] 
+                     [59 25] 
+                     precision:  0.7352941176470589 recall:  0.2976190476190476
+                    - Epoch: 42 - Train_loss: 0.85187 - Train_acc: 0.72285 -  - Val_loss: 1.07664 - Val_acc: 0.66859  - T_Time: 12.83655 LR：0.0000500000
+                    EarlyStopping counter: 22 out of 25
+
+                    Validate:  0.5254237288135593 
+                     [66  8] 
+                     [48 31] 
+                     precision:  0.7948717948717948 recall:  0.3924050632911392
+                    test:  0.421875 
+                     [76 17] 
+                     [57 27] 
+                     precision:  0.6136363636363636 recall:  0.32142857142857145
+                    - Epoch: 43 - Train_loss: 0.21528 - Train_acc: 0.91916 -  - Val_loss: 1.14560 - Val_acc: 0.58813  - T_Time: 10.56525 LR：0.0000050000
+                    EarlyStopping counter: 23 out of 25
+
+                    Validate:  0.5528455284552845 
+                     [64 10] 
+                     [45 34] 
+                     precision:  0.7727272727272727 recall:  0.43037974683544306
+                    test:  0.40601503759398494 
+                     [71 22] 
+                     [57 27] 
+                     precision:  0.5510204081632653 recall:  0.32142857142857145
+                    - Epoch: 44 - Train_loss: 0.19885 - Train_acc: 0.93418 -  - Val_loss: 0.95328 - Val_acc: 0.62422  - T_Time: 10.38360 LR：0.0000050000
+                    EarlyStopping counter: 24 out of 25
+
+                    Validate:  0.5555555555555555 
+                     [62 12] 
+                     [44 35] 
+                     precision:  0.7446808510638298 recall:  0.4430379746835443
+                    test:  0.39705882352941174 
+                     [68 25] 
+                     [57 27] 
+                     precision:  0.5192307692307693 recall:  0.32142857142857145
+                    - Epoch: 45 - Train_loss: 0.21169 - Train_acc: 0.92060 -  - Val_loss: 0.98116 - Val_acc: 0.63641  - T_Time: 10.47634 LR：0.0000050000
+                    EarlyStopping counter: 25 out of 25
+
+                    Early stopping...
+          validate:  0.7309644670050761 
+           [28 46] 
+           [ 7 72]
+          test:  0.647887323943662 
+           [33 60] 
+           [15 69]
+          ==================================================
+          ==================================================
+          train_loss 0.5134165763854981           train_acc 0.7718089788732394 
+          validate_loss 0.5948361158370972           validate_acc 0.6803125 
+          test_loss 0.7136330306529999           test_acc 0.5369897959183674 
+          test_precision 0.5348837209302325 
+          test_recall 0.8214285714285714
+          ==================================================
+          ==================================================
+          Fold 3 Training Finished
+          Fold 4 of 5 :
+                    Validate:  0.0 
+                     [72  0] 
+                     [93  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 1 - Train_loss: 0.69888 - Train_acc: 0.51081 -  - Val_loss: 0.69395 - Val_acc: 0.45418  - T_Time: 12.55081 LR：0.0005000000
+                    --------------------------------------------------
+
+                    Validation  score to (inf --> -0.69394556).  Saving model ...
+                    --------------------------------------------------
+
+                    Validate:  0.0 
+                     [72  0] 
+                     [93  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 2 - Train_loss: 0.68625 - Train_acc: 0.58179 -  - Val_loss: 0.69385 - Val_acc: 0.47340  - T_Time: 10.68141 LR：0.0005000000
+                    --------------------------------------------------
+
+                    Validation  score to (-0.69394556 --> -0.69384700).  Saving model ...
+                    --------------------------------------------------
+
+                    Validate:  0.0 
+                     [72  0] 
+                     [93  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 3 - Train_loss: 0.67365 - Train_acc: 0.54863 -  - Val_loss: 0.69504 - Val_acc: 0.41575  - T_Time: 10.52673 LR：0.0005000000
+                    EarlyStopping counter: 1 out of 25
+
+                    Validate:  0.0 
+                     [72  0] 
+                     [93  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 4 - Train_loss: 0.66125 - Train_acc: 0.60517 -  - Val_loss: 0.71175 - Val_acc: 0.37732  - T_Time: 10.49299 LR：0.0005000000
+                    EarlyStopping counter: 2 out of 25
+
+                    Validate:  0.0 
+                     [72  0] 
+                     [93  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 5 - Train_loss: 0.65466 - Train_acc: 0.59844 -  - Val_loss: 0.70434 - Val_acc: 0.43497  - T_Time: 10.10256 LR：0.0005000000
+                    EarlyStopping counter: 3 out of 25
+
+                    Validate:  0.0 
+                     [72  0] 
+                     [93  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 6 - Train_loss: 0.61182 - Train_acc: 0.65404 -  - Val_loss: 0.70809 - Val_acc: 0.42536  - T_Time: 9.98013 LR：0.0005000000
+                    EarlyStopping counter: 4 out of 25
+
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+                    Validate:  0.0 
+                     [72  0] 
+                     [93  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 7 - Train_loss: 0.64865 - Train_acc: 0.62064 -  - Val_loss: 0.72683 - Val_acc: 0.44457  - T_Time: 11.91292 LR：0.0005000000
+                    EarlyStopping counter: 5 out of 25
+
+                    Validate:  0.696 
+                     [ 2 70] 
+                     [ 6 87] 
+                     precision:  0.554140127388535 recall:  0.9354838709677419
+                    test:  0.627906976744186 
+                     [ 0 93] 
+                     [ 3 81] 
+                     precision:  0.46551724137931033 recall:  0.9642857142857143
+                    - Epoch: 8 - Train_loss: 0.60921 - Train_acc: 0.66743 -  - Val_loss: 0.69120 - Val_acc: 0.53019  - T_Time: 10.29046 LR：0.0005000000
+                    -- -- The best model for validate (F1= .  0.696 ) -- --
+                    --------------------------------------------------
+
+                    Validation  score to (-0.69384700 --> -0.69120342).  Saving model ...
+                    --------------------------------------------------
+
+                    Validate:  0.0 
+                     [72  0] 
+                     [93  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 9 - Train_loss: 0.62436 - Train_acc: 0.66212 -  - Val_loss: 0.79245 - Val_acc: 0.44457  - T_Time: 10.45905 LR：0.0005000000
+                    EarlyStopping counter: 1 out of 25
+
+                    Validate:  0.641025641025641 
+                     [ 6 66] 
+                     [18 75] 
+                     precision:  0.5319148936170213 recall:  0.8064516129032258
+                    test:  0.6101694915254237 
+                     [13 80] 
+                     [12 72] 
+                     precision:  0.47368421052631576 recall:  0.8571428571428571
+                    - Epoch: 10 - Train_loss: 0.59394 - Train_acc: 0.68822 -  - Val_loss: 0.69780 - Val_acc: 0.49894  - T_Time: 10.79236 LR：0.0005000000
+                    EarlyStopping counter: 2 out of 25
+
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+                    Validate:  0.07920792079207922 
+                     [68  4] 
+                     [89  4] 
+                     precision:  0.5 recall:  0.043010752688172046
+                    test:  0.022727272727272724 
+                     [90  3] 
+                     [83  1] 
+                     precision:  0.25 recall:  0.011904761904761904
+                    - Epoch: 11 - Train_loss: 0.61608 - Train_acc: 0.64629 -  - Val_loss: 1.23189 - Val_acc: 0.42536  - T_Time: 11.19212 LR：0.0005000000
+                    EarlyStopping counter: 3 out of 25
+
+                    Validate:  0.4558823529411765 
+                     [60 12] 
+                     [62 31] 
+                     precision:  0.7209302325581395 recall:  0.3333333333333333
+                    test:  0.4426229508196722 
+                     [82 11] 
+                     [57 27] 
+                     precision:  0.7105263157894737 recall:  0.32142857142857145
+                    - Epoch: 12 - Train_loss: 0.61788 - Train_acc: 0.65460 -  - Val_loss: 0.72170 - Val_acc: 0.52840  - T_Time: 11.05872 LR：0.0005000000
+                    EarlyStopping counter: 4 out of 25
+
+                    Validate:  0.6695652173913044 
+                     [12 60] 
+                     [16 77] 
+                     precision:  0.5620437956204379 recall:  0.8279569892473119
+                    test:  0.626984126984127 
+                     [ 4 89] 
+                     [ 5 79] 
+                     precision:  0.47023809523809523 recall:  0.9404761904761905
+                    - Epoch: 13 - Train_loss: 0.55828 - Train_acc: 0.72350 -  - Val_loss: 0.80700 - Val_acc: 0.51098  - T_Time: 10.38043 LR：0.0005000000
+                    EarlyStopping counter: 5 out of 25
+
+                    Validate:  0.5194805194805195 
+                     [51 21] 
+                     [53 40] 
+                     precision:  0.6557377049180327 recall:  0.43010752688172044
+                    test:  0.6027397260273972 
+                     [75 18] 
+                     [40 44] 
+                     precision:  0.7096774193548387 recall:  0.5238095238095238
+                    - Epoch: 14 - Train_loss: 0.56484 - Train_acc: 0.72075 -  - Val_loss: 0.87510 - Val_acc: 0.54761  - T_Time: 10.61687 LR：0.0005000000
+                    EarlyStopping counter: 6 out of 25
+
+                    Validate:  0.18348623853211007 
+                     [66  6] 
+                     [83 10] 
+                     precision:  0.625 recall:  0.10752688172043011
+                    test:  0.1875 
+                     [90  3] 
+                     [75  9] 
+                     precision:  0.75 recall:  0.10714285714285714
+                    - Epoch: 15 - Train_loss: 0.59046 - Train_acc: 0.68961 -  - Val_loss: 1.01607 - Val_acc: 0.44098  - T_Time: 11.18061 LR：0.0005000000
+                    EarlyStopping counter: 7 out of 25
+
+                    Validate:  0.4 
+                     [61 11] 
+                     [67 26] 
+                     precision:  0.7027027027027027 recall:  0.27956989247311825
+                    test:  0.38596491228070173 
+                     [85  8] 
+                     [62 22] 
+                     precision:  0.7333333333333333 recall:  0.2619047619047619
+                    - Epoch: 16 - Train_loss: 0.57126 - Train_acc: 0.72924 -  - Val_loss: 0.70807 - Val_acc: 0.54160  - T_Time: 11.50199 LR：0.0005000000
+                    EarlyStopping counter: 8 out of 25
+
+                    Validate:  0.4666666666666667 
+                     [50 22] 
+                     [58 35] 
+                     precision:  0.6140350877192983 recall:  0.3763440860215054
+                    test:  0.5899280575539569 
+                     [79 14] 
+                     [43 41] 
+                     precision:  0.7454545454545455 recall:  0.4880952380952381
+                    - Epoch: 17 - Train_loss: 0.56054 - Train_acc: 0.69729 -  - Val_loss: 0.76582 - Val_acc: 0.51457  - T_Time: 11.17587 LR：0.0005000000
+                    EarlyStopping counter: 9 out of 25
+
+                    Validate:  0.16513761467889906 
+                     [65  7] 
+                     [84  9] 
+                     precision:  0.5625 recall:  0.0967741935483871
+                    test:  0.13333333333333333 
+                     [93  0] 
+                     [78  6] 
+                     precision:  1.0 recall:  0.07142857142857142
+                    - Epoch: 18 - Train_loss: 0.55804 - Train_acc: 0.70765 -  - Val_loss: 0.87238 - Val_acc: 0.48121  - T_Time: 11.67579 LR：0.0005000000
+                    EarlyStopping counter: 10 out of 25
+
+                    Validate:  0.0 
+                     [72  0] 
+                     [93  0] 
+                     precision:  0.0 recall:  0.0
+                    test:  0.0 
+                     [93  0] 
+                     [84  0] 
+                     precision:  0.0 recall:  0.0
+                    - Epoch: 19 - Train_loss: 0.46457 - Train_acc: 0.76858 -  - Val_loss: 1.87748 - Val_acc: 0.37732  - T_Time: 10.64353 LR：0.0005000000
+                    EarlyStopping counter: 11 out of 25
+
+                    Validate:  0.12 
+                     [71  1] 
+                     [87  6] 
+                     precision:  0.8571428571428571 recall:  0.06451612903225806
+                    test:  0.08888888888888889 
+                     [91  2] 
+                     [80  4] 
+                     precision:  0.6666666666666666 recall:  0.047619047619047616
+                    - Epoch: 20 - Train_loss: 0.49386 - Train_acc: 0.76838 -  - Val_loss: 1.11935 - Val_acc: 0.46410  - T_Time: 9.99071 LR：0.0000500000
+                    EarlyStopping counter: 12 out of 25
+
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+                    Validate:  0.2300884955752212 
+                     [65  7] 
+                     [80 13] 
+                     precision:  0.65 recall:  0.13978494623655913
+                    test:  0.2040816326530612 
+                     [89  4] 
+                     [74 10] 
+                     precision:  0.7142857142857143 recall:  0.11904761904761904
+                    - Epoch: 21 - Train_loss: 0.49229 - Train_acc: 0.75097 -  - Val_loss: 0.96154 - Val_acc: 0.47762  - T_Time: 10.94011 LR：0.0000500000
+                    EarlyStopping counter: 13 out of 25
+
+                    Validate:  0.31666666666666665 
+                     [64  8] 
+                     [74 19] 
+                     precision:  0.7037037037037037 recall:  0.20430107526881722
+                    test:  0.25 
+                     [86  7] 
+                     [71 13] 
+                     precision:  0.65 recall:  0.15476190476190477
+                    - Epoch: 22 - Train_loss: 0.50921 - Train_acc: 0.75429 -  - Val_loss: 0.82334 - Val_acc: 0.55479  - T_Time: 11.54766 LR：0.0000500000
+                    EarlyStopping counter: 14 out of 25
+
+                    Validate:  0.31932773109243695 
+                     [65  7] 
+                     [74 19] 
+                     precision:  0.7307692307692307 recall:  0.20430107526881722
+                    test:  0.2222222222222222 
+                     [89  4] 
+                     [73 11] 
+                     precision:  0.7333333333333333 recall:  0.13095238095238096
+                    - Epoch: 23 - Train_loss: 0.42379 - Train_acc: 0.81740 -  - Val_loss: 1.00687 - Val_acc: 0.51066  - T_Time: 10.34638 LR：0.0000500000
+                    EarlyStopping counter: 15 out of 25
+
+                    Validate:  0.2162162162162162 
+                     [66  6] 
+                     [81 12] 
+                     precision:  0.6666666666666666 recall:  0.12903225806451613
+                    test:  0.18556701030927836 
+                     [89  4] 
+                     [75  9] 
+                     precision:  0.6923076923076923 recall:  0.10714285714285714
+                    - Epoch: 24 - Train_loss: 0.41391 - Train_acc: 0.83240 -  - Val_loss: 1.09330 - Val_acc: 0.47762  - T_Time: 10.41218 LR：0.0000500000
+                    EarlyStopping counter: 16 out of 25
+
+                    Validate:  0.2905982905982906 
+                     [65  7] 
+                     [76 17] 
+                     precision:  0.7083333333333334 recall:  0.1827956989247312
+                    test:  0.3018867924528302 
+                     [87  6] 
+                     [68 16] 
+                     precision:  0.7272727272727273 recall:  0.19047619047619047
+                    - Epoch: 25 - Train_loss: 0.37182 - Train_acc: 0.87244 -  - Val_loss: 1.00927 - Val_acc: 0.52207  - T_Time: 10.44100 LR：0.0000500000
+                    EarlyStopping counter: 17 out of 25
+
+                    Validate:  0.37398373983739835 
+                     [65  7] 
+                     [70 23] 
+                     precision:  0.7666666666666667 recall:  0.24731182795698925
+                    test:  0.2549019607843137 
+                     [88  5] 
+                     [71 13] 
+                     precision:  0.7222222222222222 recall:  0.15476190476190477
+                    - Epoch: 26 - Train_loss: 0.45196 - Train_acc: 0.79527 -  - Val_loss: 1.17052 - Val_acc: 0.54550  - T_Time: 10.99203 LR：0.0000500000
+                    EarlyStopping counter: 18 out of 25
+
+                    Validate:  0.42424242424242425 
+                     [61 11] 
+                     [65 28] 
+                     precision:  0.717948717948718 recall:  0.3010752688172043
+                    test:  0.4102564102564102 
+                     [84  9] 
+                     [60 24] 
+                     precision:  0.7272727272727273 recall:  0.2857142857142857
+                    - Epoch: 27 - Train_loss: 0.34499 - Train_acc: 0.87099 -  - Val_loss: 1.18913 - Val_acc: 0.48216  - T_Time: 10.97009 LR：0.0000500000
+                    EarlyStopping counter: 19 out of 25
+
+                    Validate:  0.40298507462686567 
+                     [58 14] 
+                     [66 27] 
+                     precision:  0.6585365853658537 recall:  0.2903225806451613
+                    test:  0.5079365079365079 
+                     [83 10] 
+                     [52 32] 
+                     precision:  0.7619047619047619 recall:  0.38095238095238093
+                    - Epoch: 28 - Train_loss: 0.33080 - Train_acc: 0.86752 -  - Val_loss: 1.11051 - Val_acc: 0.52418  - T_Time: 10.74846 LR：0.0000500000
+                    EarlyStopping counter: 20 out of 25
+
+                    Validate:  0.4761904761904763 
+                     [53 19] 
+                     [58 35] 
+                     precision:  0.6481481481481481 recall:  0.3763440860215054
+                    test:  0.6056338028169014 
+                     [78 15] 
+                     [41 43] 
+                     precision:  0.7413793103448276 recall:  0.5119047619047619
+                    - Epoch: 29 - Train_loss: 0.34958 - Train_acc: 0.85395 -  - Val_loss: 1.08230 - Val_acc: 0.51668  - T_Time: 10.45054 LR：0.0000500000
+                    EarlyStopping counter: 21 out of 25
+
+                    Validate:  0.417910447761194 
+                     [59 13] 
+                     [65 28] 
+                     precision:  0.6829268292682927 recall:  0.3010752688172043
+                    test:  0.5238095238095237 
+                     [84  9] 
+                     [51 33] 
+                     precision:  0.7857142857142857 recall:  0.39285714285714285
+                    - Epoch: 30 - Train_loss: 0.37235 - Train_acc: 0.84284 -  - Val_loss: 1.30477 - Val_acc: 0.54160  - T_Time: 11.08828 LR：0.0000500000
+                    EarlyStopping counter: 22 out of 25
+
+                    Validate:  0.39097744360902253 
+                     [58 14] 
+                     [67 26] 
+                     precision:  0.65 recall:  0.27956989247311825
+                    test:  0.5238095238095237 
+                     [84  9] 
+                     [51 33] 
+                     precision:  0.7857142857142857 recall:  0.39285714285714285
+                    - Epoch: 31 - Train_loss: 0.28614 - Train_acc: 0.89687 -  - Val_loss: 1.22196 - Val_acc: 0.57791  - T_Time: 10.52873 LR：0.0000050000
+                    EarlyStopping counter: 23 out of 25
+
+                    Validate:  0.4210526315789474 
+                     [60 12] 
+                     [65 28] 
+                     precision:  0.7 recall:  0.3010752688172043
+                    test:  0.5426356589147286 
+                     [83 10] 
+                     [49 35] 
+                     precision:  0.7777777777777778 recall:  0.4166666666666667
+                    - Epoch: 32 - Train_loss: 0.30784 - Train_acc: 0.88330 -  - Val_loss: 1.37049 - Val_acc: 0.50707  - T_Time: 10.72329 LR：0.0000050000
+                    EarlyStopping counter: 24 out of 25
+
+                    Validate:  0.35200000000000004 
+                     [62 10] 
+                     [71 22] 
+                     precision:  0.6875 recall:  0.23655913978494625
+                    test:  0.453781512605042 
+                     [85  8] 
+                     [57 27] 
+                     precision:  0.7714285714285715 recall:  0.32142857142857145
+                    - Epoch: 33 - Train_loss: 0.40890 - Train_acc: 0.82613 -  - Val_loss: 1.55158 - Val_acc: 0.50106  - T_Time: 11.85956 LR：0.0000050000
+                    EarlyStopping counter: 25 out of 25
+
+                    Early stopping...
+          validate:  0.696 
+           [ 2 70] 
+           [ 6 87]
+          test:  0.627906976744186 
+           [ 0 93] 
+           [ 3 81]
+          ==================================================
+          ==================================================
+          train_loss 0.6099437475204468           train_acc 0.6717133620689655 
+          validate_loss 0.6936978101730347           validate_acc 0.5301942567567568 
+          test_loss 0.7122174501419067           test_acc 0.31640625 
+          test_precision 0.46551724137931033 
+          test_recall 0.9642857142857143
+          ==================================================
+          ==================================================
+          Fold 4 Training Finished
+     ==================================================
+train_loss [0.4755709171295166, 0.3348374366760254, 0.45319697856903074, 0.5134165763854981, 0.6099437475204468]      train_acc [0.767650462962963, 0.8653124999999999, 0.7896875, 0.7718089788732394, 0.6717133620689655] 
+     validate_loss [1.1603355705738068, 0.6325013041496277, 1.0224177539348602, 0.5948361158370972, 0.6936978101730347]      validate_acc [0.328125, 0.7088341346153846, 0.5859375, 0.6803125, 0.5301942567567568] 
+     test_loss [0.69950070977211, 0.6105384528636932, 0.583134651184082, 0.7136330306529999, 0.7122174501419067]      test_acc [0.6474808673469388, 0.6843909438775511, 0.6891741071428572, 0.5369897959183674, 0.31640625] 
+     test_precision [0.6203703703703703, 0.6355140186915887, 0.6551724137931034, 0.5348837209302325, 0.46551724137931033]  mean: 0.5822915530329211 
+     test_recall [0.7976190476190477, 0.8095238095238095, 0.6785714285714286, 0.8214285714285714, 0.9642857142857143]  mean: 0.8142857142857143
+     ==================================================
+Training Finished
+     ==================================================
+train_loss [0.4755709171295166, 0.3348374366760254, 0.45319697856903074, 0.5134165763854981, 0.6099437475204468]      train_acc [0.767650462962963, 0.8653124999999999, 0.7896875, 0.7718089788732394, 0.6717133620689655] 
+     validate_loss [1.1603355705738068, 0.6325013041496277, 1.0224177539348602, 0.5948361158370972, 0.6936978101730347]      validate_acc [0.328125, 0.7088341346153846, 0.5859375, 0.6803125, 0.5301942567567568] 
+     test_loss [0.69950070977211, 0.6105384528636932, 0.583134651184082, 0.7136330306529999, 0.7122174501419067]      test_acc [0.6474808673469388, 0.6843909438775511, 0.6891741071428572, 0.5369897959183674, 0.31640625] 
+     test_precision [0.6203703703703703, 0.6355140186915887, 0.6551724137931034, 0.5348837209302325, 0.46551724137931033]  mean: 0.5822915530329211 
+     test_recall [0.7976190476190477, 0.8095238095238095, 0.6785714285714286, 0.8214285714285714, 0.9642857142857143]  mean: 0.8142857142857143
+     ==================================================
+     ==================================================
+train_loss [0.4755709171295166, 0.3348374366760254, 0.45319697856903074, 0.5134165763854981, 0.6099437475204468]      train_acc [0.767650462962963, 0.8653124999999999, 0.7896875, 0.7718089788732394, 0.6717133620689655] 
+     validate_loss [1.1603355705738068, 0.6325013041496277, 1.0224177539348602, 0.5948361158370972, 0.6936978101730347]      validate_acc [0.328125, 0.7088341346153846, 0.5859375, 0.6803125, 0.5301942567567568] 
+     test_loss [0.69950070977211, 0.6105384528636932, 0.583134651184082, 0.7136330306529999, 0.7122174501419067]      test_acc [0.6474808673469388, 0.6843909438775511, 0.6891741071428572, 0.5369897959183674, 0.31640625] 
+     test_precision [0.6203703703703703, 0.6355140186915887, 0.6551724137931034, 0.5348837209302325, 0.46551724137931033]  mean: 0.5822915530329211 
+     test_recall [0.7976190476190477, 0.8095238095238095, 0.6785714285714286, 0.8214285714285714, 0.9642857142857143]  mean: 0.8142857142857143
+     ==================================================
+     ==================================================
+train_loss [0.4755709171295166, 0.3348374366760254, 0.45319697856903074, 0.5134165763854981, 0.6099437475204468]      train_acc [0.767650462962963, 0.8653124999999999, 0.7896875, 0.7718089788732394, 0.6717133620689655] 
+     validate_loss [1.1603355705738068, 0.6325013041496277, 1.0224177539348602, 0.5948361158370972, 0.6936978101730347]      validate_acc [0.328125, 0.7088341346153846, 0.5859375, 0.6803125, 0.5301942567567568] 
+     test_loss [0.69950070977211, 0.6105384528636932, 0.583134651184082, 0.7136330306529999, 0.7122174501419067]      test_acc [0.6474808673469388, 0.6843909438775511, 0.6891741071428572, 0.5369897959183674, 0.31640625] 
+     test_precision [0.6203703703703703, 0.6355140186915887, 0.6551724137931034, 0.5348837209302325, 0.46551724137931033]  mean: 0.5822915530329211 
+     test_recall [0.7976190476190477, 0.8095238095238095, 0.6785714285714286, 0.8214285714285714, 0.9642857142857143]  mean: 0.8142857142857143
+     ==================================================
+     ==================================================
+train_loss [0.4755709171295166, 0.3348374366760254, 0.45319697856903074, 0.5134165763854981, 0.6099437475204468]      train_acc [0.767650462962963, 0.8653124999999999, 0.7896875, 0.7718089788732394, 0.6717133620689655] 
+     validate_loss [1.1603355705738068, 0.6325013041496277, 1.0224177539348602, 0.5948361158370972, 0.6936978101730347]      validate_acc [0.328125, 0.7088341346153846, 0.5859375, 0.6803125, 0.5301942567567568] 
+     test_loss [0.69950070977211, 0.6105384528636932, 0.583134651184082, 0.7136330306529999, 0.7122174501419067]      test_acc [0.6474808673469388, 0.6843909438775511, 0.6891741071428572, 0.5369897959183674, 0.31640625] 
+     test_precision [0.6203703703703703, 0.6355140186915887, 0.6551724137931034, 0.5348837209302325, 0.46551724137931033]  mean: 0.5822915530329211 
+     test_recall [0.7976190476190477, 0.8095238095238095, 0.6785714285714286, 0.8214285714285714, 0.9642857142857143]  mean: 0.8142857142857143
+     ==================================================
+     ==================================================
+train_loss [0.4755709171295166, 0.3348374366760254, 0.45319697856903074, 0.5134165763854981, 0.6099437475204468]      train_acc [0.767650462962963, 0.8653124999999999, 0.7896875, 0.7718089788732394, 0.6717133620689655] 
+     validate_loss [1.1603355705738068, 0.6325013041496277, 1.0224177539348602, 0.5948361158370972, 0.6936978101730347]      validate_acc [0.328125, 0.7088341346153846, 0.5859375, 0.6803125, 0.5301942567567568] 
+     test_loss [0.69950070977211, 0.6105384528636932, 0.583134651184082, 0.7136330306529999, 0.7122174501419067]      test_acc [0.6474808673469388, 0.6843909438775511, 0.6891741071428572, 0.5369897959183674, 0.31640625] 
+     test_precision [0.6203703703703703, 0.6355140186915887, 0.6551724137931034, 0.5348837209302325, 0.46551724137931033]  mean: 0.5822915530329211 
+     test_recall [0.7976190476190477, 0.8095238095238095, 0.6785714285714286, 0.8214285714285714, 0.9642857142857143]  mean: 0.8142857142857143
+     ==================================================
+copy ./log.log -> ./logs/20230201_075212/log.log
