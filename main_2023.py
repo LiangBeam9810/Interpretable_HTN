@@ -7,7 +7,6 @@ from self_attention import *
 import matplotlib.pyplot as plt
 import ecg_plot
 import ECGHandle
-import res1d
 
 import torch
 
@@ -66,7 +65,7 @@ LR = 0.0005
 PAIR =True
 
 notion ="####"*10 +\
-        "\n#resnet50  起搏   房颤" +\
+        "\n#MLBFNet_GUR" +\
         "\n#LR = 0.0005" +\
         "\n#pair HTN candidate >0 break " +\
         "\n#delete all have the same name&sex&ages" +\
@@ -79,7 +78,7 @@ notion ="####"*10 +\
         "\n#use adam with 0 weight decay" +\
         "\n#Shuffle before k-fold train"+\
         "\n#Use binary F1. "  +\
-        "\n#Net.MLBFNet(num_class = 2,mark = True,res = True,se = True,Dropout_rate = 0.3). lead_branch (3,3). add two relu-fc"  +\
+        "\n#Net.MLBFNet_GUR(mark = True,res = True,se = True,Dropout_rate = 0.3). lead_branch (3,3). add two relu-fc"  +\
         "\n#Sample HTN to fit NHTN numbers (test,val,train)" +\
         "\n"+"####"*10 +\
         "\n"
@@ -115,7 +114,7 @@ if __name__ == '__main__':
         
         ALL_data = ECGHandle.correct_label(ALL_data)
         ALL_data = ECGHandle.correct_age(ALL_data)
-        ALL_data = ECGHandle.filter_diagnose(ALL_data,'起搏')
+        # ALL_data = ECGHandle.filter_diagnose(ALL_data,'起搏')
         ALL_data = ECGHandle.filter_diagnose(ALL_data,'房颤')
         # ALL_data = ECGHandle.filter_diagnose(ALL_data,'阻滞')
         # ALL_data = ECGHandle.remove_duplicated(ALL_data)
@@ -125,13 +124,16 @@ if __name__ == '__main__':
         
         torch.cuda.empty_cache()# 清空显卡cuda
         NET = [
-            res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
-            res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
-            res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
-            res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
-            res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
-            res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
-            ] # type: ignore
+            Net.MLBFNet_GUR(mark = True,res = True,se = True,Dropout_rate = 0.3),
+            Net.MLBFNet_GUR(mark = True,res = True,se = True,Dropout_rate = 0.3),
+            Net.MLBFNet_GUR(mark = True,res = True,se = True,Dropout_rate = 0.3),
+            Net.MLBFNet_GUR(mark = True,res = True,se = True,Dropout_rate = 0.3),
+            Net.MLBFNet_GUR(mark = True,res = True,se = True,Dropout_rate = 0.3),
+            Net.MLBFNet_GUR(mark = True,res = True,se = True,Dropout_rate = 0.3),
+            Net.MLBFNet_GUR(mark = True,res = True,se = True,Dropout_rate = 0.3),
+            Net.MLBFNet_GUR(mark = True,res = True,se = True,Dropout_rate = 0.3),
+            Net.MLBFNet_GUR(mark = True,res = True,se = True,Dropout_rate = 0.3),
+            Net.MLBFNet_GUR(mark = True,res = True,se = True,Dropout_rate = 0.3)] # type: ignore
         os.makedirs(model_path, exist_ok=True)  # type: ignore
         writer = SummaryWriter(log_path)  # type: ignore
         # sys.stdout = logger.Logger(log_path+'/log.txt'
