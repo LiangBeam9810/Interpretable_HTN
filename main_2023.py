@@ -21,13 +21,8 @@ import random
 import pandas as pd
 
 import time
-import math
 import os
-import gc
 
-
-import sys
-import logger
 
 import os
 import shutil
@@ -70,7 +65,7 @@ LR = 0.0005
 PAIR =True
 
 notion ="####"*10 +\
-        "\n#filter_diagnose(ALL_data,'阻滞') then  remove_duplicated" +\
+        "\n#filter_diagnose(ALL_data,'起搏''房颤') then  remove_duplicated" +\
         "\n#LR = 0.0005" +\
         "\n#pair HTN candidate >0 break " +\
         "\n#delete all have the same name&sex&ages" +\
@@ -120,9 +115,9 @@ if __name__ == '__main__':
         ALL_data = ECGHandle.correct_label(ALL_data)
         ALL_data = ECGHandle.correct_age(ALL_data)
         
-        # ALL_data = ECGHandle.filter_diagnose(ALL_data,'起搏')
-        # ALL_data = ECGHandle.filter_diagnose(ALL_data,'房颤')
-        ALL_data = ECGHandle.filter_diagnose(ALL_data,'阻滞')
+        ALL_data = ECGHandle.filter_diagnose(ALL_data,'起搏')
+        ALL_data = ECGHandle.filter_diagnose(ALL_data,'房颤')
+        # ALL_data = ECGHandle.filter_diagnose(ALL_data,'阻滞')
         ALL_data = ECGHandle.remove_duplicated(ALL_data)
         
         ALL_data = ALL_data.rename(columns={'住院号':'ID','年龄':'age','性别':'gender','姓名':'name'}) 
@@ -241,6 +236,16 @@ if __name__ == '__main__':
         print('Training Finished')
         # sys.stdout.log.close()
         
-        
-        time.sleep(300)#等待.log 打印完
+        for ttt in range(5):
+            print(" "*5+'='*50)
+            print("train_loss",train_loss_sum,
+            " "*5+"train_acc",train_acc_sum,
+            "\n" + " "*5+"validate_loss",validate_loss_sum,
+            " "*5+"validate_acc",validate_acc_sum,
+            "\n" + " "*5+"test_loss",test_loss_sum,
+            " "*5+"test_acc",test_acc_sum,
+            '\n'+" "*5+"test_precision",precision_test_sum," mean:",(np.array(precision_test_sum)).mean(),
+            '\n'+" "*5+"test_recall",recall_test_sum," mean:",(np.array(recall_test_sum)).mean())
+            print(" "*5+'='*50)
+        #重复打印几次 等待.log 打印完
         mycopyfile('./log.log',log_root)

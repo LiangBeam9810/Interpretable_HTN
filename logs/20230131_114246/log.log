@@ -4633,7 +4633,7 @@ Batchsize =  128
                     EarlyStopping counter: 25 out of 25
 
                     Early stopping...
-          validate:  0.855457227138643 
+        validate:  0.855457227138643 
            [168  13] 
            [ 36 145]
           test:  0.8175519630484989 
