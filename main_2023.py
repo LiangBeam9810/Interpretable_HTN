@@ -7,7 +7,7 @@ from self_attention import *
 import matplotlib.pyplot as plt
 import ecg_plot
 import ECGHandle
-
+import VGG
 import torch
 
 import torch.utils.data as Data
@@ -60,12 +60,12 @@ BATCH_SIZE = 64
 L2 = 0.07
 FOLDS = 5
 EPOCHS = 200  
-PATIENCE = 25
+PATIENCE = 50
 LR = 0.0005
 PAIR =True
 
 notion ="####"*10 +\
-        "\n#MLBFNet_GUR" +\
+        "\n#VGG.Vgg16_net()," +\
         "\n#LR = 0.0005" +\
         "\n#pair HTN candidate >0 break " +\
         "\n#delete all have the same name&sex&ages" +\
@@ -91,7 +91,7 @@ data_root = '/workspace/data/Preprocess_HTN/datas_/'
 
 if __name__ == '__main__':
     L2_list = [0.007]
-    BS_list = [128]
+    BS_list = [64]
     for i in range(len(L2_list)):
         seed_torch(2023)
         time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime()) 
@@ -124,16 +124,14 @@ if __name__ == '__main__':
         
         torch.cuda.empty_cache()# 清空显卡cuda
         NET = [
-            Net.MLBFNet_GUR(mark = True,res = True,se = True,Dropout_rate = 0.3),
-            Net.MLBFNet_GUR(mark = True,res = True,se = True,Dropout_rate = 0.3),
-            Net.MLBFNet_GUR(mark = True,res = True,se = True,Dropout_rate = 0.3),
-            Net.MLBFNet_GUR(mark = True,res = True,se = True,Dropout_rate = 0.3),
-            Net.MLBFNet_GUR(mark = True,res = True,se = True,Dropout_rate = 0.3),
-            Net.MLBFNet_GUR(mark = True,res = True,se = True,Dropout_rate = 0.3),
-            Net.MLBFNet_GUR(mark = True,res = True,se = True,Dropout_rate = 0.3),
-            Net.MLBFNet_GUR(mark = True,res = True,se = True,Dropout_rate = 0.3),
-            Net.MLBFNet_GUR(mark = True,res = True,se = True,Dropout_rate = 0.3),
-            Net.MLBFNet_GUR(mark = True,res = True,se = True,Dropout_rate = 0.3)] # type: ignore
+            VGG.Vgg16_net(),
+            VGG.Vgg16_net(),
+            VGG.Vgg16_net(),
+            VGG.Vgg16_net(),
+            VGG.Vgg16_net(),
+            VGG.Vgg16_net(),
+            VGG.Vgg16_net(),
+            VGG.Vgg16_net(),] # type: ignore
         os.makedirs(model_path, exist_ok=True)  # type: ignore
         writer = SummaryWriter(log_path)  # type: ignore
         # sys.stdout = logger.Logger(log_path+'/log.txt'

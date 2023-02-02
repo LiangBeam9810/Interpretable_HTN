@@ -47,7 +47,52 @@ def plot_multicolored_line(fig,axs,x,y,color_depend,cmap = "jet",y_name = "Volta
     axs.grid(True, which='both')
 
 
+def color_map(data, cmap):
+    """数值映射为颜色"""
+    
+    dmin, dmax = np.nanmin(data), np.nanmax(data)
+    cmo = plt.cm.get_cmap(cmap)
+    cs, k = list(), 256/cmo.N
+    
+    for i in range(cmo.N):
+        c = cmo(i)
+        for j in range(int(i*k), int((i+1)*k)):
+            cs.append(c)
+    cs = np.array(cs)
+    data = np.uint8(255*(data-dmin)/(dmax-dmin))
+    
+    return cs[data]
+#----------------------------------------------------------------------------------#
+#input:
+#   fig 
+#   x:(timesteps,) 0.2s/step
+#   y:(leads,timesteps) unit:uV
+#
+#----------------------------------------------------------------------------------#
+def plot_ECG_line(fig,axs,x,y,y_name = "Voltage(mV)",title=""):
+    axs.plot(x,y,color='b',linewidth =1)
+    #fig.colorbar(line, ax=axs)
+    axs.set_xlim(x.min(), x.max())
+    axs.set_ylim(-5000, +5000)
 
+    axs.set_aspect(0.2)#用于设置轴缩放的方面，即y-unit与x-unit的比率
+    axs.xaxis.set_major_locator(plt.MultipleLocator(100))# type: ignore # 100*0.002s=0.2s = 5格
+    axs.xaxis.set_minor_locator(plt.MultipleLocator(20)) # type: ignore # 20*0.002=0.004S = 1格
+    axs.yaxis.set_major_locator(plt.MultipleLocator(500))# type: ignore # 0.1uv*500 = 0.5ms = 5格
+    axs.yaxis.set_minor_locator(plt.MultipleLocator(100))# type: ignore # 0.1uv*100 =0.1ms = 1格 
+
+    #axs.xaxis.set_major_formatter(plt.NullFormatter()) #x轴不显示刻度值/lable per 0.2s
+    axs.xaxis.set_major_formatter(lambda x, pos: str(round(0.2*(x/100.0),2))) #x轴 lable per 0.2s
+    axs.yaxis.set_major_formatter(lambda x, pos: str(x/1000.0)) # label per '0.5 mv'，turn uV to mv
+
+    axs.grid(which='major', axis='x', linewidth=0.5, linestyle='-', color='b')
+    axs.grid(which='minor', axis='x', linewidth=0.2, linestyle='-', color='b')
+    axs.grid(which='major', axis='y', linewidth=0.5, linestyle='-', color='b')
+    axs.grid(which='minor', axis='y', linewidth=0.2, linestyle='-', color='b')
+    axs.set_ylabel(y_name)
+    axs.set_title(title)
+    axs.grid(True, which='both')
+    
 def plot_power():
     return 0
 
