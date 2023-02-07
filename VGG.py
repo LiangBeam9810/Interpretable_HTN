@@ -1,5 +1,8 @@
 from torch import nn
 import torch
+import augmenters
+
+
 class Vgg16_net(nn.Module):
     def __init__(self):
         super(Vgg16_net, self).__init__()
@@ -115,6 +118,13 @@ class Vgg16_net(nn.Module):
 
     def forward(self,x):
         batch_size, channels,seq_len = x.shape
+        
+        if self.training:
+            if(torch.rand(1)>0.9):
+                x.add_(augmenters.gen_baseline_wander(x,500,prob=torch.rand(1)))# type: ignore 
+            if(torch.rand(1)>0.5):
+                mark_lenth = torch.randint(int(seq_len/10),int(seq_len/5),[1])
+                x = augmenters.mark_input(x,mark_lenth=int(mark_lenth[0]))
         x = x.unsqueeze(1)
         x = self.layer1(x)
         x = self.layer2(x)

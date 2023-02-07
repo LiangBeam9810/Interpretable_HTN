@@ -65,7 +65,7 @@ LR = 0.0005
 PAIR =True
 
 notion ="####"*10 +\
-        "\n#VGG.Vgg16_net()," +\
+        "\n#VGG.Vgg16_net() +  augmenters," +\
         "\n#LR = 0.0005" +\
         "\n#pair HTN candidate >0 break " +\
         "\n#delete all have the same name&sex&ages" +\
