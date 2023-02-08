@@ -65,7 +65,7 @@ LR = 0.0005
 PAIR =True
 
 notion ="####"*10 +\
-        "\n#VGG.Vgg16_net() +  augmenters," +\
+        "\n#Net.MLBFNet_GUR() lite 保证所有分支经历相同，为可解释性做探索" +\
         "\n#LR = 0.0005" +\
         "\n#pair HTN candidate >0 break " +\
         "\n#delete all have the same name&sex&ages" +\
@@ -124,14 +124,12 @@ if __name__ == '__main__':
         
         torch.cuda.empty_cache()# 清空显卡cuda
         NET = [
-            VGG.Vgg16_net(),
-            VGG.Vgg16_net(),
-            VGG.Vgg16_net(),
-            VGG.Vgg16_net(),
-            VGG.Vgg16_net(),
-            VGG.Vgg16_net(),
-            VGG.Vgg16_net(),
-            VGG.Vgg16_net(),] # type: ignore
+            Net.MLBFNet_GUR(True,True,True,0.3),
+            Net.MLBFNet_GUR(True,True,True,0.3),
+            Net.MLBFNet_GUR(True,True,True,0.3),
+            Net.MLBFNet_GUR(True,True,True,0.3),
+            Net.MLBFNet_GUR(True,True,True,0.3),
+            Net.MLBFNet_GUR(True,True,True,0.3),] # type: ignore
         os.makedirs(model_path, exist_ok=True)  # type: ignore
         writer = SummaryWriter(log_path)  # type: ignore
         # sys.stdout = logger.Logger(log_path+'/log.txt'

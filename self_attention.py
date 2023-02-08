@@ -231,3 +231,8 @@ def create_1d_absolute_sin_cos_embedding(batch_size,dim,pos_len):
 
 
 
+if __name__ == '__main__':
+    input = torch.zeros([1,12,300])
+    model = self_Attention_1D_for_timestep(12)
+    output = model(input)
+    print(output)
