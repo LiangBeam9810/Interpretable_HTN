@@ -435,8 +435,8 @@ class MLBFNet_GUR(nn.Module):
 
         self.bn = nn.BatchNorm2d(16)
         self.relu = nn.LeakyReLU(inplace=True)
-        self.conv1 = ResSeBlock2d(inplanes=1,outplanes=16,stride=4,kernel_size=(1,15),res=self.res,se=self.se)
-        self.conv2 = ResSeBlock2d(inplanes=16,outplanes=16,stride=4,kernel_size=(1,15),res=self.res,se=self.se)
+        self.conv1 = ResSeBlock2d(inplanes=1,outplanes=32,stride=4,kernel_size=(1,15),res=self.res,se=self.se)
+        self.conv2 = ResSeBlock2d(inplanes=32,outplanes=32,stride=4,kernel_size=(1,15),res=self.res,se=self.se)
         
         self.layers0 = nn.Sequential(
             ResSeBlock1d(inplanes=1,outplanes=16,stride=4, kernel_size=(15,15), res=self.res,se=self.se),
@@ -502,6 +502,7 @@ class MLBFNet_GUR(nn.Module):
             self.inplanes = 32
             layers = nn.Sequential()
             layers.append(ResSeBlock2d(inplanes=self.inplanes,outplanes=64,stride=2, kernel_size=(self.sizes[i][0],self.sizes[i][1]), res=res, se = se))
+            layers.append(ResSeBlock2d(inplanes=64,outplanes=64,stride=1, kernel_size=(self.sizes[i][2],self.sizes[i][3]), res=res, se = se))
             layers.append(ResSeBlock2d(inplanes=64,outplanes=64,stride=2, kernel_size=(self.sizes[i][2],self.sizes[i][3]), res=res, se = se))
             layers.append(ResSeBlock2d(inplanes=64,outplanes=64,stride=1, kernel_size=(self.sizes[i][2],self.sizes[i][3]), res=res, se = se))
             self.layers_list_2d.append(layers)
@@ -512,6 +513,7 @@ class MLBFNet_GUR(nn.Module):
             self.inplanes = 64*12
             layers = nn.Sequential()
             layers.append(ResSeBlock1d(inplanes=self.inplanes,outplanes=512,stride=2, kernel_size=(self.sizes[i][0],self.sizes[i][1]), res=res, se = se))
+            layers.append(ResSeBlock1d(inplanes=512,outplanes=512,stride=1, kernel_size=(self.sizes[i][2],self.sizes[i][3]), res=res, se = se))
             layers.append(ResSeBlock1d(inplanes=512,outplanes=512,stride=2, kernel_size=(self.sizes[i][2],self.sizes[i][3]), res=res, se = se))
             layers.append(ResSeBlock1d(inplanes=512,outplanes=512,stride=1, kernel_size=(self.sizes[i][2],self.sizes[i][3]), res=res, se = se))
             
@@ -533,7 +535,7 @@ class MLBFNet_GUR(nn.Module):
         self.GRU10 = nn.GRU(16, 16, 2, batch_first=True,bidirectional=False)
         self.GRU11 = nn.GRU(16, 16, 2, batch_first=True,bidirectional=False)
         
-        self.GRU = nn.GRU(192,192,2,batch_first=True,bidirectional=False)
+        self.GRU = nn.GRU(384,384,2,batch_first=True,bidirectional=False)
         
     def forward(self, x):
         batch_size, channels,seq_len = x.shape
@@ -544,51 +546,51 @@ class MLBFNet_GUR(nn.Module):
                     mark_lenth = torch.randint(int(seq_len/10),int(seq_len/5),[1])
                     x = augmenters.mark_input(x,mark_lenth=int(mark_lenth[0]))
 
-        x0 = self.layers0(x[:,:1,:])
-        x1 = self.layers1(x[:,1:2,:])
-        x2 = self.layers2(x[:,2:3,:])
-        x3 = self.layers3(x[:,3:4,:])
-        x4 = self.layers4(x[:,4:5,:])
-        x5 = self.layers5(x[:,5:6,:])
-        x6 = self.layers6(x[:,6:7,:])
-        x7 = self.layers7(x[:,7:8,:])
-        x8 = self.layers8(x[:,8:9,:])
-        x9 = self.layers9(x[:,9:10,:])
-        x10 = self.layers10(x[:,10:11,:])
-        x11 = self.layers11(x[:,11:,:])
+        # x0 = self.layers0(x[:,:1,:])
+        # x1 = self.layers1(x[:,1:2,:])
+        # x2 = self.layers2(x[:,2:3,:])
+        # x3 = self.layers3(x[:,3:4,:])
+        # x4 = self.layers4(x[:,4:5,:])
+        # x5 = self.layers5(x[:,5:6,:])
+        # x6 = self.layers6(x[:,6:7,:])
+        # x7 = self.layers7(x[:,7:8,:])
+        # x8 = self.layers8(x[:,8:9,:])
+        # x9 = self.layers9(x[:,9:10,:])
+        # x10 = self.layers10(x[:,10:11,:])
+        # x11 = self.layers11(x[:,11:,:])
         
-        x0,_ = (self.GRU0(x0.permute(0,2 ,1)))
-        x1,_ = (self.GRU1(x1.permute(0,2 ,1)))
-        x2,_ = (self.GRU2(x2.permute(0,2 ,1)))
-        x3,_ = (self.GRU3(x3.permute(0,2 ,1)))
-        x4,_ = (self.GRU4(x4.permute(0,2 ,1)))
-        x5,_ = (self.GRU5(x5.permute(0,2 ,1)))
-        x6,_ = (self.GRU6(x6.permute(0,2 ,1)))
-        x7,_ = (self.GRU7(x7.permute(0,2 ,1)))
-        x8,_ = (self.GRU8(x8.permute(0,2 ,1)))
-        x9,_ = (self.GRU9(x9.permute(0,2 ,1)))
-        x10,_ = (self.GRU10(x10.permute(0,2 ,1)))
-        x11,_ = (self.GRU11(x11.permute(0,2 ,1)))
+        # x0,_ = (self.GRU0(x0.permute(0,2 ,1)))
+        # x1,_ = (self.GRU1(x1.permute(0,2 ,1)))
+        # x2,_ = (self.GRU2(x2.permute(0,2 ,1)))
+        # x3,_ = (self.GRU3(x3.permute(0,2 ,1)))
+        # x4,_ = (self.GRU4(x4.permute(0,2 ,1)))
+        # x5,_ = (self.GRU5(x5.permute(0,2 ,1)))
+        # x6,_ = (self.GRU6(x6.permute(0,2 ,1)))
+        # x7,_ = (self.GRU7(x7.permute(0,2 ,1)))
+        # x8,_ = (self.GRU8(x8.permute(0,2 ,1)))
+        # x9,_ = (self.GRU9(x9.permute(0,2 ,1)))
+        # x10,_ = (self.GRU10(x10.permute(0,2 ,1)))
+        # x11,_ = (self.GRU11(x11.permute(0,2 ,1)))
         
-        x0 = (self.dorp(x0.permute(0,2 ,1)))
-        x1 = (self.dorp(x1.permute(0,2 ,1)))
-        x2 = (self.dorp(x2.permute(0,2 ,1)))
-        x3 = (self.dorp(x3.permute(0,2 ,1)))
-        x4 = (self.dorp(x4.permute(0,2 ,1)))
-        x5 = (self.dorp(x5.permute(0,2 ,1)))
-        x6 = (self.dorp(x6.permute(0,2 ,1)))
-        x7 = (self.dorp(x7.permute(0,2 ,1)))
-        x8 = (self.dorp(x8.permute(0,2 ,1)))
-        x9 = (self.dorp(x9.permute(0,2 ,1)))
-        x10 = (self.dorp(x10.permute(0,2 ,1)))
-        x11 = (self.dorp(x11.permute(0,2 ,1)))
+        # x0 = (self.dorp(x0.permute(0,2 ,1)))
+        # x1 = (self.dorp(x1.permute(0,2 ,1)))
+        # x2 = (self.dorp(x2.permute(0,2 ,1)))
+        # x3 = (self.dorp(x3.permute(0,2 ,1)))
+        # x4 = (self.dorp(x4.permute(0,2 ,1)))
+        # x5 = (self.dorp(x5.permute(0,2 ,1)))
+        # x6 = (self.dorp(x6.permute(0,2 ,1)))
+        # x7 = (self.dorp(x7.permute(0,2 ,1)))
+        # x8 = (self.dorp(x8.permute(0,2 ,1)))
+        # x9 = (self.dorp(x9.permute(0,2 ,1)))
+        # x10 = (self.dorp(x10.permute(0,2 ,1)))
+        # x11 = (self.dorp(x11.permute(0,2 ,1)))
         
 
-        x0 = torch.cat((x0.unsqueeze(1),x1.unsqueeze(1),x2.unsqueeze(1),x3.unsqueeze(1),\
-                x4.unsqueeze(1),x5.unsqueeze(1),x6.unsqueeze(1),x7.unsqueeze(1),\
-                x8.unsqueeze(1),x9.unsqueeze(1),x10.unsqueeze(1),x11.unsqueeze(1)),dim=1)
-        x0 = x0.permute(0,2,1,3)#B 32 12 L/2/2/2/2
-        x0 = self.dorp(x0)
+        # x0 = torch.cat((x0.unsqueeze(1),x1.unsqueeze(1),x2.unsqueeze(1),x3.unsqueeze(1),\
+        #         x4.unsqueeze(1),x5.unsqueeze(1),x6.unsqueeze(1),x7.unsqueeze(1),\
+        #         x8.unsqueeze(1),x9.unsqueeze(1),x10.unsqueeze(1),x11.unsqueeze(1)),dim=1)
+        # x0 = x0.permute(0,2,1,3)#B 32 12 L/2/2/2/2
+        # x0 = self.dorp(x0)
         
         x = x.unsqueeze(1)
 
@@ -597,8 +599,8 @@ class MLBFNet_GUR(nn.Module):
         x = x.view(x.shape[0],x.shape[1]*x.shape[2],x.shape[3])# b,16,12,313
         x,_ = self.GRU(x.permute(0,2 ,1))
         x = (self.dorp(x.permute(0,2 ,1)))
-        x = x.view(x.shape[0],16,12,313)
-        x = torch.cat((x,x0),dim = 1) #B 32 12 L/2/2/2/2
+        x = x.view(x.shape[0],32,12,313) # 16 -》32
+        # x = torch.cat((x,x0),dim = 1) #B 32 12 L/2/2/2/2
         xs = []
         for i in range(len(self.sizes)):
             x1 = self.layers_list_2d[i](x)#[N,D,12,L]
