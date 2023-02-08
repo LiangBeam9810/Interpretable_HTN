@@ -91,7 +91,7 @@ data_root = '/workspace/data/Preprocess_HTN/datas_/'
 
 if __name__ == '__main__':
     L2_list = [0.007]
-    BS_list = [64]
+    BS_list = [128]
     for i in range(len(L2_list)):
         seed_torch(2023)
         time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime()) 

@@ -423,7 +423,7 @@ class MLBFNet(nn.Module):
     
   
 class MLBFNet_GUR(nn.Module):
-    def __init__(self,mark = True,res = True,se=True,Dropout_rate = 0.2,size = [[3,3,3,3,3,3],
+    def __init__(self,mark = True,res = True,se=True,Dropout_rate = 0.0,size = [[3,3,3,3,3,3],
                                                                                 [5,5,5,5,3,3],
                                                                                 [7,7,7,7,3,3]]):
         super(MLBFNet_GUR, self).__init__()
@@ -502,7 +502,6 @@ class MLBFNet_GUR(nn.Module):
             self.inplanes = 32
             layers = nn.Sequential()
             layers.append(ResSeBlock2d(inplanes=self.inplanes,outplanes=64,stride=2, kernel_size=(self.sizes[i][0],self.sizes[i][1]), res=res, se = se))
-            layers.append(ResSeBlock2d(inplanes=64,outplanes=64,stride=1, kernel_size=(self.sizes[i][2],self.sizes[i][3]), res=res, se = se))
             layers.append(ResSeBlock2d(inplanes=64,outplanes=64,stride=2, kernel_size=(self.sizes[i][2],self.sizes[i][3]), res=res, se = se))
             layers.append(ResSeBlock2d(inplanes=64,outplanes=64,stride=1, kernel_size=(self.sizes[i][2],self.sizes[i][3]), res=res, se = se))
             self.layers_list_2d.append(layers)
@@ -513,16 +512,8 @@ class MLBFNet_GUR(nn.Module):
             self.inplanes = 64*12
             layers = nn.Sequential()
             layers.append(ResSeBlock1d(inplanes=self.inplanes,outplanes=512,stride=2, kernel_size=(self.sizes[i][0],self.sizes[i][1]), res=res, se = se))
-            layers.append(ResSeBlock1d(inplanes=512,outplanes=512,stride=1, kernel_size=(self.sizes[i][0],self.sizes[i][1]), res=res, se = se))
-            
             layers.append(ResSeBlock1d(inplanes=512,outplanes=512,stride=2, kernel_size=(self.sizes[i][2],self.sizes[i][3]), res=res, se = se))
             layers.append(ResSeBlock1d(inplanes=512,outplanes=512,stride=1, kernel_size=(self.sizes[i][2],self.sizes[i][3]), res=res, se = se))
-            
-            # layers.append(ResSeBlock1d(inplanes=384,outplanes=384,stride=2, kernel_size=(self.sizes[i][4],self.sizes[i][5]), res=res, se = se))
-            # layers.append(ResSeBlock1d(inplanes=384,outplanes=384,stride=1, kernel_size=(self.sizes[i][4],self.sizes[i][5]), res=res, se = se))
-            
-            # layers.append(ResSeBlock1d(inplanes=384,outplanes=384,stride=2, kernel_size=(self.sizes[i][4],self.sizes[i][5]), res=res, se = se))
-            # layers.append(ResSeBlock1d(inplanes=384,outplanes=384,stride=1, kernel_size=(self.sizes[i][4],self.sizes[i][5]), res=res, se = se))
             
             self.layers_list_1d.append(layers)    
         self.dorp = nn.Dropout(p = Dropout_rate)
