@@ -522,18 +522,7 @@ class MLBFNet_GUR(nn.Module):
         self.avgpool = nn.AdaptiveAvgPool1d(1)
         self.fc = nn.Linear(512*len(self.sizes),2)
         self.softmax = nn.Softmax(-1)
-        self.GRU0 = nn.GRU(32, 32, 2, batch_first=True,bidirectional=False)
-        self.GRU1 = nn.GRU(32, 32, 2, batch_first=True,bidirectional=False)
-        self.GRU2 = nn.GRU(32, 32, 2, batch_first=True,bidirectional=False)
-        self.GRU3 = nn.GRU(32, 32, 2, batch_first=True,bidirectional=False)
-        self.GRU4 = nn.GRU(32, 32, 2, batch_first=True,bidirectional=False)
-        self.GRU5 = nn.GRU(32, 32, 2, batch_first=True,bidirectional=False)
-        self.GRU6 = nn.GRU(32, 32, 2, batch_first=True,bidirectional=False)
-        self.GRU7 = nn.GRU(32, 32, 2, batch_first=True,bidirectional=False)
-        self.GRU8 = nn.GRU(32, 32, 2, batch_first=True,bidirectional=False)
-        self.GRU9 = nn.GRU(32, 32, 2, batch_first=True,bidirectional=False)
-        self.GRU10 = nn.GRU(32, 32, 2, batch_first=True,bidirectional=False)
-        self.GRU11 = nn.GRU(32, 32, 2, batch_first=True,bidirectional=False)
+        self.GRU0 =nn.GRU(384,384,2,batch_first=True,bidirectional=False)
         
         self.GRU = nn.GRU(384,384,2,batch_first=True,bidirectional=False)
         
@@ -559,41 +548,17 @@ class MLBFNet_GUR(nn.Module):
         x10 = self.layers10(x[:,10:11,:])
         x11 = self.layers11(x[:,11:,:])
         
-        x0,_ = (self.GRU0(x0.permute(0,2 ,1)))
-        x1,_ = (self.GRU1(x1.permute(0,2 ,1)))
-        x2,_ = (self.GRU2(x2.permute(0,2 ,1)))
-        x3,_ = (self.GRU3(x3.permute(0,2 ,1)))
-        x4,_ = (self.GRU4(x4.permute(0,2 ,1)))
-        x5,_ = (self.GRU5(x5.permute(0,2 ,1)))
-        x6,_ = (self.GRU6(x6.permute(0,2 ,1)))
-        x7,_ = (self.GRU7(x7.permute(0,2 ,1)))
-        x8,_ = (self.GRU8(x8.permute(0,2 ,1)))
-        x9,_ = (self.GRU9(x9.permute(0,2 ,1)))
-        x10,_ = (self.GRU10(x10.permute(0,2 ,1)))
-        x11,_ = (self.GRU11(x11.permute(0,2 ,1)))
-        
-        x0 = (self.dorp(x0.permute(0,2 ,1)))
-        x1 = (self.dorp(x1.permute(0,2 ,1)))
-        x2 = (self.dorp(x2.permute(0,2 ,1)))
-        x3 = (self.dorp(x3.permute(0,2 ,1)))
-        x4 = (self.dorp(x4.permute(0,2 ,1)))
-        x5 = (self.dorp(x5.permute(0,2 ,1)))
-        x6 = (self.dorp(x6.permute(0,2 ,1)))
-        x7 = (self.dorp(x7.permute(0,2 ,1)))
-        x8 = (self.dorp(x8.permute(0,2 ,1)))
-        x9 = (self.dorp(x9.permute(0,2 ,1)))
-        x10 = (self.dorp(x10.permute(0,2 ,1)))
-        x11 = (self.dorp(x11.permute(0,2 ,1)))
-        
-
         x0 = torch.cat((x0.unsqueeze(1),x1.unsqueeze(1),x2.unsqueeze(1),x3.unsqueeze(1),\
                 x4.unsqueeze(1),x5.unsqueeze(1),x6.unsqueeze(1),x7.unsqueeze(1),\
                 x8.unsqueeze(1),x9.unsqueeze(1),x10.unsqueeze(1),x11.unsqueeze(1)),dim=1)
-        x0 = x0.permute(0,2,1,3)#B 32 12 L/2/2/2/2
-        # x0 = self.dorp(x0)
+        x0 = x0.permute(0,2,1,3)#B 32 12 L/2/2/2/2  
+        x0 = x0.contiguous().view(x0.shape[0],x0.shape[1]*x0.shape[2],x0.shape[3])# b,32,12,313
+        x0,_ = (self.GRU0(x0.permute(0,2 ,1)))
+        x0 = (self.dorp(x0.permute(0,2 ,1)))
+        x0 = x0.view(x0.shape[0],32,12,313) # 16 -》32
+        
         
         x = x.unsqueeze(1)
-
         x = self.conv1(x)
         x = self.conv2(x)
         x = x.view(x.shape[0],x.shape[1]*x.shape[2],x.shape[3])# b,16,12,313
