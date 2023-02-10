@@ -6,6 +6,7 @@ from torch.utils.data.dataset import Dataset
 from tqdm import tqdm
 import random
 from scipy.signal import butter, lfilter
+from scipy import signal
 
 reset_list = [
                 '848023',
@@ -242,10 +243,10 @@ def remove_duplicated(df_input):
     return df_filter
 
 class ECG_Dataset(Dataset):
-    def __init__(self,data_root,infos,preprocess = True,onehot_lable=False):
+    def __init__(self,data_root,infos,preprocess = True,onehot_lable=False,resample:int = False):
         self.ECGs_path = data_root+'/ECG/'
         self.Qualitys_path = data_root+'/Q/'
-        
+        self.resample = resample
         self.infos = infos
         self.datas = self.get_ECGs_form_FilesList(self.infos['ECGFilename'].tolist())
         self.labels = self.infos['label'].tolist()
@@ -271,6 +272,8 @@ class ECG_Dataset(Dataset):
         # filter_order = 1
         # for i in tqdm(range(len(self.datas))):
         #     self.datas[i] = bandpass_filter(self.datas[i], lowcut=filter_lowcut, highcut=filter_highcut, signal_freq=500, filter_order=filter_order)# type: ignore   
+        if(self.resample):
+            self.datas =signal.resample_poly(self.datas, up = 1,down= self.resample, padtype='constant',axis=2) #对时间点进行降采样
         self.datas = self.amplitude_limiting(self.datas,5000)
         # for i in range(12):
         #     mean =  self.datas[:,i,:].mean()

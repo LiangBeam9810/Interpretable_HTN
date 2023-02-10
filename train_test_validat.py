@@ -68,7 +68,8 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGHandle.ECG_Dataset ,val_datas
                         onehot_lable = False,
                         pair_flag = False,
                         train_Df:pd.DataFrame = None,# type: ignore      
-                        data_path = ''                  
+                        data_path = ''  ,
+                        down_resample:int = False                
                         ):
     
     
@@ -143,7 +144,7 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGHandle.ECG_Dataset ,val_datas
         
         if(pair_flag ):# 每次重新抽取train_pair_Df (train_Df 是已经除去了val_Df的tv_Df)
                 train_pair_df,_ = Pair_ID(train_Df,1,star_index=0,Range_max=15,pair_num=1,shuffle=True)
-                train_dataset = ECGHandle.ECG_Dataset(data_path,train_pair_df ,preprocess = True)
+                train_dataset = ECGHandle.ECG_Dataset(data_path,train_pair_df ,preprocess = True,resample=down_resample)
                 train_dataloader = Data.DataLoader(dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=shuffle,num_workers=num_workers,pin_memory=True)
         
     # 计算此flod 在testset上的效果
@@ -286,7 +287,7 @@ def train_model(train_loader,model,criterion,optimizer,device,onehot_lable = Fal
         optimizer.zero_grad() # 梯度清0
         outputs = model(inputs) # 预测结果
         loss = criterion(outputs,labels) # 计算loss
-
+        loss.requires_grad_(True) 
         loss.backward() # 反向传播
         optimizer.step() # 更新系数
         #print(outputs)

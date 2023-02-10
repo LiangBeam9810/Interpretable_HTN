@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import ecg_plot
 import ECGHandle
 import VGG
+import informer
 import torch
 
 import torch.utils.data as Data
@@ -59,13 +60,13 @@ print(DEVICE)
 BATCH_SIZE = 64
 L2 = 0.07
 FOLDS = 5
-EPOCHS = 200  
+EPOCHS = 300  
 PATIENCE = 50
 LR = 0.0005
 PAIR =True
 
 notion ="####"*10 +\
-        "\n#Net.MLBFNet_GUR() lite 保证所有分支经历相同，为可解释性做探索" +\
+        "\n#informer.informer_decoder" +\
         "\n#LR = 0.0005" +\
         "\n#pair HTN candidate >0 break " +\
         "\n#delete all have the same name&sex&ages" +\
@@ -88,10 +89,10 @@ time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime())
 log_root = './logs/'+  time_str+'/'
 model_root =  './model/'+time_str+'/'
 data_root = '/workspace/data/Preprocess_HTN/datas_/'
-
+down_resample = False
 if __name__ == '__main__':
-    L2_list = [0.007]
-    BS_list = [128]
+    L2_list = [0.0]
+    BS_list = [32]
     for i in range(len(L2_list)):
         seed_torch(2023)
         time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime()) 
@@ -124,15 +125,15 @@ if __name__ == '__main__':
         
         torch.cuda.empty_cache()# 清空显卡cuda
         NET = [
-            Net.MLBFNet_GUR(True,True,True,0.3),
-            Net.MLBFNet_GUR(True,True,True,0.3),
-            Net.MLBFNet_GUR(True,True,True,0.3),
-            Net.MLBFNet_GUR(True,True,True,0.3),
-            Net.MLBFNet_GUR(True,True,True,0.3),
-            Net.MLBFNet_GUR(True,True,True,0.3),] # type: ignore
+            informer.informer_decoder(enc_in=12,c_out=2,output_attention = False,dropout = 0.1,augment=True,e_layers=3,),
+            informer.informer_decoder(enc_in=12,c_out=2,output_attention = False,dropout = 0.1,augment=True,e_layers=3,),
+            informer.informer_decoder(enc_in=12,c_out=2,output_attention = False,dropout = 0.1,augment=True,e_layers=3,),
+            informer.informer_decoder(enc_in=12,c_out=2,output_attention = False,dropout = 0.1,augment=True,e_layers=3,),
+            informer.informer_decoder(enc_in=12,c_out=2,output_attention = False,dropout = 0.1,augment=True,e_layers=3,),
+            informer.informer_decoder(enc_in=12,c_out=2,output_attention = False,dropout = 0.1,augment=True,e_layers=3,),
+            informer.informer_decoder(enc_in=12,c_out=2,output_attention = False,dropout = 0.1,augment=True,e_layers=3,),] # type: ignore
         os.makedirs(model_path, exist_ok=True)  # type: ignore
         writer = SummaryWriter(log_path)  # type: ignore
-        # sys.stdout = logger.Logger(log_path+'/log.txt'
         
         print("\n\n L2 = ",L2)
         print("\nBatchsize = ",BATCH_SIZE)
@@ -156,7 +157,7 @@ if __name__ == '__main__':
         # test_df = ALL_data_buffer[ALL_data_buffer['year']==22]
         # tv_df = ALL_data_buffer[~(ALL_data_buffer['year']==22)]
         # ####################################################################
-        test_dataset = ECGHandle.ECG_Dataset(data_root,test_df,preprocess = True)
+        test_dataset = ECGHandle.ECG_Dataset(data_root,test_df,preprocess = True,resample=down_resample)
         for fold in range(FOLDS):
             print(" "*10+ "Fold "+str(fold)+" of "+str(FOLDS) + ' :')
             seed_torch(2023) # reset random seed every fold, keep sequent
@@ -169,10 +170,10 @@ if __name__ == '__main__':
             HTN_validate_size = int(HTN_tv_size//FOLDS)
             validate_start_index = HTN_validate_size*fold #star index for validate
             validate_df,tarin_df = Pair_ID(tv_df_buffer,0.2,star_index=validate_start_index,Range_max=15,pair_num=1)
-            validate_dataset = ECGHandle.ECG_Dataset(data_root,validate_df,preprocess = True)
+            validate_dataset = ECGHandle.ECG_Dataset(data_root,validate_df,preprocess = True,resample=down_resample)
             
             train_pair_df,_ = Pair_ID(tarin_df,1,star_index=0,Range_max=15,pair_num=1,shuffle=True)
-            train_dataset = ECGHandle.ECG_Dataset(data_root,train_pair_df ,preprocess = True)
+            train_dataset = ECGHandle.ECG_Dataset(data_root,train_pair_df ,preprocess = True,resample=down_resample)
             
             train_loss,train_acc,validate_loss,validate_acc,test_loss,test_acc,precision_test,recall_test = tarinning_one_flod(fold,NET[fold]
                                                                                                     ,train_dataset,validate_dataset,test_dataset
@@ -191,7 +192,8 @@ if __name__ == '__main__':
                                                                                                     num_workers= 0,
                                                                                                     train_Df = tarin_df,
                                                                                                     weight_decay= L2,
-                                                                                                    data_path= data_root
+                                                                                                    data_path= data_root,
+                                                                                                    down_resample = down_resample
                                                                                                     )
     
             train_loss_sum[fold] = train_loss
