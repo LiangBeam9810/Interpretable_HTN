@@ -92,7 +92,7 @@ data_root = '/workspace/data/Preprocess_HTN/datas_/'
 
 if __name__ == '__main__':
     L2_list = [0.007]
-    BS_list = [32]
+    BS_list = [128]
     for i in range(len(L2_list)):
         seed_torch(2023)
         time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime()) 
@@ -125,12 +125,12 @@ if __name__ == '__main__':
         
         torch.cuda.empty_cache()# 清空显卡cuda
         NET = [
-            resnet.ResNet(resnet.Bottleneck,[3,4,6,3],2),
-            resnet.ResNet(resnet.Bottleneck,[3,4,6,3],2),
-            resnet.ResNet(resnet.Bottleneck,[3,4,6,3],2),
-            resnet.ResNet(resnet.Bottleneck,[3,4,6,3],2),
-            resnet.ResNet(resnet.Bottleneck,[3,4,6,3],2),
-            resnet.ResNet(resnet.Bottleneck,[3,4,6,3],2),] # type: ignore
+            Net.MLBFNet_GUR(True,True,True,0.3),
+            Net.MLBFNet_GUR(True,True,True,0.3),
+            Net.MLBFNet_GUR(True,True,True,0.3),
+            Net.MLBFNet_GUR(True,True,True,0.3),
+            Net.MLBFNet_GUR(True,True,True,0.3),
+            Net.MLBFNet_GUR(True,True,True,0.3),] # type: ignore
         os.makedirs(model_path, exist_ok=True)  # type: ignore
         writer = SummaryWriter(log_path)  # type: ignore
         # sys.stdout = logger.Logger(log_path+'/log.txt'
