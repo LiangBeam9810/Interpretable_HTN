@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import ecg_plot
 import ECGHandle
 import VGG
+import resnet
 import torch
 
 import torch.utils.data as Data
@@ -65,7 +66,7 @@ LR = 0.0005
 PAIR =True
 
 notion ="####"*10 +\
-        "\n#Net.MLBFNet_GUR() lite 保证所有分支经历相同，为可解释性做探索" +\
+        "\n#resnet50 " +\
         "\n#LR = 0.0005" +\
         "\n#pair HTN candidate >0 break " +\
         "\n#delete all have the same name&sex&ages" +\
@@ -91,7 +92,7 @@ data_root = '/workspace/data/Preprocess_HTN/datas_/'
 
 if __name__ == '__main__':
     L2_list = [0.007]
-    BS_list = [128]
+    BS_list = [32]
     for i in range(len(L2_list)):
         seed_torch(2023)
         time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime()) 
@@ -124,12 +125,12 @@ if __name__ == '__main__':
         
         torch.cuda.empty_cache()# 清空显卡cuda
         NET = [
-            Net.MLBFNet_GUR(True,True,True,0.3),
-            Net.MLBFNet_GUR(True,True,True,0.3),
-            Net.MLBFNet_GUR(True,True,True,0.3),
-            Net.MLBFNet_GUR(True,True,True,0.3),
-            Net.MLBFNet_GUR(True,True,True,0.3),
-            Net.MLBFNet_GUR(True,True,True,0.3),] # type: ignore
+            resnet.ResNet(resnet.Bottleneck,[3,4,6,3],2),
+            resnet.ResNet(resnet.Bottleneck,[3,4,6,3],2),
+            resnet.ResNet(resnet.Bottleneck,[3,4,6,3],2),
+            resnet.ResNet(resnet.Bottleneck,[3,4,6,3],2),
+            resnet.ResNet(resnet.Bottleneck,[3,4,6,3],2),
+            resnet.ResNet(resnet.Bottleneck,[3,4,6,3],2),] # type: ignore
         os.makedirs(model_path, exist_ok=True)  # type: ignore
         writer = SummaryWriter(log_path)  # type: ignore
         # sys.stdout = logger.Logger(log_path+'/log.txt'
