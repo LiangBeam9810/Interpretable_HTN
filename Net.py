@@ -3,6 +3,7 @@ import torch.nn as nn
 import Models
 from self_attention import *
 import augmenters
+import math 
 
 
 class ResSeBlock1d(nn.Module):
@@ -462,10 +463,10 @@ class MLBFNet_GUR(nn.Module):
             self.layers_list_1d.append(layers)    
         self.dorp = nn.Dropout(p = Dropout_rate)
         self.avgpool = nn.AdaptiveAvgPool1d(1)
-        self.fc = nn.Linear(512*len(self.sizes)+384*2,2)
+        self.fc = nn.Linear(512*len(self.sizes)+384*3,2)
         self.softmax = nn.Softmax(-1)
         
-        self.GRU = nn.GRU(384,384,2,batch_first=True,bidirectional=False)
+        self.GRU = nn.GRU(384,384,3,batch_first=True,bidirectional=False)
         
     def forward(self, x):
         batch_size, channels,seq_len = x.shape
