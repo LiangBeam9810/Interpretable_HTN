@@ -66,7 +66,7 @@ LR = 0.0005
 PAIR =True
 
 notion ="####"*10 +\
-        "\n#resnet50 " +\
+        "\n#Net.MLBFNet_GUR(True,True,True,2,0.3),  " +\
         "\n#LR = 0.0005" +\
         "\n#pair HTN candidate >0 break " +\
         "\n#delete all have the same name&sex&ages" +\
@@ -91,8 +91,8 @@ model_root =  './model/'+time_str+'/'
 data_root = '/workspace/data/Preprocess_HTN/datas_/'
 
 if __name__ == '__main__':
-    L2_list = [0.007,0.007]
-    BS_list = [64,128]
+    L2_list = [0.007]
+    BS_list = [64]
     for i in range(len(L2_list)):
         seed_torch(2023)
         time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime()) 
@@ -125,12 +125,12 @@ if __name__ == '__main__':
         
         torch.cuda.empty_cache()# 清空显卡cuda
         NET = [
-            Net.MLBFNet_GUR(True,True,True,0.3),
-            Net.MLBFNet_GUR(True,True,True,0.3),
-            Net.MLBFNet_GUR(True,True,True,0.3),
-            Net.MLBFNet_GUR(True,True,True,0.3),
-            Net.MLBFNet_GUR(True,True,True,0.3),
-            Net.MLBFNet_GUR(True,True,True,0.3),] # type: ignore
+            Net.MLBFNet_GUR(True,True,True,2,0.3),
+            Net.MLBFNet_GUR(True,True,True,2,0.3),
+            Net.MLBFNet_GUR(True,True,True,2,0.3),
+            Net.MLBFNet_GUR(True,True,True,2,0.3),
+            Net.MLBFNet_GUR(True,True,True,2,0.3),
+            Net.MLBFNet_GUR(True,True,True,2,0.3),] # type: ignore
         os.makedirs(model_path, exist_ok=True)  # type: ignore
         writer = SummaryWriter(log_path)  # type: ignore
         # sys.stdout = logger.Logger(log_path+'/log.txt'
