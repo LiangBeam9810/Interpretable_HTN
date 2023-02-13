@@ -125,12 +125,12 @@ if __name__ == '__main__':
         
         torch.cuda.empty_cache()# 清空显卡cuda
         NET = [
-            Net.MLBFNet_GUR(True,True,True,2,Dropout_rate=0.3),
-            Net.MLBFNet_GUR(True,True,True,2,Dropout_rate=0.3),
-            Net.MLBFNet_GUR(True,True,True,2,Dropout_rate=0.3),
-            Net.MLBFNet_GUR(True,True,True,2,Dropout_rate=0.3),
-            Net.MLBFNet_GUR(True,True,True,2,Dropout_rate=0.3),
-            Net.MLBFNet_GUR(True,True,True,2,Dropout_rate=0.3),] # type: ignore
+            Net.MLBFNet_GUR(True,True,True,3,Dropout_rate=0.3),
+            Net.MLBFNet_GUR(True,True,True,3,Dropout_rate=0.3),
+            Net.MLBFNet_GUR(True,True,True,3,Dropout_rate=0.3),
+            Net.MLBFNet_GUR(True,True,True,3,Dropout_rate=0.3),
+            Net.MLBFNet_GUR(True,True,True,3,Dropout_rate=0.3),
+            Net.MLBFNet_GUR(True,True,True,3,Dropout_rate=0.3),] # type: ignore
         os.makedirs(model_path, exist_ok=True)  # type: ignore
         writer = SummaryWriter(log_path)  # type: ignore
         # sys.stdout = logger.Logger(log_path+'/log.txt'
@@ -143,10 +143,16 @@ if __name__ == '__main__':
         train_acc_sum = [0]*FOLDS
         validate_loss_sum = [0]*FOLDS
         validate_acc_sum = [0]*FOLDS
+        precision_valid_sum = [0]*FOLDS    
+        recall_valid_sum = [0]*FOLDS   
+        validate_auc_sum = [0]*FOLDS
+        
         test_loss_sum = [0]*FOLDS
-        test_acc_sum = [0]*FOLDS    
+        test_acc_sum = [0]*FOLDS       
         precision_test_sum = [0]*FOLDS    
-        recall_test_sum = [0]*FOLDS    
+        recall_test_sum = [0]*FOLDS   
+        test_auc_sum = [0]*FOLDS
+         
         seed_torch(2023)
         ALL_data_buffer = ALL_data.copy()
         ALL_data_buffer = ALL_data_buffer.sample(frac=1).reset_index(drop=True) #打乱顺序
@@ -175,7 +181,7 @@ if __name__ == '__main__':
             train_pair_df,_ = Pair_ID(tarin_df,1,star_index=0,Range_max=15,pair_num=1,shuffle=True)
             train_dataset = ECGHandle.ECG_Dataset(data_root,train_pair_df ,preprocess = True)
             
-            train_loss,train_acc,validate_loss,validate_acc,test_loss,test_acc,precision_test,recall_test = tarinning_one_flod(fold,NET[fold]
+            train_loss,train_acc,validate_loss,validate_acc,precision_valid,recall_valid,auc_valid,test_loss,test_acc,precision_test,recall_test,auc_test = tarinning_one_flod(fold,NET[fold]
                                                                                                     ,train_dataset,validate_dataset,test_dataset
                                                                                                     ,writer,model_path
                                                                                                     ,log_path
@@ -197,51 +203,72 @@ if __name__ == '__main__':
     
             train_loss_sum[fold] = train_loss
             train_acc_sum[fold] = train_acc
+            
             validate_loss_sum[fold] = validate_loss
             validate_acc_sum[fold] = validate_acc
+            precision_valid_sum[fold] = precision_valid  # type: ignore        
+            recall_valid_sum[fold] = recall_valid  # type: ignore        
+            validate_auc_sum[fold] = auc_valid # type: ignore        
+            
             test_loss_sum[fold] = test_loss
             test_acc_sum[fold] = test_acc
             precision_test_sum[fold] = precision_test  # type: ignore   
             recall_test_sum[fold] = recall_test    # type: ignore 
+            test_auc_sum[fold] = auc_test  # type: ignore            
+            
+            
             torch.cuda.empty_cache()# 清空显卡cuda
             print(" "*10+'='*50)
             print(" "*10+'='*50)
             print(" "*10+"train_loss",train_loss,
             " "*10+"train_acc",train_acc,
+            
             '\n'+" "*10+"validate_loss",validate_loss,
             " "*10+"validate_acc",validate_acc,
+            '\n'+" "*10+"valid_precision",precision_valid,
+            '\n'+" "*10+"valid_recall",recall_valid,
+            '\n'+" "*10+"valid_auc",auc_valid,
+            
             '\n'+" "*10+"test_loss",test_loss,
             " "*10+"test_acc",test_acc,
             '\n'+" "*10+"test_precision",precision_test,
-            '\n'+" "*10+"test_recall",recall_test,)
+            '\n'+" "*10+"test_recall",recall_test,
+            '\n'+" "*10+"test_auc",auc_test,)
             print(" "*10+'='*50)
             print(" "*10+'='*50)
             print(" "*10+'Fold %d Training Finished' %(fold))
             # if(fold >= 3): break
             
         print(" "*5+'='*50)
-        print("train_loss",train_loss_sum,
-        " "*5+"train_acc",train_acc_sum,
-        "\n" + " "*5+"validate_loss",validate_loss_sum,
-        " "*5+"validate_acc",validate_acc_sum,
-        "\n" + " "*5+"test_loss",test_loss_sum,
-        " "*5+"test_acc",test_acc_sum,
+        print("train_loss",train_loss_sum," mean:",(np.array(train_loss_sum)).mean(),
+        " "*5+"train_acc",train_acc_sum," mean:",(np.array(train_acc_sum)).mean(),
+        "\n" + " "*5+"validate_loss",validate_loss_sum," mean:",(np.array(validate_loss_sum)).mean(),
+        " "*5+"validate_acc",validate_acc_sum," mean:",(np.array(validate_acc_sum)).mean(),
+        "\n" + " "*5+"validate_precision",precision_valid_sum," mean:",(np.array(precision_valid_sum)).mean(),
+        " "*5+"validate_recall",recall_valid_sum," mean:",(np.array(recall_valid_sum)).mean(),   
+        "\n" + " "*5+"validate_auc",validate_auc_sum," mean:",(np.array(validate_auc_sum)).mean(),
+        "\n" + " "*5+"test_loss",test_loss_sum," mean:",(np.array(test_loss_sum)).mean(),
+        " "*5+"test_acc",test_acc_sum," mean:",(np.array(test_acc_sum)).mean(),
         '\n'+" "*5+"test_precision",precision_test_sum," mean:",(np.array(precision_test_sum)).mean(),
-        '\n'+" "*5+"test_recall",recall_test_sum," mean:",(np.array(recall_test_sum)).mean())
+        " "*5+"test_recall",recall_test_sum," mean:",(np.array(recall_test_sum)).mean(),
+        "\n" + " "*5+"test_auc",test_auc_sum," mean:",(np.array(test_auc_sum)).mean())
         print(" "*5+'='*50)
         print('Training Finished')
         # sys.stdout.log.close()
         
         for ttt in range(5):
-            print(" "*5+'='*50)
-            print("train_loss",train_loss_sum,
-            " "*5+"train_acc",train_acc_sum,
-            "\n" + " "*5+"validate_loss",validate_loss_sum,
-            " "*5+"validate_acc",validate_acc_sum,
-            "\n" + " "*5+"test_loss",test_loss_sum,
-            " "*5+"test_acc",test_acc_sum,
+            print("train_loss",train_loss_sum," mean:",(np.array(train_loss_sum)).mean(),
+            " "*5+"train_acc",train_acc_sum," mean:",(np.array(train_acc_sum)).mean(),
+            "\n" + " "*5+"validate_loss",validate_loss_sum," mean:",(np.array(validate_loss_sum)).mean(),
+            " "*5+"validate_acc",validate_acc_sum," mean:",(np.array(validate_acc_sum)).mean(),
+            "\n" + " "*5+"validate_precision",precision_valid_sum," mean:",(np.array(precision_valid_sum)).mean(),
+            " "*5+"validate_recall",recall_valid_sum," mean:",(np.array(recall_valid_sum)).mean(),   
+            "\n" + " "*5+"validate_auc",validate_auc_sum," mean:",(np.array(validate_auc_sum)).mean(),
+            "\n" + " "*5+"test_loss",test_loss_sum," mean:",(np.array(test_loss_sum)).mean(),
+            " "*5+"test_acc",test_acc_sum," mean:",(np.array(test_acc_sum)).mean(),
             '\n'+" "*5+"test_precision",precision_test_sum," mean:",(np.array(precision_test_sum)).mean(),
-            '\n'+" "*5+"test_recall",recall_test_sum," mean:",(np.array(recall_test_sum)).mean())
+            " "*5+"test_recall",recall_test_sum," mean:",(np.array(recall_test_sum)).mean(),
+            "\n" + " "*5+"test_auc",test_auc_sum," mean:",(np.array(test_auc_sum)).mean())
             print(" "*5+'='*50)
         #重复打印几次 等待.log 打印完
         mycopyfile('./log.log',log_root)

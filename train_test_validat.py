@@ -1,6 +1,6 @@
 import numpy as np
 import torch
-from sklearn.metrics import f1_score, precision_score,recall_score
+from sklearn.metrics import f1_score, precision_score,recall_score,roc_auc_score
 import math
 import time
 import torch.utils.data as Data
@@ -102,36 +102,35 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGHandle.ECG_Dataset ,val_datas
     lr_min = LR_MIN	# 最小值
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.1, patience=10, verbose=False, threshold=0.0001, threshold_mode='rel', cooldown=0, min_lr=0, eps=1e-08)
     best_loss = np.inf
-    best_F1_scoret = 0
+    best_scoret = 0
     Model.to(DEVICE)
     for epoch in range(1,EPOCHS):
         time_all=0
         start_time = time.time()
         
         y_true,y_pred,train_loss,train_acc = train_model(train_dataloader, Model, criterion, optimizer,DEVICE,onehot_lable=onehot_lable) # type: ignore # 训练模型       
-         
-        y_true,y_pred,validate_loss,validate_acc = eval_model(valid_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
+        y_true,y_pred,y_out,validate_loss,validate_acc = eval_model(valid_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
         F1_score_valid =f1_score(y_true, y_pred, average='binary')#F1分数
         p_valid = precision_score(y_true, y_pred, average='binary')
         r_valid = recall_score(y_true, y_pred, average='binary')   
+        auc_valid = roc_auc_score(y_true,y_score=y_out)
         C1 = confusion_matrix(y_true,y_pred)
-        print(" "*20+'Validate: ',F1_score_valid,'\n'+" "*20,C1[0],'\n'+" "*20,C1[1],'\n'+" "*20,"precision: ",p_valid,"recall: ",r_valid)
-        y_true,y_pred,test_loss,test_acc = eval_model(test_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
-        F1_score_test =f1_score(y_true, y_pred, average='binary')#F1分数
-        p_test = precision_score(y_true, y_pred, average='binary')
-        r_test = recall_score(y_true, y_pred, average='binary') 
-        C = confusion_matrix(y_true,y_pred)
-        print(" "*20+'test: ',F1_score_test,'\n'+" "*20,C[0],'\n'+" "*20,C[1],'\n'+" "*20,"precision: ",p_test,"recall: ",r_test)
+        print(" "*20+'Validate: ',F1_score_valid,'\n'+" "*20,C1[0],'\n'+" "*20,C1[1],'\n'+" "*20,"precision: ",p_valid,"recall: ",r_valid,'AUC',auc_valid)
+        # y_true,y_pred,test_loss,test_acc = eval_model(test_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
+        # F1_score_test =f1_score(y_true, y_pred, average='binary')#F1分数
+        # p_test = precision_score(y_true, y_pred, average='binary')
+        # r_test = recall_score(y_true, y_pred, average='binary') 
+        # C = confusion_matrix(y_true,y_pred)
+        # print(" "*20+'test: ',F1_score_test,'\n'+" "*20,C[0],'\n'+" "*20,C[1],'\n'+" "*20,"precision: ",p_test,"recall: ",r_test)
         time_all = time.time()-start_time
-        
         writer.add_scalars(main_tag=str(fold)+'_Loss',tag_scalar_dict={'train': train_loss,'validate': validate_loss},global_step=epoch)
         writer.add_scalars(main_tag=str(fold)+'_Accuracy',tag_scalar_dict={'train': train_acc,'validate': validate_acc},global_step=epoch)
         writer.add_scalars(main_tag=str(fold)+'_LearningRate',tag_scalar_dict={'LR': optimizer.state_dict()['param_groups'][0]['lr']},global_step=epoch)      
         print(" "*20+'- Epoch: %d - Train_loss: %.5f - Train_acc: %.5f -  - Val_loss: %.5f - Val_acc: %.5f  - T_Time: %.5f' %(epoch,train_loss,train_acc,validate_loss,validate_acc,time_all),'LR：%.10f' %optimizer.state_dict()['param_groups'][0]['lr'])
         
-        if(F1_score_valid>best_F1_scoret):
-            best_F1_scoret = F1_score_valid
-            print(" "*20+'-- -- The best model for validate (F1= . ',best_F1_scoret,') -- --')
+        if(auc_valid>best_scoret):
+            best_scoret = F1_score_valid
+            print(" "*20+'-- -- The best model for validate (F1= . ',best_scoret,') -- --')
             torch.save(Model.state_dict(), save_model_path+'/BestF1_' + str(fold) + '.pt')
             
         scheduler.step(metrics=validate_loss) # 学习率迭代
@@ -153,23 +152,26 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGHandle.ECG_Dataset ,val_datas
     y_true,y_pred,train_loss,train_acc = train_model(train_dataloader, Model, criterion, optimizer,DEVICE,onehot_lable=onehot_lable) # type: ignore # 模型
     Model.load_state_dict(torch.load(best_model_path))
     
-    y_true,y_pred,validate_loss,validate_acc = eval_model(valid_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
+    y_true,y_pred,y_out,validate_loss,validate_acc = eval_model(valid_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
     F1_score_valid =f1_score(y_true, y_pred, average='binary')#F1分数
-    C1 = confusion_matrix(y_true,y_pred)
-    print(" "*10+'validate: ',F1_score_valid,'\n'+" "*10,C1[0],'\n'+" "*10,C1[1])
+    auc_valid = roc_auc_score(y_true,y_out)
+    C = confusion_matrix(y_true,y_pred)
+    precision_valid = precision_score(y_true, y_pred, average='binary')
+    recall_valid = recall_score(y_true, y_pred, average='binary') 
+    save_test_infos(log_path+'/Validate_answer_'+str(fold)+'.csv',val_dataset, y_true,y_pred,y_out)
+    print(" "*10+'validate: ',F1_score_valid,'\n'+" "*10,C[0],'\n'+" "*10,C[1])
     
     
     y_true,y_pred,y_out,test_loss,test_acc = test_model(test_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
     F1_score_test =f1_score(y_true, y_pred, average='binary')#F1分数
+    auc_test = roc_auc_score(y_true,y_out)
     C = confusion_matrix(y_true,y_pred)
-    # tn, fp, fn, tp = confusion_matrix(y_true,y_pred).ravel()
     precision_test = precision_score(y_true, y_pred, average='binary')
     recall_test = recall_score(y_true, y_pred, average='binary') 
     save_test_infos(log_path+'/Test_answer_'+str(fold)+'.csv',test_dataset, y_true,y_pred,y_out)
-    
     print(" "*10+'test: ',F1_score_test,'\n'+" "*10,C[0],'\n'+" "*10,C[1])
     # print(" "*10+'Fold %d Training Finished' %(fold))
-    return train_loss,train_acc,validate_loss,validate_acc,test_loss,test_acc,precision_test,recall_test
+    return train_loss,train_acc,validate_loss,validate_acc,precision_valid,recall_valid,auc_valid,test_loss,test_acc,precision_test,recall_test,auc_test
 
 def save_test_infos(csv_path,test_dataset:ECGHandle.ECG_Dataset,y_true:list,y_pred:list,y_out:list):
     ouputs_Df = pd.DataFrame(np.array(y_out),columns=["out0","out1"])
@@ -222,9 +224,6 @@ def tarinning_one_flod_mutilabels(fold,Model,train_dataset,val_dataset,test_data
         start_time = time.time()
         
         y_true,y_pred,train_loss,train_acc = train_model_mutilabels(train_dataloader, Model, criterion, optimizer,DEVICE,onehot_lable=onehot_lable) # type: ignore # 训练模型
-        
-        # F1_score_train =f1_score(y_true, y_pred, average='macro')#F1分数
-        # C0 = confusion_matrix(y_true,y_pred)
         
         y_true,y_pred,validate_loss,validate_acc = eval_model_mutilabels(valid_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
         time_all = time.time()-start_time
@@ -312,14 +311,13 @@ def eval_model(test_loader,criterion,model,device,onehot_lable=False):
     test_acc = []   
     y_ture = []
     y_pred = []
+    y_output = [] 
     for i,data in enumerate(test_loader,0):
         model.eval()
         with torch.no_grad():
             inputs,labels = data[0].to(device),data[1].to(device)
             outputs = model(inputs)
             loss = criterion(outputs,labels)
-            #print("output:",outputs)
-            #print("labels:",labels)
             _,pred = outputs.max(1) # 求概率最大值对应的标签
             if(onehot_lable):
                 _,target = labels.max(1)
@@ -332,7 +330,8 @@ def eval_model(test_loader,criterion,model,device,onehot_lable=False):
             test_acc.append(acc)
             y_ture.extend((target.to('cpu').detach().numpy().flatten()).tolist())
             y_pred.extend((pred.to('cpu').detach().numpy().flatten()).tolist())
-    return y_ture,y_pred,np.mean(test_loss),np.mean(test_acc),
+            y_output.extend((torch.nn.functional.softmax(outputs,dim=1).to('cpu').detach().numpy().tolist()))
+    return y_ture,y_pred,y_output,np.mean(test_loss),np.mean(test_acc),
 
 def test_model(test_loader,criterion,model,device,onehot_lable=False):
     
@@ -347,8 +346,6 @@ def test_model(test_loader,criterion,model,device,onehot_lable=False):
             inputs,labels = data[0].to(device),data[1].to(device)
             outputs = model(inputs)
             loss = criterion(outputs,labels)
-            #print("output:",outputs)
-            #print("labels:",labels)
             _,pred = outputs.max(1) # 求概率最大值对应的标签
             if(onehot_lable):
                 _,target = labels.max(1)
@@ -361,7 +358,7 @@ def test_model(test_loader,criterion,model,device,onehot_lable=False):
             test_acc.append(acc)
             y_ture.extend((target.to('cpu').detach().numpy()).tolist())
             y_pred.extend((pred.to('cpu').detach().numpy()).tolist())
-            y_output.extend((outputs.to('cpu').detach().numpy().tolist()))
+            y_output.extend((torch.nn.functional.softmax(outputs,dim=1).to('cpu').detach().numpy().tolist()))
     return y_ture,y_pred,y_output,np.mean(test_loss),np.mean(test_acc)
 
 
