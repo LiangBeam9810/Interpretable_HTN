@@ -5,6 +5,64 @@ from self_attention import *
 import augmenters
 import math 
 
+class AttentionLayer(nn.Module):
+    def __init__(self, attention, d_model, n_heads, 
+                 d_keys=None, d_values=None, mix=False):
+        super(AttentionLayer, self).__init__()
+
+        d_keys = d_keys or (d_model//n_heads)
+        d_values = d_values or (d_model//n_heads)
+
+        self.inner_attention = attention
+        self.query_projection = nn.Linear(d_model, d_keys * n_heads)
+        self.key_projection = nn.Linear(d_model, d_keys * n_heads)
+        self.value_projection = nn.Linear(d_model, d_values * n_heads)
+        self.out_projection = nn.Linear(d_values * n_heads, d_model)
+        self.n_heads = n_heads
+        self.mix = mix
+
+    def forward(self, queries, keys, values):
+        B, L, _ = queries.shape 
+        _, S, _ = keys.shape
+        H = self.n_heads
+
+        queries = self.query_projection(queries).view(B, L, H, -1)
+        keys = self.key_projection(keys).view(B, S, H, -1)
+        values = self.value_projection(values).view(B, S, H, -1)
+
+        out, attn = self.inner_attention(
+            queries,
+            keys,
+            values
+        )
+        if self.mix:
+            out = out.transpose(2,1).contiguous()
+        out = out.view(B, L, -1)
+
+        return self.out_projection(out), attn
+    
+class FullAttention(nn.Module):
+    def __init__(self,scale=None, attention_dropout=0.1, output_attention=False):
+        super(FullAttention, self).__init__()
+        self.scale = scale
+        self.output_attention = output_attention
+        self.dropout = nn.Dropout(attention_dropout)
+        
+    def forward(self, queries, keys, values):
+        B, L, H, E = queries.shape
+        _, S, _, D = values.shape
+        scale = self.scale or 1./sqrt(E)
+
+        scores = torch.einsum("blhe,bshe->bhls", queries, keys)
+
+        A = self.dropout(torch.softmax(scale * scores, dim=-1))
+        V = torch.einsum("bhls,bshd->blhd", A, values)
+        
+        if self.output_attention:
+            return (V.contiguous(), A)
+        else:
+            return (V.contiguous(), None)
+
 
 class ResSeBlock1d(nn.Module):
 
@@ -424,9 +482,9 @@ class MLBFNet(nn.Module):
     
   
 class MLBFNet_GUR(nn.Module):
-    def __init__(self,mark = True,res = True,se=True,GRU_layers_nums:int= 3,Dropout_rate:float = 0.0,size = [[3,3,3,3,3,3],
+    def __init__(self,mark = True,res = True,se=True,GRU_layers_nums:int= 3,output_attention = False,Dropout_rate:float = 0.0,size = [[3,3,3,3,3,3],
                                                                                                     [5,5,5,5,3,3],
-                                                                                                    [7,7,7,7,3,3]]):
+                                                                                                    [7,7,7,7,3,3]],):
         super(MLBFNet_GUR, self).__init__()
         self.mark = mark
         self.res = res
@@ -440,6 +498,97 @@ class MLBFNet_GUR(nn.Module):
         self.conv2 = ResSeBlock2d(inplanes=32,outplanes=32,stride=4,kernel_size=(1,15),res=self.res,se=self.se)
         
         self.layers_list_2d = nn.ModuleList()
+
+        for i,size in enumerate(self.sizes):
+            self.layers = nn.Sequential()
+            self.inplanes = 32
+            layers = nn.Sequential()
+            layers.append(ResSeBlock2d(inplanes=self.inplanes,outplanes=64,stride=2, kernel_size=(self.sizes[i][0],self.sizes[i][1]), res=res, se = se))
+            layers.append(ResSeBlock2d(inplanes=64,outplanes=64,stride=1, kernel_size=(self.sizes[i][2],self.sizes[i][3]), res=res, se = se))
+            layers.append(ResSeBlock2d(inplanes=64,outplanes=64,stride=2, kernel_size=(self.sizes[i][2],self.sizes[i][3]), res=res, se = se))
+            layers.append(ResSeBlock2d(inplanes=64,outplanes=64,stride=1, kernel_size=(self.sizes[i][2],self.sizes[i][3]), res=res, se = se))
+            self.layers_list_2d.append(layers)
+    
+        self.layers_list_1d = nn.ModuleList()
+        for i,size in enumerate(self.sizes):
+            self.layers = nn.Sequential()
+            self.inplanes = 64*12
+            layers = nn.Sequential()
+            layers.append(ResSeBlock1d(inplanes=self.inplanes,outplanes=512,stride=2, kernel_size=(self.sizes[i][0],self.sizes[i][1]), res=res, se = se))
+            layers.append(ResSeBlock1d(inplanes=512,outplanes=512,stride=1, kernel_size=(self.sizes[i][2],self.sizes[i][3]), res=res, se = se))
+            layers.append(ResSeBlock1d(inplanes=512,outplanes=512,stride=2, kernel_size=(self.sizes[i][2],self.sizes[i][3]), res=res, se = se))
+            layers.append(ResSeBlock1d(inplanes=512,outplanes=512,stride=1, kernel_size=(self.sizes[i][2],self.sizes[i][3]), res=res, se = se))
+            
+            self.layers_list_1d.append(layers)    
+        self.dorp = nn.Dropout(p = Dropout_rate)
+        self.avgpool = nn.AdaptiveAvgPool1d(1)
+        
+        
+        self.att = AttentionLayer(FullAttention( attention_dropout=Dropout_rate, output_attention=output_attention), 
+                                1, 1, mix=False)
+        self.gamma = nn.Parameter(torch.zeros(1)) 
+        
+        self.fc = nn.Linear(512*len(self.sizes)+384*GRU_layers_nums,2)
+        self.softmax = nn.Softmax(-1)
+        
+        self.GRU = nn.GRU(384,384,GRU_layers_nums,batch_first=True,bidirectional=False)
+        
+    def forward(self, x):
+        batch_size, channels,seq_len = x.shape
+        #x = x+(Models.create_1d_absolute_sin_cos_embedding(batch_size,channels,seq_len)).to(x.device)#位置编码
+        if(self.mark):
+            if self.training:
+                if(torch.rand(1)>0.5): #mark
+                    mark_lenth = torch.randint(int(seq_len/10),int(seq_len/5),[1])
+                    x = augmenters.mark_input(x,mark_lenth=int(mark_lenth[0]))
+        x = x.unsqueeze(1)
+        x = self.conv1(x)
+        x = self.conv2(x)
+        x = x.view(x.shape[0],x.shape[1]*x.shape[2],x.shape[3])# b,16,12,313
+        x,hn = self.GRU(x.permute(0,2 ,1))
+        hn = hn.permute(1,0 ,2) #N,LN,D
+        x = (self.dorp(x.permute(0,2 ,1)))
+        x = x.view(x.shape[0],32,12,313) # 16 -》32
+        # x = torch.cat((x,x0),dim = 1) #B 32 12 L/2/2/2/2
+        xs = []
+        for i in range(len(self.sizes)):
+            x1 = self.layers_list_2d[i](x)#[N,D,12,L]
+            x1 = torch.flatten(x1, start_dim=1,end_dim=2)#[N,D*12,L]
+            x1 = self.layers_list_1d[i](x1)#[N,D*12,L]
+            x1 = self.avgpool(x1)#[N,D,1]
+            x1 = self.dorp(x1)
+            xs.append(x1) #[N,D*12,L]
+        out = torch.cat(xs, dim=1)#[N,3*D,L]
+        out = out.flatten(1)
+        hn = hn.flatten(1)
+        out = torch.cat((out,hn),dim=1)
+        out = out.unsqueeze(2)
+        kqv = out
+        kqv,AttVlaue = self.att(kqv,kqv,kqv) 
+        out = self.gamma *kqv + out
+        out = out.squeeze(2)
+        self.last_out = self.dorp(self.fc(out))
+        # out = self.softmax(self.last_out)
+        return self.last_out
+
+class MLBFNet_GUR_o(nn.Module):
+    def __init__(self,mark = True,res = True,se=True,GRU_layers_nums:int= 3,Dropout_rate:float = 0.0,size = [[3,3,3,3,3,3],
+                                                                                                    [5,5,5,5,3,3],
+                                                                                                    [7,7,7,7,3,3]],):
+        super(MLBFNet_GUR_o, self).__init__()
+        self.mark = mark
+        self.res = res
+        self.se = se
+        self.Dropout_rate = Dropout_rate
+        self.sizes = size
+
+        self.bn = nn.BatchNorm2d(16)
+        self.relu = nn.LeakyReLU(inplace=True)
+        self.conv1 = ResSeBlock2d(inplanes=1,outplanes=32,stride=4,kernel_size=(1,15),res=self.res,se=self.se)
+        self.conv2 = ResSeBlock2d(inplanes=32,outplanes=32,stride=4,kernel_size=(1,15),res=self.res,se=self.se)
+        
+        self.layers_list_2d = nn.ModuleList()
+
         for i,size in enumerate(self.sizes):
             self.layers = nn.Sequential()
             self.inplanes = 32
@@ -503,6 +652,6 @@ class MLBFNet_GUR(nn.Module):
 
 if __name__ == '__main__':
     input = torch.zeros([23,12,5000])
-    model = MLBFNet_GUR(True,True,True,0.3)
+    model = MLBFNet_GUR(True,True,True,2,Dropout_rate=0.2,output_attention = True)
     output = model(input)
     print(output)
