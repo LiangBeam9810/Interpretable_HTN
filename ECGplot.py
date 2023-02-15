@@ -69,8 +69,8 @@ def color_map(data, cmap):
 #   y:(leads,timesteps) unit:uV
 #
 #----------------------------------------------------------------------------------#
-def plot_ECG_line(fig,axs,x,y,y_name = "Voltage(mV)",title=""):
-    axs.plot(x,y,color='b',linewidth =1)
+def plot_ECG_line(fig,axs,x,y,y_name = "Voltage(mV)",title="",c='b'):
+    axs.plot(x,y,color=c,linewidth =1)
     #fig.colorbar(line, ax=axs)
     axs.set_xlim(x.min(), x.max())
     axs.set_ylim(-5000, +5000)

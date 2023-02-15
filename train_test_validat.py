@@ -101,7 +101,6 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGHandle.ECG_Dataset ,val_datas
     lr_max = LR_MAX	# 最大值
     lr_min = LR_MIN	# 最小值
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.1, patience=10, verbose=False, threshold=0.0001, threshold_mode='rel', cooldown=0, min_lr=0, eps=1e-08)
-    best_loss = np.inf
     best_scoret = 0
     Model.to(DEVICE)
     for epoch in range(1,EPOCHS):
@@ -113,7 +112,7 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGHandle.ECG_Dataset ,val_datas
         F1_score_valid =f1_score(y_true, y_pred, average='binary')#F1分数
         p_valid = precision_score(y_true, y_pred, average='binary')
         r_valid = recall_score(y_true, y_pred, average='binary')   
-        auc_valid = roc_auc_score(y_true,y_score=y_out)
+        auc_valid = roc_auc_score(y_true,y_score=((np.array(y_out))[:,1]))
         C1 = confusion_matrix(y_true,y_pred)
         print(" "*20+'Validate: ',F1_score_valid,'\n'+" "*20,C1[0],'\n'+" "*20,C1[1],'\n'+" "*20,"precision: ",p_valid,"recall: ",r_valid,'AUC',auc_valid)
         # y_true,y_pred,test_loss,test_acc = eval_model(test_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
@@ -129,7 +128,7 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGHandle.ECG_Dataset ,val_datas
         print(" "*20+'- Epoch: %d - Train_loss: %.5f - Train_acc: %.5f -  - Val_loss: %.5f - Val_acc: %.5f  - T_Time: %.5f' %(epoch,train_loss,train_acc,validate_loss,validate_acc,time_all),'LR：%.10f' %optimizer.state_dict()['param_groups'][0]['lr'])
         
         if(auc_valid>best_scoret):
-            best_scoret = F1_score_valid
+            best_scoret = auc_valid
             print(" "*20+'-- -- The best model for validate (F1= . ',best_scoret,') -- --')
             torch.save(Model.state_dict(), save_model_path+'/BestF1_' + str(fold) + '.pt')
             
@@ -154,7 +153,7 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGHandle.ECG_Dataset ,val_datas
     
     y_true,y_pred,y_out,validate_loss,validate_acc = eval_model(valid_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
     F1_score_valid =f1_score(y_true, y_pred, average='binary')#F1分数
-    auc_valid = roc_auc_score(y_true,y_out)
+    auc_valid = roc_auc_score(y_true,(np.array(y_out))[:,1])
     C = confusion_matrix(y_true,y_pred)
     precision_valid = precision_score(y_true, y_pred, average='binary')
     recall_valid = recall_score(y_true, y_pred, average='binary') 
@@ -164,7 +163,7 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGHandle.ECG_Dataset ,val_datas
     
     y_true,y_pred,y_out,test_loss,test_acc = test_model(test_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
     F1_score_test =f1_score(y_true, y_pred, average='binary')#F1分数
-    auc_test = roc_auc_score(y_true,y_out)
+    auc_test = roc_auc_score(y_true,(np.array(y_out))[:,1])
     C = confusion_matrix(y_true,y_pred)
     precision_test = precision_score(y_true, y_pred, average='binary')
     recall_test = recall_score(y_true, y_pred, average='binary') 

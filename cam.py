@@ -76,7 +76,7 @@ def caculate_layer_cam_vlue(fmap,gradmap,original_seq_lenth = 5000):
 
 # fmap,gradmap size = [channel,H,W]
 def caculate_layer_cam_vlue_2d(fmap,gradmap,original_size = (12,5000)):
-    gradmap[gradmap<0] = 0 #[channel,H,W]
+    gradmap[gradmap<0] = 0 #[channel,H,W] like relu  
     weights = gradmap #[channel,H,W]
     fmap_ = weights*fmap #[channel,H,W]
     cam = np.sum(fmap_,axis=0) #[H,W]
@@ -87,4 +87,6 @@ def caculate_layer_cam_vlue_2d(fmap,gradmap,original_size = (12,5000)):
     upsampler = torch.nn.Upsample((original_size),mode='bilinear',align_corners=False) 
     cam_tensor = upsampler(cam_tensor) 
     cam = (cam_tensor[0][0]).to('cpu').detach().numpy()
+    # (cam_min, cam_max) = (cam.min(), cam.max())
+    # norm_cam = (cam - cam_min)/(cam)
     return cam

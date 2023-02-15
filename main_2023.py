@@ -57,7 +57,7 @@ seed_torch(2023)
 DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 print(DEVICE)
 
-BATCH_SIZE = 64
+BATCH_SIZE = 256
 L2 = 0.07
 FOLDS = 5
 EPOCHS = 200  
@@ -91,8 +91,8 @@ model_root =  './model/'+time_str+'/'
 data_root = '/workspace/data/Preprocess_HTN/datas_/'
 
 if __name__ == '__main__':
-    L2_list = [0.007]
-    BS_list = [64]
+    L2_list = [0.007,0.007,0.007]
+    BS_list = [128,64,32]
     for i in range(len(L2_list)):
         seed_torch(2023)
         time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime()) 
@@ -115,22 +115,28 @@ if __name__ == '__main__':
         
         ALL_data = ECGHandle.correct_label(ALL_data)
         ALL_data = ECGHandle.correct_age(ALL_data)
-        # ALL_data = ECGHandle.filter_diagnose(ALL_data,'起搏')
+        ALL_data = ECGHandle.filter_diagnose(ALL_data,'起搏')
         ALL_data = ECGHandle.filter_diagnose(ALL_data,'房颤')
         # ALL_data = ECGHandle.filter_diagnose(ALL_data,'阻滞')
-        # ALL_data = ECGHandle.remove_duplicated(ALL_data)
+        ALL_data = ECGHandle.remove_duplicated(ALL_data)
         
         ALL_data = ALL_data.rename(columns={'住院号':'ID','年龄':'age','性别':'gender','姓名':'name'}) 
         
         
         torch.cuda.empty_cache()# 清空显卡cuda
         NET = [
-            Net.MLBFNet_GUR(True,True,True,3,Dropout_rate=0.3),
-            Net.MLBFNet_GUR(True,True,True,3,Dropout_rate=0.3),
-            Net.MLBFNet_GUR(True,True,True,3,Dropout_rate=0.3),
-            Net.MLBFNet_GUR(True,True,True,3,Dropout_rate=0.3),
-            Net.MLBFNet_GUR(True,True,True,3,Dropout_rate=0.3),
-            Net.MLBFNet_GUR(True,True,True,3,Dropout_rate=0.3),] # type: ignore
+            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),
+            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),
+            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),
+            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),
+            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),
+            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),
+            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),
+            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),
+            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),
+            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),
+            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),] # type: ignore
+
         os.makedirs(model_path, exist_ok=True)  # type: ignore
         writer = SummaryWriter(log_path)  # type: ignore
         # sys.stdout = logger.Logger(log_path+'/log.txt'
@@ -241,16 +247,16 @@ if __name__ == '__main__':
             
         print(" "*5+'='*50)
         print("train_loss",train_loss_sum," mean:",(np.array(train_loss_sum)).mean(),
-        " "*5+"train_acc",train_acc_sum," mean:",(np.array(train_acc_sum)).mean(),
-        "\n" + " "*5+"validate_loss",validate_loss_sum," mean:",(np.array(validate_loss_sum)).mean(),
-        " "*5+"validate_acc",validate_acc_sum," mean:",(np.array(validate_acc_sum)).mean(),
+        "\n" + " "*5+"train_acc",train_acc_sum," mean:",(np.array(train_acc_sum)).mean(),
+        "\n" + "\n" + " "*5+"validate_loss",validate_loss_sum," mean:",(np.array(validate_loss_sum)).mean(),
+        "\n" + " "*5+"validate_acc",validate_acc_sum," mean:",(np.array(validate_acc_sum)).mean(),
         "\n" + " "*5+"validate_precision",precision_valid_sum," mean:",(np.array(precision_valid_sum)).mean(),
-        " "*5+"validate_recall",recall_valid_sum," mean:",(np.array(recall_valid_sum)).mean(),   
+        "\n" + " "*5+"validate_recall",recall_valid_sum," mean:",(np.array(recall_valid_sum)).mean(),   
         "\n" + " "*5+"validate_auc",validate_auc_sum," mean:",(np.array(validate_auc_sum)).mean(),
-        "\n" + " "*5+"test_loss",test_loss_sum," mean:",(np.array(test_loss_sum)).mean(),
-        " "*5+"test_acc",test_acc_sum," mean:",(np.array(test_acc_sum)).mean(),
+        "\n" + "\n" + " "*5+"test_loss",test_loss_sum," mean:",(np.array(test_loss_sum)).mean(),
+        "\n" + " "*5+"test_acc",test_acc_sum," mean:",(np.array(test_acc_sum)).mean(),
         '\n'+" "*5+"test_precision",precision_test_sum," mean:",(np.array(precision_test_sum)).mean(),
-        " "*5+"test_recall",recall_test_sum," mean:",(np.array(recall_test_sum)).mean(),
+        "\n" + " "*5+"test_recall",recall_test_sum," mean:",(np.array(recall_test_sum)).mean(),
         "\n" + " "*5+"test_auc",test_auc_sum," mean:",(np.array(test_auc_sum)).mean())
         print(" "*5+'='*50)
         print('Training Finished')
@@ -258,17 +264,17 @@ if __name__ == '__main__':
         
         for ttt in range(5):
             print("train_loss",train_loss_sum," mean:",(np.array(train_loss_sum)).mean(),
-            " "*5+"train_acc",train_acc_sum," mean:",(np.array(train_acc_sum)).mean(),
-            "\n" + " "*5+"validate_loss",validate_loss_sum," mean:",(np.array(validate_loss_sum)).mean(),
-            " "*5+"validate_acc",validate_acc_sum," mean:",(np.array(validate_acc_sum)).mean(),
-            "\n" + " "*5+"validate_precision",precision_valid_sum," mean:",(np.array(precision_valid_sum)).mean(),
-            " "*5+"validate_recall",recall_valid_sum," mean:",(np.array(recall_valid_sum)).mean(),   
-            "\n" + " "*5+"validate_auc",validate_auc_sum," mean:",(np.array(validate_auc_sum)).mean(),
-            "\n" + " "*5+"test_loss",test_loss_sum," mean:",(np.array(test_loss_sum)).mean(),
-            " "*5+"test_acc",test_acc_sum," mean:",(np.array(test_acc_sum)).mean(),
-            '\n'+" "*5+"test_precision",precision_test_sum," mean:",(np.array(precision_test_sum)).mean(),
-            " "*5+"test_recall",recall_test_sum," mean:",(np.array(recall_test_sum)).mean(),
-            "\n" + " "*5+"test_auc",test_auc_sum," mean:",(np.array(test_auc_sum)).mean())
+        "\n" + " "*5+"train_acc",train_acc_sum," mean:",(np.array(train_acc_sum)).mean(),
+        "\n" + "\n" + " "*5+"validate_loss",validate_loss_sum," mean:",(np.array(validate_loss_sum)).mean(),
+        "\n" + " "*5+"validate_acc",validate_acc_sum," mean:",(np.array(validate_acc_sum)).mean(),
+        "\n" + " "*5+"validate_precision",precision_valid_sum," mean:",(np.array(precision_valid_sum)).mean(),
+        "\n" + " "*5+"validate_recall",recall_valid_sum," mean:",(np.array(recall_valid_sum)).mean(),   
+        "\n" + " "*5+"validate_auc",validate_auc_sum," mean:",(np.array(validate_auc_sum)).mean(),
+        "\n" + "\n" + " "*5+"test_loss",test_loss_sum," mean:",(np.array(test_loss_sum)).mean(),
+        "\n" + " "*5+"test_acc",test_acc_sum," mean:",(np.array(test_acc_sum)).mean(),
+        '\n'+" "*5+"test_precision",precision_test_sum," mean:",(np.array(precision_test_sum)).mean(),
+        "\n" + " "*5+"test_recall",recall_test_sum," mean:",(np.array(recall_test_sum)).mean(),
+        "\n" + " "*5+"test_auc",test_auc_sum," mean:",(np.array(test_auc_sum)).mean())
             print(" "*5+'='*50)
         #重复打印几次 等待.log 打印完
         mycopyfile('./log.log',log_root)
