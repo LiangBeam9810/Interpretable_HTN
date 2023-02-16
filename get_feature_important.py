@@ -41,7 +41,7 @@ DEVICE = "cpu"
 seed_torch(2023)
 
 data_root = '/workspace/data/Preprocess_HTN/datas_/'
-Models_path = '/workspace/data/Interpretable_HTN/model/20230212_031236/20230212_031236/parameter_EarlyStoping_4.pt'
+Models_path = '/workspace/data/Interpretable_HTN/model/20230215_101220/20230215_101220/parameter_EarlyStoping_1.pt'
 NET = [Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3) ] # type: ignore
 
 def get_occlusion_value(index):
@@ -51,7 +51,7 @@ def get_occlusion_value(index):
         inputs = inputs.unsqueeze(0)
         ECGfile_name = info['ECGFilename']
         attributions_occ = occlusion.attribute(inputs,
-                                            strides = (1, 10), # 遮挡滑动移动步长
+                                            strides = (1, 100), # 遮挡滑动移动步长
                                             target=labels, # 目标类别
                                             sliding_window_shapes=(12, 200), # 遮挡滑块尺寸
                                             baselines=0)
@@ -70,7 +70,7 @@ if __name__ == '__main__':
     ALL_data = ECGHandle.filter_diagnose(ALL_data,'起搏')
     ALL_data = ECGHandle.filter_diagnose(ALL_data,'房颤')
     # ALL_data = ECGHandle.filter_diagnose(ALL_data,'阻滞')
-    ALL_data = ECGHandle.remove_duplicated(ALL_data)
+    # ALL_data = ECGHandle.remove_duplicated(ALL_data)
     ALL_data = ALL_data.rename(columns={'住院号':'ID','年龄':'age','性别':'gender','姓名':'name'}) 
     ALL_data_buffer = ALL_data.copy()
     seed_torch(2023)

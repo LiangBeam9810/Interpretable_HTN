@@ -116,7 +116,7 @@ if __name__ == '__main__':
         ALL_data = ECGHandle.correct_label(ALL_data)
         ALL_data = ECGHandle.correct_age(ALL_data)
         ALL_data = ECGHandle.filter_diagnose(ALL_data,'起搏')
-        ALL_data = ECGHandle.filter_diagnose(ALL_data,'房颤')
+        # ALL_data = ECGHandle.filter_diagnose(ALL_data,'房颤')
         # ALL_data = ECGHandle.filter_diagnose(ALL_data,'阻滞')
         # ALL_data = ECGHandle.remove_duplicated(ALL_data)
         
