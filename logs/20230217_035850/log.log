@@ -3624,32 +3624,4 @@ train_loss [0.36130082979798317, 0.5978340229817799, 0.3373849833650248, 0.32387
      test_auc [0.9183873441449629, 0.6981879633048369, 0.9253599931835611, 0.9069840097702292, 0.9057485302053452]  mean: 0.8709335681217871
      ==================================================
 train_loss [0.36130082979798317, 0.5978340229817799, 0.3373849833650248, 0.3238711639174393, 0.3635046471442495]  mean: 0.39677912944129534 
-     train_acc [0.8335714285714285, 0.6673750949848024, 0.8374776785714285, 0.8473214285714287, 0.8194826007326007]/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, msg_start, len(result))
-/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, msg_start, len(result))
-/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, msg_start, len(result))
-/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, msg_start, len(result))
-/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, msg_start, len(result))
-/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, msg_start, len(result))
-/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, msg_start, len(result))
-  mean: 0.8010456462863378 
-
-     validate_loss [0.40382997904505047, 0.616796578679766, 0.30764806270599365, 0.34231516293116976, 0.3421751819550991]  mean: 0.40255299306341585 
-     validate_acc [0.8296370967741936, 0.6464285714285715, 0.8873181216931217, 0.8425892857142857, 0.8798177083333334]  mean: 0.8171581567887012 
-     validate_precision [0.9075144508670521, 0.7041420118343196, 0.9346733668341709, 0.9572192513368984, 0.9313304721030042]  mean: 0.8869759105950891 
-     validate_recall [0.7235023041474654, 0.54337899543379, 0.8378378378378378, 0.7489539748953975, 0.84765625]  mean: 0.7402658724628981 
-     validate_auc [0.9009920914414504, 0.7353825593050451, 0.9351434768101435, 0.9240424847119408, 0.9254038345410628]  mean: 0.8841928893619286 
-
-     test_loss [0.3371961745950911, 0.6507378816604614, 0.32890332904126907, 0.3415777451462216, 0.38564158148235744]  mean: 0.40881134238508016 
-     test_acc [0.8680555555555556, 0.6647478070175439, 0.8674159356725146, 0.858735380116959, 0.8465826023391814]  mean: 0.8211074561403509 
-     test_precision [0.9230769230769231, 0.7135922330097088, 0.9273504273504274, 0.9295154185022027, 0.8884297520661157]  mean: 0.8763929508010756 
-     test_recall [0.7883211678832117, 0.5364963503649635, 0.791970802919708, 0.7700729927007299, 0.7846715328467153]  mean: 0.7343065693430656 
-     test_auc [0.9183873441449629, 0.6981879633048369, 0.9253599931835611, 0.9069840097702292, 0.9057485302053452]  mean: 0.8709335681217871
-     ==================================================
-copy ./log.log -> ./logs/20230217_035850/log.log
+     train_acc [0.8335714285714285, 0.6673750949848024, 0.8374776785714285, 0.8473214285714287, 0.8194826007326007]
