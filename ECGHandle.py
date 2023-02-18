@@ -272,10 +272,39 @@ class ECG_Dataset(Dataset):
         # for i in tqdm(range(len(self.datas))):
         #     self.datas[i] = bandpass_filter(self.datas[i], lowcut=filter_lowcut, highcut=filter_highcut, signal_freq=500, filter_order=filter_order)# type: ignore   
         self.datas = self.amplitude_limiting(self.datas,5000)
+        for i in range(12):
+            self.datas[:,i,:] = self.standardize(self.datas[:,i,:],standardize=True,remove_mean=True)
         # for i in range(12):
         #     mean =  self.datas[:,i,:].mean()
         #     var = self.datas[:,i,:].var()
         #     self.datas[:,i,:] = (self.datas[:,i,:] - mean)/(self.datas[:,i,:].var()+1e-6)
+    def standardize(self,s, standardize=True, remove_mean=False):
+        '''
+        Helper function for pre-processing data, specifically for wavelet analysis
+
+        INPUTS:
+            s - numpy array of shape (n,) to be normalized
+            detrend - boolean on whether to linearly detrend s
+            standardize - boolean on whether to divide by the standard deviation
+            remove_mean - boolean on whether to remove the mean of s. Exclusive with detrend.
+
+        OUTPUTS:
+            snorm - numpy array of shape (n,)
+        '''
+
+        # Derive the variance prior to any detrending
+        std = s.std()
+        smean = s.mean()
+
+        if remove_mean:
+            snorm = s - smean
+        else:
+            snorm = s
+        # Standardize by the standard deviation
+        if standardize:
+            snorm = (snorm / std)
+
+        return snorm
     def __getitem__(self,index):
         return self.datas[index],self.labels[index]
     def __len__(self):
@@ -293,3 +322,23 @@ class ECG_Dataset(Dataset):
         print("{:^10} {:^10} {:^10}".format('Nums', np.all(self.labels == 1),np.all(self.labels == 0)))
     def info(self,index):
         return self.infos.iloc[index]
+    
+    
+if __name__ == '__main__':
+    data_root = '/workspace/data/Preprocess_HTN/datas_/'
+    ALL_data = pd.read_csv(data_root+'/All_data_handled_ID_range_age_IDimputate.csv',low_memory=False)
+    ALL_data = change_label(ALL_data)
+    ALL_data = filter_ID(ALL_data)
+    ALL_data = filter_QC(ALL_data)
+    ALL_data = filter_ages(ALL_data,18)
+    ALL_data = filter_departmentORlabel(ALL_data,'外科')
+    ALL_data = correct_label(ALL_data)
+    ALL_data = correct_age(ALL_data)
+    # ALL_data = ECGHandle.filter_diagnose(ALL_data,'起搏')
+    # ALL_data = ECGHandle.filter_diagnose(ALL_data,'房颤')
+    # ALL_data = ECGHandle.filter_diagnose(ALL_data,'阻滞')
+    # ALL_data = ECGHandle.remove_duplicated(ALL_data)
+    ALL_data = ALL_data.rename(columns={'住院号':'ID','年龄':'age','性别':'gender','姓名':'name'}) 
+    ALL_data_buffer = ALL_data.copy()
+    all_dataset = ECG_Dataset(data_root,ALL_data_buffer.iloc[:10],preprocess = True)
+    print(all_dataset.datas[0])

@@ -588,7 +588,7 @@ class MLBFNet_GUR_o(nn.Module):
         self.conv2 = ResSeBlock2d(inplanes=32,outplanes=32,stride=4,kernel_size=(1,15),res=self.res,se=self.se)
         
         self.layers_list_2d = nn.ModuleList()
-
+        self.positionembedding = augmenters.PositionalEmbedding(12,5000)
         for i,size in enumerate(self.sizes):
             self.layers = nn.Sequential()
             self.inplanes = 32
@@ -619,9 +619,11 @@ class MLBFNet_GUR_o(nn.Module):
         
     def forward(self, x):
         batch_size, channels,seq_len = x.shape
-        #x = x+(Models.create_1d_absolute_sin_cos_embedding(batch_size,channels,seq_len)).to(x.device)#位置编码
+        # x = x + self.positionembedding(x)#位置编码
         if(self.mark):
             if self.training:
+                # if(torch.rand(1)>0.9):
+                #     x.add_(augmenters.gen_baseline_wander(x,500,prob=torch.rand(1)))# type: ignore 
                 if(torch.rand(1)>0.5): #mark
                     mark_lenth = torch.randint(int(seq_len/10),int(seq_len/5),[1])
                     x = augmenters.mark_input(x,mark_lenth=int(mark_lenth[0]))
@@ -652,6 +654,6 @@ class MLBFNet_GUR_o(nn.Module):
 
 if __name__ == '__main__':
     input = torch.zeros([23,12,5000])
-    model = MLBFNet_GUR(True,True,True,2,Dropout_rate=0.2,output_attention = True)
+    model = MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.2)
     output = model(input)
     print(output)

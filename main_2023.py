@@ -52,7 +52,7 @@ def seed_torch(seed=2023):
 	torch.backends.cudnn.deterministic = True
     # torch.backends.cudnn.enabled = False
     
-seed_torch(42)
+seed_torch(2023)
 
 DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 print(DEVICE)
@@ -66,11 +66,11 @@ LR = 0.0005
 PAIR =True
 
 notion ="####"*10 +\
-        "\n#Net.MLBFNet_GUR(True,True,True,2,0.3),Attention  " +\
+        "\n#Net.MLBFNet_GUR(True,True,True,2,0.3),position embedding   " +\
         "\n#LR = 0.0005" +\
         "\n#pair HTN candidate >0 break " +\
         "\n#delete all have the same name&sex&ages" +\
-        "\n# seed_torch(42),    L2_list = 0.007 BATCH_SIZE = 128 ,5 foldcorss 1 times"+\
+        "\n# seed_torch(2023),    L2_list = 0.007 BATCH_SIZE = 128 ,5 foldcorss 1 times"+\
         "\n#CrossEntropyLoss "  +\
         "\n#ReduceLROnPlateau "  +\
         "\n#The reset and delete list (main in test)" +\
@@ -94,7 +94,7 @@ if __name__ == '__main__':
     L2_list = [0.007]
     BS_list = [64]
     for i in range(len(L2_list)):
-        seed_torch(42)
+        seed_torch(2023)
         time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime()) 
         model_path = model_root + time_str
         log_path = log_root +  time_str
@@ -159,7 +159,7 @@ if __name__ == '__main__':
         recall_test_sum = [0]*FOLDS   
         test_auc_sum = [0]*FOLDS
          
-        seed_torch(42)
+        seed_torch(2023)
         ALL_data_buffer = ALL_data.copy()
         ALL_data_buffer = ALL_data_buffer.sample(frac=1).reset_index(drop=True) #打乱顺序
         ####################################################################随机选取test
@@ -172,7 +172,7 @@ if __name__ == '__main__':
         test_dataset = ECGHandle.ECG_Dataset(data_root,test_df,preprocess = True)
         for fold in range(FOLDS):
             print(" "*10+ "Fold "+str(fold)+" of "+str(FOLDS) + ' :')
-            seed_torch(42) # reset random seed every fold, keep sequent
+            seed_torch(2023) # reset random seed every fold, keep sequent
             
             tv_df_buffer = tv_df.copy()
             HTN_tv_df = tv_df[(tv_df['label']==1) ].copy()
