@@ -4290,21 +4290,4 @@ train_loss [0.32734990171317396, 0.402738257728774, 0.3444014957238888, 0.378619
      validate_auc [0.9248050336760014, 0.8660649511372851, 0.933057459373249, 0.8852168212405762, 0.9081615691489362]  mean: 0.9034611669152095 
 
      test_loss [0.8628250459829966, 0.5027405156029595, 0.5223272807068295, 0.4696344468328688, 0.5029937790499793]  mean: 0.5721042136351266 
-     test_acc [0.5922809829059829, 0.78125, 0.7739049145299145, 0.7731036324786325, 0.8048878205128206]/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, msg_start, len(result))
-/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, msg_start, len(result))
-/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, msg_start, len(result))
-/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, msg_start, len(result))
-/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, msg_start, len(result))
-/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, msg_start, len(result))
-  mean: 0.7450854700854701 
-     test_precision [0.5680851063829787, 0.9157303370786517, 0.7673611111111112, 0.746031746031746, 0.8547008547008547]  mean: 0.7703818310610685 
-     test_recall [0.9744525547445255, 0.5948905109489051, 0.8065693430656934, 0.8576642335766423, 0.7299270072992701]  mean: 0.7927007299270072 
-     test_auc [0.8314532183145322, 0.8455679053306792, 0.8527842291528422, 0.8764515593895156, 0.8531989604069895]  mean: 0.8518911745189117
-     ==================================================
-copy ./log.log -> ./logs/20230218_094217/log.log
+     test_acc [0.5922809829059829, 0.78125, 0.7739049145299145, 0.7731036324786325, 0.8048878205128206]
