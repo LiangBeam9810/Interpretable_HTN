@@ -144,8 +144,36 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGHandle.ECG_Dataset ,val_datas
                 train_dataset = ECGHandle.ECG_Dataset(data_path,train_pair_df ,preprocess = True)
                 train_dataloader = Data.DataLoader(dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=shuffle,num_workers=num_workers,pin_memory=True)
         
-    # 计算此flod 在testset上的效果
+    print(" "*10+'Best Loss:')
     best_model_path = save_model_path+'/parameter_EarlyStoping_' + str(fold) + '.pt' #此fold最优参数
+    Model.load_state_dict(torch.load(best_model_path))
+    
+    y_true,y_pred,train_loss,train_acc = train_model(train_dataloader, Model, criterion, optimizer,DEVICE,onehot_lable=onehot_lable) # type: ignore # 模型
+    Model.load_state_dict(torch.load(best_model_path))
+    
+    y_true,y_pred,y_out,validate_loss,validate_acc = eval_model(valid_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
+    F1_score_valid =f1_score(y_true, y_pred, average='binary')#F1分数
+    auc_valid = roc_auc_score(y_true,(np.array(y_out))[:,1])
+    C = confusion_matrix(y_true,y_pred)
+    precision_valid = precision_score(y_true, y_pred, average='binary')
+    recall_valid = recall_score(y_true, y_pred, average='binary') 
+    save_test_infos(log_path+'/Validate_answer_'+str(fold)+'.csv',val_dataset, y_true,y_pred,y_out)
+    print(" "*10+'validate: ',F1_score_valid,'\n'+" "*10,C[0],'\n'+" "*10,C[1])
+    
+    
+    y_true,y_pred,y_out,test_loss,test_acc = test_model(test_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
+    F1_score_test =f1_score(y_true, y_pred, average='binary')#F1分数
+    auc_test = roc_auc_score(y_true,(np.array(y_out))[:,1])
+    C = confusion_matrix(y_true,y_pred)
+    precision_test = precision_score(y_true, y_pred, average='binary')
+    recall_test = recall_score(y_true, y_pred, average='binary') 
+    save_test_infos(log_path+'/Test_answer_'+str(fold)+'.csv',test_dataset, y_true,y_pred,y_out)
+    print(" "*10+'test: ',F1_score_test,'\n'+" "*10,C[0],'\n'+" "*10,C[1])
+    # print(" "*10+'Fold %d Training Finished' %(fold))
+    
+    print('')
+    print(" "*10+'Best Sore:')
+    best_model_path = save_model_path+'/BestF1_' + str(fold) + '.pt' #此fold最优参数
     Model.load_state_dict(torch.load(best_model_path))
     
     y_true,y_pred,train_loss,train_acc = train_model(train_dataloader, Model, criterion, optimizer,DEVICE,onehot_lable=onehot_lable) # type: ignore # 模型

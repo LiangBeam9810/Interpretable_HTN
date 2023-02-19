@@ -172,7 +172,15 @@ def correct_label(df_input): #更改错误的label
     print("{:^10} {:^10} {:^20}".format('  ','HTN','NHTN'))
     print("{:^10} {:^10} {:^20}".format('nums',len(df_filter[(df_filter['label']==1)]),len(df_filter[(df_filter['label']==0)])))
     return df_filter
-
+def filter_customed(df_input): #更改错误的label
+    print('\n')
+    df_filter = df_input.copy()
+    #####################################################test
+    #手动删除所有包含在delete_list中的样本
+    delete_index = df_filter[[True if i in delete_list else False for i in df_filter['住院号']]].index
+    df_filter = df_filter[[False if i in delete_list else True for i in df_filter['住院号']]]#只保留不在delete——list中的
+    print("{:^20} {:^5}".format("reset num:",len(delete_index)))
+    return df_filter
 
 def correct_age(df_input): # 把住院号相同但年龄不一致的全部改为统一值
     correct_age_counts = 0;
