@@ -158,8 +158,11 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGHandle.ECG_Dataset ,val_datas
     precision_valid = precision_score(y_true, y_pred, average='binary')
     recall_valid = recall_score(y_true, y_pred, average='binary') 
     save_test_infos(log_path+'/Validate_answer_'+str(fold)+'.csv',val_dataset, y_true,y_pred,y_out)
-    print(" "*10+'validate: ',F1_score_valid,'\n'+" "*10,C[0],'\n'+" "*10,C[1])
-    
+    print(" "*10+'valid')
+    print(" "*10+'F1: ',F1_score_valid,'\n'+" "*10,C[0],'\n'+" "*10,C[1])
+    print(" "*10+'AUC: ',auc_valid)
+    print(" "*10+'precision: ',precision_valid)
+    print(" "*10+'recall: ',recall_valid)
     
     y_true,y_pred,y_out,test_loss,test_acc = test_model(test_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
     F1_score_test =f1_score(y_true, y_pred, average='binary')#F1分数
@@ -168,8 +171,11 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGHandle.ECG_Dataset ,val_datas
     precision_test = precision_score(y_true, y_pred, average='binary')
     recall_test = recall_score(y_true, y_pred, average='binary') 
     save_test_infos(log_path+'/Test_answer_'+str(fold)+'.csv',test_dataset, y_true,y_pred,y_out)
-    print(" "*10+'test: ',F1_score_test,'\n'+" "*10,C[0],'\n'+" "*10,C[1])
-    # print(" "*10+'Fold %d Training Finished' %(fold))
+    print(" "*10+'test')
+    print(" "*10+'F1: ',F1_score_test,'\n'+" "*10,C[0],'\n'+" "*10,C[1])
+    print(" "*10+'AUC: ',auc_test)
+    print(" "*10+'precision: ',precision_test)
+    print(" "*10+'recall: ',recall_test)
     
     print('')
     print(" "*10+'Best Sore:')
@@ -186,7 +192,11 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGHandle.ECG_Dataset ,val_datas
     precision_valid = precision_score(y_true, y_pred, average='binary')
     recall_valid = recall_score(y_true, y_pred, average='binary') 
     save_test_infos(log_path+'/Validate_answer_'+str(fold)+'.csv',val_dataset, y_true,y_pred,y_out)
-    print(" "*10+'validate: ',F1_score_valid,'\n'+" "*10,C[0],'\n'+" "*10,C[1])
+    print(" "*10+'valid')
+    print(" "*10+'F1: ',F1_score_valid,'\n'+" "*10,C[0],'\n'+" "*10,C[1])
+    print(" "*10+'AUC: ',auc_valid)
+    print(" "*10+'precision: ',precision_valid)
+    print(" "*10+'recall: ',recall_valid)
     
     
     y_true,y_pred,y_out,test_loss,test_acc = test_model(test_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
@@ -196,7 +206,11 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGHandle.ECG_Dataset ,val_datas
     precision_test = precision_score(y_true, y_pred, average='binary')
     recall_test = recall_score(y_true, y_pred, average='binary') 
     save_test_infos(log_path+'/Test_answer_'+str(fold)+'.csv',test_dataset, y_true,y_pred,y_out)
-    print(" "*10+'test: ',F1_score_test,'\n'+" "*10,C[0],'\n'+" "*10,C[1])
+    print(" "*10+'test')
+    print(" "*10+'F1: ',F1_score_test,'\n'+" "*10,C[0],'\n'+" "*10,C[1])
+    print(" "*10+'AUC: ',auc_test)
+    print(" "*10+'precision: ',precision_test)
+    print(" "*10+'recall: ',recall_test)
     # print(" "*10+'Fold %d Training Finished' %(fold))
     return train_loss,train_acc,validate_loss,validate_acc,precision_valid,recall_valid,auc_valid,test_loss,test_acc,precision_test,recall_test,auc_test
 
