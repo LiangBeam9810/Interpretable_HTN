@@ -584,8 +584,8 @@ class MLBFNet_GUR_o(nn.Module):
 
         self.bn = nn.BatchNorm2d(16)
         self.relu = nn.LeakyReLU(inplace=True)
-        self.conv1 = ResSeBlock2d(inplanes=1,outplanes=32,stride=4,kernel_size=(1,15),res=self.res,se=self.se)
-        self.conv2 = ResSeBlock2d(inplanes=32,outplanes=32,stride=4,kernel_size=(1,15),res=self.res,se=self.se)
+        self.conv1 = ResSeBlock2d(inplanes=1,outplanes=32,stride=4,kernel_size=(1,7),res=self.res,se=self.se)
+        self.conv2 = ResSeBlock2d(inplanes=32,outplanes=32,stride=4,kernel_size=(1,7),res=self.res,se=self.se)
         
         self.layers_list_2d = nn.ModuleList()
         self.positionembedding = augmenters.PositionalEmbedding(12,5000)
