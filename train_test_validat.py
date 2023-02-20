@@ -127,8 +127,8 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGHandle.ECG_Dataset ,val_datas
         writer.add_scalars(main_tag=str(fold)+'_LearningRate',tag_scalar_dict={'LR': optimizer.state_dict()['param_groups'][0]['lr']},global_step=epoch)      
         print(" "*20+'- Epoch: %d - Train_loss: %.5f - Train_acc: %.5f -  - Val_loss: %.5f - Val_acc: %.5f  - T_Time: %.5f' %(epoch,train_loss,train_acc,validate_loss,validate_acc,time_all),'LR：%.10f' %optimizer.state_dict()['param_groups'][0]['lr'])
         
-        if(auc_valid>best_scoret):
-            best_scoret = auc_valid
+        if(F1_score_valid>best_scoret):
+            best_scoret = F1_score_valid
             print(" "*20+'-- -- The best model for validate (F1= . ',best_scoret,') -- --')
             torch.save(Model.state_dict(), save_model_path+'/BestF1_' + str(fold) + '.pt')
             
@@ -143,8 +143,11 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGHandle.ECG_Dataset ,val_datas
                 train_pair_df,_ = Pair_ID(train_Df,1,star_index=0,Range_max=15,pair_num=1,shuffle=True)
                 train_dataset = ECGHandle.ECG_Dataset(data_path,train_pair_df ,preprocess = True)
                 train_dataloader = Data.DataLoader(dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=shuffle,num_workers=num_workers,pin_memory=True)
-        
-    print(" "*10+'Best Loss:')
+    
+    
+    
+    
+    print(" "*5+'Best Loss:')
     best_model_path = save_model_path+'/parameter_EarlyStoping_' + str(fold) + '.pt' #此fold最优参数
     Model.load_state_dict(torch.load(best_model_path))
     
@@ -159,7 +162,8 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGHandle.ECG_Dataset ,val_datas
     recall_valid = recall_score(y_true, y_pred, average='binary') 
     save_test_infos(log_path+'/Validate_answer_'+str(fold)+'.csv',val_dataset, y_true,y_pred,y_out)
     print(" "*10+'valid')
-    print(" "*10+'F1: ',F1_score_valid,'\n'+" "*10,C[0],'\n'+" "*10,C[1])
+    print(" "*10,C[0],'\n'+" "*10,C[1])
+    print(" "*10+'F1: ',F1_score_valid,)
     print(" "*10+'AUC: ',auc_valid)
     print(" "*10+'precision: ',precision_valid)
     print(" "*10+'recall: ',recall_valid)
@@ -172,13 +176,18 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGHandle.ECG_Dataset ,val_datas
     recall_test = recall_score(y_true, y_pred, average='binary') 
     save_test_infos(log_path+'/Test_answer_'+str(fold)+'.csv',test_dataset, y_true,y_pred,y_out)
     print(" "*10+'test')
-    print(" "*10+'F1: ',F1_score_test,'\n'+" "*10,C[0],'\n'+" "*10,C[1])
+    print(" "*10,C[0],'\n'+" "*10,C[1])
+    print(" "*10+'F1: ',F1_score_test)
     print(" "*10+'AUC: ',auc_test)
     print(" "*10+'precision: ',precision_test)
     print(" "*10+'recall: ',recall_test)
+    print('\n')
+    
+    
+    
     
     print('')
-    print(" "*10+'Best Sore:')
+    print(" "*5+'Best Sore:')
     best_model_path = save_model_path+'/BestF1_' + str(fold) + '.pt' #此fold最优参数
     Model.load_state_dict(torch.load(best_model_path))
     
@@ -193,11 +202,11 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGHandle.ECG_Dataset ,val_datas
     recall_valid = recall_score(y_true, y_pred, average='binary') 
     save_test_infos(log_path+'/Validate_answer_'+str(fold)+'.csv',val_dataset, y_true,y_pred,y_out)
     print(" "*10+'valid')
-    print(" "*10+'F1: ',F1_score_valid,'\n'+" "*10,C[0],'\n'+" "*10,C[1])
+    print(" "*10,C[0],'\n'+" "*10,C[1])
+    print(" "*10+'F1: ',F1_score_valid,)
     print(" "*10+'AUC: ',auc_valid)
     print(" "*10+'precision: ',precision_valid)
     print(" "*10+'recall: ',recall_valid)
-    
     
     y_true,y_pred,y_out,test_loss,test_acc = test_model(test_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
     F1_score_test =f1_score(y_true, y_pred, average='binary')#F1分数
@@ -207,11 +216,11 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGHandle.ECG_Dataset ,val_datas
     recall_test = recall_score(y_true, y_pred, average='binary') 
     save_test_infos(log_path+'/Test_answer_'+str(fold)+'.csv',test_dataset, y_true,y_pred,y_out)
     print(" "*10+'test')
-    print(" "*10+'F1: ',F1_score_test,'\n'+" "*10,C[0],'\n'+" "*10,C[1])
+    print(" "*10,C[0],'\n'+" "*10,C[1])
+    print(" "*10+'F1: ',F1_score_test)
     print(" "*10+'AUC: ',auc_test)
     print(" "*10+'precision: ',precision_test)
     print(" "*10+'recall: ',recall_test)
-    # print(" "*10+'Fold %d Training Finished' %(fold))
     return train_loss,train_acc,validate_loss,validate_acc,precision_valid,recall_valid,auc_valid,test_loss,test_acc,precision_test,recall_test,auc_test
 
 def save_test_infos(csv_path,test_dataset:ECGHandle.ECG_Dataset,y_true:list,y_pred:list,y_out:list):

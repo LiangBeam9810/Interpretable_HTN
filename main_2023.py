@@ -225,24 +225,8 @@ if __name__ == '__main__':
             
             torch.cuda.empty_cache()# 清空显卡cuda
             print(" "*10+'='*50)
-            print(" "*10+'='*50)
-            print(" "*10+"train_loss",train_loss,
-            " "*10+"train_acc",train_acc,
-            
-            '\n'+" "*10+"validate_loss",validate_loss,
-            " "*10+"validate_acc",validate_acc,
-            '\n'+" "*10+"valid_precision",precision_valid,
-            '\n'+" "*10+"valid_recall",recall_valid,
-            '\n'+" "*10+"valid_auc",auc_valid,
-            
-            '\n'+" "*10+"test_loss",test_loss,
-            " "*10+"test_acc",test_acc,
-            '\n'+" "*10+"test_precision",precision_test,
-            '\n'+" "*10+"test_recall",recall_test,
-            '\n'+" "*10+"test_auc",auc_test,)
-            print(" "*10+'='*50)
-            print(" "*10+'='*50)
             print(" "*10+'Fold %d Training Finished' %(fold))
+            print('\n')
             # if(fold >= 3): break
             
         print(" "*5+'='*50)
