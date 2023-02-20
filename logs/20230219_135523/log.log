@@ -4354,20 +4354,4 @@ train_loss [0.38004054231890316, 0.28746170550584793, 0.3137438893318176, 0.2973
      validate_recall [0.8202764976958525, 0.7031963470319634, 0.8153153153153153, 0.7698744769874477, 0.90625]  mean: 0.8029825274061159 
      validate_auc [0.9186680255228643, 0.899500704135194, 0.9485753696280012, 0.9044212637140158, 0.924750664893617]  mean: 0.9191832055787383 
 
-     test_loss [0.4196469551987118, 0.4494312389029397, 0.42279694146580166, 0.41341184907489353, 0.4032292928960588]/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, msg_start, len(result))
-/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, msg_start, len(result))
-/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, msg_start, len(result))
-/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, msg_start, len(result))
-/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, msg_start, len(result))
-  mean: 0.42170325550768106 
-     test_acc [0.8317307692307693, 0.8524305555555556, 0.8446848290598291, 0.859375, 0.8378739316239316]  mean: 0.8452190170940173 
-     test_precision [0.8308823529411765, 0.9354838709677419, 0.9345794392523364, 0.9366515837104072, 0.8413284132841329]  mean: 0.8957851320311591 
-     test_recall [0.8248175182481752, 0.7408759124087592, 0.7299270072992701, 0.7554744525547445, 0.8321167883211679]  mean: 0.7766423357664233 
-     test_auc [0.9012801371378014, 0.893884096438841, 0.8986258571112585, 0.882879893828799, 0.9022893165228931]  mean: 0.8957918602079186
-     ==================================================
-copy ./log.log -> ./logs/20230219_135523/log.log
+     test_loss [0.4196469551987118, 0.4494312389029397, 0.42279694146580166, 0.41341184907489353, 0.4032292928960588]

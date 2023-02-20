@@ -584,14 +584,14 @@ class MLBFNet_GUR_o(nn.Module):
 
         self.bn = nn.BatchNorm2d(16)
         self.relu = nn.LeakyReLU(inplace=True)
-        self.conv1 = ResSeBlock2d(inplanes=1,outplanes=32,stride=4,kernel_size=(1,21),res=self.res,se=self.se)
+        self.conv1 = ResSeBlock2d(inplanes=1,outplanes=32,stride=4,kernel_size=(1,15),res=self.res,se=self.se)
         self.conv2 = ResSeBlock2d(inplanes=32,outplanes=32,stride=4,kernel_size=(1,15),res=self.res,se=self.se)
         
         self.layers_list_2d = nn.ModuleList()
         self.positionembedding = augmenters.PositionalEmbedding(12,5000)
         for i,size in enumerate(self.sizes):
             self.layers = nn.Sequential()
-            self.inplanes = 32
+            self.inplanes = 32*2
             layers = nn.Sequential()
             layers.append(ResSeBlock2d(inplanes=self.inplanes,outplanes=64,stride=2, kernel_size=(self.sizes[i][0],self.sizes[i][1]), res=res, se = se))
             layers.append(ResSeBlock2d(inplanes=64,outplanes=64,stride=1, kernel_size=(self.sizes[i][2],self.sizes[i][3]), res=res, se = se))
@@ -612,10 +612,10 @@ class MLBFNet_GUR_o(nn.Module):
             self.layers_list_1d.append(layers)    
         self.dorp = nn.Dropout(p = Dropout_rate)
         self.avgpool = nn.AdaptiveAvgPool1d(1)
-        self.fc = nn.Linear(512*len(self.sizes)+384*GRU_layers_nums,2)
+        self.fc = nn.Linear(512*len(self.sizes)+384*GRU_layers_nums*2,2)
         self.softmax = nn.Softmax(-1)
         
-        self.GRU = nn.GRU(384,384,GRU_layers_nums,batch_first=True,bidirectional=False)
+        self.GRU = nn.GRU(384,384,GRU_layers_nums,batch_first=True,bidirectional=True)
         
     def forward(self, x):
         batch_size, channels,seq_len = x.shape
@@ -634,7 +634,7 @@ class MLBFNet_GUR_o(nn.Module):
         x,hn = self.GRU(x.permute(0,2 ,1))
         hn = hn.permute(1,0 ,2) #N,LN,D
         x = (self.dorp(x.permute(0,2 ,1)))
-        x = x.view(x.shape[0],32,12,313) # 16 -》32
+        x = x.view(x.shape[0],64,12,313) # 16 -》32
         # x = torch.cat((x,x0),dim = 1) #B 32 12 L/2/2/2/2
         xs = []
         for i in range(len(self.sizes)):
