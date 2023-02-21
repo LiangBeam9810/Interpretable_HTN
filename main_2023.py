@@ -91,16 +91,19 @@ model_root =  './model/'+time_str+'/'
 data_root = '/workspace/data/Preprocess_HTN/datas_/'
 
 if __name__ == '__main__':
-    L2_list = [0.007]
-    BS_list = [64]
+    L2_list = [0.007,0.007,0.007,0.007]
+    BS_list = [64,64,64,64]
+    random_seed_list = [2019,2020,2021,2022]
     for i in range(len(L2_list)):
         seed_torch(2023)
         time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime()) 
         model_path = model_root + time_str
         log_path = log_root +  time_str
         
+        random_seed = random_seed_list[i]
         L2 = L2_list[i]
         BATCH_SIZE = BS_list[i]
+        
         criterion =nn.CrossEntropyLoss()
         
         ALL_data = pd.read_csv(data_root+'/All_data_handled_ID_range_age_IDimputate.csv',low_memory=False)
@@ -159,7 +162,7 @@ if __name__ == '__main__':
         recall_test_sum = [0]*FOLDS   
         test_auc_sum = [0]*FOLDS
          
-        seed_torch(2023)
+        seed_torch(2023)# keep the the set the same
         ALL_data_buffer = ALL_data.copy()
         ALL_data_buffer = ALL_data_buffer.sample(frac=1).reset_index(drop=True) #打乱顺序
         ####################################################################随机选取test
@@ -172,7 +175,7 @@ if __name__ == '__main__':
         test_dataset = ECGHandle.ECG_Dataset(data_root,test_df,preprocess = True)
         for fold in range(FOLDS):
             print(" "*10+ "Fold "+str(fold)+" of "+str(FOLDS) + ' :')
-            seed_torch(2023) # reset random seed every fold, keep sequent
+            seed_torch(random_seed) # reset random seed every fold, keep sequent
             
             tv_df_buffer = tv_df.copy()
             HTN_tv_df = tv_df[(tv_df['label']==1) ].copy()
