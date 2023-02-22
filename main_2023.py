@@ -93,7 +93,7 @@ data_root = '/workspace/data/Preprocess_HTN/datas_/'
 if __name__ == '__main__':
     L2_list = [0.007,0.007,0.007,0.007]
     BS_list = [64,64,64,64]
-    random_seed_list = [2019,2020,2021,2022]
+    random_seed_list = [2020,2021,2022]
     for i in range(len(L2_list)):
         seed_torch(2023)
         time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime()) 
@@ -167,7 +167,9 @@ if __name__ == '__main__':
         ALL_data_buffer = ALL_data_buffer.sample(frac=1).reset_index(drop=True) #打乱顺序
         ####################################################################随机选取test
         test_df,tv_df = Pair_ID(ALL_data,0.2,Range_max=15,pair_num=1)
-        ###################################################################
+        ####################################################################  #打乱tvset的顺序，使得五折交叉验证的顺序打乱
+        seed_torch(random_seed)
+        tv_df = tv_df.sample(frac=1).reset_index(drop=True) #打乱顺序
         # #####################################################################按年份选取test
         # test_df = ALL_data_buffer[ALL_data_buffer['year']==22]
         # tv_df = ALL_data_buffer[~(ALL_data_buffer['year']==22)]
