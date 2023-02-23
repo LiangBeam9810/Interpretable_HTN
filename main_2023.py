@@ -49,7 +49,7 @@ def seed_torch(seed=2023):
 	torch.cuda.manual_seed(seed)
 	torch.cuda.manual_seed_all(seed) # if you are using multi-GPU.
 	torch.backends.cudnn.benchmark = False 
-	torch.backends.cudnn.deterministic = True
+	torch.backends.cudnn.deterministic = False
     # torch.backends.cudnn.enabled = False
     
 seed_torch(2023)
@@ -93,7 +93,7 @@ data_root = '/workspace/data/Preprocess_HTN/datas_/'
 if __name__ == '__main__':
     L2_list = [0.007,0.007,0.007,0.007]
     BS_list = [64,64,64,64]
-    random_seed_list = [2020,2021,2022]
+    random_seed_list = [2020,2021,2022,3407]
     for i in range(len(L2_list)):
         seed_torch(2023)
         time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime()) 
@@ -168,7 +168,11 @@ if __name__ == '__main__':
         ####################################################################随机选取test
         test_df,tv_df = Pair_ID(ALL_data,0.2,Range_max=15,pair_num=1)
         ####################################################################  #打乱tvset的顺序，使得五折交叉验证的顺序打乱
-        seed_torch(random_seed)
+        
+        random.seed(random_seed)
+        os.environ['PYTHONHASHSEED'] = str(random_seed) # 为了禁止hash随机化，使得实验可复现
+        np.random.seed(random_seed)
+        
         tv_df = tv_df.sample(frac=1).reset_index(drop=True) #打乱顺序
         # #####################################################################按年份选取test
         # test_df = ALL_data_buffer[ALL_data_buffer['year']==22]
@@ -177,7 +181,10 @@ if __name__ == '__main__':
         test_dataset = ECGHandle.ECG_Dataset(data_root,test_df,preprocess = True)
         for fold in range(FOLDS):
             print(" "*10+ "Fold "+str(fold)+" of "+str(FOLDS) + ' :')
-            seed_torch(random_seed) # reset random seed every fold, keep sequent
+            
+            random.seed(random_seed)
+            os.environ['PYTHONHASHSEED'] = str(random_seed) # 为了禁止hash随机化，使得实验可复现
+            np.random.seed(random_seed)
             
             tv_df_buffer = tv_df.copy()
             HTN_tv_df = tv_df[(tv_df['label']==1) ].copy()
