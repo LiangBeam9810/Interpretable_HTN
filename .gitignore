@@ -21,3 +21,5 @@ __pycache__/self_attention.cpython-37.pyc
 __pycache__/train_test_validat.cpython-37.pyc
 ERR_fold/
 testdataset.csv
+test_2023_X.npy
+test_2023_Y.npy
