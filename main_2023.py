@@ -91,7 +91,7 @@ model_root =  './model/'+time_str+'/'
 data_root = '/workspace/data/Preprocess_HTN/datas_/'
 
 if __name__ == '__main__':
-    L2_list = [0.005,0.005,0.005,0.005]
+    L2_list = [0.007,0.007,0.007,0.007]
     BS_list = [64,64,64,64]
     random_seed_list = [2020,2021,2022,3407]
     for i in range(len(L2_list)):

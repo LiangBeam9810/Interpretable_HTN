@@ -15151,46 +15151,4 @@ train_loss [0.4240882449916431, 0.38042902627161573, 0.5410305229680878, 0.30068
      test_acc [0.8258547008547008, 0.8361378205128206, 0.6923076923076923, 0.8784722222222222, 0.7928685897435898]  mean: 0.8051282051282052 
      test_precision [0.8131487889273357, 0.8432835820895522, 0.6959706959706959, 0.9214876033057852, 0.8616071428571429]  mean: 0.8270995626301024 
      test_recall [0.8576642335766423, 0.8248175182481752, 0.6934306569343066, 0.8138686131386861, 0.7043795620437956]  mean: 0.7788321167883213 
-     test_auc [0.8869857332448574, 0.8868198407431984, 0.7392169873921698, 0.919583609820836, 0.8564338641893386]  mean: 0.85780800707808/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, msg_start, len(result))
-/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, msg_start, len(result))
-/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, msg_start, len(result))
-/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, msg_start, len(result))
-/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, msg_start, len(result))
-/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, msg_start, len(result))
-/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, msg_start, len(result))
-/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, msg_start, len(result))
-/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, msg_start, len(result))
-/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, msg_start, len(result))
-/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, msg_start, len(result))
-/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, msg_start, len(result))
-/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, msg_start, len(result))
-/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, msg_start, len(result))
-/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, msg_start, len(result))
-/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, msg_start, len(result))
-/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, msg_start, len(result))
-/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, msg_start, len(result))
-/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, msg_start, len(result))
-/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, msg_start, len(result))
-
-     ==================================================
-copy ./log.log -> ./logs/20230226_164933/log.log
+     test_auc [0.8869857332448574, 0.8868198407431984, 0.7392169873921698, 0.919583609820836, 0.8564338641893386]  mean: 0.85780800707808

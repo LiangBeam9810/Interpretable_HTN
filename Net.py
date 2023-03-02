@@ -573,8 +573,8 @@ class MLBFNet_GUR(nn.Module):
 
 class MLBFNet_GUR_o(nn.Module):
     def __init__(self,mark = True,res = True,se=True,GRU_layers_nums:int= 3,Dropout_rate:float = 0.0,size = [[3,3,3,3,3,3],
-                                                                                                    [5,5,5,5,3,3],
-                                                                                                    [7,7,7,7,3,3]],):
+                                                                                                    [5,5,5,5,5,5],
+                                                                                                    [7,7,7,7,7,7]],):
         super(MLBFNet_GUR_o, self).__init__()
         self.mark = mark
         self.res = res
@@ -584,7 +584,7 @@ class MLBFNet_GUR_o(nn.Module):
 
         self.bn = nn.BatchNorm2d(16)
         self.relu = nn.LeakyReLU(inplace=True)
-        self.conv1 = ResSeBlock2d(inplanes=1,outplanes=32,stride=4,kernel_size=(1,21),res=self.res,se=self.se)
+        self.conv1 = ResSeBlock2d(inplanes=1,outplanes=32,stride=4,kernel_size=(1,15),res=self.res,se=self.se)
         self.conv2 = ResSeBlock2d(inplanes=32,outplanes=32,stride=4,kernel_size=(1,15),res=self.res,se=self.se)
         
         self.layers_list_2d = nn.ModuleList()
