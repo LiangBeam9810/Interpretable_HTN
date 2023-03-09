@@ -192,14 +192,16 @@ if __name__ == '__main__':
             NHTN_tv_df = tv_df[(tv_df['label']==0) ].copy()
             HTN_ID_tv_list = HTN_tv_df['ID'].unique().tolist() #tvset中所有的HTN的ID号
             HTN_tv_size = HTN_tv_df['ID'].unique().__len__()
-            HTN_validate_size = int(HTN_tv_size//FOLDS)
-            validate_start_index = HTN_validate_size*fold #star index for validate
-            validate_df,tarin_df = Pair_ID(tv_df_buffer,0.2,star_index=validate_start_index,Range_max=15,pair_num=1)
-            validate_dataset = ECGHandle.ECG_Dataset(data_root,validate_df,preprocess = True)
+            # HTN_validate_size = int(HTN_tv_size//FOLDS)
+            # validate_start_index = HTN_validate_size*fold #star index for validate
+            # validate_df,tarin_df = Pair_ID(tv_df_buffer,0.2,star_index=validate_start_index,Range_max=15,pair_num=1)
+            # validate_dataset = ECGHandle.ECG_Dataset(data_root,validate_df,preprocess = True)
+            # train_pair_df,_ = Pair_ID(tarin_df,1,star_index=0,Range_max=15,pair_num=1,shuffle=True)
+            # train_dataset = ECGHandle.ECG_Dataset(data_root,train_pair_df ,preprocess = True)
             
-            train_pair_df,_ = Pair_ID(tarin_df,1,star_index=0,Range_max=15,pair_num=1,shuffle=True)
-            train_dataset = ECGHandle.ECG_Dataset(data_root,train_pair_df ,preprocess = True)
-            
+            train_pair_df,_ = Pair_ID(tv_df_buffer,1,star_index=0,Range_max=15,pair_num=1,shuffle=True)
+            train_dataset = ECGHandle.ECG_Dataset(data_root,train_pair_df ,preprocess = True)           
+            validate_dataset = test_dataset
             train_loss,train_acc,validate_loss,validate_acc,precision_valid,recall_valid,auc_valid,test_loss,test_acc,precision_test,recall_test,auc_test = tarinning_one_flod(fold,NET[fold]
                                                                                                     ,train_dataset,validate_dataset,test_dataset
                                                                                                     ,writer,model_path
@@ -215,7 +217,7 @@ if __name__ == '__main__':
                                                                                                     pair_flag= PAIR,
                                                                                                     warm_up_iter = 5,
                                                                                                     num_workers= 0,
-                                                                                                    train_Df = tarin_df,
+                                                                                                    train_Df = train_pair_df,
                                                                                                     weight_decay= L2,
                                                                                                     data_path= data_root
                                                                                                     )
