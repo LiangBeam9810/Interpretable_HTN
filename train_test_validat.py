@@ -92,7 +92,7 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGHandle.ECG_Dataset ,val_datas
     valid_dataloader = Data.DataLoader(dataset=val_dataset, batch_size=BATCH_SIZE, shuffle=shuffle,num_workers=num_workers,pin_memory=True)
     test_dataloader = Data.DataLoader(dataset=test_dataset, batch_size=BATCH_SIZE, shuffle=False,num_workers=num_workers,pin_memory=True)  
     
-    early_stopping = EarlyStopping(PATIENCE, verbose=True, model_path=save_model_path, delta=0, positive=True)
+    early_stopping = EarlyStopping(PATIENCE, verbose=True, model_path=save_model_path, delta=0, positive=False)
     optimizer  = torch.optim.Adam(Model.parameters(), lr=LR_MAX,weight_decay=weight_decay) 
     criterion =  criterion.to(DEVICE)
     
@@ -127,15 +127,15 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGHandle.ECG_Dataset ,val_datas
         writer.add_scalars(main_tag=str(fold)+'_LearningRate',tag_scalar_dict={'LR': optimizer.state_dict()['param_groups'][0]['lr']},global_step=epoch)      
         print(" "*20+'- Epoch: %d - Train_loss: %.5f - Train_acc: %.5f -  - Val_loss: %.5f - Val_acc: %.5f  - T_Time: %.5f' %(epoch,train_loss,train_acc,validate_loss,validate_acc,time_all),'LR：%.10f' %optimizer.state_dict()['param_groups'][0]['lr'])
         
-        if(F1_score_valid>best_scoret):
-            best_scoret = F1_score_valid
-            print(" "*20+'-- -- The best model for validate (F1= . ',best_scoret,') -- --')
+        if(auc_valid>best_scoret):
+            best_scoret = auc_valid
+            print(" "*20+'-- -- The best model for validate (best_score = . ',best_scoret,') -- --')
             torch.save(Model.state_dict(), save_model_path+'/BestF1_' + str(fold) + '.pt')
             
         scheduler.step(metrics=validate_loss) # 学习率迭代
         
         #是否满足早停法条件
-        if(early_stopping(auc_valid,Model,fold)):
+        if(early_stopping(validate_loss,Model,fold)):
             print(" "*20+"Early stopping...")
             break
         

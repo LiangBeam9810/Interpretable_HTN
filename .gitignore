@@ -21,3 +21,7 @@ __pycache__/self_attention.cpython-37.pyc
 __pycache__/train_test_validat.cpython-37.pyc
 ERR_fold/
 testdataset.csv
+test.csv
+pairplot.jpg
+All_infos_and_features.csv
+Test_infos_and_features.csv
