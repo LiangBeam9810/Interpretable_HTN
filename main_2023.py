@@ -59,7 +59,7 @@ print(DEVICE)
 
 BATCH_SIZE = 256
 L2 = 0.07
-FOLDS = 2
+FOLDS = 5
 EPOCHS = 200  
 PATIENCE = 50
 LR = 0.0005
@@ -95,7 +95,6 @@ if __name__ == '__main__':
     BS_list = [64,64,64,64]
     random_seed_list = [2023,2021,2022,3407]
     for i in range(len(L2_list)):
-        seed_torch(2023)
         time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime()) 
         model_path = model_root + time_str
         log_path = log_root +  time_str
@@ -120,8 +119,8 @@ if __name__ == '__main__':
         ALL_data = ECGHandle.correct_age(ALL_data)
         ALL_data = ECGHandle.filter_diagnose(ALL_data,'起搏')
         ALL_data = ECGHandle.filter_diagnose(ALL_data,'房颤')
-        ALL_data = ECGHandle.filter_diagnose(ALL_data,'左束支传导阻滞')
-        ALL_data = ECGHandle.filter_diagnose(ALL_data,'左前分支阻滞')
+        # ALL_data = ECGHandle.filter_diagnose(ALL_data,'左束支传导阻滞')
+        # ALL_data = ECGHandle.filter_diagnose(ALL_data,'左前分支阻滞')
         # ALL_data = ECGHandle.remove_duplicated(ALL_data)
         
         ALL_data = ALL_data.rename(columns={'住院号':'ID','年龄':'age','性别':'gender','姓名':'name'}) 
@@ -167,7 +166,7 @@ if __name__ == '__main__':
         ALL_data_buffer = ALL_data.copy()
         ALL_data_buffer = ALL_data_buffer.sample(frac=1).reset_index(drop=True) #打乱顺序
         ####################################################################随机选取test
-        test_df,tv_df = Pair_ID(ALL_data,0.2,Range_max=15,pair_num=1)
+        test_df,tv_df = Pair_ID(ALL_data_buffer,0.2,Range_max=15,pair_num=1)
         ####################################################################  #打乱tvset的顺序，使得五折交叉验证的顺序打乱
         
         random.seed(random_seed)
@@ -192,6 +191,7 @@ if __name__ == '__main__':
             NHTN_tv_df = tv_df[(tv_df['label']==0) ].copy()
             HTN_ID_tv_list = HTN_tv_df['ID'].unique().tolist() #tvset中所有的HTN的ID号
             HTN_tv_size = HTN_tv_df['ID'].unique().__len__()
+            
             # HTN_validate_size = int(HTN_tv_size//FOLDS)
             # validate_start_index = HTN_validate_size*fold #star index for validate
             # validate_df,tarin_df = Pair_ID(tv_df_buffer,0.2,star_index=validate_start_index,Range_max=15,pair_num=1)
@@ -202,6 +202,7 @@ if __name__ == '__main__':
             train_pair_df,_ = Pair_ID(tv_df_buffer,1,star_index=0,Range_max=15,pair_num=1,shuffle=True)
             train_dataset = ECGHandle.ECG_Dataset(data_root,train_pair_df ,preprocess = True)           
             validate_dataset = test_dataset
+            
             train_loss,train_acc,validate_loss,validate_acc,precision_valid,recall_valid,auc_valid,test_loss,test_acc,precision_test,recall_test,auc_test = tarinning_one_flod(fold,NET[fold]
                                                                                                     ,train_dataset,validate_dataset,test_dataset
                                                                                                     ,writer,model_path
