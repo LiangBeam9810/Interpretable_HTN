@@ -46,7 +46,7 @@ def Pair_ID(Input_DF,HTN_pair_rate:float,star_index:int = 0,Range_max:int = 5,sh
                             Range_max=Range_max,
                             pair_num=pair_num,
                             shuffle=shuffle)['ID'].tolist()#按照年龄和性别对每个ID号去配对 (先去除重复ID)
-    pair_index = Input_DF[[True if i in pair_ID_list else False for i in Input_DF['ID']]].index
+    pair_index = Input_DF[[True if i in pair_ID_list else False for i in Input_DF['ID']]].index#把Input_DF中所有ID号==pair_ID_list的抽取出来
     pair_df = Input_DF.loc[pair_index].copy()
     left_index = Input_DF[[False if i in pair_ID_list else True for i in Input_DF['ID']]].index #不在test_ID_list的ID 即为tv的
     left_df = Input_DF.loc[left_index].copy()
@@ -82,15 +82,15 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGHandle.ECG_Dataset ,val_datas
         samples_weight = torch.from_numpy(samples_weight)
         samples_weight = samples_weight.double()
         sampler_train = Data.WeightedRandomSampler(samples_weight, 2*len(samples_weight))  # type: ignore
-        train_dataloader = Data.DataLoader(dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=False,num_workers=num_workers,pin_memory=True,sampler=sampler_train)#
+        train_dataloader = Data.DataLoader(dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=False,pin_memory=True,sampler=sampler_train)#
     
-        # valid_dataloader = Data.DataLoader(dataset=val_dataset, batch_size=BATCH_SIZE, shuffle=shuffle,num_workers=num_workers,pin_memory=True)
-        # test_dataloader = Data.DataLoader(dataset=test_dataset, batch_size=BATCH_SIZE, shuffle=True,num_workers=num_workers,pin_memory=True)   
+        # valid_dataloader = Data.DataLoader(dataset=val_dataset, batch_size=BATCH_SIZE, shuffle=shuffle,pin_memory=True)
+        # test_dataloader = Data.DataLoader(dataset=test_dataset, batch_size=BATCH_SIZE, shuffle=True,pin_memory=True)   
     else:
-        train_dataloader = Data.DataLoader(dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=shuffle,num_workers=num_workers,pin_memory=True)
+        train_dataloader = Data.DataLoader(dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=shuffle,pin_memory=True)
         
-    valid_dataloader = Data.DataLoader(dataset=val_dataset, batch_size=BATCH_SIZE, shuffle=shuffle,num_workers=num_workers,pin_memory=True)
-    test_dataloader = Data.DataLoader(dataset=test_dataset, batch_size=BATCH_SIZE, shuffle=False,num_workers=num_workers,pin_memory=True)  
+    valid_dataloader = Data.DataLoader(dataset=val_dataset, batch_size=BATCH_SIZE, shuffle=shuffle,pin_memory=True)
+    test_dataloader = Data.DataLoader(dataset=test_dataset, batch_size=BATCH_SIZE, shuffle=False,pin_memory=True)  
     
     early_stopping = EarlyStopping(PATIENCE, verbose=True, model_path=save_model_path, delta=0, positive=False)
     optimizer  = torch.optim.Adam(Model.parameters(), lr=LR_MAX,weight_decay=weight_decay) 
@@ -142,7 +142,7 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGHandle.ECG_Dataset ,val_datas
         if(pair_flag ):# 每次重新抽取train_pair_Df (train_Df 是已经除去了val_Df的tv_Df)
                 train_pair_df,_ = Pair_ID(train_Df,1,star_index=0,Range_max=15,pair_num=1,shuffle=True)
                 train_dataset = ECGHandle.ECG_Dataset(data_path,train_pair_df ,preprocess = True)
-                train_dataloader = Data.DataLoader(dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=shuffle,num_workers=num_workers,pin_memory=True)
+                train_dataloader = Data.DataLoader(dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=shuffle,pin_memory=True)
     
     
     
@@ -253,9 +253,9 @@ def tarinning_one_flod_mutilabels(fold,Model,train_dataset,val_dataset,test_data
     # samples_weight = samples_weight.double()
     # sampler = Data.WeightedRandomSampler(samples_weight, len(samples_weight))  # type: ignore
 
-    train_dataloader = Data.DataLoader(dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=True,num_workers=num_workers,pin_memory=True)
-    valid_dataloader = Data.DataLoader(dataset=val_dataset, batch_size=BATCH_SIZE, shuffle=False,num_workers=num_workers,pin_memory=True)
-    test_dataloader = Data.DataLoader(dataset=test_dataset, batch_size=BATCH_SIZE, shuffle=False,num_workers=num_workers,pin_memory=True)
+    train_dataloader = Data.DataLoader(dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=True,pin_memory=True)
+    valid_dataloader = Data.DataLoader(dataset=val_dataset, batch_size=BATCH_SIZE, shuffle=False,pin_memory=True)
+    test_dataloader = Data.DataLoader(dataset=test_dataset, batch_size=BATCH_SIZE, shuffle=False,pin_memory=True)
     early_stopping = EarlyStopping(PATIENCE, verbose=True, model_path=save_model_path, delta=0, positive=False)
     optimizer  = torch.optim.Adam(Model.parameters(), lr=LR_MAX,weight_decay=weight_decay) 
     criterion =  criterion.to(DEVICE)

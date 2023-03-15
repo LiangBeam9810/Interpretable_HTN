@@ -49,7 +49,7 @@ def seed_torch(seed=2023):
 	torch.cuda.manual_seed(seed)
 	torch.cuda.manual_seed_all(seed) # if you are using multi-GPU.
 	torch.backends.cudnn.benchmark = False 
-	torch.backends.cudnn.deterministic = False
+	torch.backends.cudnn.deterministic = True
     # torch.backends.cudnn.enabled = False
     
 seed_torch(2023)
@@ -59,7 +59,7 @@ print(DEVICE)
 
 BATCH_SIZE = 256
 L2 = 0.07
-FOLDS = 5
+FOLDS = 3
 EPOCHS = 200  
 PATIENCE = 50
 LR = 0.0005
@@ -111,16 +111,14 @@ if __name__ == '__main__':
         ALL_data = ECGHandle.change_label(ALL_data)
         ALL_data = ECGHandle.filter_ID(ALL_data)
         ALL_data = ECGHandle.filter_QC(ALL_data)
-        
         ALL_data = ECGHandle.filter_ages(ALL_data,18)
-        ALL_data = ECGHandle.filter_departmentORlabel(ALL_data,'外科')
-        
         ALL_data = ECGHandle.correct_label(ALL_data)
+        ALL_data = ECGHandle.filter_departmentORlabel(ALL_data,'外科')
         ALL_data = ECGHandle.correct_age(ALL_data)
         ALL_data = ECGHandle.filter_diagnose(ALL_data,'起搏')
         ALL_data = ECGHandle.filter_diagnose(ALL_data,'房颤')
-        # ALL_data = ECGHandle.filter_diagnose(ALL_data,'左束支传导阻滞')
-        # ALL_data = ECGHandle.filter_diagnose(ALL_data,'左前分支阻滞')
+        ALL_data = ECGHandle.filter_diagnose(ALL_data,'左束支传导阻滞')
+        ALL_data = ECGHandle.filter_diagnose(ALL_data,'左前分支阻滞')
         # ALL_data = ECGHandle.remove_duplicated(ALL_data)
         
         ALL_data = ALL_data.rename(columns={'住院号':'ID','年龄':'age','性别':'gender','姓名':'name'}) 
@@ -168,24 +166,13 @@ if __name__ == '__main__':
         ####################################################################随机选取test
         test_df,tv_df = Pair_ID(ALL_data_buffer,0.2,Range_max=15,pair_num=1)
         ####################################################################  #打乱tvset的顺序，使得五折交叉验证的顺序打乱
-        
-        random.seed(random_seed)
-        os.environ['PYTHONHASHSEED'] = str(random_seed) # 为了禁止hash随机化，使得实验可复现
-        np.random.seed(random_seed)
-        
+        seed_torch(random_seed)
         tv_df = tv_df.sample(frac=1).reset_index(drop=True) #打乱顺序
-        # #####################################################################按年份选取test
-        # test_df = ALL_data_buffer[ALL_data_buffer['year']==22]
-        # tv_df = ALL_data_buffer[~(ALL_data_buffer['year']==22)]
-        # ####################################################################
+        
         test_dataset = ECGHandle.ECG_Dataset(data_root,test_df,preprocess = True)
         for fold in range(FOLDS):
+            seed_torch(random_seed)
             print(" "*10+ "Fold "+str(fold)+" of "+str(FOLDS) + ' :')
-            
-            random.seed(random_seed)
-            os.environ['PYTHONHASHSEED'] = str(random_seed) # 为了禁止hash随机化，使得实验可复现
-            np.random.seed(random_seed)
-            
             tv_df_buffer = tv_df.copy()
             HTN_tv_df = tv_df[(tv_df['label']==1) ].copy()
             NHTN_tv_df = tv_df[(tv_df['label']==0) ].copy()
