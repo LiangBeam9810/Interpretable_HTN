@@ -5,9 +5,28 @@ import math
 import time
 import torch.utils.data as Data
 import ECGDataset
-from sklearn.metrics import confusion_matrix, multilabel_confusion_matrix
+from sklearn.metrics import confusion_matrix, multilabel_confusion_matrix,roc_curve,auc
 import pandas as pd
 import ECGHandle
+
+def Find_Optimal_Cutoff(TPR, FPR, threshold):
+    y = TPR - FPR
+    Youden_index = np.argmax(y)  # Only the first occurrence is returned.
+    optimal_threshold = threshold[Youden_index]
+    point = [FPR[Youden_index], TPR[Youden_index]]
+    return optimal_threshold, point
+def ROC(label, y_prob):
+    fpr, tpr, thresholds = roc_curve(label, y_prob)
+    roc_auc = auc(fpr, tpr)
+    optimal_th, optimal_point = Find_Optimal_Cutoff(TPR=tpr, FPR=fpr, threshold=thresholds)
+    return fpr, tpr, roc_auc, optimal_th, optimal_point
+def get_best_auc(y_true,y_out):
+    fpr, tpr, roc_auc, optimal_th, optimal_point = ROC(y_true,((np.array(y_out))[:,1]))
+    y_pred = ((np.array(y_out))[:,1])
+    y_pred[y_pred>optimal_th] =  int(1)
+    y_pred[y_pred<=optimal_th] =  int(0)
+    return y_pred,optimal_th
+
 
 def pair_HTN(INPUT_HTN_Df,INPUT_NHTN_Df,Range_max = 5,shuffle = False,pair_num = 3):
     HTN_Df = ((INPUT_HTN_Df).copy())
@@ -107,8 +126,11 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGHandle.ECG_Dataset ,val_datas
         time_all=0
         start_time = time.time()
         
-        y_true,y_pred,train_loss,train_acc = train_model(train_dataloader, Model, criterion, optimizer,DEVICE,onehot_lable=onehot_lable) # type: ignore # 训练模型       
+        y_true,y_pred,train_loss,train_acc = train_model(train_dataloader, Model, criterion, optimizer,DEVICE,onehot_lable=onehot_lable) # type: ignore # 训练模型     
+        
         y_true,y_pred,y_out,validate_loss,validate_acc = eval_model(valid_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
+        y_pred,optimal_th = get_best_auc(y_true,y_out)  
+        print('optimal_th = ',optimal_th)
         F1_score_valid =f1_score(y_true, y_pred, average='binary')#F1分数
         p_valid = precision_score(y_true, y_pred, average='binary')
         r_valid = recall_score(y_true, y_pred, average='binary')   
@@ -151,10 +173,9 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGHandle.ECG_Dataset ,val_datas
     best_model_path = save_model_path+'/parameter_EarlyStoping_' + str(fold) + '.pt' #此fold最优参数
     Model.load_state_dict(torch.load(best_model_path))
     
-    y_true,y_pred,train_loss,train_acc = train_model(train_dataloader, Model, criterion, optimizer,DEVICE,onehot_lable=onehot_lable) # type: ignore # 模型
-    Model.load_state_dict(torch.load(best_model_path))
-    
     y_true,y_pred,y_out,validate_loss,validate_acc = eval_model(valid_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
+    y_pred,optimal_th = get_best_auc(y_true,y_out)  
+    print('validate best optimal_th = ',optimal_th) #
     F1_score_valid =f1_score(y_true, y_pred, average='binary')#F1分数
     auc_valid = roc_auc_score(y_true,(np.array(y_out))[:,1])
     C = confusion_matrix(y_true,y_pred)
@@ -169,6 +190,9 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGHandle.ECG_Dataset ,val_datas
     print(" "*10+'recall: ',recall_valid)
     
     y_true,y_pred,y_out,test_loss,test_acc = test_model(test_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
+    y_pred = ((np.array(y_out))[:,1])
+    y_pred[y_pred>optimal_th] =  int(1)
+    y_pred[y_pred<=optimal_th] =  int(0)
     F1_score_test =f1_score(y_true, y_pred, average='binary')#F1分数
     auc_test = roc_auc_score(y_true,(np.array(y_out))[:,1])
     C = confusion_matrix(y_true,y_pred)
@@ -191,10 +215,9 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGHandle.ECG_Dataset ,val_datas
     best_model_path = save_model_path+'/BestF1_' + str(fold) + '.pt' #此fold最优参数
     Model.load_state_dict(torch.load(best_model_path))
     
-    y_true,y_pred,train_loss,train_acc = train_model(train_dataloader, Model, criterion, optimizer,DEVICE,onehot_lable=onehot_lable) # type: ignore # 模型
-    Model.load_state_dict(torch.load(best_model_path))
-    
     y_true,y_pred,y_out,validate_loss,validate_acc = eval_model(valid_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
+    y_pred,optimal_th = get_best_auc(y_true,y_out) 
+    print('validate best optimal_th = ',optimal_th) # 
     F1_score_valid =f1_score(y_true, y_pred, average='binary')#F1分数
     auc_valid = roc_auc_score(y_true,(np.array(y_out))[:,1])
     C = confusion_matrix(y_true,y_pred)
@@ -209,6 +232,9 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGHandle.ECG_Dataset ,val_datas
     print(" "*10+'recall: ',recall_valid)
     
     y_true,y_pred,y_out,test_loss,test_acc = test_model(test_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
+    y_pred = ((np.array(y_out))[:,1])
+    y_pred[y_pred>optimal_th] =  int(1)
+    y_pred[y_pred<=optimal_th] =  int(0)
     F1_score_test =f1_score(y_true, y_pred, average='binary')#F1分数
     auc_test = roc_auc_score(y_true,(np.array(y_out))[:,1])
     C = confusion_matrix(y_true,y_pred)

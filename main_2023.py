@@ -91,9 +91,9 @@ model_root =  './model/'+time_str+'/'
 data_root = '/workspace/data/Preprocess_HTN/datas_/'
 
 if __name__ == '__main__':
-    L2_list = [0.007,0.007,0.007,0.007]
-    BS_list = [64,64,64,64]
-    random_seed_list = [2020,2021,2022,2023]
+    L2_list = [0.007]
+    BS_list = [64]
+    random_seed_list = [2020]
     for i in range(len(L2_list)):
         seed_torch(2023)
         time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime()) 
@@ -120,7 +120,8 @@ if __name__ == '__main__':
         ALL_data = ECGHandle.correct_age(ALL_data)
         ALL_data = ECGHandle.filter_diagnose(ALL_data,'起搏')
         ALL_data = ECGHandle.filter_diagnose(ALL_data,'房颤')
-        
+        ALL_data = ECGHandle.filter_diagnose(ALL_data,'左束支传导阻滞')
+        ALL_data = ECGHandle.filter_diagnose(ALL_data,'左前分支阻滞')
         # ALL_data = ECGHandle.filter_diagnose(ALL_data,'阻滞')
         # ALL_data = ECGHandle.remove_duplicated(ALL_data)
         
