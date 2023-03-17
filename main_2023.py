@@ -111,12 +111,12 @@ if __name__ == '__main__':
         
         ALL_data = ECGHandle.change_label(ALL_data)
         ALL_data = ECGHandle.filter_ID(ALL_data)
+        ALL_data = ECGHandle.correct_label(ALL_data)
         ALL_data = ECGHandle.filter_QC(ALL_data)
-        
         ALL_data = ECGHandle.filter_ages(ALL_data,18)
         ALL_data = ECGHandle.filter_departmentORlabel(ALL_data,'外科')
         
-        ALL_data = ECGHandle.correct_label(ALL_data)
+        
         ALL_data = ECGHandle.correct_age(ALL_data)
         ALL_data = ECGHandle.filter_diagnose(ALL_data,'起搏')
         ALL_data = ECGHandle.filter_diagnose(ALL_data,'房颤')
