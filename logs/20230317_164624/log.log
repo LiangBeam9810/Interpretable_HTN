@@ -4229,13 +4229,4 @@ train_loss [0.3454420029332763, 0.34549507616381897, 0.37629324589904983, 0.3331
      test_loss [0.37749741169122547, 0.38044612338909733, 0.3886895512159054, 0.4161136723481692, 0.4317150093041934]  mean: 0.39889235358971814 
      test_acc [0.8168424317617866, 0.812267369727047, 0.8215725806451613, 0.8218052109181142, 0.8107552729528535]  mean: 0.8166485732009926 
      test_precision [0.8744855967078189, 0.8940397350993378, 0.858252427184466, 0.884453781512605, 0.8370786516853933]  mean: 0.8696620384379242 
-     test_recall [0.8333333333333334, 0.7941176470588235, 0.8666666666666667, 0.8254901960784313, 0.8764705882352941]  mean: 0.8392156862745097/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, msg_start, len(result))
-/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, msg_start, len(result))
-/opt/conda/lib/python3.7/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
-  _warn_prf(average, modifier, msg_start, len(result))
- 
-     test_auc [0.8981409864984056, 0.8965465771083521, 0.9009498609132234, 0.8986701947214873, 0.8868987041183256]  mean: 0.8962412646719589
-     ==================================================
-copy ./log.log -> ./logs/20230317_164624/log.log
+     test_recall [0.8333333333333334, 0.7941176470588235, 0.8666666666666667, 0.8254901960784313, 0.8764705882352941]  mean: 0.8392156862745097
