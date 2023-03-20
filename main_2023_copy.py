@@ -66,21 +66,7 @@ LR = 0.0005
 PAIR =True
 
 notion ="####"*10 +\
-        "\n#Net.MLBFNet_GUR(True,True,True,2,0.3),position embedding   " +\
-        "\n#LR = 0.0005" +\
-        "\n#pair HTN candidate >0 break " +\
-        "\n#delete all have the same name&sex&ages" +\
-        "\n# seed_torch(2023),    L2_list = 0.007 BATCH_SIZE = 128 ,5 foldcorss 1 times"+\
-        "\n#CrossEntropyLoss "  +\
-        "\n#ReduceLROnPlateau "  +\
-        "\n#The reset and delete list (main in test)" +\
-        "\n#qc == 0" +\
-        "\n#pair HTN" +\
-        "\n#use adam with 0 weight decay" +\
-        "\n#Shuffle before k-fold train"+\
-        "\n#Use binary F1. "  +\
-        "\n#Net.MLBFNet_GUR(mark = True,res = True,se = True,Dropout_rate = 0.3). lead_branch (3,3). add two relu-fc"  +\
-        "\n#Sample HTN to fit NHTN numbers (test,val,train)" +\
+        "\n# correct at frist, no set ramdom seed each fold   " +\
         "\n"+"####"*10 +\
         "\n"
         
@@ -111,6 +97,7 @@ if __name__ == '__main__':
         
         ALL_data = ECGHandle.change_label(ALL_data)
         ALL_data = ECGHandle.filter_ID(ALL_data)
+        ALL_data = ECGHandle.correct_label(ALL_data)
         ALL_data = ECGHandle.filter_QC(ALL_data)
         
         ALL_data = ECGHandle.filter_ages(ALL_data,18)
@@ -266,4 +253,4 @@ if __name__ == '__main__':
         "\n" + " "*5+"test_auc",test_auc_sum," mean:",(np.array(test_auc_sum)).mean())
             print(" "*5+'='*50)
         #重复打印几次 等待.log 打印完
-        mycopyfile('./log.log',log_root)
+        mycopyfile('./log_copy.log',log_root)
