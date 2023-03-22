@@ -74,19 +74,28 @@ def caculate_layer_cam_vlue(fmap,gradmap,original_seq_lenth = 5000):
     cam = (cam_tensor[0][0]).to('cpu').detach().numpy()
     return cam
 
+
+def scaled_layer_cam_tanh(cam,gamma = 2.):
+    (cam_min, cam_max) = (cam.min(), cam.max())
+    norm_cam = np.tanh(gamma*cam/cam_max)
+    return norm_cam
+
 # fmap,gradmap size = [channel,H,W]
-def caculate_layer_cam_vlue_2d(fmap,gradmap,original_size = (12,5000)):
+def caculate_layer_cam_vlue_2d(fmap,gradmap,original_size = (12,5000),scale_tanh:bool=False):
     gradmap[gradmap<0] = 0 #[channel,H,W] like relu  
     weights = gradmap #[channel,H,W]
     fmap_ = weights*fmap #[channel,H,W]
     cam = np.sum(fmap_,axis=0) #[H,W]
-    cam[cam<0] = 0 # like relu                                   #[H,W]
-    # cam[:] = (cam[:] - cam[:].min())/(1e-7*cam[:].max()) # maxmin normalize  #[H,W]
+    cam[cam<0] = 0 # like relu #[H,W]
+    if(scale_tanh):
+        cam = scaled_layer_cam_tanh(cam,gamma=2.)
+    # up sampler to original_size(or call target size)
     cam_tensor = torch.tensor(cam)
     cam_tensor = (cam_tensor.unsqueeze(0)).unsqueeze(0) #[H,W]->[1,1,H,W]
-    upsampler = torch.nn.Upsample((original_size),mode='bilinear',align_corners=False) 
-    cam_tensor = upsampler(cam_tensor) 
+    cam_tensor = torch.nn.functional.interpolate(cam_tensor, size=(original_size), mode='bilinear', align_corners=True)
+    #normal
     cam = (cam_tensor[0][0]).to('cpu').detach().numpy()
-    # (cam_min, cam_max) = (cam.min(), cam.max())
-    # norm_cam = (cam - cam_min)/(cam)
     return cam
+    # (cam_min, cam_max) = (cam.min(), cam.max())
+    # norm_cam = (cam_tensor - cam_min) / (((cam_max - cam_min) + 1e-08)).data
+    # return norm_cam
