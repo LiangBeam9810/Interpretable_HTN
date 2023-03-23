@@ -12,6 +12,7 @@ train_test_validat.py
 ERR/
 Right/
 PNG_ECG/
+jpg/
 PNG_Power/
 train_test_validat.py
 __pycache__/ECGplot.cpython-37.pyc
