@@ -59,9 +59,9 @@ print(DEVICE)
 
 BATCH_SIZE = 256
 L2 = 0.07
-FOLDS = 5
+FOLDS = 2
 EPOCHS = 200  
-PATIENCE = 50
+PATIENCE = 30
 LR = 0.0005
 PAIR =True
 
@@ -91,9 +91,9 @@ model_root =  './model/'+time_str+'/'
 data_root = '/workspace/data/Preprocess_HTN/datas_/'
 
 if __name__ == '__main__':
-    L2_list = [0.007,0.007,0.007,0.007,0.007]
-    BS_list = [64,64,64,64,64]
-    random_seed_list = [2020,2021,2022,2023,1999]
+    L2_list = [0.007,0.007]
+    BS_list = [64,64]
+    random_seed_list = [2020,1999]
     for i in range(len(L2_list)):
         seed_torch(2023)
         time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime()) 
@@ -179,18 +179,24 @@ if __name__ == '__main__':
         test_dataset = ECGHandle.ECG_Dataset(data_root,test_df,preprocess = True)
         for fold in range(FOLDS):
             print(" "*10+ "Fold "+str(fold)+" of "+str(FOLDS) + ' :')
-            tv_df_buffer = tv_df.copy()
-            HTN_tv_df = tv_df[(tv_df['label']==1) ].copy()
-            NHTN_tv_df = tv_df[(tv_df['label']==0) ].copy()
-            HTN_ID_tv_list = HTN_tv_df['ID'].unique().tolist() #tvset中所有的HTN的ID号
-            HTN_tv_size = HTN_tv_df['ID'].unique().__len__()
-            HTN_validate_size = int(HTN_tv_size//FOLDS)
-            validate_start_index = HTN_validate_size*fold #star index for validate
-            validate_df,tarin_df = Pair_ID(tv_df_buffer,0.2,star_index=validate_start_index,Range_max=15,pair_num=1)
-            validate_dataset = ECGHandle.ECG_Dataset(data_root,validate_df,preprocess = True)
+            # tv_df_buffer = tv_df.copy()
+            # HTN_tv_df = tv_df[(tv_df['label']==1) ].copy()
+            # NHTN_tv_df = tv_df[(tv_df['label']==0) ].copy()
+            # HTN_ID_tv_list = HTN_tv_df['ID'].unique().tolist() #tvset中所有的HTN的ID号
+            # HTN_tv_size = HTN_tv_df['ID'].unique().__len__()
+            # HTN_validate_size = int(HTN_tv_size//FOLDS)
+            # validate_start_index = HTN_validate_size*fold #star index for validate
+            # validate_df,tarin_df = Pair_ID(tv_df_buffer,0.2,star_index=validate_start_index,Range_max=15,pair_num=1)
+            # validate_dataset = ECGHandle.ECG_Dataset(data_root,validate_df,preprocess = True)
+            '''all tv data to train'''
+            validate_dataset = test_dataset
+            tarin_df  = tv_df
             
             train_pair_df,_ = Pair_ID(tarin_df,1,star_index=0,Range_max=15,pair_num=1,shuffle=True)
             train_dataset = ECGHandle.ECG_Dataset(data_root,train_pair_df ,preprocess = True)
+            
+            
+            
             
             train_loss,train_acc,validate_loss,validate_acc,precision_valid,recall_valid,auc_valid,test_loss,test_acc,precision_test,recall_test,auc_test = tarinning_one_flod(fold,NET[fold]
                                                                                                     ,train_dataset,validate_dataset,test_dataset
