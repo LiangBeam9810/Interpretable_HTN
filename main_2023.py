@@ -59,7 +59,7 @@ print(DEVICE)
 
 BATCH_SIZE = 256
 L2 = 0.07
-FOLDS = 2
+FOLDS = 5
 EPOCHS = 200  
 PATIENCE = 30
 LR = 0.0005
@@ -91,11 +91,10 @@ model_root =  './model/'+time_str+'/'
 data_root = '/workspace/data/Preprocess_HTN/datas_/'
 
 if __name__ == '__main__':
-    L2_list = [0.007,0.007]
-    BS_list = [64,64]
-    random_seed_list = [2020,1999]
+    L2_list = [0.007,0.007,0.007,0.007,0.007,0.007,0.007,0.007]
+    BS_list = [64,64,64,64,64,64,64,64,64,64]
+    random_seed_list = [2023,2022,2021,2020,2019,2018,3407,115114]
     for i in range(len(L2_list)):
-        seed_torch(2023)
         time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime()) 
         model_path = model_root + time_str
         log_path = log_root +  time_str
@@ -163,12 +162,12 @@ if __name__ == '__main__':
         precision_test_sum = [0]*FOLDS    
         recall_test_sum = [0]*FOLDS   
         test_auc_sum = [0]*FOLDS
-         
+
         seed_torch(2023)# keep the the set the same
         ALL_data_buffer = ALL_data.copy()
-        ALL_data_buffer = ALL_data.sample(frac=1).reset_index(drop=True) #打乱顺序
+        ALL_data_buffer = ALL_data_buffer.sample(frac=1).reset_index(drop=True) #打乱顺序
         ####################################################################随机选取test
-        test_df,tv_df = Pair_ID(ALL_data,0.2,Range_max=15,pair_num=1)
+        test_df,tv_df = Pair_ID(ALL_data_buffer,0.2,Range_max=15,pair_num=1)
         ####################################################################  #打乱tvset的顺序，使得五折交叉验证的顺序打乱
         seed_torch(random_seed)
         tv_df = tv_df.sample(frac=1).reset_index(drop=True) #打乱顺序
@@ -179,23 +178,26 @@ if __name__ == '__main__':
         test_dataset = ECGHandle.ECG_Dataset(data_root,test_df,preprocess = True)
         for fold in range(FOLDS):
             print(" "*10+ "Fold "+str(fold)+" of "+str(FOLDS) + ' :')
-            # tv_df_buffer = tv_df.copy()
-            # HTN_tv_df = tv_df[(tv_df['label']==1) ].copy()
-            # NHTN_tv_df = tv_df[(tv_df['label']==0) ].copy()
-            # HTN_ID_tv_list = HTN_tv_df['ID'].unique().tolist() #tvset中所有的HTN的ID号
-            # HTN_tv_size = HTN_tv_df['ID'].unique().__len__()
-            # HTN_validate_size = int(HTN_tv_size//FOLDS)
-            # validate_start_index = HTN_validate_size*fold #star index for validate
-            # validate_df,tarin_df = Pair_ID(tv_df_buffer,0.2,star_index=validate_start_index,Range_max=15,pair_num=1)
-            # validate_dataset = ECGHandle.ECG_Dataset(data_root,validate_df,preprocess = True)
-            '''all tv data to train'''
-            validate_dataset = test_dataset
-            tarin_df  = tv_df
+            tv_df_buffer = tv_df.copy()
+            HTN_tv_df = tv_df[(tv_df['label']==1) ].copy()
+            NHTN_tv_df = tv_df[(tv_df['label']==0) ].copy()
+            HTN_ID_tv_list = HTN_tv_df['ID'].unique().tolist() #tvset中所有的HTN的ID号
+            HTN_tv_size = HTN_tv_df['ID'].unique().__len__()
+            HTN_validate_size = int(HTN_tv_size//FOLDS)
+            validate_start_index = HTN_validate_size*fold #star index for validate
+            validate_df,tarin_df = Pair_ID(tv_df_buffer,0.2,star_index=validate_start_index,Range_max=15,pair_num=1)
+            validate_dataset = ECGHandle.ECG_Dataset(data_root,validate_df,preprocess = True)
             
+            # '''all tv data to train'''
+            # validate_dataset = test_dataset
+            # tarin_df  = tv_df
+            #####
             train_pair_df,_ = Pair_ID(tarin_df,1,star_index=0,Range_max=15,pair_num=1,shuffle=True)
             train_dataset = ECGHandle.ECG_Dataset(data_root,train_pair_df ,preprocess = True)
             
-            
+            validate_dataset.infos.to_csv(log_path+'/randomseed'+str(random_seed)+'_fold'+str(fold)+'_valida.csv')
+            train_dataset.infos.to_csv(log_path+'/randomseed'+str(random_seed)+'_fold'+str(fold)+'_train.csv')
+            test_dataset.infos.to_csv(log_path+'/randomseed'+str(random_seed)+'_fold'+str(fold)+'_test.csv')
             
             
             train_loss,train_acc,validate_loss,validate_acc,precision_valid,recall_valid,auc_valid,test_loss,test_acc,precision_test,recall_test,auc_test = tarinning_one_flod(fold,NET[fold]

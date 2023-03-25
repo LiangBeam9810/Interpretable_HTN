@@ -1,6 +1,6 @@
 import numpy as np
 import torch
-from sklearn.metrics import f1_score, precision_score,recall_score,roc_auc_score
+from sklearn.metrics import f1_score, precision_score,recall_score,roc_auc_score,fbeta_score 
 import math
 import time
 import torch.utils.data as Data
@@ -109,7 +109,8 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGHandle.ECG_Dataset ,val_datas
         
         y_true,y_pred,train_loss,train_acc = train_model(train_dataloader, Model, criterion, optimizer,DEVICE,onehot_lable=onehot_lable) # type: ignore # 训练模型       
         y_true,y_pred,y_out,validate_loss,validate_acc = eval_model(valid_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
-        F1_score_valid =f1_score(y_true, y_pred, average='binary')#F1分数
+        # F1_score_valid =f1_score(y_true, y_pred, average='binary')#F1分数
+        F1_score_valid =fbeta_score(y_true, y_pred, average='binary',beta=1.2)#F1-β分数
         p_valid = precision_score(y_true, y_pred, average='binary')
         r_valid = recall_score(y_true, y_pred, average='binary')   
         auc_valid = roc_auc_score(y_true,y_score=((np.array(y_out))[:,1]))
