@@ -9,7 +9,7 @@ from sklearn.metrics import confusion_matrix, multilabel_confusion_matrix
 import pandas as pd
 import ECGHandle
 
-def pair_HTN(INPUT_HTN_Df,INPUT_NHTN_Df,Range_max = 5,shuffle = False,pair_num = 3):
+def pair_HTN(INPUT_HTN_Df:pd.DataFrame,INPUT_NHTN_Df:pd.DataFrame,Range_max:int = 5,shuffle:bool = False,pair_num:int = 3):
     HTN_Df = ((INPUT_HTN_Df).copy())
     NHTN_Df = ((INPUT_NHTN_Df).copy())#即抽即删,抽出一条删一条
     if(shuffle): #打乱
