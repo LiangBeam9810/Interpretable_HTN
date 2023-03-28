@@ -91,7 +91,7 @@ model_root =  './model/'+time_str+'/'
 data_root = '/workspace/data/Preprocess_HTN/datas_/'
 
 if __name__ == '__main__':
-    L2_list = [0.007,0.007,0.007,0.007,0.007,0.007,0.007,0.007]
+    L2_list = [0.007,0.007]
     BS_list = [64,64,64,64,64,64,64,64,64,64]
     random_seed_list = [2023,2022,2021,2020,2019,2018,3407,115114]
     for i in range(len(L2_list)):
@@ -127,19 +127,14 @@ if __name__ == '__main__':
         ALL_data = ALL_data.rename(columns={'住院号':'ID','年龄':'age','性别':'gender','姓名':'name'}) 
         
         
-        torch.cuda.empty_cache()# 清空显卡cuda
-        NET = [
-            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),
-            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),
-            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),
-            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),
-            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),
-            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),
-            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),
-            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),
-            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),
-            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),
-            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),] # type: ignore
+        torch.cuda.empty_cache()# 清空显卡
+        NET = [res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
+               res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
+               res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
+               res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
+               res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
+               res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
+               ] # type: ignore
 
         os.makedirs(model_path, exist_ok=True)  # type: ignore
         writer = SummaryWriter(log_path)  # type: ignore
