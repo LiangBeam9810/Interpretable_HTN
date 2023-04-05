@@ -5,6 +5,7 @@ import res1d
 from train_test_validat import *
 from self_attention import *
 import matplotlib.pyplot as plt
+import inceptrion_resnet_V2
 import ecg_plot
 import ECGHandle
 import VGG
@@ -128,12 +129,13 @@ if __name__ == '__main__':
         
         
         torch.cuda.empty_cache()# 清空显卡
-        NET = [res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
-               res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
-               res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
-               res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
-               res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
-               res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
+        NET = [ inceptrion_resnet_V2.SE_InceptionResnetV2(2,12,0.02),
+               inceptrion_resnet_V2.SE_InceptionResnetV2(2,12,0.02),
+               inceptrion_resnet_V2.SE_InceptionResnetV2(2,12,0.02),
+               inceptrion_resnet_V2.SE_InceptionResnetV2(2,12,0.02),
+               inceptrion_resnet_V2.SE_InceptionResnetV2(2,12,0.02),
+               inceptrion_resnet_V2.SE_InceptionResnetV2(2,12,0.02),
+               inceptrion_resnet_V2.SE_InceptionResnetV2(2,12,0.02),
                ] # type: ignore
 
         os.makedirs(model_path, exist_ok=True)  # type: ignore

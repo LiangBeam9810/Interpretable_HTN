@@ -832,6 +832,6 @@ class NN(nn.Module):
 if __name__ == '__main__':
     x = torch.rand(64,12,5000)
     l = torch.ones(64,12)
-    mdl = NN(2)
+    mdl = ECGNet()
     y  = mdl(x)
     print(y.shape)
