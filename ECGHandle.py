@@ -151,7 +151,21 @@ def filter_ages(df_input,filter_age = 0):
         print("{:^10} {:^10} {:^20}".format('nums',len(df_filter[(df_filter['label']==1)]),len(df_filter[(df_filter['label']==0)])))
     return df_filter
 
-def correct_label(df_input): #更改错误的label
+def correct_label(df_input,reset_list = ['848023',
+                                        '848316',
+                                        '578148',
+                                        '736912',
+                                        '847065',
+                                        '849400',
+                                        '839738',
+                                        '309738',
+                                        '496939',
+                                        '847724',
+                                        '847377',
+                                        '848996',
+                                        '850179',
+                                        '844904',
+                                        '848473',]): #更改错误的label
     print('\n')
     df_filter = df_input.copy()
     df_filter = df_filter.sort_values(by=['label'], ascending=[False]) #按照诊断排序，HTN在前

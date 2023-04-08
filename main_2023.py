@@ -95,6 +95,19 @@ if __name__ == '__main__':
     L2_list = [0.007,0.007]
     BS_list = [64,64,64,64,64,64,64,64,64,64]
     random_seed_list = [2023,2022,2021,2020,2019,2018,3407,115114]
+    
+    ##读取补充的诊断材料
+    supplement_diagnose = pd.read_csv('./补充诊断.csv',encoding='utf-8-sig')
+    # 使用groupby方法按照ID分组，然后使用agg方法将data列拼接在一起
+    supplement_diagnose = supplement_diagnose.groupby('ID')['住院所有诊断'].agg(lambda x: ','.join(x.astype(str))).reset_index()
+    # 使用str.contains方法筛选data列中包含‘高血压’的行
+    filtered_df = supplement_diagnose[supplement_diagnose['住院所有诊断'].str.contains('高血压')]
+    # 将筛选后的ID列转换为list
+    HTN_id_list = filtered_df['ID'].astype(str).tolist()
+    
+    
+    
+    
     for i in range(len(L2_list)):
         time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime()) 
         model_path = model_root + time_str
@@ -116,7 +129,7 @@ if __name__ == '__main__':
         ALL_data = ECGHandle.filter_ages(ALL_data,18)
         ALL_data = ECGHandle.filter_departmentORlabel(ALL_data,'外科')
         
-        ALL_data = ECGHandle.correct_label(ALL_data)
+        ALL_data = ECGHandle.correct_label(ALL_data,reset_list=HTN_id_list)
         ALL_data = ECGHandle.correct_age(ALL_data)
         ALL_data = ECGHandle.filter_diagnose(ALL_data,'起搏')
         ALL_data = ECGHandle.filter_diagnose(ALL_data,'房颤')
@@ -129,7 +142,8 @@ if __name__ == '__main__':
         
         
         torch.cuda.empty_cache()# 清空显卡
-        NET = [ inceptrion_resnet_V2.SE_InceptionResnetV2(2,12,0.02),
+        NET = [ 
+               inceptrion_resnet_V2.SE_InceptionResnetV2(2,12,0.02),
                inceptrion_resnet_V2.SE_InceptionResnetV2(2,12,0.02),
                inceptrion_resnet_V2.SE_InceptionResnetV2(2,12,0.02),
                inceptrion_resnet_V2.SE_InceptionResnetV2(2,12,0.02),
