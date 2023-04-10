@@ -100,7 +100,7 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGHandle.ECG_Dataset ,val_datas
     # T_max = EPOCHS//4	# 周期
     lr_max = LR_MAX	# 最大值
     lr_min = LR_MIN	# 最小值
-    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.1, patience=10, verbose=False, threshold=0.0001, threshold_mode='rel', cooldown=0, min_lr=0, eps=1e-08)
+    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.1, patience=5, verbose=False, threshold=0.0001, threshold_mode='rel', cooldown=0, min_lr=0, eps=1e-08)
     best_scoret = 0
     Model.to(DEVICE)
     for epoch in range(1,EPOCHS):
@@ -228,7 +228,7 @@ def save_test_infos(csv_path,test_dataset:ECGHandle.ECG_Dataset,y_true:list,y_pr
     ouputs_Df = pd.DataFrame(np.array(y_out),columns=["out0","out1"])
     preds_Df = pd.DataFrame(np.array(y_pred),columns=["pred"])
     target_Df = pd.DataFrame(np.array(y_true),columns=["target"])
-    test_infors_Df = (test_dataset.infos.copy()).reset_index()
+    test_infors_Df = (test_dataset.infos.copy()).reset_index(drop=True)
     test_infors_Df = pd.concat([test_infors_Df,target_Df,preds_Df,ouputs_Df],axis = 1)
     test_infors_Df.to_csv(csv_path)
     return 

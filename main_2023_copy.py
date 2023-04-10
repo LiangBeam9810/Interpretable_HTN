@@ -23,13 +23,31 @@ import pandas as pd
 
 import time
 import os
-
+from sklearn.model_selection import KFold
 
 import os
 import shutil
 
 from torch.utils.tensorboard import SummaryWriter  # type: ignore
 
+
+def filter_diagnose(df_input,remove_diagnose = ''): 
+    df_filter = df_input.copy()
+    if(remove_diagnose):
+        fitler_ID_list = df_filter[(df_filter['concat'].str.contains(remove_diagnose) == True)]['ID'].tolist()
+        fitler_index = df_filter[[True if i in fitler_ID_list else False for i in df_filter['ID']]].index #选取出所有含有该ID的样本
+        df_remove = df_filter.loc[(fitler_index)]
+        no_fitler_index = df_filter[[False if i in fitler_ID_list else True for i in df_filter['ID']]].index #选取出所有不含有该ID的样本
+        df_filter = df_filter.loc[(no_fitler_index)]
+        
+        print('\n')
+        print("{:^10} {:^10} {:^20}".format('  ','orginal','remove diagnose' + remove_diagnose))
+        print("{:^10} {:^10} {:^20}".format('nums',len(df_input),len(df_filter)))
+        print("{:^10} {:^10} {:^20}".format('  ','HTN','NHTN'))
+        print("{:^10} {:^10} {:^20}".format('nums',len(df_filter[(df_filter['label']==1)]),len(df_filter[(df_filter['label']==0)])))
+        print("{:^10} {:^10} {:^20}".format('  ','remove HTN','remove NHTN'))
+        print("{:^10} {:^10} {:^20}".format('nums',len(df_remove[(df_remove['label']==1)]),len(df_remove[(df_remove['label']==0)])))
+        return df_filter
 
 def mycopyfile(srcfile,dstpath):                       # 复制函数
     if not os.path.isfile(srcfile):
@@ -62,8 +80,8 @@ L2 = 0.07
 FOLDS = 5
 EPOCHS = 200  
 PATIENCE = 50
-LR = 0.0005
-PAIR =True
+LR = 0.001
+PAIR = False
 
 notion ="####"*10 +\
         "\n# correct at frist, no set ramdom seed each fold   " +\
@@ -77,58 +95,88 @@ model_root =  './model/'+time_str+'/'
 data_root = '/workspace/data/Preprocess_HTN/datas_/'
 
 if __name__ == '__main__':
+    seed_torch(2023)
+    supplement_diagnose = pd.read_csv('./补充诊断.csv',encoding='utf-8-sig')
+    supplement_diagnose['ID'] = supplement_diagnose['ID'].astype(str)
+    # 使用groupby方法按照ID分组，然后使用agg方法将data列拼接在一起
+    supplement_diagnose = supplement_diagnose.groupby('ID')['住院所有诊断'].agg(lambda x: ','.join(x.astype(str))).reset_index()
+    data_root = '/workspace/data/Preprocess_HTN/datas_/'
+    ALL_data = pd.read_csv(data_root+'/All_data_handled_ID_range_age_IDimputate.csv',low_memory=False)
+    ALL_data = ALL_data.rename(columns={'住院号':'ID','年龄':'age','性别':'gender','姓名':'name'}) 
+    ALL_data = ALL_data[(~ALL_data['ID'].isnull())] #ID NULL
+    ALL_data = ALL_data[(ALL_data['Q']<1)&(~ALL_data['Q'].isnull())]#q_sum<qc_threshold
+    ALL_data = ALL_data[((ALL_data['age'].apply(int))>17) ]# 选年龄
+    ALL_data['诊断'] = ALL_data['诊断'].fillna(value='')
+    ALL_data['临床诊断'] = ALL_data['临床诊断'].fillna(value='')
+    
+    #添加补充诊断
+    ALL_data = pd.merge(ALL_data,supplement_diagnose,how='inner',on='ID').reset_index()
+    # 使用groupby和agg函数将具有相同'ID'的行的data、data1和data2列拼接在一起
+    # 使用lambda函数和join方法将每个分组的值用逗号分隔
+    # 保留所有的行和列，使用merge方法将拼接后的结果与原始数据框合并
+    # 重置索引并重命名新的列为'concat'
+    df_concat = ALL_data.groupby('ID')[[ '诊断','住院所有诊断', '临床诊断',]].agg(lambda x: ','.join(x)).reset_index()
+    df_concat['concat'] = df_concat.apply(lambda x: ','.join([x['诊断'], x['住院所有诊断'], x['临床诊断']]), axis=1)
+    df_concat.drop(['诊断','住院所有诊断', '临床诊断'], axis=1, inplace=True) 
+    df_merge = ALL_data.merge(df_concat, on='ID', how='left') 
+    df_merge.loc[(df_merge['concat'].str.contains('高血压')==True),'label']= 1 # concat diagnose含有高血压的label为1
+    df_merge.loc[~(df_merge['label']==1),'label']= 0 #diagnose不含有高血压的label为0
+    df_merge['label'] = pd.to_numeric(df_merge['label'],errors='coerce') #把label（diagnose）改成数值型
+    df_merge = ECGHandle.filter_departmentORlabel(df_merge,'外科')
+    print("{:^10} {:^10} {:^20}".format('  ','HTN','NHTN'))
+    print("{:^10} {:^10} {:^20}".format('nums',len(df_merge[(df_merge['label']==1)]),len(df_merge[(df_merge['label']==0)])))
+    df_merge = filter_diagnose(df_merge,'起搏')
+    df_merge = filter_diagnose(df_merge,'除颤')
+    df_merge = filter_diagnose(df_merge,'电解质')
+    df_merge = filter_diagnose(df_merge,'钙血')
+    df_merge = filter_diagnose(df_merge,'钾血')
+    df_merge = filter_diagnose(df_merge,'镁血')
+    df_merge = filter_diagnose(df_merge,'心律失常')
+
+    ALL_data_buffer = df_merge.copy()
+    
+    ALL_data_buffer = ALL_data_buffer.sample(frac=1).reset_index(drop=True) #打乱顺序
+    
+    test_df = ALL_data_buffer[ALL_data_buffer['year']==22].reset_index(drop=True)
+    test_dataset = ECGHandle.ECG_Dataset(data_root,test_df,preprocess = True)
+    
+    TV_df = ALL_data_buffer[ALL_data_buffer['year']!=22].reset_index(drop=True)
+    
+
     L2_list = [0.007,0.007,0.007,0.007]
-    BS_list = [64,64,64,64]
-    random_seed_list = [2020,2021,2022]
+    BS_list = [256,256,256,256]
+    random_seed_list = [2020,2021,2022,2023]
+    
     for i in range(len(L2_list)):
-        seed_torch(2023)
         time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime()) 
         model_path = model_root + time_str
         log_path = log_root +  time_str
-        
         random_seed = random_seed_list[i]
+        seed_torch(random_seed)
         L2 = L2_list[i]
         BATCH_SIZE = BS_list[i]
         
         criterion =nn.CrossEntropyLoss()
-        
-        ALL_data = pd.read_csv(data_root+'/All_data_handled_ID_range_age_IDimputate.csv',low_memory=False)
-        
-        
-        ALL_data = ECGHandle.change_label(ALL_data)
-        ALL_data = ECGHandle.filter_ID(ALL_data)
-        ALL_data = ECGHandle.correct_label(ALL_data)
-        ALL_data = ECGHandle.filter_QC(ALL_data)
-        
-        ALL_data = ECGHandle.filter_ages(ALL_data,18)
-        ALL_data = ECGHandle.filter_departmentORlabel(ALL_data,'外科')
-        
-        ALL_data = ECGHandle.correct_label(ALL_data)
-        ALL_data = ECGHandle.correct_age(ALL_data)
-        ALL_data = ECGHandle.filter_diagnose(ALL_data,'起搏')
-        ALL_data = ECGHandle.filter_diagnose(ALL_data,'房颤')
-        ALL_data = ECGHandle.filter_diagnose(ALL_data,'左束支传导阻滞')
-        ALL_data = ECGHandle.filter_diagnose(ALL_data,'左前分支阻滞')
-        # ALL_data = ECGHandle.filter_diagnose(ALL_data,'阻滞')
-        # ALL_data = ECGHandle.remove_duplicated(ALL_data)
-        
-        ALL_data = ALL_data.rename(columns={'住院号':'ID','年龄':'age','性别':'gender','姓名':'name'}) 
-        
-        
         torch.cuda.empty_cache()# 清空显卡cuda
-        NET = [
-            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),
-            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),
-            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),
-            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),
-            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),
-            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),
-            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),
-            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),
-            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),
-            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),
-            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),] # type: ignore
-
+#         NET = [
+#             Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.01),
+#             Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.01),
+#             Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.01),
+#             Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.01),
+#             Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.01),
+#             Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.01),
+#             Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.01),
+#             Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.01),
+#             Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.01),
+            
+# ] # type: ignore
+        NET = [res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
+               res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
+               res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
+               res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
+               res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
+               res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
+               ] # type: ignore
         os.makedirs(model_path, exist_ok=True)  # type: ignore
         writer = SummaryWriter(log_path)  # type: ignore
         # sys.stdout = logger.Logger(log_path+'/log.txt'
@@ -151,34 +199,16 @@ if __name__ == '__main__':
         recall_test_sum = [0]*FOLDS   
         test_auc_sum = [0]*FOLDS
          
-        seed_torch(2023)# keep the the set the same
-        ALL_data_buffer = ALL_data.copy()
-        ALL_data_buffer = ALL_data_buffer.sample(frac=1).reset_index(drop=True) #打乱顺序
-        ####################################################################随机选取test
-        test_df,tv_df = Pair_ID(ALL_data,0.2,Range_max=15,pair_num=1)
-        ####################################################################  #打乱tvset的顺序，使得五折交叉验证的顺序打乱
-        seed_torch(random_seed)
-        tv_df = tv_df.sample(frac=1).reset_index(drop=True) #打乱顺序
-        # #####################################################################按年份选取test
-        # test_df = ALL_data_buffer[ALL_data_buffer['year']==22]
-        # tv_df = ALL_data_buffer[~(ALL_data_buffer['year']==22)]
-        # ####################################################################
-        test_dataset = ECGHandle.ECG_Dataset(data_root,test_df,preprocess = True)
-        for fold in range(FOLDS):
-            print(" "*10+ "Fold "+str(fold)+" of "+str(FOLDS) + ' :')
-            tv_df_buffer = tv_df.copy()
-            HTN_tv_df = tv_df[(tv_df['label']==1) ].copy()
-            NHTN_tv_df = tv_df[(tv_df['label']==0) ].copy()
-            HTN_ID_tv_list = HTN_tv_df['ID'].unique().tolist() #tvset中所有的HTN的ID号
-            HTN_tv_size = HTN_tv_df['ID'].unique().__len__()
-            HTN_validate_size = int(HTN_tv_size//FOLDS)
-            validate_start_index = HTN_validate_size*fold #star index for validate
-            validate_df,tarin_df = Pair_ID(tv_df_buffer,0.2,star_index=validate_start_index,Range_max=15,pair_num=1)
+
+        kf = KFold(n_splits=FOLDS,shuffle=True,random_state=random_seed) # 初始化KFold对象，设置为5折，打乱数据，固定随机种子    
+        fold = 0 
+        for train_index , valida_index in kf.split(TV_df): # 调用split方法切分数据
+            
+            
+            tarin_df,validate_df = TV_df.iloc[train_index], TV_df.iloc[valida_index] # 根据索引获取训练集和测试集的特征
             validate_dataset = ECGHandle.ECG_Dataset(data_root,validate_df,preprocess = True)
-            
-            train_pair_df,_ = Pair_ID(tarin_df,1,star_index=0,Range_max=15,pair_num=1,shuffle=True)
-            train_dataset = ECGHandle.ECG_Dataset(data_root,train_pair_df ,preprocess = True)
-            
+            train_dataset = ECGHandle.ECG_Dataset(data_root,tarin_df ,preprocess = True)
+            print(" "*10+ "Fold "+str(fold)+" of "+str(FOLDS) + ' :')
             train_loss,train_acc,validate_loss,validate_acc,precision_valid,recall_valid,auc_valid,test_loss,test_acc,precision_test,recall_test,auc_test = tarinning_one_flod(fold,NET[fold]
                                                                                                     ,train_dataset,validate_dataset,test_dataset
                                                                                                     ,writer,model_path
@@ -220,6 +250,7 @@ if __name__ == '__main__':
             print(" "*10+'Fold %d Training Finished' %(fold))
             print('\n')
             # if(fold >= 3): break
+            fold = fold+1
             
         print(" "*5+'='*50)
         print("train_loss",train_loss_sum," mean:",(np.array(train_loss_sum)).mean(),

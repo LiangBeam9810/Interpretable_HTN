@@ -143,13 +143,17 @@ if __name__ == '__main__':
         
         torch.cuda.empty_cache()# 清空显卡
         NET = [ 
-               inceptrion_resnet_V2.SE_InceptionResnetV2(2,12,0.02),
-               inceptrion_resnet_V2.SE_InceptionResnetV2(2,12,0.02),
-               inceptrion_resnet_V2.SE_InceptionResnetV2(2,12,0.02),
-               inceptrion_resnet_V2.SE_InceptionResnetV2(2,12,0.02),
-               inceptrion_resnet_V2.SE_InceptionResnetV2(2,12,0.02),
-               inceptrion_resnet_V2.SE_InceptionResnetV2(2,12,0.02),
-               inceptrion_resnet_V2.SE_InceptionResnetV2(2,12,0.02),
+                Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),
+                Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),
+                Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),
+                Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),
+                Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),
+                Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),
+                Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),
+                Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),
+                Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),
+                Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),
+                Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.3),
                ] # type: ignore
 
         os.makedirs(model_path, exist_ok=True)  # type: ignore

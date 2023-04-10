@@ -294,8 +294,8 @@ class ECG_Dataset(Dataset):
         # for i in tqdm(range(len(self.datas))):
         #     self.datas[i] = bandpass_filter(self.datas[i], lowcut=filter_lowcut, highcut=filter_highcut, signal_freq=500, filter_order=filter_order)# type: ignore   
         self.datas = self.amplitude_limiting(self.datas,5000)
-        # for i in range(12):
-        #     self.datas[:,i,:] = self.standardize(self.datas[:,i,:],standardize=True,remove_mean=True)
+        for i in range(12):
+            self.datas[:,i,:] = self.standardize(self.datas[:,i,:],standardize=True,remove_mean=True)
         # for i in range(12):
         #     mean =  self.datas[:,i,:].mean()
         #     var = self.datas[:,i,:].var()
