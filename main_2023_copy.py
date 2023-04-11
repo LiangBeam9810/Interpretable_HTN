@@ -78,9 +78,9 @@ print(DEVICE)
 BATCH_SIZE = 256
 L2 = 0.07
 FOLDS = 5
-EPOCHS = 200  
-PATIENCE = 50
-LR = 0.001
+EPOCHS = 100  
+PATIENCE = 10
+LR = 0.0001
 PAIR = False
 
 notion ="####"*10 +\
@@ -102,13 +102,19 @@ if __name__ == '__main__':
     supplement_diagnose = supplement_diagnose.groupby('ID')['住院所有诊断'].agg(lambda x: ','.join(x.astype(str))).reset_index()
     data_root = '/workspace/data/Preprocess_HTN/datas_/'
     ALL_data = pd.read_csv(data_root+'/All_data_handled_ID_range_age_IDimputate.csv',low_memory=False)
+    # ALL_data = ECGHandle.correct_age(ALL_data)
     ALL_data = ALL_data.rename(columns={'住院号':'ID','年龄':'age','性别':'gender','姓名':'name'}) 
+    
+    ALL_data = ALL_data[(ALL_data['申请部门'].str.contains('重症') == False)]#删除重症病房的样本
+    
     ALL_data = ALL_data[(~ALL_data['ID'].isnull())] #ID NULL
+    ALL_data = ALL_data[(~ALL_data['gender'].isnull())] #ID NULL
     ALL_data = ALL_data[(ALL_data['Q']<1)&(~ALL_data['Q'].isnull())]#q_sum<qc_threshold
     ALL_data = ALL_data[((ALL_data['age'].apply(int))>17) ]# 选年龄
+
     ALL_data['诊断'] = ALL_data['诊断'].fillna(value='')
     ALL_data['临床诊断'] = ALL_data['临床诊断'].fillna(value='')
-    
+
     #添加补充诊断
     ALL_data = pd.merge(ALL_data,supplement_diagnose,how='inner',on='ID').reset_index()
     # 使用groupby和agg函数将具有相同'ID'的行的data、data1和data2列拼接在一起
@@ -119,19 +125,29 @@ if __name__ == '__main__':
     df_concat['concat'] = df_concat.apply(lambda x: ','.join([x['诊断'], x['住院所有诊断'], x['临床诊断']]), axis=1)
     df_concat.drop(['诊断','住院所有诊断', '临床诊断'], axis=1, inplace=True) 
     df_merge = ALL_data.merge(df_concat, on='ID', how='left') 
+
     df_merge.loc[(df_merge['concat'].str.contains('高血压')==True),'label']= 1 # concat diagnose含有高血压的label为1
     df_merge.loc[~(df_merge['label']==1),'label']= 0 #diagnose不含有高血压的label为0
-    df_merge['label'] = pd.to_numeric(df_merge['label'],errors='coerce') #把label（diagnose）改成数值型
-    df_merge = ECGHandle.filter_departmentORlabel(df_merge,'外科')
+
+    # Replace '男' with 1 and '女' with 2 in the 'gender' column of df
+    df_merge['gender'].replace({'男': 1, '女': 2}, inplace=True)
+    df_merge['label'] = pd.to_numeric(df_merge['label'],errors='coerce', downcast='integer') #把label（diagnose）改成数值型
+    df_merge['age'] = pd.to_numeric(df_merge['age'],errors='coerce', downcast='integer') #把label（diagnose）改成数值型
+    df_merge['gender'] = pd.to_numeric(df_merge['gender'],errors='coerce', downcast='integer') #把label（diagnose）改成数值型
+
+    df_merge.drop_duplicates(subset=['ID'],keep='last')#删除重复的ID
+
     print("{:^10} {:^10} {:^20}".format('  ','HTN','NHTN'))
     print("{:^10} {:^10} {:^20}".format('nums',len(df_merge[(df_merge['label']==1)]),len(df_merge[(df_merge['label']==0)])))
+
+    df_merge = ECGHandle.filter_departmentORlabel(df_merge,'外')
+
     df_merge = filter_diagnose(df_merge,'起搏')
     df_merge = filter_diagnose(df_merge,'除颤')
     df_merge = filter_diagnose(df_merge,'电解质')
     df_merge = filter_diagnose(df_merge,'钙血')
     df_merge = filter_diagnose(df_merge,'钾血')
     df_merge = filter_diagnose(df_merge,'镁血')
-    df_merge = filter_diagnose(df_merge,'心律失常')
 
     ALL_data_buffer = df_merge.copy()
     
@@ -143,8 +159,8 @@ if __name__ == '__main__':
     TV_df = ALL_data_buffer[ALL_data_buffer['year']!=22].reset_index(drop=True)
     
 
-    L2_list = [0.007,0.007,0.007,0.007]
-    BS_list = [256,256,256,256]
+    L2_list = [0.01,0.007,0.005,0.0005]
+    BS_list = [128,128,128,128]
     random_seed_list = [2020,2021,2022,2023]
     
     for i in range(len(L2_list)):
@@ -158,25 +174,27 @@ if __name__ == '__main__':
         
         criterion =nn.CrossEntropyLoss()
         torch.cuda.empty_cache()# 清空显卡cuda
-#         NET = [
-#             Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.01),
-#             Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.01),
-#             Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.01),
-#             Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.01),
-#             Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.01),
-#             Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.01),
-#             Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.01),
-#             Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.01),
-#             Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.01),
+        NET = [
+            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.1),
+            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.1),
+            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.1),
+            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.1),
+            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.1),
+            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.1),
+            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.1),
+            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.1),
+            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.1),
+            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.1),
+            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.1),
             
-# ] # type: ignore
-        NET = [res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
-               res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
-               res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
-               res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
-               res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
-               res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
-               ] # type: ignore
+] # type: ignore
+        # NET = [res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
+        #        res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
+        #        res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
+        #        res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
+        #        res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
+        #        res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
+        #        ] # type: ignore
         os.makedirs(model_path, exist_ok=True)  # type: ignore
         writer = SummaryWriter(log_path)  # type: ignore
         # sys.stdout = logger.Logger(log_path+'/log.txt'
@@ -199,13 +217,10 @@ if __name__ == '__main__':
         recall_test_sum = [0]*FOLDS   
         test_auc_sum = [0]*FOLDS
          
-
-        kf = KFold(n_splits=FOLDS,shuffle=True,random_state=random_seed) # 初始化KFold对象，设置为5折，打乱数据，固定随机种子    
-        fold = 0 
-        for train_index , valida_index in kf.split(TV_df): # 调用split方法切分数据
+        if(True): # 调用split方法切分数据
             
             
-            tarin_df,validate_df = TV_df.iloc[train_index], TV_df.iloc[valida_index] # 根据索引获取训练集和测试集的特征
+            tarin_df,validate_df = TV_df,test_df # 根据索引获取训练集和测试集的特征
             validate_dataset = ECGHandle.ECG_Dataset(data_root,validate_df,preprocess = True)
             train_dataset = ECGHandle.ECG_Dataset(data_root,tarin_df ,preprocess = True)
             print(" "*10+ "Fold "+str(fold)+" of "+str(FOLDS) + ' :')
@@ -219,7 +234,7 @@ if __name__ == '__main__':
                                                                                                     EPOCHS = EPOCHS,  
                                                                                                     PATIENCE = PATIENCE,
                                                                                                     LR_MAX = LR,
-                                                                                                    LR_MIN = 1e-6,
+                                                                                                    LR_MIN = LR/100000,
                                                                                                     onehot_lable= False,
                                                                                                     pair_flag= PAIR,
                                                                                                     warm_up_iter = 5,
