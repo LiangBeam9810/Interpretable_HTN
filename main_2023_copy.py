@@ -77,7 +77,7 @@ print(DEVICE)
 
 BATCH_SIZE = 256
 L2 = 0.07
-FOLDS = 5
+FOLDS = 1
 EPOCHS = 100  
 PATIENCE = 10
 LR = 0.0001
@@ -175,17 +175,17 @@ if __name__ == '__main__':
         criterion =nn.CrossEntropyLoss()
         torch.cuda.empty_cache()# 清空显卡cuda
         NET = [
-            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.1),
-            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.1),
-            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.1),
-            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.1),
-            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.1),
-            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.1),
-            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.1),
-            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.1),
-            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.1),
-            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.1),
-            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.1),
+            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.2),
+            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.2),
+            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.2),
+            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.2),
+            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.2),
+            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.2),
+            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.2),
+            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.2),
+            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.2),
+            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.2),
+            Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.2),
             
 ] # type: ignore
         # NET = [res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),

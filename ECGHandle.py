@@ -264,16 +264,28 @@ def remove_duplicated(df_input):
     return df_filter
 
 class ECG_Dataset(Dataset):
-    def __init__(self,data_root,infos,preprocess = True,onehot_lable=False):
+    def __init__(self,data_root,infos,get_std_smean = False,onehot_lable=False,
+                 std = np.array([104.59553112,  71.76943224,  94.60068152,  76.16185149,
+        93.04468449,  65.70623837,  79.1175977 ,  93.40834714,
+       102.25350593,  93.75369376, 107.96236943, 127.0051743 ]),
+                 smean = np.array([-0.12440759,  1.02289111,  1.1472987 , -0.50928085, -0.68053693,
+        1.02909642, -3.14483179, -3.4587531 , -3.42923524, -3.1291203 ,
+       -3.31719459, -3.98524305])):
         self.ECGs_path = data_root+'/ECG/'
         self.Qualitys_path = data_root+'/Q/'
         
         self.infos = infos
         self.datas = self.get_ECGs_form_FilesList(self.infos['ECGFilename'].tolist())
+        # self.datas = self.amplitude_limiting(self.datas,5000)
         self.labels = self.infos['label'].tolist()
         self.len = len(self.datas)
-        if(preprocess):
-            self.preprocess()
+        
+        self.std = std
+        self.smean = smean
+        
+        if(get_std_smean):
+            self.get_std_smean()
+        self.preprocess()
         self.datas[np.isnan(self.datas)]=0
         self.datas = torch.FloatTensor(self.datas)
         # num_classes = len(torch.bincount(self.labels))
@@ -287,46 +299,17 @@ class ECG_Dataset(Dataset):
             data[i] = np.load(self.ECGs_path + file+'.npy')
             i = i+1
         return  data
-    def preprocess(self):
-        # filter_lowcut = 1.0
-        # filter_highcut = 47.0
-        # filter_order = 1
-        # for i in tqdm(range(len(self.datas))):
-        #     self.datas[i] = bandpass_filter(self.datas[i], lowcut=filter_lowcut, highcut=filter_highcut, signal_freq=500, filter_order=filter_order)# type: ignore   
-        self.datas = self.amplitude_limiting(self.datas,5000)
+    def get_std_smean(self):
         for i in range(12):
-            self.datas[:,i,:] = self.standardize(self.datas[:,i,:],standardize=True,remove_mean=True)
-        # for i in range(12):
-        #     mean =  self.datas[:,i,:].mean()
-        #     var = self.datas[:,i,:].var()
-        #     self.datas[:,i,:] = (self.datas[:,i,:] - mean)/(self.datas[:,i,:].var()+1e-6)
-    def standardize(self,s, standardize=True, remove_mean=False):
-        '''
-        Helper function for pre-processing data, specifically for wavelet analysis
-
-        INPUTS:
-            s - numpy array of shape (n,) to be normalized
-            detrend - boolean on whether to linearly detrend s
-            standardize - boolean on whether to divide by the standard deviation
-            remove_mean - boolean on whether to remove the mean of s. Exclusive with detrend.
-
-        OUTPUTS:
-            snorm - numpy array of shape (n,)
-        '''
-
+            self.std[i],self.smean[i] = self.standardize(self.datas[:,i,:])
+    def preprocess(self):
+        for i in range(12):
+            self.datas[:,i,:] = (self.datas[:,i,:]-self.smean[i])/(self.std[i]+1e-6)
+    def standardize(self,s):
         # Derive the variance prior to any detrending
         std = s.std()
         smean = s.mean()
-
-        if remove_mean:
-            snorm = s - smean
-        else:
-            snorm = s
-        # Standardize by the standard deviation
-        if standardize:
-            snorm = (snorm / std)
-
-        return snorm
+        return std,smean
     def __getitem__(self,index):
         return self.datas[index],self.labels[index]
     def __len__(self):
