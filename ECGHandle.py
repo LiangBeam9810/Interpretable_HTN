@@ -255,13 +255,12 @@ class ECG_Dataset(Dataset):
         self.Qualitys_path = data_root+'/Q/'
         
         self.infos = infos
-        self.datas = self.get_ECGs_form_FilesList(self.infos['ECGFilename'].tolist())
+        self.datas = self.infos['ECGFilename'].tolist()
         self.labels = self.infos['label'].tolist()
-        self.len = len(self.datas)
-        if(preprocess):
-            self.preprocess()
-        self.datas[np.isnan(self.datas)]=0
-        self.datas = torch.FloatTensor(self.datas)
+        self.len = len(self.labels)
+        
+        # self.datas[np.isnan(self.datas)]=0
+        # self.datas = torch.FloatTensor(self.datas)
         # num_classes = len(torch.bincount(self.labels))
         self.labels = torch.from_numpy(np.array(self.labels)).long()
         if(onehot_lable):
@@ -314,7 +313,11 @@ class ECG_Dataset(Dataset):
 
         return snorm
     def __getitem__(self,index):
-        return self.datas[index],self.labels[index]
+        data = np.load(self.ECGs_path + self.datas[index]+'.npy')
+        data[np.isnan(data)]=0
+        data = torch.FloatTensor(data)  
+        data = self.amplitude_limiting(data,5000)      
+        return data,self.labels[index]
     def __len__(self):
         return self.len
     
@@ -349,4 +352,5 @@ if __name__ == '__main__':
     ALL_data = ALL_data.rename(columns={'住院号':'ID','年龄':'age','性别':'gender','姓名':'name'}) 
     ALL_data_buffer = ALL_data.copy()
     all_dataset = ECG_Dataset(data_root,ALL_data_buffer.iloc[:10],preprocess = True)
-    print(all_dataset.datas[0])
+    print(all_dataset.__getitem__(0))
+    
