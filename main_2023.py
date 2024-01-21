@@ -65,36 +65,51 @@ EPOCHS = 200
 PATIENCE = 30
 LR = 0.0005
 PAIR =False
-
-notion ="####"*10 +\
-        "\n#Net.MLBFNet_GUR(True,True,True,2,0.3),position embedding   " +\
-        "\n#LR = 0.0005" +\
-        "\n#pair HTN candidate >0 break " +\
-        "\n#delete all have the same name&sex&ages" +\
-        "\n# seed_torch(2023),    L2_list = 0.007 BATCH_SIZE = 128 ,5 foldcorss 1 times"+\
-        "\n#CrossEntropyLoss "  +\
-        "\n#ReduceLROnPlateau "  +\
-        "\n#The reset and delete list (main in test)" +\
-        "\n#qc == 0" +\
-        "\n#pair HTN" +\
-        "\n#use adam with 0 weight decay" +\
-        "\n#Shuffle before k-fold train"+\
-        "\n#Use binary F1. "  +\
-        "\n#Net.MLBFNet_GUR(mark = True,res = True,se = True,Dropout_rate = 0.3). lead_branch (3,3). add two relu-fc"  +\
-        "\n#Sample HTN to fit NHTN numbers (test,val,train)" +\
-        "\n"+"####"*10 +\
-        "\n"
         
-print(notion) 
 time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime()) 
 log_root = './logs/'+  time_str+'/'
 model_root =  './model/'+time_str+'/'
 data_root = '/workspace/data/Preprocess_HTN/datas_/'
 
 if __name__ == '__main__':
-    L2_list = [0.007,0.007]
-    BS_list = [256,256]
-    random_seed_list = [2024,2023]
+    L2_list = [0.007]
+    BS_list = [256]
+    random_seed_list = [2024]
+    ##############################################准备数据
+    data_root = '/workspace/data/Preprocess_HTN/datas_/'
+    ALL_data = pd.read_csv(data_root+'/All_data_handled_ID_range_age_IDimputate.csv',low_memory=False)
+    ALL_data = ECGHandle.change_label(ALL_data) # 剔除labelNan的数据，将label转换为0,1
+    ALL_data = ECGHandle.filter_ID(ALL_data)  #剔除ID为Nan的数据
+    ALL_data = ECGHandle.filter_QC(ALL_data)  #剔除QC为Nan的数据
+    ALL_data = ECGHandle.filter_ages(ALL_data,18) #剔除年龄大于18的数据
+    print('\n')
+    print("{:^10} {:^10} {:^20}".format('原始标签','HTN','NHTN'))
+    print("{:^10} {:^10} {:^20}".format('nums',len(ALL_data[(ALL_data['label']==1)]),len(ALL_data[(ALL_data['label']==0)])))
+
+    '''将补充诊断中所有诊断都加入临床诊断中'''
+    Sup_diagnosis = pd.read_csv('补充诊断.csv',low_memory=False)
+    Sup_diagnosis_grouped = Sup_diagnosis.groupby('住院号')['住院所有诊断'].agg(lambda x: ' '.join(map(str, x))).reset_index()
+    ALL_data['住院号'] = ALL_data['住院号'].astype(str)
+    Sup_diagnosis_grouped['住院号'] = Sup_diagnosis_grouped['住院号'].astype(str)
+    merged_data = pd.merge(ALL_data, Sup_diagnosis_grouped[['住院号', '住院所有诊断']], on='住院号', how='left')
+    merged_data['临床诊断'] = merged_data.apply(lambda row: str(row['临床诊断']) + ' ' + str(row['住院所有诊断']), axis=1)
+    merged_data = merged_data.drop('label', axis=1)
+    merged_data = merged_data.drop('住院所有诊断', axis=1)
+    ALL_data = ECGHandle.change_label(merged_data)
+    print('\n')
+    print("{:^10} {:^10} {:^20}".format('更新标签','HTN','NHTN'))
+    print("{:^10} {:^10} {:^20}".format('nums',len(ALL_data[(ALL_data['label']==1)]),len(ALL_data[(ALL_data['label']==0)])))
+    print('\n')
+    
+    '''剔除含有特定诊断的数据'''
+    diagnoses = ['起搏', '房颤', '左束支传导阻滞', '左前分支阻滞', '心', '旁瓣','动脉','脉瓣','尖瓣']
+    for diagnose in diagnoses:
+        ALL_data = ALL_data[~ALL_data['临床诊断'].str.contains(diagnose)]
+        print("{:^15} {:^10} {:^20}".format('剔除'+diagnose,'HTN','NHTN'))
+        print("{:^15} {:^10} {:^20}".format('nums',len(ALL_data[(ALL_data['label']==1)]),len(ALL_data[(ALL_data['label']==0)])))
+    ALL_data = ALL_data.rename(columns={'住院号':'ID','年龄':'age','性别':'gender','姓名':'name'}) 
+    ##############################################
+    
     for i in range(len(L2_list)):
         time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime()) 
         model_path = model_root + time_str
@@ -105,59 +120,16 @@ if __name__ == '__main__':
         BATCH_SIZE = BS_list[i]
         
         criterion =nn.CrossEntropyLoss()
-        
-        ALL_data = pd.read_csv(data_root+'/All_data_handled_ID_range_age_IDimputate.csv',low_memory=False)
-        
-        
-        ALL_data = ECGHandle.change_label(ALL_data)
-        ALL_data = ECGHandle.filter_ID(ALL_data)
-        ALL_data = ECGHandle.filter_QC(ALL_data)
-        
-        ALL_data = ECGHandle.filter_ages(ALL_data,18)
-        ALL_data = ECGHandle.filter_departmentORlabel(ALL_data,'外科')
-        
-        ALL_data = ECGHandle.correct_label(ALL_data)
-        ALL_data = ECGHandle.correct_age(ALL_data)
-        ALL_data = ECGHandle.filter_diagnose(ALL_data,'起搏')
-        ALL_data = ECGHandle.filter_diagnose(ALL_data,'房颤')
-        ALL_data = ECGHandle.filter_diagnose(ALL_data,'左束支传导阻滞')
-        ALL_data = ECGHandle.filter_diagnose(ALL_data,'左前分支阻滞')
-        # ALL_data = ECGHandle.filter_diagnose(ALL_data,'阻滞')
-        # ALL_data = ECGHandle.remove_duplicated(ALL_data)
-        print('\n')
-        print("{:^10} {:^10} {:^20}".format('  ','HTN','NHTN'))
-        print("{:^10} {:^10} {:^20}".format('nums',len(ALL_data[(ALL_data['label']==1)]),len(ALL_data[(ALL_data['label']==0)])))
-        Sup_diagnosis = pd.read_csv('补充诊断.csv',low_memory=False)
-        Sup_diagnosis_grouped = Sup_diagnosis.groupby('住院号')['住院所有诊断'].agg(lambda x: ' '.join(map(str, x))).reset_index()
-        ALL_data['住院号'] = ALL_data['住院号'].astype(str)
-        Sup_diagnosis_grouped['住院号'] = Sup_diagnosis_grouped['住院号'].astype(str)
-        merged_data = pd.merge(ALL_data, Sup_diagnosis_grouped[['住院号', '住院所有诊断']], on='住院号', how='left')
-        merged_data['临床诊断'] = merged_data.apply(lambda row: str(row['临床诊断']) + ',' + str(row['住院所有诊断']), axis=1)
-        merged_data = merged_data.drop('label', axis=1)
-        ALL_data = ECGHandle.change_label(merged_data)
-        ALL_data = ECGHandle.correct_label(ALL_data)
-        ALL_data = ECGHandle.correct_age(ALL_data)
-        
-        ALL_data = ALL_data.rename(columns={'住院号':'ID','年龄':'age','性别':'gender','姓名':'name'}) 
-        
         torch.cuda.empty_cache()# 清空显卡
-        NET = [ res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
-               res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
-               res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
-               res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
-               res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
-               res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
-               res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
-               res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
-               res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
-               res1d.resnet50(input_channels=12, inplanes=64, num_classes=2),
-               
+        NET = [ Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.1),
+                Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.1),
+                Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.1),
+                Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.1),
+                Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.1),
                ] # type: ignore
 
         os.makedirs(model_path, exist_ok=True)  # type: ignore
         writer = SummaryWriter(log_path)  # type: ignore
-        # sys.stdout = logger.Logger(log_path+'/log.txt'
-        
         print("\n\n L2 = ",L2)
         print("\nBatchsize = ",BATCH_SIZE)
         torch.cuda.empty_cache()# 清空显卡cuda  
@@ -176,19 +148,13 @@ if __name__ == '__main__':
         recall_test_sum = [0]*FOLDS   
         test_auc_sum = [0]*FOLDS
 
-        seed_torch(2023)# keep the the set the same
+        seed_torch(random_seed) #设置随机种子
         ALL_data_buffer = ALL_data.copy()
         ALL_data_buffer = ALL_data_buffer.sample(frac=1).reset_index(drop=True) #打乱顺序
-        ####################################################################随机选取test
-        # test_df,tv_df = Pair_ID(ALL_data_buffer,0.2,Range_max=15,pair_num=1)
-        ####################################################################  #打乱tvset的顺序，使得五折交叉验证的顺序打乱
-        # seed_torch(random_seed)
-        # tv_df = tv_df.sample(frac=1).reset_index(drop=True) #打乱顺序
-        # #####################################################################按年份选取test
         test_df = ALL_data_buffer[ALL_data_buffer['year']==22]
         tv_df = ALL_data_buffer[~(ALL_data_buffer['year']==22)]
         kf = KFold(n_splits=FOLDS)
-        # ####################################################################
+        #####################################################################
         test_dataset = ECGHandle.ECG_Dataset(data_root,test_df,preprocess = True)
         seed_torch(random_seed)
         for fold in range(FOLDS):
@@ -201,26 +167,10 @@ if __name__ == '__main__':
             train_dataset = ECGHandle.ECG_Dataset(data_root,train_df,preprocess = True)
             validate_dataset = ECGHandle.ECG_Dataset(data_root,validate_df,preprocess = True)
             
-            # HTN_tv_df = tv_df[(tv_df['label']==1) ].copy()
-            # NHTN_tv_df = tv_df[(tv_df['label']==0) ].copy()
-            # HTN_ID_tv_list = HTN_tv_df['ID'].unique().tolist() #tvset中所有的HTN的ID号
-            # HTN_tv_size = HTN_tv_df['ID'].unique().__len__()
-            # HTN_validate_size = int(HTN_tv_size//FOLDS)
-            # validate_start_index = HTN_validate_size*fold #star index for validate
-            # validate_df,tarin_df = Pair_ID(tv_df_buffer,0.2,star_index=validate_start_index,Range_max=15,pair_num=1)
-            # validate_dataset = ECGHandle.ECG_Dataset(data_root,validate_df,preprocess = True)
-            
-            # '''all tv data to train'''
-            # validate_dataset = test_dataset
-            # tarin_df  = tv_df
-            #####
-            # train_pair_df,_ = Pair_ID(tarin_df,1,star_index=0,Range_max=15,pair_num=1,shuffle=True)
-            # train_dataset = ECGHandle.ECG_Dataset(data_root,train_pair_df ,preprocess = True)
             
             validate_dataset.infos.to_csv(log_path+'/randomseed'+str(random_seed)+'_fold'+str(fold)+'_valida.csv')
             train_dataset.infos.to_csv(log_path+'/randomseed'+str(random_seed)+'_fold'+str(fold)+'_train.csv')
             test_dataset.infos.to_csv(log_path+'/randomseed'+str(random_seed)+'_fold'+str(fold)+'_test.csv')
-            
             
             train_loss,train_acc,validate_loss,validate_acc,precision_valid,recall_valid,auc_valid,test_loss,test_acc,precision_test,recall_test,auc_test = tarinning_one_flod(fold,NET[fold]
                                                                                                     ,train_dataset,validate_dataset,test_dataset
@@ -236,7 +186,7 @@ if __name__ == '__main__':
                                                                                                     onehot_lable= False,
                                                                                                     pair_flag= PAIR,
                                                                                                     warm_up_iter = 5,
-                                                                                                    num_workers= 0,
+                                                                                                    num_workers= 5,
                                                                                                     train_Df = train_df,
                                                                                                     weight_decay= L2,
                                                                                                     data_path= data_root

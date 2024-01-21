@@ -84,20 +84,20 @@ def change_ages(df_input): #把年龄改成 数值型
     df['年龄'].replace(regex=True,inplace=True,to_replace=r'岁',value=r'') #删除"岁"
     df["年龄"] = pd.to_numeric(df["年龄"],errors='coerce') #把年龄改成数值型
     print('\n')
-    print("{:^10} {:^10} {:^20}".format('  ','orginal','removed ages NaN'))
+    print("{:^10} {:^10} {:^20}".format('  ','orginal','removed ages NaN ed'))
     print("{:^10} {:^10} {:^20}".format('nums',len(df_input),len(df)))
     return df
 
 def change_label(df_input):#把临床诊断改成 数值型（0/1） 作为标签
     df = df_input.copy()
-    df.insert(loc=48, column='label', value=0) 
+    df.insert(loc=df.columns.__len__(), column='label', value=0) 
     df = df.dropna(subset=['临床诊断']) #删除diagnose== nan
     df.loc[(df['临床诊断'].str.contains('高血压')==True),'label']= 1 #diagnose含有高血压的label为1
     df.loc[~(df['label']==1),'label']= 0 #diagnose不含有高血压的label为0
     df['label'] = pd.to_numeric(df['label'],errors='coerce') #把label（diagnose）改成数值型
     # print(df['diagnose'].value_counts())
     print('\n')
-    print("{:^10} {:^10} {:^20}".format('  ','orginal','removed diagnose NaN'))
+    print("{:^10} {:^10} {:^20}".format('  ','orginal','removed diagnose NaN ed'))
     print("{:^10} {:^10} {:^20}".format('nums',len(df_input),len(df)))
     print("{:^10} {:^10} {:^20}".format('  ','HTN','NHTN'))
     print("{:^10} {:^10} {:^20}".format('nums',len(df[(df['label']==1)]),len(df[(df['label']==0)])))
@@ -107,7 +107,7 @@ def filter_QC(df_input,qc_threshold = 1):#剔除QC为NAN和qc值大于等于qc_t
     df = df_input.copy()       
     df = df[(df['Q']<qc_threshold)&(~df['Q'].isnull())]#q_sum<qc_threshold
     print('\n')
-    print("{:^10} {:^10} {:^20}".format('  ','orginal','QC'))
+    print("{:^10} {:^10} {:^20}".format('  ','orginal','QCed'))
     print("{:^10} {:^10} {:^20}".format('nums',len(df_input),len(df)))
     print("{:^10} {:^10} {:^20}".format('  ','HTN','NHTN'))
     print("{:^10} {:^10} {:^20}".format('nums',len(df[(df['label']==1)]),len(df[(df['label']==0)])))
@@ -117,7 +117,7 @@ def filter_ID(df_input):# 剔除住院号为NAN的样本
     df = df_input.copy()       
     df = df[(~df['住院号'].isnull())]#q_sum<qc_threshold
     print('\n')
-    print("{:^10} {:^10} {:^20}".format('  ','orginal','removed ID NaN'))
+    print("{:^10} {:^10} {:^20}".format('  ','orginal','removed ID NaN ed'))
     print("{:^10} {:^10} {:^20}".format('nums',len(df_input),len(df)))
     print("{:^10} {:^10} {:^20}".format('  ','HTN','NHTN'))
     print("{:^10} {:^10} {:^20}".format('nums',len(df[(df['label']==1)]),len(df[(df['label']==0)])))
@@ -204,11 +204,11 @@ def correct_age(df_input): # 把住院号相同但年龄不一致的全部改为
     print("{:^10} {:^10} {:^20}".format('nums',len(df_filter[(df_filter['label']==1)]),len(df_filter[(df_filter['label']==0)])))
     return df_filter
 
-#年龄符合条件 >filter_age
+
 def filter_diagnose(df_input,remove_diagnose = ''): 
     df_filter = df_input.copy()
     if(remove_diagnose):
-        fitler_ID_list = df_filter[(df_filter['诊断'].str.contains(remove_diagnose) == True)]['住院号'].tolist()
+        fitler_ID_list = df_filter[(df_filter['临床诊断'].str.contains(remove_diagnose) == True)]['住院号'].tolist()
         fitler_index = df_filter[[True if i in fitler_ID_list else False for i in df_filter['住院号']]].index #选取出所有含有该ID的样本
         df_remove = df_filter.loc[(fitler_index)]
         no_fitler_index = df_filter[[False if i in fitler_ID_list else True for i in df_filter['住院号']]].index #选取出所有不含有该ID的样本

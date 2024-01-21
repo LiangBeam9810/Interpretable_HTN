@@ -111,26 +111,20 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGHandle.ECG_Dataset ,val_datas
         y_true,y_pred,y_out,validate_loss,validate_acc = eval_model(valid_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
         # F1_score_valid =f1_score(y_true, y_pred, average='binary')#F1分数
         F1_score_valid =fbeta_score(y_true, y_pred, average='binary',beta=1.2)#F1-β分数
-        p_valid = precision_score(y_true, y_pred, average='binary')
-        r_valid = recall_score(y_true, y_pred, average='binary')   
-        auc_valid = roc_auc_score(y_true,y_score=((np.array(y_out))[:,1]))
-        C1 = confusion_matrix(y_true,y_pred)
-        print(" "*20+'Validate: ',F1_score_valid,'\n'+" "*20,C1[0],'\n'+" "*20,C1[1],'\n'+" "*20,"precision: ",p_valid,"recall: ",r_valid,'AUC',auc_valid)
-        # y_true,y_pred,test_loss,test_acc = eval_model(test_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
-        # F1_score_test =f1_score(y_true, y_pred, average='binary')#F1分数
-        # p_test = precision_score(y_true, y_pred, average='binary')
-        # r_test = recall_score(y_true, y_pred, average='binary') 
-        # C = confusion_matrix(y_true,y_pred)
-        # print(" "*20+'test: ',F1_score_test,'\n'+" "*20,C[0],'\n'+" "*20,C[1],'\n'+" "*20,"precision: ",p_test,"recall: ",r_test)
-        time_all = time.time()-start_time
-        writer.add_scalars(main_tag=str(fold)+'_Loss',tag_scalar_dict={'train': train_loss,'validate': validate_loss},global_step=epoch)
-        writer.add_scalars(main_tag=str(fold)+'_Accuracy',tag_scalar_dict={'train': train_acc,'validate': validate_acc},global_step=epoch)
-        writer.add_scalars(main_tag=str(fold)+'_LearningRate',tag_scalar_dict={'LR': optimizer.state_dict()['param_groups'][0]['lr']},global_step=epoch)      
-        print(" "*20+'- Epoch: %d - Train_loss: %.5f - Train_acc: %.5f -  - Val_loss: %.5f - Val_acc: %.5f  - T_Time: %.5f' %(epoch,train_loss,train_acc,validate_loss,validate_acc,time_all),'LR：%.10f' %optimizer.state_dict()['param_groups'][0]['lr'])
         
         if(float(F1_score_valid) > float(best_scoret)):
             best_scoret = F1_score_valid
             print(" "*20+'-- -- The best model for validate (F1= . ',best_scoret,') -- --')
+            p_valid = precision_score(y_true, y_pred, average='binary')
+            r_valid = recall_score(y_true, y_pred, average='binary')   
+            auc_valid = roc_auc_score(y_true,y_score=((np.array(y_out))[:,1]))
+            C1 = confusion_matrix(y_true,y_pred)
+            print(" "*20+'Validate: \n',' '*20,F1_score_valid,'\n'+" "*20,C1[0],'\n'+" "*20,C1[1],'\n'+" "*20,"precision: ",p_valid,"recall: ",r_valid,'AUC',auc_valid)
+            time_all = time.time()-start_time
+            writer.add_scalars(main_tag=str(fold)+'_Loss',tag_scalar_dict={'train': train_loss,'validate': validate_loss},global_step=epoch)
+            writer.add_scalars(main_tag=str(fold)+'_Accuracy',tag_scalar_dict={'train': train_acc,'validate': validate_acc},global_step=epoch)
+            writer.add_scalars(main_tag=str(fold)+'_LearningRate',tag_scalar_dict={'LR': optimizer.state_dict()['param_groups'][0]['lr']},global_step=epoch)      
+            print(" "*20+'- Epoch: %d - Train_loss: %.5f - Train_acc: %.5f -  - Val_loss: %.5f - Val_acc: %.5f  - T_Time: %.5f' %(epoch,train_loss,train_acc,validate_loss,validate_acc,time_all),'LR：%.10f' %optimizer.state_dict()['param_groups'][0]['lr'])
             torch.save(Model.state_dict(), save_model_path+'/BestF1_' + str(fold) + '.pt')
             
         scheduler.step(metrics=validate_loss) # 学习率迭代
