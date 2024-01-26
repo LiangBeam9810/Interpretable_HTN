@@ -108,7 +108,7 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGHandle.ECG_Dataset ,val_datas
         print(" "*20+'Train : \n'," "*20,C1[0],'\n'+" "*20,C1[1])
         
         y_true,y_pred,y_out,validate_loss,validate_acc = eval_model(valid_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
-        F1_score_valid =fbeta_score(y_true, y_pred, average='binary',beta=1.2)#F1-β分数
+        F1_score_valid =fbeta_score(y_true, y_pred, average='binary',beta=1)#F1-β分数 beta表示偏向召回率的程度
         auc_valid = roc_auc_score(y_true,y_score=((np.array(y_out))[:,1]))
         if(float(F1_score_valid) > float(best_scoret)):
             best_scoret = F1_score_valid
