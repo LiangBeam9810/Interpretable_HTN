@@ -21,6 +21,8 @@ from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 from sklearn.model_selection import StratifiedKFold
 import random
 import pandas as pd
+from torchsummary import summary
+
 
 import time
 import os
@@ -60,11 +62,12 @@ print(DEVICE)
 
 BATCH_SIZE = 256
 L2 = 0.07
-FOLDS = 5
+FOLDS = 1
 EPOCHS = 200  
-PATIENCE = 30
-LR = 0.0005
-PAIR =False
+PATIENCE = 100
+LR = 0.001
+PAIR =True
+debug = False
         
 time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime()) 
 log_root = './logs/'+  time_str+'/'
@@ -72,7 +75,7 @@ model_root =  './model/'+time_str+'/'
 data_root = '/workspace/data/Preprocess_HTN/datas_/'
 
 if __name__ == '__main__':
-    L2_list = [0.007]
+    L2_list = [0.001]
     BS_list = [256]
     random_seed_list = [2024]
     ##############################################准备数据
@@ -118,16 +121,18 @@ if __name__ == '__main__':
         random_seed = random_seed_list[i]
         L2 = L2_list[i]
         BATCH_SIZE = BS_list[i]
+        # CLASS_WEIGHTs = torch.tensor([0.17, 1])
         
-        criterion =nn.CrossEntropyLoss()
+        
         torch.cuda.empty_cache()# 清空显卡
-        NET = [ Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.1),
-                Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.1),
-                Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.1),
-                Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.1),
-                Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.1),
+        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        NET = [ Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.2),
+                Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.2),
+                Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.2),
+                Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.2),
+                Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.2),
                ] # type: ignore
-
+        summary(NET[0].to(device), input_size=(12, 5000))
         os.makedirs(model_path, exist_ok=True)  # type: ignore
         writer = SummaryWriter(log_path)  # type: ignore
         print("\n\n L2 = ",L2)
@@ -153,19 +158,39 @@ if __name__ == '__main__':
         ALL_data_buffer = ALL_data_buffer.sample(frac=1).reset_index(drop=True) #打乱顺序
         test_df = ALL_data_buffer[ALL_data_buffer['year']==22]
         tv_df = ALL_data_buffer[~(ALL_data_buffer['year']==22)]
-        kf = KFold(n_splits=FOLDS)
+        if not PAIR:
+            kf = KFold(n_splits=FOLDS)
         #####################################################################
         test_dataset = ECGHandle.ECG_Dataset(data_root,test_df,preprocess = True)
         seed_torch(random_seed)
         for fold in range(FOLDS):
             print(" "*10+ "Fold "+str(fold)+" of "+str(FOLDS) + ' :')
-            tv_df_buffer = tv_df.copy()
-            # 获取KFold生成的FOLDS折数据，并把第fold份作为验证集，其余作为训练集 
-            train_index, validate_index = list(kf.split(tv_df))[fold]
-            train_df = tv_df_buffer.iloc[train_index].copy()
-            validate_df = tv_df_buffer.iloc[validate_index].copy()
-            train_dataset = ECGHandle.ECG_Dataset(data_root,train_df,preprocess = True)
-            validate_dataset = ECGHandle.ECG_Dataset(data_root,validate_df,preprocess = True)
+            criterion =nn.CrossEntropyLoss()
+            if(PAIR):
+                #########配对方法取训练集##########################################
+                tv_df_buffer = tv_df.copy()
+                HTN_tv_df = tv_df[(tv_df['label']==1) ].copy()
+                NHTN_tv_df = tv_df[(tv_df['label']==0) ].copy()
+                HTN_ID_tv_list = HTN_tv_df['ID'].unique().tolist() #tvset中所有的HTN的ID号
+                HTN_tv_size = HTN_tv_df['ID'].unique().__len__()
+                HTN_validate_size = int(HTN_tv_size//FOLDS)
+                validate_start_index = HTN_validate_size*fold #star index for validate
+                validate_df,train_df = Pair_ID(tv_df_buffer,0.2,star_index=validate_start_index,Range_max=20,pair_num=1)
+                validate_dataset = ECGHandle.ECG_Dataset(data_root,validate_df)
+                train_pair_df,_ = Pair_ID(train_df,1,star_index=0,Range_max=20,pair_num=1,shuffle=True)
+                train_dataset = ECGHandle.ECG_Dataset(data_root,train_pair_df )
+                ###################################################################
+            else:
+                ########五折交叉验证################################################
+                tv_df_buffer = tv_df.copy()
+                # 获取KFold生成的FOLDS折数据，并把第fold份作为验证集，其余作为训练集 
+                train_index, validate_index = list(kf.split(tv_df))[fold]
+                train_df = tv_df_buffer.iloc[train_index].copy()
+                validate_df = tv_df_buffer.iloc[validate_index].copy()
+                train_dataset = ECGHandle.ECG_Dataset(data_root,train_df,preprocess = True)
+                validate_dataset = ECGHandle.ECG_Dataset(data_root,validate_df,preprocess = True)
+                ###################################################################
+            
             
             
             validate_dataset.infos.to_csv(log_path+'/randomseed'+str(random_seed)+'_fold'+str(fold)+'_valida.csv')

@@ -58,977 +58,1560 @@ cuda:0
      nums          7025           38941        
      剔除尖瓣          HTN             NHTN        
      nums          6982           38809        
+----------------------------------------------------------------
+        Layer (type)               Output Shape         Param #
+================================================================
+       BatchNorm2d-1          [-1, 1, 12, 5000]               2
+         LeakyReLU-2          [-1, 1, 12, 5000]               0
+            Conv2d-3         [-1, 32, 12, 1250]             672
+       BatchNorm2d-4         [-1, 32, 12, 1250]              64
+         LeakyReLU-5         [-1, 32, 12, 1250]               0
+            Conv2d-6         [-1, 32, 12, 1250]          21,504
+           Dropout-7         [-1, 32, 12, 1250]               0
+       BatchNorm2d-8         [-1, 32, 12, 1250]              64
+         LeakyReLU-9         [-1, 32, 12, 1250]               0
+           Conv2d-10         [-1, 32, 12, 1250]          21,504
+AdaptiveAvgPool2d-11             [-1, 32, 1, 1]               0
+           Linear-12                    [-1, 2]              66
+        LeakyReLU-13                    [-1, 2]               0
+           Linear-14                   [-1, 32]              96
+          Sigmoid-15                   [-1, 32]               0
+           Conv2d-16         [-1, 32, 12, 1250]              32
+      BatchNorm2d-17         [-1, 32, 12, 1250]              64
+        LeakyReLU-18         [-1, 32, 12, 1250]               0
+     ResSeBlock2d-19         [-1, 32, 12, 1250]               0
+      BatchNorm2d-20         [-1, 32, 12, 1250]              64
+        LeakyReLU-21         [-1, 32, 12, 1250]               0
+           Conv2d-22          [-1, 32, 12, 313]          15,360
+      BatchNorm2d-23          [-1, 32, 12, 313]              64
+        LeakyReLU-24          [-1, 32, 12, 313]               0
+           Conv2d-25          [-1, 32, 12, 313]          15,360
+          Dropout-26          [-1, 32, 12, 313]               0
+      BatchNorm2d-27          [-1, 32, 12, 313]              64
+        LeakyReLU-28          [-1, 32, 12, 313]               0
+           Conv2d-29          [-1, 32, 12, 313]          15,360
+AdaptiveAvgPool2d-30             [-1, 32, 1, 1]               0
+           Linear-31                    [-1, 2]              66
+        LeakyReLU-32                    [-1, 2]               0
+           Linear-33                   [-1, 32]              96
+          Sigmoid-34                   [-1, 32]               0
+           Conv2d-35          [-1, 32, 12, 313]           1,024
+      BatchNorm2d-36          [-1, 32, 12, 313]              64
+        LeakyReLU-37          [-1, 32, 12, 313]               0
+     ResSeBlock2d-38          [-1, 32, 12, 313]               0
+              GRU-39  [[-1, 313, 384], [-1, 2, 384]]               0
+          Dropout-40             [-1, 384, 313]               0
+      BatchNorm2d-41          [-1, 32, 12, 313]              64
+        LeakyReLU-42          [-1, 32, 12, 313]               0
+           Conv2d-43          [-1, 64, 12, 157]          18,432
+      BatchNorm2d-44          [-1, 64, 12, 157]             128
+        LeakyReLU-45          [-1, 64, 12, 157]               0
+           Conv2d-46          [-1, 64, 12, 157]          36,864
+          Dropout-47          [-1, 64, 12, 157]               0
+      BatchNorm2d-48          [-1, 64, 12, 157]             128
+        LeakyReLU-49          [-1, 64, 12, 157]               0
+           Conv2d-50          [-1, 64, 12, 157]          36,864
+AdaptiveAvgPool2d-51             [-1, 64, 1, 1]               0
+           Linear-52                    [-1, 4]             260
+        LeakyReLU-53                    [-1, 4]               0
+           Linear-54                   [-1, 64]             320
+          Sigmoid-55                   [-1, 64]               0
+           Conv2d-56          [-1, 64, 12, 157]           2,048
+      BatchNorm2d-57          [-1, 64, 12, 157]             128
+        LeakyReLU-58          [-1, 64, 12, 157]               0
+     ResSeBlock2d-59          [-1, 64, 12, 157]               0
+      BatchNorm2d-60          [-1, 64, 12, 157]             128
+        LeakyReLU-61          [-1, 64, 12, 157]               0
+           Conv2d-62          [-1, 64, 12, 157]          36,864
+      BatchNorm2d-63          [-1, 64, 12, 157]             128
+        LeakyReLU-64          [-1, 64, 12, 157]               0
+           Conv2d-65          [-1, 64, 12, 157]          36,864
+          Dropout-66          [-1, 64, 12, 157]               0
+      BatchNorm2d-67          [-1, 64, 12, 157]             128
+        LeakyReLU-68          [-1, 64, 12, 157]               0
+           Conv2d-69          [-1, 64, 12, 157]          36,864
+AdaptiveAvgPool2d-70             [-1, 64, 1, 1]               0
+           Linear-71                    [-1, 4]             260
+        LeakyReLU-72                    [-1, 4]               0
+           Linear-73                   [-1, 64]             320
+          Sigmoid-74                   [-1, 64]               0
+        LeakyReLU-75          [-1, 64, 12, 157]               0
+     ResSeBlock2d-76          [-1, 64, 12, 157]               0
+      BatchNorm2d-77          [-1, 64, 12, 157]             128
+        LeakyReLU-78          [-1, 64, 12, 157]               0
+           Conv2d-79           [-1, 64, 12, 79]          36,864
+      BatchNorm2d-80           [-1, 64, 12, 79]             128
+        LeakyReLU-81           [-1, 64, 12, 79]               0
+           Conv2d-82           [-1, 64, 12, 79]          36,864
+          Dropout-83           [-1, 64, 12, 79]               0
+      BatchNorm2d-84           [-1, 64, 12, 79]             128
+        LeakyReLU-85           [-1, 64, 12, 79]               0
+           Conv2d-86           [-1, 64, 12, 79]          36,864
+AdaptiveAvgPool2d-87             [-1, 64, 1, 1]               0
+           Linear-88                    [-1, 4]             260
+        LeakyReLU-89                    [-1, 4]               0
+           Linear-90                   [-1, 64]             320
+          Sigmoid-91                   [-1, 64]               0
+           Conv2d-92           [-1, 64, 12, 79]           4,096
+      BatchNorm2d-93           [-1, 64, 12, 79]             128
+        LeakyReLU-94           [-1, 64, 12, 79]               0
+     ResSeBlock2d-95           [-1, 64, 12, 79]               0
+      BatchNorm2d-96           [-1, 64, 12, 79]             128
+        LeakyReLU-97           [-1, 64, 12, 79]               0
+           Conv2d-98           [-1, 64, 12, 79]          36,864
+      BatchNorm2d-99           [-1, 64, 12, 79]             128
+       LeakyReLU-100           [-1, 64, 12, 79]               0
+          Conv2d-101           [-1, 64, 12, 79]          36,864
+         Dropout-102           [-1, 64, 12, 79]               0
+     BatchNorm2d-103           [-1, 64, 12, 79]             128
+       LeakyReLU-104           [-1, 64, 12, 79]               0
+          Conv2d-105           [-1, 64, 12, 79]          36,864
+AdaptiveAvgPool2d-106             [-1, 64, 1, 1]               0
+          Linear-107                    [-1, 4]             260
+       LeakyReLU-108                    [-1, 4]               0
+          Linear-109                   [-1, 64]             320
+         Sigmoid-110                   [-1, 64]               0
+       LeakyReLU-111           [-1, 64, 12, 79]               0
+    ResSeBlock2d-112           [-1, 64, 12, 79]               0
+     BatchNorm1d-113              [-1, 768, 79]           1,536
+       LeakyReLU-114              [-1, 768, 79]               0
+          Conv1d-115              [-1, 512, 40]       1,179,648
+     BatchNorm1d-116              [-1, 512, 40]           1,024
+       LeakyReLU-117              [-1, 512, 40]               0
+          Conv1d-118              [-1, 512, 40]         786,432
+         Dropout-119              [-1, 512, 40]               0
+     BatchNorm1d-120              [-1, 512, 40]           1,024
+       LeakyReLU-121              [-1, 512, 40]               0
+          Conv1d-122              [-1, 512, 40]         786,432
+AdaptiveAvgPool1d-123               [-1, 512, 1]               0
+          Linear-124                   [-1, 32]          16,416
+       LeakyReLU-125                   [-1, 32]               0
+          Linear-126                  [-1, 512]          16,896
+         Sigmoid-127                  [-1, 512]               0
+          Conv1d-128              [-1, 512, 40]         393,216
+     BatchNorm1d-129              [-1, 512, 40]           1,024
+       LeakyReLU-130              [-1, 512, 40]               0
+    ResSeBlock1d-131              [-1, 512, 40]               0
+     BatchNorm1d-132              [-1, 512, 40]           1,024
+       LeakyReLU-133              [-1, 512, 40]               0
+          Conv1d-134              [-1, 512, 40]         786,432
+     BatchNorm1d-135              [-1, 512, 40]           1,024
+       LeakyReLU-136              [-1, 512, 40]               0
+          Conv1d-137              [-1, 512, 40]         786,432
+         Dropout-138              [-1, 512, 40]               0
+     BatchNorm1d-139              [-1, 512, 40]           1,024
+       LeakyReLU-140              [-1, 512, 40]               0
+          Conv1d-141              [-1, 512, 40]         786,432
+AdaptiveAvgPool1d-142               [-1, 512, 1]               0
+          Linear-143                   [-1, 32]          16,416
+       LeakyReLU-144                   [-1, 32]               0
+          Linear-145                  [-1, 512]          16,896
+         Sigmoid-146                  [-1, 512]               0
+       LeakyReLU-147              [-1, 512, 40]               0
+    ResSeBlock1d-148              [-1, 512, 40]               0
+     BatchNorm1d-149              [-1, 512, 40]           1,024
+       LeakyReLU-150              [-1, 512, 40]               0
+          Conv1d-151              [-1, 512, 20]         786,432
+     BatchNorm1d-152              [-1, 512, 20]           1,024
+       LeakyReLU-153              [-1, 512, 20]               0
+          Conv1d-154              [-1, 512, 20]         786,432
+         Dropout-155              [-1, 512, 20]               0
+     BatchNorm1d-156              [-1, 512, 20]           1,024
+       LeakyReLU-157              [-1, 512, 20]               0
+          Conv1d-158              [-1, 512, 20]         786,432
+AdaptiveAvgPool1d-159               [-1, 512, 1]               0
+          Linear-160                   [-1, 32]          16,416
+       LeakyReLU-161                   [-1, 32]               0
+          Linear-162                  [-1, 512]          16,896
+         Sigmoid-163                  [-1, 512]               0
+          Conv1d-164              [-1, 512, 20]         262,144
+     BatchNorm1d-165              [-1, 512, 20]           1,024
+       LeakyReLU-166              [-1, 512, 20]               0
+    ResSeBlock1d-167              [-1, 512, 20]               0
+     BatchNorm1d-168              [-1, 512, 20]           1,024
+       LeakyReLU-169              [-1, 512, 20]               0
+          Conv1d-170              [-1, 512, 20]         786,432
+     BatchNorm1d-171              [-1, 512, 20]           1,024
+       LeakyReLU-172              [-1, 512, 20]               0
+          Conv1d-173              [-1, 512, 20]         786,432
+         Dropout-174              [-1, 512, 20]               0
+     BatchNorm1d-175              [-1, 512, 20]           1,024
+       LeakyReLU-176              [-1, 512, 20]               0
+          Conv1d-177              [-1, 512, 20]         786,432
+AdaptiveAvgPool1d-178               [-1, 512, 1]               0
+          Linear-179                   [-1, 32]          16,416
+       LeakyReLU-180                   [-1, 32]               0
+          Linear-181                  [-1, 512]          16,896
+         Sigmoid-182                  [-1, 512]               0
+       LeakyReLU-183              [-1, 512, 20]               0
+    ResSeBlock1d-184              [-1, 512, 20]               0
+AdaptiveAvgPool1d-185               [-1, 512, 1]               0
+         Dropout-186               [-1, 512, 1]               0
+     BatchNorm2d-187          [-1, 32, 12, 313]              64
+       LeakyReLU-188          [-1, 32, 12, 313]               0
+          Conv2d-189          [-1, 64, 12, 157]          51,200
+     BatchNorm2d-190          [-1, 64, 12, 157]             128
+       LeakyReLU-191          [-1, 64, 12, 157]               0
+          Conv2d-192          [-1, 64, 12, 157]         102,400
+         Dropout-193          [-1, 64, 12, 157]               0
+     BatchNorm2d-194          [-1, 64, 12, 157]             128
+       LeakyReLU-195          [-1, 64, 12, 157]               0
+          Conv2d-196          [-1, 64, 12, 157]         102,400
+AdaptiveAvgPool2d-197             [-1, 64, 1, 1]               0
+          Linear-198                    [-1, 4]             260
+       LeakyReLU-199                    [-1, 4]               0
+          Linear-200                   [-1, 64]             320
+         Sigmoid-201                   [-1, 64]               0
+          Conv2d-202          [-1, 64, 12, 157]           2,048
+     BatchNorm2d-203          [-1, 64, 12, 157]             128
+       LeakyReLU-204          [-1, 64, 12, 157]               0
+    ResSeBlock2d-205          [-1, 64, 12, 157]               0
+     BatchNorm2d-206          [-1, 64, 12, 157]             128
+       LeakyReLU-207          [-1, 64, 12, 157]               0
+          Conv2d-208          [-1, 64, 12, 157]         102,400
+     BatchNorm2d-209          [-1, 64, 12, 157]             128
+       LeakyReLU-210          [-1, 64, 12, 157]               0
+          Conv2d-211          [-1, 64, 12, 157]         102,400
+         Dropout-212          [-1, 64, 12, 157]               0
+     BatchNorm2d-213          [-1, 64, 12, 157]             128
+       LeakyReLU-214          [-1, 64, 12, 157]               0
+          Conv2d-215          [-1, 64, 12, 157]         102,400
+AdaptiveAvgPool2d-216             [-1, 64, 1, 1]               0
+          Linear-217                    [-1, 4]             260
+       LeakyReLU-218                    [-1, 4]               0
+          Linear-219                   [-1, 64]             320
+         Sigmoid-220                   [-1, 64]               0
+       LeakyReLU-221          [-1, 64, 12, 157]               0
+    ResSeBlock2d-222          [-1, 64, 12, 157]               0
+     BatchNorm2d-223          [-1, 64, 12, 157]             128
+       LeakyReLU-224          [-1, 64, 12, 157]               0
+          Conv2d-225           [-1, 64, 12, 79]         102,400
+     BatchNorm2d-226           [-1, 64, 12, 79]             128
+       LeakyReLU-227           [-1, 64, 12, 79]               0
+          Conv2d-228           [-1, 64, 12, 79]         102,400
+         Dropout-229           [-1, 64, 12, 79]               0
+     BatchNorm2d-230           [-1, 64, 12, 79]             128
+       LeakyReLU-231           [-1, 64, 12, 79]               0
+          Conv2d-232           [-1, 64, 12, 79]         102,400
+AdaptiveAvgPool2d-233             [-1, 64, 1, 1]               0
+          Linear-234                    [-1, 4]             260
+       LeakyReLU-235                    [-1, 4]               0
+          Linear-236                   [-1, 64]             320
+         Sigmoid-237                   [-1, 64]               0
+          Conv2d-238           [-1, 64, 12, 79]           4,096
+     BatchNorm2d-239           [-1, 64, 12, 79]             128
+       LeakyReLU-240           [-1, 64, 12, 79]               0
+    ResSeBlock2d-241           [-1, 64, 12, 79]               0
+     BatchNorm2d-242           [-1, 64, 12, 79]             128
+       LeakyReLU-243           [-1, 64, 12, 79]               0
+          Conv2d-244           [-1, 64, 12, 79]         102,400
+     BatchNorm2d-245           [-1, 64, 12, 79]             128
+       LeakyReLU-246           [-1, 64, 12, 79]               0
+          Conv2d-247           [-1, 64, 12, 79]         102,400
+         Dropout-248           [-1, 64, 12, 79]               0
+     BatchNorm2d-249           [-1, 64, 12, 79]             128
+       LeakyReLU-250           [-1, 64, 12, 79]               0
+          Conv2d-251           [-1, 64, 12, 79]         102,400
+AdaptiveAvgPool2d-252             [-1, 64, 1, 1]               0
+          Linear-253                    [-1, 4]             260
+       LeakyReLU-254                    [-1, 4]               0
+          Linear-255                   [-1, 64]             320
+         Sigmoid-256                   [-1, 64]               0
+       LeakyReLU-257           [-1, 64, 12, 79]               0
+    ResSeBlock2d-258           [-1, 64, 12, 79]               0
+     BatchNorm1d-259              [-1, 768, 79]           1,536
+       LeakyReLU-260              [-1, 768, 79]               0
+          Conv1d-261              [-1, 512, 40]       1,966,080
+     BatchNorm1d-262              [-1, 512, 40]           1,024
+       LeakyReLU-263              [-1, 512, 40]               0
+          Conv1d-264              [-1, 512, 40]       1,310,720
+         Dropout-265              [-1, 512, 40]               0
+     BatchNorm1d-266              [-1, 512, 40]           1,024
+       LeakyReLU-267              [-1, 512, 40]               0
+          Conv1d-268              [-1, 512, 40]       1,310,720
+AdaptiveAvgPool1d-269               [-1, 512, 1]               0
+          Linear-270                   [-1, 32]          16,416
+       LeakyReLU-271                   [-1, 32]               0
+          Linear-272                  [-1, 512]          16,896
+         Sigmoid-273                  [-1, 512]               0
+          Conv1d-274              [-1, 512, 40]         393,216
+     BatchNorm1d-275              [-1, 512, 40]           1,024
+       LeakyReLU-276              [-1, 512, 40]               0
+    ResSeBlock1d-277              [-1, 512, 40]               0
+     BatchNorm1d-278              [-1, 512, 40]           1,024
+       LeakyReLU-279              [-1, 512, 40]               0
+          Conv1d-280              [-1, 512, 40]       1,310,720
+     BatchNorm1d-281              [-1, 512, 40]           1,024
+       LeakyReLU-282              [-1, 512, 40]               0
+          Conv1d-283              [-1, 512, 40]       1,310,720
+         Dropout-284              [-1, 512, 40]               0
+     BatchNorm1d-285              [-1, 512, 40]           1,024
+       LeakyReLU-286              [-1, 512, 40]               0
+          Conv1d-287              [-1, 512, 40]       1,310,720
+AdaptiveAvgPool1d-288               [-1, 512, 1]               0
+          Linear-289                   [-1, 32]          16,416
+       LeakyReLU-290                   [-1, 32]               0
+          Linear-291                  [-1, 512]          16,896
+         Sigmoid-292                  [-1, 512]               0
+       LeakyReLU-293              [-1, 512, 40]               0
+    ResSeBlock1d-294              [-1, 512, 40]               0
+     BatchNorm1d-295              [-1, 512, 40]           1,024
+       LeakyReLU-296              [-1, 512, 40]               0
+          Conv1d-297              [-1, 512, 20]       1,310,720
+     BatchNorm1d-298              [-1, 512, 20]           1,024
+       LeakyReLU-299              [-1, 512, 20]               0
+          Conv1d-300              [-1, 512, 20]       1,310,720
+         Dropout-301              [-1, 512, 20]               0
+     BatchNorm1d-302              [-1, 512, 20]           1,024
+       LeakyReLU-303              [-1, 512, 20]               0
+          Conv1d-304              [-1, 512, 20]       1,310,720
+AdaptiveAvgPool1d-305               [-1, 512, 1]               0
+          Linear-306                   [-1, 32]          16,416
+       LeakyReLU-307                   [-1, 32]               0
+          Linear-308                  [-1, 512]          16,896
+         Sigmoid-309                  [-1, 512]               0
+          Conv1d-310              [-1, 512, 20]         262,144
+     BatchNorm1d-311              [-1, 512, 20]           1,024
+       LeakyReLU-312              [-1, 512, 20]               0
+    ResSeBlock1d-313              [-1, 512, 20]               0
+     BatchNorm1d-314              [-1, 512, 20]           1,024
+       LeakyReLU-315              [-1, 512, 20]               0
+          Conv1d-316              [-1, 512, 20]       1,310,720
+     BatchNorm1d-317              [-1, 512, 20]           1,024
+       LeakyReLU-318              [-1, 512, 20]               0
+          Conv1d-319              [-1, 512, 20]       1,310,720
+         Dropout-320              [-1, 512, 20]               0
+     BatchNorm1d-321              [-1, 512, 20]           1,024
+       LeakyReLU-322              [-1, 512, 20]               0
+          Conv1d-323              [-1, 512, 20]       1,310,720
+AdaptiveAvgPool1d-324               [-1, 512, 1]               0
+          Linear-325                   [-1, 32]          16,416
+       LeakyReLU-326                   [-1, 32]               0
+          Linear-327                  [-1, 512]          16,896
+         Sigmoid-328                  [-1, 512]               0
+       LeakyReLU-329              [-1, 512, 20]               0
+    ResSeBlock1d-330              [-1, 512, 20]               0
+AdaptiveAvgPool1d-331               [-1, 512, 1]               0
+         Dropout-332               [-1, 512, 1]               0
+     BatchNorm2d-333          [-1, 32, 12, 313]              64
+       LeakyReLU-334          [-1, 32, 12, 313]               0
+          Conv2d-335          [-1, 64, 12, 157]         100,352
+     BatchNorm2d-336          [-1, 64, 12, 157]             128
+       LeakyReLU-337          [-1, 64, 12, 157]               0
+          Conv2d-338          [-1, 64, 12, 157]         200,704
+         Dropout-339          [-1, 64, 12, 157]               0
+     BatchNorm2d-340          [-1, 64, 12, 157]             128
+       LeakyReLU-341          [-1, 64, 12, 157]               0
+          Conv2d-342          [-1, 64, 12, 157]         200,704
+AdaptiveAvgPool2d-343             [-1, 64, 1, 1]               0
+          Linear-344                    [-1, 4]             260
+       LeakyReLU-345                    [-1, 4]               0
+          Linear-346                   [-1, 64]             320
+         Sigmoid-347                   [-1, 64]               0
+          Conv2d-348          [-1, 64, 12, 157]           2,048
+     BatchNorm2d-349          [-1, 64, 12, 157]             128
+       LeakyReLU-350          [-1, 64, 12, 157]               0
+    ResSeBlock2d-351          [-1, 64, 12, 157]               0
+     BatchNorm2d-352          [-1, 64, 12, 157]             128
+       LeakyReLU-353          [-1, 64, 12, 157]               0
+          Conv2d-354          [-1, 64, 12, 157]         200,704
+     BatchNorm2d-355          [-1, 64, 12, 157]             128
+       LeakyReLU-356          [-1, 64, 12, 157]               0
+          Conv2d-357          [-1, 64, 12, 157]         200,704
+         Dropout-358          [-1, 64, 12, 157]               0
+     BatchNorm2d-359          [-1, 64, 12, 157]             128
+       LeakyReLU-360          [-1, 64, 12, 157]               0
+          Conv2d-361          [-1, 64, 12, 157]         200,704
+AdaptiveAvgPool2d-362             [-1, 64, 1, 1]               0
+          Linear-363                    [-1, 4]             260
+       LeakyReLU-364                    [-1, 4]               0
+          Linear-365                   [-1, 64]             320
+         Sigmoid-366                   [-1, 64]               0
+       LeakyReLU-367          [-1, 64, 12, 157]               0
+    ResSeBlock2d-368          [-1, 64, 12, 157]               0
+     BatchNorm2d-369          [-1, 64, 12, 157]             128
+       LeakyReLU-370          [-1, 64, 12, 157]               0
+          Conv2d-371           [-1, 64, 12, 79]         200,704
+     BatchNorm2d-372           [-1, 64, 12, 79]             128
+       LeakyReLU-373           [-1, 64, 12, 79]               0
+          Conv2d-374           [-1, 64, 12, 79]         200,704
+         Dropout-375           [-1, 64, 12, 79]               0
+     BatchNorm2d-376           [-1, 64, 12, 79]             128
+       LeakyReLU-377           [-1, 64, 12, 79]               0
+          Conv2d-378           [-1, 64, 12, 79]         200,704
+AdaptiveAvgPool2d-379             [-1, 64, 1, 1]               0
+          Linear-380                    [-1, 4]             260
+       LeakyReLU-381                    [-1, 4]               0
+          Linear-382                   [-1, 64]             320
+         Sigmoid-383                   [-1, 64]               0
+          Conv2d-384           [-1, 64, 12, 79]           4,096
+     BatchNorm2d-385           [-1, 64, 12, 79]             128
+       LeakyReLU-386           [-1, 64, 12, 79]               0
+    ResSeBlock2d-387           [-1, 64, 12, 79]               0
+     BatchNorm2d-388           [-1, 64, 12, 79]             128
+       LeakyReLU-389           [-1, 64, 12, 79]               0
+          Conv2d-390           [-1, 64, 12, 79]         200,704
+     BatchNorm2d-391           [-1, 64, 12, 79]             128
+       LeakyReLU-392           [-1, 64, 12, 79]               0
+          Conv2d-393           [-1, 64, 12, 79]         200,704
+         Dropout-394           [-1, 64, 12, 79]               0
+     BatchNorm2d-395           [-1, 64, 12, 79]             128
+       LeakyReLU-396           [-1, 64, 12, 79]               0
+          Conv2d-397           [-1, 64, 12, 79]         200,704
+AdaptiveAvgPool2d-398             [-1, 64, 1, 1]               0
+          Linear-399                    [-1, 4]             260
+       LeakyReLU-400                    [-1, 4]               0
+          Linear-401                   [-1, 64]             320
+         Sigmoid-402                   [-1, 64]               0
+       LeakyReLU-403           [-1, 64, 12, 79]               0
+    ResSeBlock2d-404           [-1, 64, 12, 79]               0
+     BatchNorm1d-405              [-1, 768, 79]           1,536
+       LeakyReLU-406              [-1, 768, 79]               0
+          Conv1d-407              [-1, 512, 40]       2,752,512
+     BatchNorm1d-408              [-1, 512, 40]           1,024
+       LeakyReLU-409              [-1, 512, 40]               0
+          Conv1d-410              [-1, 512, 40]       1,835,008
+         Dropout-411              [-1, 512, 40]               0
+     BatchNorm1d-412              [-1, 512, 40]           1,024
+       LeakyReLU-413              [-1, 512, 40]               0
+          Conv1d-414              [-1, 512, 40]       1,835,008
+AdaptiveAvgPool1d-415               [-1, 512, 1]               0
+          Linear-416                   [-1, 32]          16,416
+       LeakyReLU-417                   [-1, 32]               0
+          Linear-418                  [-1, 512]          16,896
+         Sigmoid-419                  [-1, 512]               0
+          Conv1d-420              [-1, 512, 40]         393,216
+     BatchNorm1d-421              [-1, 512, 40]           1,024
+       LeakyReLU-422              [-1, 512, 40]               0
+    ResSeBlock1d-423              [-1, 512, 40]               0
+     BatchNorm1d-424              [-1, 512, 40]           1,024
+       LeakyReLU-425              [-1, 512, 40]               0
+          Conv1d-426              [-1, 512, 40]       1,835,008
+     BatchNorm1d-427              [-1, 512, 40]           1,024
+       LeakyReLU-428              [-1, 512, 40]               0
+          Conv1d-429              [-1, 512, 40]       1,835,008
+         Dropout-430              [-1, 512, 40]               0
+     BatchNorm1d-431              [-1, 512, 40]           1,024
+       LeakyReLU-432              [-1, 512, 40]               0
+          Conv1d-433              [-1, 512, 40]       1,835,008
+AdaptiveAvgPool1d-434               [-1, 512, 1]               0
+          Linear-435                   [-1, 32]          16,416
+       LeakyReLU-436                   [-1, 32]               0
+          Linear-437                  [-1, 512]          16,896
+         Sigmoid-438                  [-1, 512]               0
+       LeakyReLU-439              [-1, 512, 40]               0
+    ResSeBlock1d-440              [-1, 512, 40]               0
+     BatchNorm1d-441              [-1, 512, 40]           1,024
+       LeakyReLU-442              [-1, 512, 40]               0
+          Conv1d-443              [-1, 512, 20]       1,835,008
+     BatchNorm1d-444              [-1, 512, 20]           1,024
+       LeakyReLU-445              [-1, 512, 20]               0
+          Conv1d-446              [-1, 512, 20]       1,835,008
+         Dropout-447              [-1, 512, 20]               0
+     BatchNorm1d-448              [-1, 512, 20]           1,024
+       LeakyReLU-449              [-1, 512, 20]               0
+          Conv1d-450              [-1, 512, 20]       1,835,008
+AdaptiveAvgPool1d-451               [-1, 512, 1]               0
+          Linear-452                   [-1, 32]          16,416
+       LeakyReLU-453                   [-1, 32]               0
+          Linear-454                  [-1, 512]          16,896
+         Sigmoid-455                  [-1, 512]               0
+          Conv1d-456              [-1, 512, 20]         262,144
+     BatchNorm1d-457              [-1, 512, 20]           1,024
+       LeakyReLU-458              [-1, 512, 20]               0
+    ResSeBlock1d-459              [-1, 512, 20]               0
+     BatchNorm1d-460              [-1, 512, 20]           1,024
+       LeakyReLU-461              [-1, 512, 20]               0
+          Conv1d-462              [-1, 512, 20]       1,835,008
+     BatchNorm1d-463              [-1, 512, 20]           1,024
+       LeakyReLU-464              [-1, 512, 20]               0
+          Conv1d-465              [-1, 512, 20]       1,835,008
+         Dropout-466              [-1, 512, 20]               0
+     BatchNorm1d-467              [-1, 512, 20]           1,024
+       LeakyReLU-468              [-1, 512, 20]               0
+          Conv1d-469              [-1, 512, 20]       1,835,008
+AdaptiveAvgPool1d-470               [-1, 512, 1]               0
+          Linear-471                   [-1, 32]          16,416
+       LeakyReLU-472                   [-1, 32]               0
+          Linear-473                  [-1, 512]          16,896
+         Sigmoid-474                  [-1, 512]               0
+       LeakyReLU-475              [-1, 512, 20]               0
+    ResSeBlock1d-476              [-1, 512, 20]               0
+AdaptiveAvgPool1d-477               [-1, 512, 1]               0
+         Dropout-478               [-1, 512, 1]               0
+          Linear-479                    [-1, 2]           4,610
+         Dropout-480                    [-1, 2]               0
+================================================================
+Total params: 55,598,776
+Trainable params: 55,598,776
+Non-trainable params: 0
+----------------------------------------------------------------
+Input size (MB): 0.23
+Forward/backward pass size (MB): 508.78
+Params size (MB): 212.09
+Estimated Total Size (MB): 721.10
+----------------------------------------------------------------
 
 
- L2 =  0.007
+ L2 =  0.001
 
 Batchsize =  256
-          Fold 0 of 5 :
-                    -- -- The best model for validate (F1= .  0.40287794403237254 ) -- --
-                    Validate: 
-                      0.40287794403237254 
-                     [5250 2069] 
-                     [502 772] 
-                     precision:  0.27173530447025696 recall:  0.6059654631083202 AUC 0.7253277045208026
-                    - Epoch: 1 - Train_loss: 0.62012 - Train_acc: 0.66868 -  - Val_loss: 0.53593 - Val_acc: 0.69952  - T_Time: 300.97324 LR：0.0005000000
+          Fold 0 of 1 :
+                    Train : 
+                      [2357 2244] 
+                     [2032 2744]
                     --------------------------------------------------
 
-                    Validation  score to (inf --> -0.53592854).  Saving model ...
+                    Validation  score to (inf --> 0.47016794).  Saving model ...
                     --------------------------------------------------
 
-                    EarlyStopping counter: 1 out of 30
+                    Train : 
+                      [2808 1756] 
+                     [1972 2804]
+                    EarlyStopping counter: 1 out of 100
 
-                    -- -- The best model for validate (F1= .  0.40801011460500025 ) -- --
+                    Train : 
+                      [2713 1903] 
+                     [1870 2906]
+                    -- -- The best model for validate (F1= .  0.38719384981096766 ) -- --
                     Validate: 
-                      0.40801011460500025 
-                     [4253 3066] 
-                     [290 984] 
-                     precision:  0.24296296296296296 recall:  0.7723704866562009 AUC 0.745151487397696
-                    - Epoch: 3 - Train_loss: 0.58454 - Train_acc: 0.69643 -  - Val_loss: 0.62695 - Val_acc: 0.60898  - T_Time: 279.93937 LR：0.0005000000
-                    EarlyStopping counter: 2 out of 30
-
-                    EarlyStopping counter: 3 out of 30
-
-                    EarlyStopping counter: 4 out of 30
-
-                    -- -- The best model for validate (F1= .  0.4131692632484313 ) -- --
-                    Validate: 
-                      0.4131692632484313 
-                     [5754 1565] 
-                     [581 693] 
-                     precision:  0.3069087688219663 recall:  0.5439560439560439 AUC 0.7464095836238792
-                    - Epoch: 6 - Train_loss: 0.57101 - Train_acc: 0.70575 -  - Val_loss: 0.46733 - Val_acc: 0.75019  - T_Time: 285.20241 LR：0.0005000000
+                      0.38719384981096766 
+                     [1054  189] 
+                     [1215  502] 
+                     precision:  0.7264833574529667 recall:  0.29237041351193943 AUC 0.6290186020163703
+                    - Epoch: 3 - Train_loss: 0.67797 - Train_acc: 0.59840 -  - Val_loss: 0.71658 - Val_acc: 0.52677  - T_Time: 46.28299 LR:0.0010000000
                     --------------------------------------------------
 
-                    Validation  score to (-0.53592854 --> -0.46732755).  Saving model ...
+                    Validation  score to (0.47016794 --> 0.62901860).  Saving model ...
                     --------------------------------------------------
 
-                    -- -- The best model for validate (F1= .  0.4292785149621938 ) -- --
+                    Train : 
+                      [2772 1834] 
+                     [1793 2983]
+                    -- -- The best model for validate (F1= .  0.6268720625567099 ) -- --
                     Validate: 
-                      0.4292785149621938 
-                     [4938 2381] 
-                     [374 900] 
-                     precision:  0.27430661383724475 recall:  0.706436420722135 AUC 0.7558448227157849
-                    - Epoch: 7 - Train_loss: 0.56725 - Train_acc: 0.70961 -  - Val_loss: 0.56801 - Val_acc: 0.67882  - T_Time: 280.45525 LR：0.0005000000
-                    EarlyStopping counter: 1 out of 30
-
-                    EarlyStopping counter: 2 out of 30
-
-                    EarlyStopping counter: 3 out of 30
-
-                    EarlyStopping counter: 4 out of 30
-
-                    -- -- The best model for validate (F1= .  0.43179491647245877 ) -- --
-                    Validate: 
-                      0.43179491647245877 
-                     [4619 2700] 
-                     [299 975] 
-                     precision:  0.2653061224489796 recall:  0.7653061224489796 AUC 0.7627637621098868
-                    - Epoch: 11 - Train_loss: 0.55778 - Train_acc: 0.71629 -  - Val_loss: 0.61874 - Val_acc: 0.65114  - T_Time: 279.85385 LR：0.0005000000
-                    EarlyStopping counter: 5 out of 30
-
+                      0.6268720625567099 
+                     [800 443] 
+                     [ 709 1008] 
+                     precision:  0.6946933149552033 recall:  0.5870704717530577 AUC 0.6533613278037851
+                    - Epoch: 4 - Train_loss: 0.66640 - Train_acc: 0.61382 -  - Val_loss: 0.65938 - Val_acc: 0.61057  - T_Time: 45.81417 LR:0.0010000000
                     --------------------------------------------------
 
-                    Validation  score to (-0.46732755 --> -0.38231286).  Saving model ...
+                    Validation  score to (0.62901860 --> 0.65336133).  Saving model ...
                     --------------------------------------------------
 
-                    -- -- The best model for validate (F1= .  0.4411996773741058 ) -- --
+                    Train : 
+                      [2604 1873] 
+                     [1644 3132]
+                    -- -- The best model for validate (F1= .  0.7538656675317305 ) -- --
                     Validate: 
-                      0.4411996773741058 
-                     [5416 1903] 
-                     [449 825] 
-                     precision:  0.3024193548387097 recall:  0.6475667189952904 AUC 0.7626778048918076
-                    - Epoch: 13 - Train_loss: 0.54977 - Train_acc: 0.72133 -  - Val_loss: 0.49616 - Val_acc: 0.72547  - T_Time: 287.62547 LR：0.0005000000
-                    EarlyStopping counter: 1 out of 30
+                      0.7538656675317305 
+                     [403 840] 
+                     [ 236 1481] 
+                     precision:  0.6380870314519603 recall:  0.8625509609784507 AUC 0.6594899989738693
+                    - Epoch: 5 - Train_loss: 0.66725 - Train_acc: 0.61557 -  - Val_loss: 0.64756 - Val_acc: 0.63455  - T_Time: 45.01383 LR:0.0010000000
+                    --------------------------------------------------
 
-                    EarlyStopping counter: 2 out of 30
+                    Validation  score to (0.65336133 --> 0.65949000).  Saving model ...
+                    --------------------------------------------------
 
-                    EarlyStopping counter: 3 out of 30
+                    Train : 
+                      [2817 1739] 
+                     [1851 2925]
+                    EarlyStopping counter: 1 out of 100
 
-                    EarlyStopping counter: 4 out of 30
+                    Train : 
+                      [2778 1842] 
+                     [1695 3081]
+                    --------------------------------------------------
 
-                    EarlyStopping counter: 5 out of 30
+                    Validation  score to (0.65949000 --> 0.66214459).  Saving model ...
+                    --------------------------------------------------
 
-                    EarlyStopping counter: 6 out of 30
+                    Train : 
+                      [2765 1752] 
+                     [1741 3035]
+                    EarlyStopping counter: 1 out of 100
 
-                    EarlyStopping counter: 7 out of 30
+                    Train : 
+                      [2603 1913] 
+                     [1537 3239]
+                    EarlyStopping counter: 2 out of 100
 
-                    EarlyStopping counter: 8 out of 30
+                    Train : 
+                      [2708 1814] 
+                     [1648 3128]
+                    --------------------------------------------------
 
-                    EarlyStopping counter: 9 out of 30
+                    Validation  score to (0.66214459 --> 0.66241939).  Saving model ...
+                    --------------------------------------------------
 
-                    EarlyStopping counter: 10 out of 30
+                    Train : 
+                      [2984 1696] 
+                     [1756 3020]
+                    EarlyStopping counter: 1 out of 100
 
-                    EarlyStopping counter: 11 out of 30
+                    Train : 
+                      [2822 1747] 
+                     [1759 3017]
+                    --------------------------------------------------
 
-                    -- -- The best model for validate (F1= .  0.4486420001004066 ) -- --
+                    Validation  score to (0.66241939 --> 0.66954889).  Saving model ...
+                    --------------------------------------------------
+
+                    Train : 
+                      [2793 1704] 
+                     [1675 3101]
+                    EarlyStopping counter: 1 out of 100
+
+                    Train : 
+                      [2856 1714] 
+                     [1684 3092]
+                    EarlyStopping counter: 2 out of 100
+
+                    Train : 
+                      [2862 1794] 
+                     [1601 3175]
+                    --------------------------------------------------
+
+                    Validation  score to (0.66954889 --> 0.66978574).  Saving model ...
+                    --------------------------------------------------
+
+                    Train : 
+                      [2712 1893] 
+                     [1539 3237]
+                    EarlyStopping counter: 1 out of 100
+
+                    Train : 
+                      [2602 1942] 
+                     [1382 3394]
+                    --------------------------------------------------
+
+                    Validation  score to (0.66978574 --> 0.67746650).  Saving model ...
+                    --------------------------------------------------
+
+                    Train : 
+                      [2966 1708] 
+                     [1669 3107]
+                    EarlyStopping counter: 1 out of 100
+
+                    Train : 
+                      [2823 1784] 
+                     [1590 3186]
+                    EarlyStopping counter: 2 out of 100
+
+                    Train : 
+                      [2707 1820] 
+                     [1539 3237]
+                    EarlyStopping counter: 3 out of 100
+
+                    Train : 
+                      [2632 1882] 
+                     [1477 3299]
+                    EarlyStopping counter: 4 out of 100
+
+                    Train : 
+                      [2821 1785] 
+                     [1571 3205]
+                    EarlyStopping counter: 5 out of 100
+
+                    Train : 
+                      [2643 1861] 
+                     [1483 3293]
+                    EarlyStopping counter: 6 out of 100
+
+                    Train : 
+                      [2819 1776] 
+                     [1554 3222]
+                    EarlyStopping counter: 7 out of 100
+
+                    Train : 
+                      [2839 1695] 
+                     [1521 3255]
+                    EarlyStopping counter: 8 out of 100
+
+                    Train : 
+                      [2826 1730] 
+                     [1558 3218]
+                    --------------------------------------------------
+
+                    Validation  score to (0.67746650 --> 0.67828740).  Saving model ...
+                    --------------------------------------------------
+
+                    Train : 
+                      [2743 1856] 
+                     [1458 3318]
+                    --------------------------------------------------
+
+                    Validation  score to (0.67828740 --> 0.68018223).  Saving model ...
+                    --------------------------------------------------
+
+                    Train : 
+                      [2528 1946] 
+                     [1388 3388]
+                    EarlyStopping counter: 1 out of 100
+
+                    Train : 
+                      [2832 1737] 
+                     [1555 3221]
+                    EarlyStopping counter: 2 out of 100
+
+                    Train : 
+                      [2721 1768] 
+                     [1389 3387]
+                    EarlyStopping counter: 3 out of 100
+
+                    Train : 
+                      [2750 1707] 
+                     [1503 3273]
+                    EarlyStopping counter: 4 out of 100
+
+                    Train : 
+                      [2736 1776] 
+                     [1414 3362]
+                    EarlyStopping counter: 5 out of 100
+
+                    Train : 
+                      [2826 1803] 
+                     [1511 3265]
+                    EarlyStopping counter: 6 out of 100
+
+                    Train : 
+                      [2733 1859] 
+                     [1412 3364]
+                    EarlyStopping counter: 7 out of 100
+
+                    Train : 
+                      [2655 1878] 
+                     [1291 3485]
+                    EarlyStopping counter: 8 out of 100
+
+                    Train : 
+                      [2778 1817] 
+                     [1437 3339]
+                    EarlyStopping counter: 9 out of 100
+
+                    Train : 
+                      [2874 1762] 
+                     [1497 3279]
+                    --------------------------------------------------
+
+                    Validation  score to (0.68018223 --> 0.68333606).  Saving model ...
+                    --------------------------------------------------
+
+                    Train : 
+                      [2630 1837] 
+                     [1383 3393]
+                    EarlyStopping counter: 1 out of 100
+
+                    Train : 
+                      [2733 1791] 
+                     [1436 3340]
+                    EarlyStopping counter: 2 out of 100
+
+                    Train : 
+                      [2772 1733] 
+                     [1442 3334]
+                    -- -- The best model for validate (F1= .  0.7697922604344797 ) -- --
                     Validate: 
-                      0.4486420001004066 
-                     [5252 2067] 
-                     [395 879] 
-                     precision:  0.2983706720977597 recall:  0.6899529042386185 AUC 0.7751213321256067
-                    - Epoch: 24 - Train_loss: 0.48106 - Train_acc: 0.77352 -  - Val_loss: 0.51755 - Val_acc: 0.71292  - T_Time: 278.58980 LR：0.0000500000
-                    EarlyStopping counter: 12 out of 30
+                      0.7697922604344797 
+                     [257 986] 
+                     [ 123 1594] 
+                     precision:  0.6178294573643411 recall:  0.9283634245777519 AUC 0.679385689740239
+                    - Epoch: 40 - Train_loss: 0.61653 - Train_acc: 0.65736 -  - Val_loss: 0.80372 - Val_acc: 0.62381  - T_Time: 45.87784 LR:0.0010000000
+                    EarlyStopping counter: 3 out of 100
 
-                    EarlyStopping counter: 13 out of 30
+                    Train : 
+                      [2623 1826] 
+                     [1337 3439]
+                    EarlyStopping counter: 4 out of 100
 
-                    EarlyStopping counter: 14 out of 30
+                    Train : 
+                      [2821 1793] 
+                     [1544 3232]
+                    EarlyStopping counter: 5 out of 100
 
-                    EarlyStopping counter: 15 out of 30
+                    Train : 
+                      [2777 1755] 
+                     [1388 3388]
+                    EarlyStopping counter: 6 out of 100
 
-                    EarlyStopping counter: 16 out of 30
+                    Train : 
+                      [2756 1814] 
+                     [1381 3395]
+                    --------------------------------------------------
 
-                    EarlyStopping counter: 17 out of 30
+                    Validation  score to (0.68333606 --> 0.68478014).  Saving model ...
+                    --------------------------------------------------
 
-                    EarlyStopping counter: 18 out of 30
+                    Train : 
+                      [2718 1847] 
+                     [1371 3405]
+                    EarlyStopping counter: 1 out of 100
 
-                    EarlyStopping counter: 19 out of 30
+                    Train : 
+                      [2919 1746] 
+                     [1352 3424]
+                    EarlyStopping counter: 2 out of 100
 
-                    EarlyStopping counter: 20 out of 30
-
-                    -- -- The best model for validate (F1= .  0.4486981919830846 ) -- --
+                    Train : 
+                      [2673 1845] 
+                     [1289 3487]
+                    -- -- The best model for validate (F1= .  0.770995399734071 ) -- --
                     Validate: 
-                      0.4486981919830846 
-                     [5510 1809] 
-                     [453 821] 
-                     precision:  0.31216730038022816 recall:  0.6444270015698587 AUC 0.7653755638696986
-                    - Epoch: 33 - Train_loss: 0.41991 - Train_acc: 0.81384 -  - Val_loss: 0.53656 - Val_acc: 0.73634  - T_Time: 276.87550 LR：0.0000500000
-                    EarlyStopping counter: 21 out of 30
+                      0.770995399734071 
+                     [ 135 1108] 
+                     [  63 1654] 
+                     precision:  0.5988414192614048 recall:  0.963308095515434 AUC 0.6372904338846169
+                    - Epoch: 47 - Train_loss: 0.61182 - Train_acc: 0.66383 -  - Val_loss: 10.92336 - Val_acc: 0.60438  - T_Time: 46.07909 LR:0.0010000000
+                    EarlyStopping counter: 3 out of 100
 
-                    EarlyStopping counter: 22 out of 30
+                    Train : 
+                      [2811 1863] 
+                     [1301 3475]
+                    EarlyStopping counter: 4 out of 100
 
-                    EarlyStopping counter: 23 out of 30
+                    Train : 
+                      [2867 1727] 
+                     [1355 3421]
+                    EarlyStopping counter: 5 out of 100
 
-                    EarlyStopping counter: 24 out of 30
+                    Train : 
+                      [2694 1844] 
+                     [1236 3540]
+                    --------------------------------------------------
 
-                    -- -- The best model for validate (F1= .  0.4488994824525581 ) -- --
+                    Validation  score to (0.68478014 --> 0.68639477).  Saving model ...
+                    --------------------------------------------------
+
+                    Train : 
+                      [2815 1754] 
+                     [1277 3499]
+                    EarlyStopping counter: 1 out of 100
+
+                    Train : 
+                      [2819 1841] 
+                     [1386 3390]
+                    EarlyStopping counter: 2 out of 100
+
+                    Train : 
+                      [2759 1769] 
+                     [1296 3480]
+                    --------------------------------------------------
+
+                    Validation  score to (0.68639477 --> 0.69153948).  Saving model ...
+                    --------------------------------------------------
+
+                    Train : 
+                      [2815 1749] 
+                     [1361 3415]
+                    EarlyStopping counter: 1 out of 100
+
+                    Train : 
+                      [2747 1828] 
+                     [1353 3423]
+                    EarlyStopping counter: 2 out of 100
+
+                    Train : 
+                      [2891 1693] 
+                     [1304 3472]
+                    EarlyStopping counter: 3 out of 100
+
+                    Train : 
+                      [2905 1748] 
+                     [1330 3446]
+                    -- -- The best model for validate (F1= .  0.7723540145985401 ) -- --
                     Validate: 
-                      0.4488994824525581 
-                     [5237 2082] 
-                     [391 883] 
-                     precision:  0.29780775716694774 recall:  0.6930926216640503 AUC 0.7650989778866343
-                    - Epoch: 37 - Train_loss: 0.40902 - Train_acc: 0.82191 -  - Val_loss: 0.57199 - Val_acc: 0.71157  - T_Time: 280.90017 LR：0.0000050000
-                    EarlyStopping counter: 25 out of 30
+                      0.7723540145985401 
+                     [  60 1183] 
+                     [  24 1693] 
+                     precision:  0.5886648122392212 recall:  0.9860221316249272 AUC 0.6655725176890411
+                    - Epoch: 57 - Train_loss: 0.59805 - Train_acc: 0.67351 -  - Val_loss: 0.65300 - Val_acc: 0.59368  - T_Time: 46.34706 LR:0.0010000000
+                    EarlyStopping counter: 4 out of 100
 
-                    EarlyStopping counter: 26 out of 30
+                    Train : 
+                      [2735 1784] 
+                     [1225 3551]
+                    EarlyStopping counter: 5 out of 100
 
-                    EarlyStopping counter: 27 out of 30
+                    Train : 
+                      [2880 1740] 
+                     [1312 3464]
+                    EarlyStopping counter: 6 out of 100
 
-                    EarlyStopping counter: 28 out of 30
+                    Train : 
+                      [2783 1731] 
+                     [1211 3565]
+                    EarlyStopping counter: 7 out of 100
 
-                    EarlyStopping counter: 29 out of 30
+                    Train : 
+                      [2833 1705] 
+                     [1305 3471]
+                    EarlyStopping counter: 8 out of 100
 
-                    EarlyStopping counter: 30 out of 30
+                    Train : 
+                      [2778 1761] 
+                     [1201 3575]
+                    -- -- The best model for validate (F1= .  0.7759583880660115 ) -- --
+                    Validate: 
+                      0.7759583880660115 
+                     [ 102 1141] 
+                     [  32 1685] 
+                     precision:  0.5962491153573957 recall:  0.9813628421665695 AUC 0.6656210129081623
+                    - Epoch: 62 - Train_loss: 0.59381 - Train_acc: 0.68176 -  - Val_loss: 0.69929 - Val_acc: 0.60323  - T_Time: 46.63686 LR:0.0010000000
+                    EarlyStopping counter: 9 out of 100
+
+                    Train : 
+                      [2769 1765] 
+                     [1217 3559]
+                    EarlyStopping counter: 10 out of 100
+
+                    Train : 
+                      [2896 1719] 
+                     [1249 3527]
+                    EarlyStopping counter: 11 out of 100
+
+                    Train : 
+                      [2826 1795] 
+                     [1113 3663]
+                    EarlyStopping counter: 12 out of 100
+
+                    Train : 
+                      [2922 1719] 
+                     [1181 3595]
+                    --------------------------------------------------
+
+                    Validation  score to (0.69153948 --> 0.69543456).  Saving model ...
+                    --------------------------------------------------
+
+                    Train : 
+                      [2926 1621] 
+                     [1137 3639]
+                    EarlyStopping counter: 1 out of 100
+
+                    Train : 
+                      [2902 1634] 
+                     [1231 3545]
+                    EarlyStopping counter: 2 out of 100
+
+                    Train : 
+                      [2883 1690] 
+                     [1111 3665]
+                    EarlyStopping counter: 3 out of 100
+
+                    Train : 
+                      [2907 1655] 
+                     [1095 3681]
+                    EarlyStopping counter: 4 out of 100
+
+                    Train : 
+                      [2882 1694] 
+                     [1084 3692]
+                    EarlyStopping counter: 5 out of 100
+
+                    Train : 
+                      [2953 1629] 
+                     [1098 3678]
+                    EarlyStopping counter: 6 out of 100
+
+                    Train : 
+                      [2972 1613] 
+                     [1115 3661]
+                    EarlyStopping counter: 7 out of 100
+
+                    Train : 
+                      [2979 1617] 
+                     [1053 3723]
+                    EarlyStopping counter: 8 out of 100
+
+                    Train : 
+                      [2939 1612] 
+                     [1086 3690]
+                    EarlyStopping counter: 9 out of 100
+
+                    Train : 
+                      [2877 1597] 
+                     [1092 3684]
+                    EarlyStopping counter: 10 out of 100
+
+                    Train : 
+                      [2878 1666] 
+                     [ 974 3802]
+                    EarlyStopping counter: 11 out of 100
+
+                    Train : 
+                      [3002 1571] 
+                     [1058 3718]
+                    EarlyStopping counter: 12 out of 100
+
+                    Train : 
+                      [3083 1555] 
+                     [ 965 3811]
+                    EarlyStopping counter: 13 out of 100
+
+                    Train : 
+                      [3007 1626] 
+                     [ 992 3784]
+                    EarlyStopping counter: 14 out of 100
+
+                    Train : 
+                      [2974 1593] 
+                     [ 965 3811]
+                    EarlyStopping counter: 15 out of 100
+
+                    Train : 
+                      [3042 1531] 
+                     [ 954 3822]
+                    EarlyStopping counter: 16 out of 100
+
+                    Train : 
+                      [3012 1507] 
+                     [ 924 3852]
+                    EarlyStopping counter: 17 out of 100
+
+                    Train : 
+                      [3093 1590] 
+                     [ 982 3794]
+                    EarlyStopping counter: 18 out of 100
+
+                    Train : 
+                      [2972 1543] 
+                     [ 911 3865]
+                    EarlyStopping counter: 19 out of 100
+
+                    Train : 
+                      [3039 1550] 
+                     [ 938 3838]
+                    EarlyStopping counter: 20 out of 100
+
+                    Train : 
+                      [3050 1520] 
+                     [ 875 3901]
+                    EarlyStopping counter: 21 out of 100
+
+                    Train : 
+                      [3129 1498] 
+                     [ 878 3898]
+                    EarlyStopping counter: 22 out of 100
+
+                    Train : 
+                      [3110 1453] 
+                     [ 882 3894]
+                    EarlyStopping counter: 23 out of 100
+
+                    Train : 
+                      [3098 1505] 
+                     [ 878 3898]
+                    EarlyStopping counter: 24 out of 100
+
+                    Train : 
+                      [3035 1471] 
+                     [ 856 3920]
+                    EarlyStopping counter: 25 out of 100
+
+                    Train : 
+                      [3059 1524] 
+                     [ 821 3955]
+                    EarlyStopping counter: 26 out of 100
+
+                    Train : 
+                      [3008 1469] 
+                     [ 834 3942]
+                    EarlyStopping counter: 27 out of 100
+
+                    Train : 
+                      [3134 1491] 
+                     [ 814 3962]
+                    EarlyStopping counter: 28 out of 100
+
+                    Train : 
+                      [3200 1367] 
+                     [ 865 3911]
+                    EarlyStopping counter: 29 out of 100
+
+                    Train : 
+                      [3204 1457] 
+                     [ 744 4032]
+                    EarlyStopping counter: 30 out of 100
+
+                    Train : 
+                      [3131 1389] 
+                     [ 835 3941]
+                    EarlyStopping counter: 31 out of 100
+
+                    Train : 
+                      [3112 1430] 
+                     [ 833 3943]
+                    EarlyStopping counter: 32 out of 100
+
+                    Train : 
+                      [3127 1406] 
+                     [ 841 3935]
+                    EarlyStopping counter: 33 out of 100
+
+                    Train : 
+                      [3170 1377] 
+                     [ 734 4042]
+                    EarlyStopping counter: 34 out of 100
+
+                    Train : 
+                      [3218 1416] 
+                     [ 670 4106]
+                    EarlyStopping counter: 35 out of 100
+
+                    Train : 
+                      [3238 1304] 
+                     [ 767 4009]
+                    EarlyStopping counter: 36 out of 100
+
+                    Train : 
+                      [3124 1374] 
+                     [ 752 4024]
+                    EarlyStopping counter: 37 out of 100
+
+                    Train : 
+                      [3217 1387] 
+                     [ 737 4039]
+                    EarlyStopping counter: 38 out of 100
+
+                    Train : 
+                      [3172 1365] 
+                     [ 672 4104]
+                    EarlyStopping counter: 39 out of 100
+
+                    Train : 
+                      [3276 1304] 
+                     [ 736 4040]
+                    EarlyStopping counter: 40 out of 100
+
+                    Train : 
+                      [3221 1342] 
+                     [ 765 4011]
+                    EarlyStopping counter: 41 out of 100
+
+                    Train : 
+                      [3229 1383] 
+                     [ 682 4094]
+                    EarlyStopping counter: 42 out of 100
+
+                    Train : 
+                      [3200 1330] 
+                     [ 748 4028]
+                    EarlyStopping counter: 43 out of 100
+
+                    Train : 
+                      [3150 1390] 
+                     [ 726 4050]
+                    EarlyStopping counter: 44 out of 100
+
+                    Train : 
+                      [3274 1379] 
+                     [ 665 4111]
+                    EarlyStopping counter: 45 out of 100
+
+                    Train : 
+                      [3273 1308] 
+                     [ 666 4110]
+                    EarlyStopping counter: 46 out of 100
+
+                    Train : 
+                      [3176 1356] 
+                     [ 765 4011]
+                    EarlyStopping counter: 47 out of 100
+
+                    Train : 
+                      [3189 1309] 
+                     [ 770 4006]
+                    EarlyStopping counter: 48 out of 100
+
+                    Train : 
+                      [3186 1448] 
+                     [ 674 4102]
+                    EarlyStopping counter: 49 out of 100
+
+                    Train : 
+                      [3301 1268] 
+                     [ 713 4063]
+                    EarlyStopping counter: 50 out of 100
+
+                    Train : 
+                      [3223 1308] 
+                     [ 701 4075]
+                    EarlyStopping counter: 51 out of 100
+
+                    Train : 
+                      [3239 1288] 
+                     [ 676 4100]
+                    EarlyStopping counter: 52 out of 100
+
+                    Train : 
+                      [3268 1306] 
+                     [ 674 4102]
+                    EarlyStopping counter: 53 out of 100
+
+                    Train : 
+                      [3288 1323] 
+                     [ 692 4084]
+                    EarlyStopping counter: 54 out of 100
+
+                    Train : 
+                      [3329 1285] 
+                     [ 722 4054]
+                    EarlyStopping counter: 55 out of 100
+
+                    Train : 
+                      [3259 1345] 
+                     [ 674 4102]
+                    EarlyStopping counter: 56 out of 100
+
+                    Train : 
+                      [3259 1243] 
+                     [ 710 4066]
+                    EarlyStopping counter: 57 out of 100
+
+                    Train : 
+                      [3239 1304] 
+                     [ 685 4091]
+                    EarlyStopping counter: 58 out of 100
+
+                    Train : 
+                      [3294 1332] 
+                     [ 653 4123]
+                    EarlyStopping counter: 59 out of 100
+
+                    Train : 
+                      [3303 1257] 
+                     [ 660 4116]
+                    EarlyStopping counter: 60 out of 100
+
+                    Train : 
+                      [3271 1280] 
+                     [ 664 4112]
+                    EarlyStopping counter: 61 out of 100
+
+                    Train : 
+                      [3284 1321] 
+                     [ 641 4135]
+                    EarlyStopping counter: 62 out of 100
+
+                    Train : 
+                      [3229 1269] 
+                     [ 638 4138]
+                    EarlyStopping counter: 63 out of 100
+
+                    Train : 
+                      [3317 1239] 
+                     [ 661 4115]
+                    EarlyStopping counter: 64 out of 100
+
+                    Train : 
+                      [3265 1267] 
+                     [ 692 4084]
+                    EarlyStopping counter: 65 out of 100
+
+                    Train : 
+                      [3283 1273] 
+                     [ 670 4106]
+                    EarlyStopping counter: 66 out of 100
+
+                    Train : 
+                      [3304 1257] 
+                     [ 647 4129]
+                    EarlyStopping counter: 67 out of 100
+
+                    Train : 
+                      [3295 1282] 
+                     [ 684 4092]
+                    EarlyStopping counter: 68 out of 100
+
+                    Train : 
+                      [3353 1264] 
+                     [ 654 4122]
+                    EarlyStopping counter: 69 out of 100
+
+                    Train : 
+                      [3345 1239] 
+                     [ 646 4130]
+                    EarlyStopping counter: 70 out of 100
+
+                    Train : 
+                      [3311 1287] 
+                     [ 636 4140]
+                    EarlyStopping counter: 71 out of 100
+
+                    Train : 
+                      [3379 1277] 
+                     [ 662 4114]
+                    EarlyStopping counter: 72 out of 100
+
+                    Train : 
+                      [3348 1219] 
+                     [ 716 4060]
+                    EarlyStopping counter: 73 out of 100
+
+                    Train : 
+                      [3303 1235] 
+                     [ 663 4113]
+                    EarlyStopping counter: 74 out of 100
+
+                    Train : 
+                      [3335 1280] 
+                     [ 655 4121]
+                    EarlyStopping counter: 75 out of 100
+
+                    Train : 
+                      [3300 1229] 
+                     [ 687 4089]
+                    EarlyStopping counter: 76 out of 100
+
+                    Train : 
+                      [3236 1214] 
+                     [ 696 4080]
+                    EarlyStopping counter: 77 out of 100
+
+                    Train : 
+                      [3299 1268] 
+                     [ 662 4114]
+                    EarlyStopping counter: 78 out of 100
+
+                    Train : 
+                      [3258 1264] 
+                     [ 634 4142]
+                    EarlyStopping counter: 79 out of 100
+
+                    Train : 
+                      [3339 1266] 
+                     [ 621 4155]
+                    EarlyStopping counter: 80 out of 100
+
+                    Train : 
+                      [3370 1267] 
+                     [ 682 4094]
+                    EarlyStopping counter: 81 out of 100
+
+                    Train : 
+                      [3333 1289] 
+                     [ 692 4084]
+                    EarlyStopping counter: 82 out of 100
+
+                    Train : 
+                      [3347 1247] 
+                     [ 645 4131]
+                    EarlyStopping counter: 83 out of 100
+
+                    Train : 
+                      [3238 1263] 
+                     [ 669 4107]
+                    EarlyStopping counter: 84 out of 100
+
+                    Train : 
+                      [3287 1282] 
+                     [ 682 4094]
+                    EarlyStopping counter: 85 out of 100
+
+                    Train : 
+                      [3296 1248] 
+                     [ 710 4066]
+                    EarlyStopping counter: 86 out of 100
+
+                    Train : 
+                      [3330 1218] 
+                     [ 699 4077]
+                    EarlyStopping counter: 87 out of 100
+
+                    Train : 
+                      [3250 1282] 
+                     [ 707 4069]
+                    EarlyStopping counter: 88 out of 100
+
+                    Train : 
+                      [3297 1232] 
+                     [ 624 4152]
+                    EarlyStopping counter: 89 out of 100
+
+                    Train : 
+                      [3314 1239] 
+                     [ 669 4107]
+                    EarlyStopping counter: 90 out of 100
+
+                    Train : 
+                      [3320 1262] 
+                     [ 691 4085]
+                    EarlyStopping counter: 91 out of 100
+
+                    Train : 
+                      [3278 1314] 
+                     [ 624 4152]
+                    EarlyStopping counter: 92 out of 100
+
+                    Train : 
+                      [3251 1199] 
+                     [ 653 4123]
+                    EarlyStopping counter: 93 out of 100
+
+                    Train : 
+                      [3299 1326] 
+                     [ 663 4113]
+                    EarlyStopping counter: 94 out of 100
+
+                    Train : 
+                      [3243 1293] 
+                     [ 618 4158]
+                    EarlyStopping counter: 95 out of 100
+
+                    Train : 
+                      [3360 1232] 
+                     [ 684 4092]
+                    EarlyStopping counter: 96 out of 100
+
+                    Train : 
+                      [3313 1255] 
+                     [ 718 4058]
+                    EarlyStopping counter: 97 out of 100
+
+                    Train : 
+                      [3305 1239] 
+                     [ 618 4158]
+                    EarlyStopping counter: 98 out of 100
+
+                    Train : 
+                      [3295 1277] 
+                     [ 671 4105]
+                    EarlyStopping counter: 99 out of 100
+
+                    Train : 
+                      [3267 1273] 
+                     [ 648 4128]
+                    EarlyStopping counter: 100 out of 100
 
                     Early stopping...
      Best Loss:
           valid
-           [6933  386] 
-           [1018  256]
-          F1:  0.267223382045929
-          AUC:  0.7516339378615646
-          precision:  0.3987538940809969
-          recall:  0.20094191522762953
+           [896 347] 
+           [787 930]
+          F1:  0.6212424849699398
+          AUC:  0.6954345616758449
+          precision:  0.7282693813625685
+          recall:  0.541642399534071
           test
-           [2229  108] 
-           [395  94]
-          F1:  0.2720694645441389
-          AUC:  0.7478458478482106
-          precision:  0.46534653465346537
-          recall:  0.19222903885480572
+           [1838  499] 
+           [249 240]
+          F1:  0.3908794788273615
+          AUC:  0.7260072471567467
+          precision:  0.32476319350473615
+          recall:  0.49079754601226994
 
 
 
      Best Sore:
           valid
-           [5237 2082] 
-           [391 883]
-          F1:  0.41660769049304086
-          AUC:  0.7650989242639156
-          precision:  0.29780775716694774
-          recall:  0.6930926216640503
+           [ 102 1141] 
+           [  32 1685]
+          F1:  0.741800572309047
+          AUC:  0.6656200758024786
+          precision:  0.5962491153573957
+          recall:  0.9813628421665695
           test
-           [1722  615] 
-           [192 297]
-          F1:  0.42398286937901497
-          AUC:  0.7509338961649222
-          precision:  0.3256578947368421
-          recall:  0.6073619631901841
+           [ 226 2111] 
+           [ 13 476]
+          F1:  0.3094928478543563
+          AUC:  0.6500258577012634
+          precision:  0.18399690761499807
+          recall:  0.9734151329243353
           ==================================================
           Fold 0 Training Finished
 
 
-          Fold 1 of 5 :
-                    -- -- The best model for validate (F1= .  0.4409967545790278 ) -- --
-                    Validate: 
-                      0.4409967545790278 
-                     [4788 2470] 
-                     [366 969] 
-                     precision:  0.281767955801105 recall:  0.7258426966292135 AUC 0.7579474231198327
-                    - Epoch: 1 - Train_loss: 0.63115 - Train_acc: 0.66364 -  - Val_loss: 0.55543 - Val_acc: 0.66960  - T_Time: 279.99657 LR：0.0005000000
-                    --------------------------------------------------
-
-                    Validation  score to (inf --> -0.55543286).  Saving model ...
-                    --------------------------------------------------
-
-                    --------------------------------------------------
-
-                    Validation  score to (-0.55543286 --> -0.38598708).  Saving model ...
-                    --------------------------------------------------
-
-                    EarlyStopping counter: 1 out of 30
-
-                    EarlyStopping counter: 2 out of 30
-
-                    EarlyStopping counter: 3 out of 30
-
-                    EarlyStopping counter: 4 out of 30
-
-                    EarlyStopping counter: 5 out of 30
-
-                    EarlyStopping counter: 6 out of 30
-
-                    -- -- The best model for validate (F1= .  0.4443923740547449 ) -- --
-                    Validate: 
-                      0.4443923740547449 
-                     [4573 2685] 
-                     [ 309 1026] 
-                     precision:  0.2764753435731609 recall:  0.7685393258426966 AUC 0.7656972081949094
-                    - Epoch: 9 - Train_loss: 0.56123 - Train_acc: 0.71120 -  - Val_loss: 0.62721 - Val_acc: 0.65268  - T_Time: 280.92791 LR：0.0005000000
-                    EarlyStopping counter: 7 out of 30
-
-                    EarlyStopping counter: 8 out of 30
-
-                    -- -- The best model for validate (F1= .  0.4474639223120672 ) -- --
-                    Validate: 
-                      0.4474639223120672 
-                     [4959 2299] 
-                     [387 948] 
-                     precision:  0.29196181090237144 recall:  0.7101123595505618 AUC 0.7655071557356831
-                    - Epoch: 11 - Train_loss: 0.55442 - Train_acc: 0.71749 -  - Val_loss: 0.52043 - Val_acc: 0.68780  - T_Time: 280.45438 LR：0.0005000000
-                    EarlyStopping counter: 9 out of 30
-
-                    EarlyStopping counter: 10 out of 30
-
-                    EarlyStopping counter: 11 out of 30
-
-                    EarlyStopping counter: 12 out of 30
-
-                    EarlyStopping counter: 13 out of 30
-
-                    -- -- The best model for validate (F1= .  0.4511037527593819 ) -- --
-                    Validate: 
-                      0.4511037527593819 
-                     [4454 2804] 
-                     [ 263 1072] 
-                     precision:  0.27657378740970073 recall:  0.8029962546816479 AUC 0.7700482381316548
-                    - Epoch: 16 - Train_loss: 0.51085 - Train_acc: 0.75013 -  - Val_loss: 0.59766 - Val_acc: 0.64297  - T_Time: 281.29010 LR：0.0000500000
-                    EarlyStopping counter: 14 out of 30
-
-                    EarlyStopping counter: 15 out of 30
-
-                    EarlyStopping counter: 16 out of 30
-
-                    EarlyStopping counter: 17 out of 30
-
-                    EarlyStopping counter: 18 out of 30
-
-                    EarlyStopping counter: 19 out of 30
-
-                    EarlyStopping counter: 20 out of 30
-
-                    EarlyStopping counter: 21 out of 30
-
-                    EarlyStopping counter: 22 out of 30
-
-                    EarlyStopping counter: 23 out of 30
-
-                    EarlyStopping counter: 24 out of 30
-
-                    EarlyStopping counter: 25 out of 30
-
-                    EarlyStopping counter: 26 out of 30
-
-                    EarlyStopping counter: 27 out of 30
-
-                    EarlyStopping counter: 28 out of 30
-
-                    EarlyStopping counter: 29 out of 30
-
-                    EarlyStopping counter: 30 out of 30
-
-                    Early stopping...
-     Best Loss:
-          valid
-           [6972  286] 
-           [1127  208]
-          F1:  0.22744669218151994
-          AUC:  0.7501011927430201
-          precision:  0.42105263157894735
-          recall:  0.15580524344569288
-          test
-           [2253   84] 
-           [424  65]
-          F1:  0.2037617554858934
-          AUC:  0.7327626263024012
-          precision:  0.436241610738255
-          recall:  0.1329243353783231
-
-
-
-     Best Sore:
-          valid
-           [4454 2804] 
-           [ 263 1072]
-          F1:  0.4114373440798312
-          AUC:  0.7700482381316548
-          precision:  0.27657378740970073
-          recall:  0.8029962546816479
-          test
-           [1452  885] 
-           [124 365]
-          F1:  0.4197814836112708
-          AUC:  0.7602662949458038
-          precision:  0.292
-          recall:  0.7464212678936605
-          ==================================================
-          Fold 1 Training Finished
-
-
-          Fold 2 of 5 :
-                    -- -- The best model for validate (F1= .  0.42097051588136686 ) -- --
-                    Validate: 
-                      0.42097051588136686 
-                     [4603 2692] 
-                     [347 951] 
-                     precision:  0.2610485863299478 recall:  0.7326656394453005 AUC 0.7512058410102113
-                    - Epoch: 1 - Train_loss: 0.63014 - Train_acc: 0.66507 -  - Val_loss: 0.66960 - Val_acc: 0.64698  - T_Time: 452.46011 LR：0.0005000000
-                    --------------------------------------------------
-
-                    Validation  score to (inf --> -0.66959769).  Saving model ...
-                    --------------------------------------------------
-
-                    -- -- The best model for validate (F1= .  0.4402504288435848 ) -- --
-                    Validate: 
-                      0.4402504288435848 
-                     [5017 2278] 
-                     [385 913] 
-                     precision:  0.2861172046380445 recall:  0.7033898305084746 AUC 0.763110854364441
-                    - Epoch: 2 - Train_loss: 0.59272 - Train_acc: 0.68994 -  - Val_loss: 0.51904 - Val_acc: 0.69009  - T_Time: 382.11181 LR：0.0005000000
-                    --------------------------------------------------
-
-                    Validation  score to (-0.66959769 --> -0.51904476).  Saving model ...
-                    --------------------------------------------------
-
-                    EarlyStopping counter: 1 out of 30
-
-                    EarlyStopping counter: 2 out of 30
-
-                    EarlyStopping counter: 3 out of 30
-
-                    --------------------------------------------------
-
-                    Validation  score to (-0.51904476 --> -0.44027118).  Saving model ...
-                    --------------------------------------------------
-
-                    --------------------------------------------------
-
-                    Validation  score to (-0.44027118 --> -0.40409923).  Saving model ...
-                    --------------------------------------------------
-
-                    -- -- The best model for validate (F1= .  0.44987485431513785 ) -- --
-                    Validate: 
-                      0.44987485431513785 
-                     [5749 1546] 
-                     [526 772] 
-                     precision:  0.3330457290767903 recall:  0.5947611710323575 AUC 0.7720448288134537
-                    - Epoch: 8 - Train_loss: 0.56772 - Train_acc: 0.70793 -  - Val_loss: 0.49791 - Val_acc: 0.75834  - T_Time: 392.84501 LR：0.0005000000
-                    EarlyStopping counter: 1 out of 30
-
-                    EarlyStopping counter: 2 out of 30
-
-                    EarlyStopping counter: 3 out of 30
-
-                    EarlyStopping counter: 4 out of 30
-
-                    EarlyStopping counter: 5 out of 30
-
-                    EarlyStopping counter: 6 out of 30
-
-                    EarlyStopping counter: 7 out of 30
-
-                    EarlyStopping counter: 8 out of 30
-
-                    -- -- The best model for validate (F1= .  0.4568455302796556 ) -- --
-                    Validate: 
-                      0.4568455302796556 
-                     [5687 1608] 
-                     [497 801] 
-                     precision:  0.33250311332503113 recall:  0.6171032357473035 AUC 0.774104411172986
-                    - Epoch: 16 - Train_loss: 0.54952 - Train_acc: 0.72314 -  - Val_loss: 0.45826 - Val_acc: 0.75499  - T_Time: 412.23818 LR：0.0005000000
-                    EarlyStopping counter: 9 out of 30
-
-                    EarlyStopping counter: 10 out of 30
-
-                    EarlyStopping counter: 11 out of 30
-
-                    EarlyStopping counter: 12 out of 30
-
-                    -- -- The best model for validate (F1= .  0.4574066517037339 ) -- --
-                    Validate: 
-                      0.4574066517037339 
-                     [4704 2591] 
-                     [ 269 1029] 
-                     precision:  0.28425414364640883 recall:  0.7927580893682589 AUC 0.7863495375919721
-                    - Epoch: 20 - Train_loss: 0.51098 - Train_acc: 0.75383 -  - Val_loss: 0.56688 - Val_acc: 0.66684  - T_Time: 409.94862 LR：0.0000500000
-                    EarlyStopping counter: 13 out of 30
-
-                    -- -- The best model for validate (F1= .  0.46013834384400437 ) -- --
-                    Validate: 
-                      0.46013834384400437 
-                     [4913 2382] 
-                     [310 988] 
-                     precision:  0.29317507418397626 recall:  0.7611710323574731 AUC 0.7852754435304591
-                    - Epoch: 21 - Train_loss: 0.50657 - Train_acc: 0.75576 -  - Val_loss: 0.54235 - Val_acc: 0.68641  - T_Time: 392.19510 LR：0.0000500000
-                    EarlyStopping counter: 14 out of 30
-
-                    EarlyStopping counter: 15 out of 30
-
-                    EarlyStopping counter: 16 out of 30
-
-                    EarlyStopping counter: 17 out of 30
-
-                    EarlyStopping counter: 18 out of 30
-
-                    EarlyStopping counter: 19 out of 30
-
-                    EarlyStopping counter: 20 out of 30
-
-                    -- -- The best model for validate (F1= .  0.46078463054823954 ) -- --
-                    Validate: 
-                      0.46078463054823954 
-                     [5148 2147] 
-                     [363 935] 
-                     precision:  0.30337443218689164 recall:  0.7203389830508474 AUC 0.7774059527442969
-                    - Epoch: 28 - Train_loss: 0.47342 - Train_acc: 0.77767 -  - Val_loss: 0.52138 - Val_acc: 0.70784  - T_Time: 386.49835 LR：0.0000500000
-                    EarlyStopping counter: 21 out of 30
-
-                    EarlyStopping counter: 22 out of 30
-
-                    EarlyStopping counter: 23 out of 30
-
-                    EarlyStopping counter: 24 out of 30
-
-                    EarlyStopping counter: 25 out of 30
-
-                    EarlyStopping counter: 26 out of 30
-
-                    EarlyStopping counter: 27 out of 30
-
-                    EarlyStopping counter: 28 out of 30
-
-                    EarlyStopping counter: 29 out of 30
-
-                    EarlyStopping counter: 30 out of 30
-
-                    Early stopping...
-     Best Loss:
-          valid
-           [6892  403] 
-           [997 301]
-          F1:  0.3006993006993007
-          AUC:  0.7605228584916321
-          precision:  0.4275568181818182
-          recall:  0.23189522342064714
-          test
-           [2236  101] 
-           [390  99]
-          F1:  0.28737300435413643
-          AUC:  0.7432356516009461
-          precision:  0.495
-          recall:  0.20245398773006135
-
-
-
-     Best Sore:
-          valid
-           [5148 2147] 
-           [363 935]
-          F1:  0.42694063926940634
-          AUC:  0.7774059527442969
-          precision:  0.30337443218689164
-          recall:  0.7203389830508474
-          test
-           [1695  642] 
-           [165 324]
-          F1:  0.44536082474226807
-          AUC:  0.7532912784730044
-          precision:  0.33540372670807456
-          recall:  0.6625766871165644
-          ==================================================
-          Fold 2 Training Finished
-
-
-          Fold 3 of 5 :
-                    -- -- The best model for validate (F1= .  0.3087070145600863 ) -- --
-                    Validate: 
-                      0.3087070145600863 
-                     [6654  603] 
-                     [970 366] 
-                     precision:  0.37770897832817335 recall:  0.27395209580838326 AUC 0.7342084124434058
-                    - Epoch: 1 - Train_loss: 0.61745 - Train_acc: 0.66557 -  - Val_loss: 0.43583 - Val_acc: 0.81734  - T_Time: 393.80975 LR：0.0005000000
-                    --------------------------------------------------
-
-                    Validation  score to (inf --> -0.43582813).  Saving model ...
-                    --------------------------------------------------
-
-                    -- -- The best model for validate (F1= .  0.38142728522948766 ) -- --
-                    Validate: 
-                      0.38142728522948766 
-                     [2359 4898] 
-                     [  72 1264] 
-                     precision:  0.20512820512820512 recall:  0.9461077844311377 AUC 0.746710279317347
-                    - Epoch: 2 - Train_loss: 0.59084 - Train_acc: 0.68852 -  - Val_loss: 0.80134 - Val_acc: 0.42170  - T_Time: 408.06897 LR：0.0005000000
-                    EarlyStopping counter: 1 out of 30
-
-                    EarlyStopping counter: 2 out of 30
-
-                    -- -- The best model for validate (F1= .  0.45057432378006546 ) -- --
-                    Validate: 
-                      0.45057432378006546 
-                     [5132 2125] 
-                     [419 917] 
-                     precision:  0.30144641683103224 recall:  0.686377245508982 AUC 0.7630387736309109
-                    - Epoch: 4 - Train_loss: 0.57781 - Train_acc: 0.69849 -  - Val_loss: 0.57718 - Val_acc: 0.70394  - T_Time: 373.70138 LR：0.0005000000
-                    EarlyStopping counter: 3 out of 30
-
-                    EarlyStopping counter: 4 out of 30
-
-                    --------------------------------------------------
-
-                    Validation  score to (-0.43582813 --> -0.43527842).  Saving model ...
-                    --------------------------------------------------
-
-                    EarlyStopping counter: 1 out of 30
-
-                    --------------------------------------------------
-
-                    Validation  score to (-0.43527842 --> -0.41214930).  Saving model ...
-                    --------------------------------------------------
-
-                    --------------------------------------------------
-
-                    Validation  score to (-0.41214930 --> -0.40622755).  Saving model ...
-                    --------------------------------------------------
-
-                    -- -- The best model for validate (F1= .  0.4671272833653127 ) -- --
-                    Validate: 
-                      0.4671272833653127 
-                     [5422 1835] 
-                     [446 890] 
-                     precision:  0.326605504587156 recall:  0.6661676646706587 AUC 0.7766019222406778
-                    - Epoch: 10 - Train_loss: 0.56134 - Train_acc: 0.71506 -  - Val_loss: 0.49196 - Val_acc: 0.73442  - T_Time: 400.77344 LR：0.0005000000
-                    EarlyStopping counter: 1 out of 30
-
-                    EarlyStopping counter: 2 out of 30
-
-                    EarlyStopping counter: 3 out of 30
-
-                    EarlyStopping counter: 4 out of 30
-
-                    --------------------------------------------------
-
-                    Validation  score to (-0.40622755 --> -0.39530133).  Saving model ...
-                    --------------------------------------------------
-
-                    EarlyStopping counter: 1 out of 30
-
-                    EarlyStopping counter: 2 out of 30
-
-                    EarlyStopping counter: 3 out of 30
-
-                    EarlyStopping counter: 4 out of 30
-
-                    EarlyStopping counter: 5 out of 30
-
-                    EarlyStopping counter: 6 out of 30
-
-                    EarlyStopping counter: 7 out of 30
-
-                    EarlyStopping counter: 8 out of 30
-
-                    -- -- The best model for validate (F1= .  0.47120276317356613 ) -- --
-                    Validate: 
-                      0.47120276317356613 
-                     [5387 1870] 
-                     [428 908] 
-                     precision:  0.32685385169186465 recall:  0.6796407185628742 AUC 0.7789160723612717
-                    - Epoch: 23 - Train_loss: 0.52360 - Train_acc: 0.74201 -  - Val_loss: 0.48600 - Val_acc: 0.73176  - T_Time: 423.08151 LR：0.0005000000
-                    EarlyStopping counter: 9 out of 30
-
-                    EarlyStopping counter: 10 out of 30
-
-                    EarlyStopping counter: 11 out of 30
-
-                    EarlyStopping counter: 12 out of 30
-
-                    -- -- The best model for validate (F1= .  0.47174858177234014 ) -- --
-                    Validate: 
-                      0.47174858177234014 
-                     [5188 2069] 
-                     [379 957] 
-                     precision:  0.3162590879048249 recall:  0.7163173652694611 AUC 0.7819133333168304
-                    - Epoch: 27 - Train_loss: 0.47871 - Train_acc: 0.77560 -  - Val_loss: 0.51656 - Val_acc: 0.71444  - T_Time: 397.30520 LR：0.0000500000
-                    EarlyStopping counter: 13 out of 30
-
-                    EarlyStopping counter: 14 out of 30
-
-                    EarlyStopping counter: 15 out of 30
-
-                    EarlyStopping counter: 16 out of 30
-
-                    EarlyStopping counter: 17 out of 30
-
-                    EarlyStopping counter: 18 out of 30
-
-                    EarlyStopping counter: 19 out of 30
-
-                    EarlyStopping counter: 20 out of 30
-
-                    EarlyStopping counter: 21 out of 30
-
-                    EarlyStopping counter: 22 out of 30
-
-                    EarlyStopping counter: 23 out of 30
-
-                    EarlyStopping counter: 24 out of 30
-
-                    EarlyStopping counter: 25 out of 30
-
-                    EarlyStopping counter: 26 out of 30
-
-                    -- -- The best model for validate (F1= .  0.4732741091369712 ) -- --
-                    Validate: 
-                      0.4732741091369712 
-                     [5312 1945] 
-                     [405 931] 
-                     precision:  0.32371349095966623 recall:  0.6968562874251497 AUC 0.7773117469071779
-                    - Epoch: 41 - Train_loss: 0.43503 - Train_acc: 0.80383 -  - Val_loss: 0.52689 - Val_acc: 0.72579  - T_Time: 404.07432 LR：0.0000050000
-                    EarlyStopping counter: 27 out of 30
-
-                    EarlyStopping counter: 28 out of 30
-
-                    EarlyStopping counter: 29 out of 30
-
-                    EarlyStopping counter: 30 out of 30
-
-                    Early stopping...
-     Best Loss:
-          valid
-           [6401  856] 
-           [788 548]
-          F1:  0.4
-          AUC:  0.7735122974390203
-          precision:  0.3903133903133903
-          recall:  0.4101796407185629
-          test
-           [2077  260] 
-           [315 174]
-          F1:  0.37703141928494044
-          AUC:  0.7371803117449967
-          precision:  0.4009216589861751
-          recall:  0.3558282208588957
-
-
-
-     Best Sore:
-          valid
-           [5312 1945] 
-           [405 931]
-          F1:  0.4420702754036087
-          AUC:  0.7773117469071779
-          precision:  0.32371349095966623
-          recall:  0.6968562874251497
-          test
-           [1712  625] 
-           [199 290]
-          F1:  0.41310541310541316
-          AUC:  0.7361464412190135
-          precision:  0.31693989071038253
-          recall:  0.5930470347648262
-          ==================================================
-          Fold 3 Training Finished
-
-
-          Fold 4 of 5 :
-                    -- -- The best model for validate (F1= .  0.40648767605633807 ) -- --
-                    Validate: 
-                      0.40648767605633807 
-                     [5356 1987] 
-                     [493 757] 
-                     precision:  0.2758746355685131 recall:  0.6056 AUC 0.7400780607381179
-                    - Epoch: 1 - Train_loss: 0.62640 - Train_acc: 0.66711 -  - Val_loss: 0.51125 - Val_acc: 0.71112  - T_Time: 376.12093 LR：0.0005000000
-                    --------------------------------------------------
-
-                    Validation  score to (inf --> -0.51125331).  Saving model ...
-                    --------------------------------------------------
-
-                    -- -- The best model for validate (F1= .  0.412292067939065 ) -- --
-                    Validate: 
-                      0.412292067939065 
-                     [4397 2946] 
-                     [285 965] 
-                     precision:  0.2467399642035285 recall:  0.772 AUC 0.7414382132643333
-                    - Epoch: 2 - Train_loss: 0.59296 - Train_acc: 0.68774 -  - Val_loss: 0.71663 - Val_acc: 0.62343  - T_Time: 400.91754 LR：0.0005000000
-                    EarlyStopping counter: 1 out of 30
-
-                    EarlyStopping counter: 2 out of 30
-
-                    --------------------------------------------------
-
-                    Validation  score to (-0.51125331 --> -0.45085295).  Saving model ...
-                    --------------------------------------------------
-
-                    -- -- The best model for validate (F1= .  0.4202155805977463 ) -- --
-                    Validate: 
-                      0.4202155805977463 
-                     [5764 1579] 
-                     [547 703] 
-                     precision:  0.30806310254163016 recall:  0.5624 AUC 0.7495560942394116
-                    - Epoch: 5 - Train_loss: 0.57218 - Train_acc: 0.70586 -  - Val_loss: 0.47257 - Val_acc: 0.75293  - T_Time: 385.14000 LR：0.0005000000
-                    EarlyStopping counter: 1 out of 30
-
-                    EarlyStopping counter: 2 out of 30
-
-                    -- -- The best model for validate (F1= .  0.4231078750718529 ) -- --
-                    Validate: 
-                      0.4231078750718529 
-                     [4829 2514] 
-                     [345 905] 
-                     precision:  0.2646972799064054 recall:  0.724 AUC 0.7504172681465341
-                    - Epoch: 7 - Train_loss: 0.56910 - Train_acc: 0.70655 -  - Val_loss: 0.57417 - Val_acc: 0.66722  - T_Time: 422.21689 LR：0.0005000000
-                    EarlyStopping counter: 3 out of 30
-
-                    -- -- The best model for validate (F1= .  0.43200735801333634 ) -- --
-                    Validate: 
-                      0.43200735801333634 
-                     [5564 1779] 
-                     [480 770] 
-                     precision:  0.3020792467634366 recall:  0.616 AUC 0.7550467656271278
-                    - Epoch: 8 - Train_loss: 0.56234 - Train_acc: 0.71230 -  - Val_loss: 0.46799 - Val_acc: 0.73774  - T_Time: 398.62331 LR：0.0005000000
-                    EarlyStopping counter: 4 out of 30
-
-                    EarlyStopping counter: 5 out of 30
-
-                    EarlyStopping counter: 6 out of 30
-
-                    --------------------------------------------------
-
-                    Validation  score to (-0.45085295 --> -0.41065772).  Saving model ...
-                    --------------------------------------------------
-
-                    EarlyStopping counter: 1 out of 30
-
-                    EarlyStopping counter: 2 out of 30
-
-                    EarlyStopping counter: 3 out of 30
-
-                    EarlyStopping counter: 4 out of 30
-
-                    EarlyStopping counter: 5 out of 30
-
-                    -- -- The best model for validate (F1= .  0.43511659807956105 ) -- --
-                    Validate: 
-                      0.43511659807956105 
-                     [5549 1794] 
-                     [470 780] 
-                     precision:  0.30303030303030304 recall:  0.624 AUC 0.7623635026555904
-                    - Epoch: 17 - Train_loss: 0.54448 - Train_acc: 0.72577 -  - Val_loss: 0.47535 - Val_acc: 0.73567  - T_Time: 417.88590 LR：0.0005000000
-                    EarlyStopping counter: 6 out of 30
-
-                    EarlyStopping counter: 7 out of 30
-
-                    EarlyStopping counter: 8 out of 30
-
-                    EarlyStopping counter: 9 out of 30
-
-                    EarlyStopping counter: 10 out of 30
-
-                    EarlyStopping counter: 11 out of 30
-
-                    EarlyStopping counter: 12 out of 30
-
-                    EarlyStopping counter: 13 out of 30
-
-                    EarlyStopping counter: 14 out of 30
-
-                    EarlyStopping counter: 15 out of 30
-
-                    EarlyStopping counter: 16 out of 30
-
-                    EarlyStopping counter: 17 out of 30
-
-                    EarlyStopping counter: 18 out of 30
-
-                    EarlyStopping counter: 19 out of 30
-
-                    EarlyStopping counter: 20 out of 30
-
-                    EarlyStopping counter: 21 out of 30
-
-                    -- -- The best model for validate (F1= .  0.43598918431725997 ) -- --
-                    Validate: 
-                      0.43598918431725997 
-                     [5498 1845] 
-                     [457 793] 
-                     precision:  0.300606520090978 recall:  0.6344 AUC 0.7602131009124335
-                    - Epoch: 33 - Train_loss: 0.45772 - Train_acc: 0.78930 -  - Val_loss: 0.51156 - Val_acc: 0.73227  - T_Time: 459.55917 LR：0.0000500000
-                    EarlyStopping counter: 22 out of 30
-
-                    EarlyStopping counter: 23 out of 30
-
-                    EarlyStopping counter: 24 out of 30
-
-                    EarlyStopping counter: 25 out of 30
-
-                    EarlyStopping counter: 26 out of 30
-
-                    EarlyStopping counter: 27 out of 30
-
-                    EarlyStopping counter: 28 out of 30
-
-                    EarlyStopping counter: 29 out of 30
-
-                    EarlyStopping counter: 30 out of 30
-
-                    Early stopping...
-     Best Loss:
-          valid
-           [6453  890] 
-           [771 479]
-          F1:  0.3657884688812524
-          AUC:  0.7521828135639385
-          precision:  0.34989043097151207
-          recall:  0.3832
-          test
-           [2119  218] 
-           [323 166]
-          F1:  0.3802978235967927
-          AUC:  0.7505760010780606
-          precision:  0.4322916666666667
-          recall:  0.3394683026584867
-
-
-
-     Best Sore:
-          valid
-           [5498 1845] 
-           [457 793]
-          F1:  0.40792181069958844
-          AUC:  0.7602131009124338
-          precision:  0.300606520090978
-          recall:  0.6344
-          test
-           [1787  550] 
-           [196 293]
-          F1:  0.4399399399399399
-          AUC:  0.751997955885274
-          precision:  0.3475682087781732
-          recall:  0.5991820040899796
-          ==================================================
-          Fold 4 Training Finished
-
-
      ==================================================
-train_loss [0.4099972050872434, 0.4992508150387874, 0.4668195656462673, 0.4370094939900154, 0.4488145314627864]  mean: 0.45237832224501995 
-     train_acc [0.8216553001312049, 0.7569796564071726, 0.7834119765471244, 0.8016371569538596, 0.7936802973977695]  mean: 0.7914728774874261 
+train_loss [0.5942628866917378]  mean: 0.5942628866917378 
+     train_acc [0.6798015202702703]  mean: 0.6798015202702703 
 
-     validate_loss [0.5702891341027092, 0.5964528935797074, 0.5218376753961339, 0.5252688071307015, 0.5106176620020586]  mean: 0.5448932344422621 
-     validate_acc [0.711920005070994, 0.6442032200811358, 0.7078449860547668, 0.7268429893509127, 0.7320938450811358]  mean: 0.704581009127789 
-     validate_precision [0.29780775716694774, 0.27657378740970073, 0.30337443218689164, 0.32371349095966623, 0.300606520090978]  mean: 0.30041519756283686 
-     validate_recall [0.6930926216640503, 0.8029962546816479, 0.7203389830508474, 0.6968562874251497, 0.6344]  mean: 0.709536829364339 
-     validate_auc [0.7650989242639156, 0.7700482381316548, 0.7774059527442969, 0.7773117469071779, 0.7602131009124338]  mean: 0.7700155925918958 
+     validate_loss [0.6966613978147507]  mean: 0.6966613978147507 
+     validate_acc [0.605251736111111]  mean: 0.605251736111111 
+     validate_precision [0.5962491153573957]  mean: 0.5962491153573957 
+     validate_recall [0.9813628421665695]  mean: 0.9813628421665695 
+     validate_auc [0.6656200758024786]  mean: 0.6656200758024786 
 
-     test_loss [0.5530414829651514, 0.5852784415086111, 0.5223939418792725, 0.5520800650119781, 0.5065538187821707]  mean: 0.5438695500294368 
-     test_acc [0.7212890625, 0.6475260416666667, 0.71328125, 0.7157552083333334, 0.7491536458333333]  mean: 0.7094010416666666 
-     test_precision [0.3256578947368421, 0.292, 0.33540372670807456, 0.31693989071038253, 0.3475682087781732]  mean: 0.3235139441866945 
-     test_recall [0.6073619631901841, 0.7464212678936605, 0.6625766871165644, 0.5930470347648262, 0.5991820040899796]  mean: 0.6417177914110429 
-     test_auc [0.7509338961649222, 0.7602662949458038, 0.7532912784730044, 0.7361464412190135, 0.751997955885274]  mean: 0.7505271733376035
+     test_loss [1.087636798620224]  mean: 1.087636798620224 
+     test_acc [0.24453125]  mean: 0.24453125 
+     test_precision [0.18399690761499807]  mean: 0.18399690761499807 
+     test_recall [0.9734151329243353]  mean: 0.9734151329243353 
+     test_auc [0.6500258577012634]  mean: 0.6500258577012634
      ==================================================
 Training Finished
-train_loss [0.4099972050872434, 0.4992508150387874, 0.4668195656462673, 0.4370094939900154, 0.4488145314627864]  mean: 0.45237832224501995 
-     train_acc [0.8216553001312049, 0.7569796564071726, 0.7834119765471244, 0.8016371569538596, 0.7936802973977695]  mean: 0.7914728774874261 
+train_loss [0.5942628866917378]  mean: 0.5942628866917378 
+     train_acc [0.6798015202702703]  mean: 0.6798015202702703 
 
-     validate_loss [0.5702891341027092, 0.5964528935797074, 0.5218376753961339, 0.5252688071307015, 0.5106176620020586]  mean: 0.5448932344422621 
-     validate_acc [0.711920005070994, 0.6442032200811358, 0.7078449860547668, 0.7268429893509127, 0.7320938450811358]  mean: 0.704581009127789 
-     validate_precision [0.29780775716694774, 0.27657378740970073, 0.30337443218689164, 0.32371349095966623, 0.300606520090978]  mean: 0.30041519756283686 
-     validate_recall [0.6930926216640503, 0.8029962546816479, 0.7203389830508474, 0.6968562874251497, 0.6344]  mean: 0.709536829364339 
-     validate_auc [0.7650989242639156, 0.7700482381316548, 0.7774059527442969, 0.7773117469071779, 0.7602131009124338]  mean: 0.7700155925918958 
+     validate_loss [0.6966613978147507]  mean: 0.6966613978147507 
+     validate_acc [0.605251736111111]  mean: 0.605251736111111 
+     validate_precision [0.5962491153573957]  mean: 0.5962491153573957 
+     validate_recall [0.9813628421665695]  mean: 0.9813628421665695 
+     validate_auc [0.6656200758024786]  mean: 0.6656200758024786 
 
-     test_loss [0.5530414829651514, 0.5852784415086111, 0.5223939418792725, 0.5520800650119781, 0.5065538187821707]  mean: 0.5438695500294368 
-     test_acc [0.7212890625, 0.6475260416666667, 0.71328125, 0.7157552083333334, 0.7491536458333333]  mean: 0.7094010416666666 
-     test_precision [0.3256578947368421, 0.292, 0.33540372670807456, 0.31693989071038253, 0.3475682087781732]  mean: 0.3235139441866945 
-     test_recall [0.6073619631901841, 0.7464212678936605, 0.6625766871165644, 0.5930470347648262, 0.5991820040899796]  mean: 0.6417177914110429 
-     test_auc [0.7509338961649222, 0.7602662949458038, 0.7532912784730044, 0.7361464412190135, 0.751997955885274]  mean: 0.7505271733376035
+     test_loss [1.087636798620224]  mean: 1.087636798620224 
+     test_acc [0.24453125]  mean: 0.24453125 
+     test_precision [0.18399690761499807]  mean: 0.18399690761499807 
+     test_recall [0.9734151329243353]  mean: 0.9734151329243353 
+     test_auc [0.6500258577012634]  mean: 0.6500258577012634
      ==================================================
-train_loss [0.4099972050872434, 0.4992508150387874, 0.4668195656462673, 0.4370094939900154, 0.4488145314627864]  mean: 0.45237832224501995 
-     train_acc [0.8216553001312049, 0.7569796564071726, 0.7834119765471244, 0.8016371569538596, 0.7936802973977695]  mean: 0.7914728774874261 
+train_loss [0.5942628866917378]  mean: 0.5942628866917378 
+     train_acc [0.6798015202702703]  mean: 0.6798015202702703 
 
-     validate_loss [0.5702891341027092, 0.5964528935797074, 0.5218376753961339, 0.5252688071307015, 0.5106176620020586]  mean: 0.5448932344422621 
-     validate_acc [0.711920005070994, 0.6442032200811358, 0.7078449860547668, 0.7268429893509127, 0.7320938450811358]  mean: 0.704581009127789 
-     validate_precision [0.29780775716694774, 0.27657378740970073, 0.30337443218689164, 0.32371349095966623, 0.300606520090978]  mean: 0.30041519756283686 
-     validate_recall [0.6930926216640503, 0.8029962546816479, 0.7203389830508474, 0.6968562874251497, 0.6344]  mean: 0.709536829364339 
-     validate_auc [0.7650989242639156, 0.7700482381316548, 0.7774059527442969, 0.7773117469071779, 0.7602131009124338]  mean: 0.7700155925918958 
+     validate_loss [0.6966613978147507]  mean: 0.6966613978147507 
+     validate_acc [0.605251736111111]  mean: 0.605251736111111 
+     validate_precision [0.5962491153573957]  mean: 0.5962491153573957 
+     validate_recall [0.9813628421665695]  mean: 0.9813628421665695 
+     validate_auc [0.6656200758024786]  mean: 0.6656200758024786 
 
-     test_loss [0.5530414829651514, 0.5852784415086111, 0.5223939418792725, 0.5520800650119781, 0.5065538187821707]  mean: 0.5438695500294368 
-     test_acc [0.7212890625, 0.6475260416666667, 0.71328125, 0.7157552083333334, 0.7491536458333333]  mean: 0.7094010416666666 
-     test_precision [0.3256578947368421, 0.292, 0.33540372670807456, 0.31693989071038253, 0.3475682087781732]  mean: 0.3235139441866945 
-     test_recall [0.6073619631901841, 0.7464212678936605, 0.6625766871165644, 0.5930470347648262, 0.5991820040899796]  mean: 0.6417177914110429 
-     test_auc [0.7509338961649222, 0.7602662949458038, 0.7532912784730044, 0.7361464412190135, 0.751997955885274]  mean: 0.7505271733376035
+     test_loss [1.087636798620224]  mean: 1.087636798620224 
+     test_acc [0.24453125]  mean: 0.24453125 
+     test_precision [0.18399690761499807]  mean: 0.18399690761499807 
+     test_recall [0.9734151329243353]  mean: 0.9734151329243353 
+     test_auc [0.6500258577012634]  mean: 0.6500258577012634
      ==================================================
-train_loss [0.4099972050872434, 0.4992508150387874, 0.4668195656462673, 0.4370094939900154, 0.4488145314627864]  mean: 0.45237832224501995 
-     train_acc [0.8216553001312049, 0.7569796564071726, 0.7834119765471244, 0.8016371569538596, 0.7936802973977695]  mean: 0.7914728774874261 
+train_loss [0.5942628866917378]  mean: 0.5942628866917378 
+     train_acc [0.6798015202702703]  mean: 0.6798015202702703 
 
-     validate_loss [0.5702891341027092, 0.5964528935797074, 0.5218376753961339, 0.5252688071307015, 0.5106176620020586]  mean: 0.5448932344422621 
-     validate_acc [0.711920005070994, 0.6442032200811358, 0.7078449860547668, 0.7268429893509127, 0.7320938450811358]  mean: 0.704581009127789 
-     validate_precision [0.29780775716694774, 0.27657378740970073, 0.30337443218689164, 0.32371349095966623, 0.300606520090978]  mean: 0.30041519756283686 
-     validate_recall [0.6930926216640503, 0.8029962546816479, 0.7203389830508474, 0.6968562874251497, 0.6344]  mean: 0.709536829364339 
-     validate_auc [0.7650989242639156, 0.7700482381316548, 0.7774059527442969, 0.7773117469071779, 0.7602131009124338]  mean: 0.7700155925918958 
+     validate_loss [0.6966613978147507]  mean: 0.6966613978147507 
+     validate_acc [0.605251736111111]  mean: 0.605251736111111 
+     validate_precision [0.5962491153573957]  mean: 0.5962491153573957 
+     validate_recall [0.9813628421665695]  mean: 0.9813628421665695 
+     validate_auc [0.6656200758024786]  mean: 0.6656200758024786 
 
-     test_loss [0.5530414829651514, 0.5852784415086111, 0.5223939418792725, 0.5520800650119781, 0.5065538187821707]  mean: 0.5438695500294368 
-     test_acc [0.7212890625, 0.6475260416666667, 0.71328125, 0.7157552083333334, 0.7491536458333333]  mean: 0.7094010416666666 
-     test_precision [0.3256578947368421, 0.292, 0.33540372670807456, 0.31693989071038253, 0.3475682087781732]  mean: 0.3235139441866945 
-     test_recall [0.6073619631901841, 0.7464212678936605, 0.6625766871165644, 0.5930470347648262, 0.5991820040899796]  mean: 0.6417177914110429 
-     test_auc [0.7509338961649222, 0.7602662949458038, 0.7532912784730044, 0.7361464412190135, 0.751997955885274]  mean: 0.7505271733376035
+     test_loss [1.087636798620224]  mean: 1.087636798620224 
+     test_acc [0.24453125]  mean: 0.24453125 
+     test_precision [0.18399690761499807]  mean: 0.18399690761499807 
+     test_recall [0.9734151329243353]  mean: 0.9734151329243353 
+     test_auc [0.6500258577012634]  mean: 0.6500258577012634
      ==================================================
-train_loss [0.4099972050872434, 0.4992508150387874, 0.4668195656462673, 0.4370094939900154, 0.4488145314627864]  mean: 0.45237832224501995 
-     train_acc [0.8216553001312049, 0.7569796564071726, 0.7834119765471244, 0.8016371569538596, 0.7936802973977695]  mean: 0.7914728774874261 
+train_loss [0.5942628866917378]  mean: 0.5942628866917378 
+     train_acc [0.6798015202702703]  mean: 0.6798015202702703 
 
-     validate_loss [0.5702891341027092, 0.5964528935797074, 0.5218376753961339, 0.5252688071307015, 0.5106176620020586]  mean: 0.5448932344422621 
-     validate_acc [0.711920005070994, 0.6442032200811358, 0.7078449860547668, 0.7268429893509127, 0.7320938450811358]  mean: 0.704581009127789 
-     validate_precision [0.29780775716694774, 0.27657378740970073, 0.30337443218689164, 0.32371349095966623, 0.300606520090978]  mean: 0.30041519756283686 
-     validate_recall [0.6930926216640503, 0.8029962546816479, 0.7203389830508474, 0.6968562874251497, 0.6344]  mean: 0.709536829364339 
-     validate_auc [0.7650989242639156, 0.7700482381316548, 0.7774059527442969, 0.7773117469071779, 0.7602131009124338]  mean: 0.7700155925918958 
+     validate_loss [0.6966613978147507]  mean: 0.6966613978147507 
+     validate_acc [0.605251736111111]  mean: 0.605251736111111 
+     validate_precision [0.5962491153573957]  mean: 0.5962491153573957 
+     validate_recall [0.9813628421665695]  mean: 0.9813628421665695 
+     validate_auc [0.6656200758024786]  mean: 0.6656200758024786 
 
-     test_loss [0.5530414829651514, 0.5852784415086111, 0.5223939418792725, 0.5520800650119781, 0.5065538187821707]  mean: 0.5438695500294368 
-     test_acc [0.7212890625, 0.6475260416666667, 0.71328125, 0.7157552083333334, 0.7491536458333333]  mean: 0.7094010416666666 
-     test_precision [0.3256578947368421, 0.292, 0.33540372670807456, 0.31693989071038253, 0.3475682087781732]  mean: 0.3235139441866945 
-     test_recall [0.6073619631901841, 0.7464212678936605, 0.6625766871165644, 0.5930470347648262, 0.5991820040899796]  mean: 0.6417177914110429 
-     test_auc [0.7509338961649222, 0.7602662949458038, 0.7532912784730044, 0.7361464412190135, 0.751997955885274]  mean: 0.7505271733376035
+     test_loss [1.087636798620224]  mean: 1.087636798620224 
+     test_acc [0.24453125]  mean: 0.24453125 
+     test_precision [0.18399690761499807]  mean: 0.18399690761499807 
+     test_recall [0.9734151329243353]  mean: 0.9734151329243353 
+     test_auc [0.6500258577012634]  mean: 0.6500258577012634
      ==================================================
-train_loss [0.4099972050872434, 0.4992508150387874, 0.4668195656462673, 0.4370094939900154, 0.4488145314627864]  mean: 0.45237832224501995 
-     train_acc [0.8216553001312049, 0.7569796564071726, 0.7834119765471244, 0.8016371569538596, 0.7936802973977695]  mean: 0.7914728774874261 
+train_loss [0.5942628866917378]  mean: 0.5942628866917378 
+     train_acc [0.6798015202702703]  mean: 0.6798015202702703 
 
-     validate_loss [0.5702891341027092, 0.5964528935797074, 0.5218376753961339, 0.5252688071307015, 0.5106176620020586]  mean: 0.5448932344422621 
-     validate_acc [0.711920005070994, 0.6442032200811358, 0.7078449860547668, 0.7268429893509127, 0.7320938450811358]  mean: 0.704581009127789 
-     validate_precision [0.29780775716694774, 0.27657378740970073, 0.30337443218689164, 0.32371349095966623, 0.300606520090978]  mean: 0.30041519756283686 
-     validate_recall [0.6930926216640503, 0.8029962546816479, 0.7203389830508474, 0.6968562874251497, 0.6344]  mean: 0.709536829364339 
-     validate_auc [0.7650989242639156, 0.7700482381316548, 0.7774059527442969, 0.7773117469071779, 0.7602131009124338]  mean: 0.7700155925918958 
+     validate_loss [0.6966613978147507]  mean: 0.6966613978147507 
+     validate_acc [0.605251736111111]  mean: 0.605251736111111 
+     validate_precision [0.5962491153573957]  mean: 0.5962491153573957 
+     validate_recall [0.9813628421665695]  mean: 0.9813628421665695 
+     validate_auc [0.6656200758024786]  mean: 0.6656200758024786 
 
-     test_loss [0.5530414829651514, 0.5852784415086111, 0.5223939418792725, 0.5520800650119781, 0.5065538187821707]  mean: 0.5438695500294368 
-     test_acc [0.7212890625, 0.6475260416666667, 0.71328125, 0.7157552083333334, 0.7491536458333333]  mean: 0.7094010416666666 
-     test_precision [0.3256578947368421, 0.292, 0.33540372670807456, 0.31693989071038253, 0.3475682087781732]  mean: 0.3235139441866945 
-     test_recall [0.6073619631901841, 0.7464212678936605, 0.6625766871165644, 0.5930470347648262, 0.5991820040899796]  mean: 0.6417177914110429 
-     test_auc [0.7509338961649222, 0.7602662949458038, 0.7532912784730044, 0.7361464412190135, 0.751997955885274]  mean: 0.7505271733376035
+     test_loss [1.087636798620224]  mean: 1.087636798620224 
+     test_acc [0.24453125]  mean: 0.24453125 
+     test_precision [0.18399690761499807]  mean: 0.18399690761499807 
+     test_recall [0.9734151329243353]  mean: 0.9734151329243353 
+     test_auc [0.6500258577012634]  mean: 0.6500258577012634
      ==================================================
-copy ./log.log -> ./logs/20240120_224617/log.log
+copy ./log.log -> ./logs/20240126_115042/log.log

@@ -15,22 +15,25 @@ def pair_HTN(INPUT_HTN_Df:pd.DataFrame,INPUT_NHTN_Df:pd.DataFrame,Range_max:int 
     if(shuffle): #打乱
         HTN_Df = (HTN_Df.sample(frac=1))
         NHTN_Df = (NHTN_Df.sample(frac=1))
-    pair_Df = HTN_Df #先将所有HTN存放入其中
-    for info in HTN_Df.itertuples(): #遍历每一个HTN样本 寻找与之配对的样本
+    pair_list = HTN_Df.values.tolist()
+    drop_indices = []
+    for info in HTN_Df.itertuples():
         age = info.age
         gender = info.gender
         candidate_NHTN_Df = pd.DataFrame()
-        for Range in range(1,Range_max): #在 ±Range_max 范围内搜寻ages，且gender相同的NHTN样本
+        for Range in range(1,Range_max):
             candidate_NHTN_Df = NHTN_Df[(NHTN_Df['age']>age-Range)&(NHTN_Df['age']<age+Range)&(NHTN_Df['gender']==gender)]
-            if(len(candidate_NHTN_Df)>=pair_num):#候选>0时，即使跳出，确保抽取出的样本年龄尽可能与其相近
+            if len(candidate_NHTN_Df)>=pair_num:
                 break
-        if(len(candidate_NHTN_Df)<pair_num):# ±Range_max 范围内都没有，那么就从所有NHTN样本（已经删除了之前被抽到的）中抽 pair_num 个
+        if len(candidate_NHTN_Df)<pair_num:
             print("lack sample like :",info)
             candidate_NHTN_Df = NHTN_Df
-        NHTN_data_buff = candidate_NHTN_Df.sample(n=pair_num) #从candidate中随机抽样 pair_num 个样本 ,带来了随机性！！！
-        pair_Df = pair_Df.append(NHTN_data_buff)
-        NHTN_Df = NHTN_Df.drop(index= (NHTN_data_buff.index))#删除抽中的那个样本
-    return pair_Df    #输出配对完之后的DF
+        NHTN_data_buff = candidate_NHTN_Df.sample(n=pair_num)
+        pair_list.extend(NHTN_data_buff.values.tolist())
+        drop_indices.extend(NHTN_data_buff.index)
+    NHTN_Df = NHTN_Df.drop(index=drop_indices)
+    pair_Df = pd.DataFrame(pair_list, columns=HTN_Df.columns)
+    return pair_Df   #输出配对完之后的DF
 
 # 将Input_DF中从star_index:HTN_pair_size 个label==1的ID 进行配对
 def Pair_ID(Input_DF,HTN_pair_rate:float,star_index:int = 0,Range_max:int = 5,shuffle:bool = False,pair_num:int = 3, ):
@@ -40,15 +43,15 @@ def Pair_ID(Input_DF,HTN_pair_rate:float,star_index:int = 0,Range_max:int = 5,sh
     HTN_size = HTN_data['ID'].unique().__len__()
     HTN_pair_size = int(HTN_size*HTN_pair_rate) 
     HTN_ID_pair_list = HTN_ID_list[star_index:star_index+HTN_pair_size]#选取用来pair的ID号 从star_index 到star_index+HTN_pair_size
-    HTN_pair_index = HTN_data[[True if i in HTN_ID_pair_list else False for i in HTN_data['ID']]].index
+    HTN_pair_index = HTN_data[HTN_data['ID'].isin(HTN_ID_pair_list)].index
     HTN_pair_data = HTN_data.loc[HTN_pair_index].copy()
     pair_ID_list = pair_HTN(HTN_pair_data.drop_duplicates(['ID'],keep='first'),NHTN_data.drop_duplicates(['ID'],keep='first'),
                             Range_max=Range_max,
                             pair_num=pair_num,
                             shuffle=shuffle)['ID'].tolist()#按照年龄和性别对每个ID号去配对 (先去除重复ID)
-    pair_index = Input_DF[[True if i in pair_ID_list else False for i in Input_DF['ID']]].index
+    pair_index = Input_DF[Input_DF['ID'].isin(pair_ID_list)].index
     pair_df = Input_DF.loc[pair_index].copy()
-    left_index = Input_DF[[False if i in pair_ID_list else True for i in Input_DF['ID']]].index #不在test_ID_list的ID 即为tv的
+    left_index = Input_DF[~Input_DF['ID'].isin(pair_ID_list)].index #不在test_ID_list的ID 即为tv的
     left_df = Input_DF.loc[left_index].copy()
     return pair_df,left_df
 
@@ -68,7 +71,7 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGHandle.ECG_Dataset ,val_datas
                         onehot_lable = False,
                         pair_flag = False,
                         train_Df:pd.DataFrame = None,# type: ignore      
-                        data_path = ''                  
+                        data_path = '' ,            
                         ):
     
     
@@ -83,54 +86,48 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGHandle.ECG_Dataset ,val_datas
         samples_weight = samples_weight.double()
         sampler_train = Data.WeightedRandomSampler(samples_weight, 2*len(samples_weight))  # type: ignore
         train_dataloader = Data.DataLoader(dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=False,num_workers=num_workers,pin_memory=True,sampler=sampler_train)#
-    
-        # valid_dataloader = Data.DataLoader(dataset=val_dataset, batch_size=BATCH_SIZE, shuffle=shuffle,num_workers=num_workers,pin_memory=True)
-        # test_dataloader = Data.DataLoader(dataset=test_dataset, batch_size=BATCH_SIZE, shuffle=True,num_workers=num_workers,pin_memory=True)   
     else:
         train_dataloader = Data.DataLoader(dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=shuffle,num_workers=num_workers,pin_memory=True)
         
     valid_dataloader = Data.DataLoader(dataset=val_dataset, batch_size=BATCH_SIZE, shuffle=shuffle,num_workers=num_workers,pin_memory=True)
     test_dataloader = Data.DataLoader(dataset=test_dataset, batch_size=BATCH_SIZE, shuffle=False,num_workers=num_workers,pin_memory=True)  
     
-    early_stopping = EarlyStopping(PATIENCE, verbose=True, model_path=save_model_path, delta=0, positive=False)
-    optimizer  = torch.optim.Adam(Model.parameters(), lr=LR_MAX,weight_decay=weight_decay) 
+    early_stopping = EarlyStopping(PATIENCE, verbose=True, model_path=save_model_path, delta=0, positive=True)
+    optimizer  = torch.optim.Adam(Model.parameters(), lr=LR_MAX,weight_decay=weight_decay, eps=1e-8,) 
     criterion =  criterion.to(DEVICE)
-    
-    warm_up_iter = warm_up_iter
-    # T_max = EPOCHS//4	# 周期
-    lr_max = LR_MAX	# 最大值
-    lr_min = LR_MIN	# 最小值
-    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.1, patience=10, verbose=False, threshold=0.0001, threshold_mode='rel', cooldown=0, min_lr=0, eps=1e-08)
+
+    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=0.5, patience=10, verbose=False, threshold=0.0001, threshold_mode='rel', cooldown=0, min_lr=0, eps=1e-08)
     best_scoret = 0
     Model.to(DEVICE)
     for epoch in range(1,EPOCHS):
         time_all=0
         start_time = time.time()
         
-        y_true,y_pred,train_loss,train_acc = train_model(train_dataloader, Model, criterion, optimizer,DEVICE,onehot_lable=onehot_lable) # type: ignore # 训练模型       
-        y_true,y_pred,y_out,validate_loss,validate_acc = eval_model(valid_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
-        # F1_score_valid =f1_score(y_true, y_pred, average='binary')#F1分数
-        F1_score_valid =fbeta_score(y_true, y_pred, average='binary',beta=1.2)#F1-β分数
+        y_true_train,y_pred_train,train_loss,train_acc = train_model(train_dataloader, Model, criterion, optimizer,DEVICE,onehot_lable=onehot_lable) # type: ignore # 训练模型       
+        C1 = confusion_matrix(y_true_train,y_pred_train)
+        print(" "*20+'Train : \n'," "*20,C1[0],'\n'+" "*20,C1[1])
         
+        y_true,y_pred,y_out,validate_loss,validate_acc = eval_model(valid_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
+        F1_score_valid =fbeta_score(y_true, y_pred, average='binary',beta=1.2)#F1-β分数
+        auc_valid = roc_auc_score(y_true,y_score=((np.array(y_out))[:,1]))
         if(float(F1_score_valid) > float(best_scoret)):
             best_scoret = F1_score_valid
             print(" "*20+'-- -- The best model for validate (F1= . ',best_scoret,') -- --')
             p_valid = precision_score(y_true, y_pred, average='binary')
             r_valid = recall_score(y_true, y_pred, average='binary')   
-            auc_valid = roc_auc_score(y_true,y_score=((np.array(y_out))[:,1]))
             C1 = confusion_matrix(y_true,y_pred)
             print(" "*20+'Validate: \n',' '*20,F1_score_valid,'\n'+" "*20,C1[0],'\n'+" "*20,C1[1],'\n'+" "*20,"precision: ",p_valid,"recall: ",r_valid,'AUC',auc_valid)
             time_all = time.time()-start_time
             writer.add_scalars(main_tag=str(fold)+'_Loss',tag_scalar_dict={'train': train_loss,'validate': validate_loss},global_step=epoch)
             writer.add_scalars(main_tag=str(fold)+'_Accuracy',tag_scalar_dict={'train': train_acc,'validate': validate_acc},global_step=epoch)
             writer.add_scalars(main_tag=str(fold)+'_LearningRate',tag_scalar_dict={'LR': optimizer.state_dict()['param_groups'][0]['lr']},global_step=epoch)      
-            print(" "*20+'- Epoch: %d - Train_loss: %.5f - Train_acc: %.5f -  - Val_loss: %.5f - Val_acc: %.5f  - T_Time: %.5f' %(epoch,train_loss,train_acc,validate_loss,validate_acc,time_all),'LR：%.10f' %optimizer.state_dict()['param_groups'][0]['lr'])
+            print(" "*20+'- Epoch: %d - Train_loss: %.5f - Train_acc: %.5f -  - Val_loss: %.5f - Val_acc: %.5f  - T_Time: %.5f' %(epoch,train_loss,train_acc,validate_loss,validate_acc,time_all),'LR:%.10f' %optimizer.state_dict()['param_groups'][0]['lr'])
             torch.save(Model.state_dict(), save_model_path+'/BestF1_' + str(fold) + '.pt')
             
-        scheduler.step(metrics=validate_loss) # 学习率迭代
+        scheduler.step(metrics=auc_valid) # 学习率迭代
         
         #是否满足早停法条件
-        if(early_stopping(validate_loss,Model,fold)):
+        if(early_stopping(auc_valid,Model,fold)):
             print(" "*20+"Early stopping...")
             break
         
@@ -139,15 +136,12 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGHandle.ECG_Dataset ,val_datas
                 train_dataset = ECGHandle.ECG_Dataset(data_path,train_pair_df ,preprocess = True)
                 train_dataloader = Data.DataLoader(dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=shuffle,num_workers=num_workers,pin_memory=True)
     
-    
-    
-    
     print(" "*5+'Best Loss:')
     best_model_path = save_model_path+'/parameter_EarlyStoping_' + str(fold) + '.pt' #此fold最优参数
     Model.load_state_dict(torch.load(best_model_path))
     
-    y_true,y_pred,train_loss,train_acc = train_model(train_dataloader, Model, criterion, optimizer,DEVICE,onehot_lable=onehot_lable) # type: ignore # 模型
-    Model.load_state_dict(torch.load(best_model_path))
+    # y_true,y_pred,train_loss,train_acc = train_model(train_dataloader, Model, criterion, optimizer,DEVICE,onehot_lable=onehot_lable) # type: ignore # 模型
+    # Model.load_state_dict(torch.load(best_model_path))
     
     y_true,y_pred,y_out,validate_loss,validate_acc = eval_model(valid_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
     F1_score_valid =f1_score(y_true, y_pred, average='binary')#F1分数
@@ -258,7 +252,7 @@ def tarinning_one_flod_mutilabels(fold,Model,train_dataset,val_dataset,test_data
     warm_up_iter = warm_up_iter
     T_max = EPOCHS	# 周期
     lr_max = LR_MAX	# 最大值
-    lr_min = LR_MIN	# 最小值
+    lr_min = LR_MIN	# 最大值
     lambda0 = lambda cur_iter: lr_min if  cur_iter < warm_up_iter else \
         (lr_min + 0.5*(lr_max-lr_min)*(1.0+math.cos( (cur_iter-warm_up_iter)/(T_max-warm_up_iter)*math.pi)))/0.01
     scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda=lambda0)
@@ -279,7 +273,7 @@ def tarinning_one_flod_mutilabels(fold,Model,train_dataset,val_dataset,test_data
         writer.add_scalars(main_tag=str(fold)+'_Loss',tag_scalar_dict={'train': train_loss,'validate': validate_loss},global_step=epoch)
         writer.add_scalars(main_tag=str(fold)+'_Accuracy',tag_scalar_dict={'train': train_acc,'validate': validate_acc},global_step=epoch)
         writer.add_scalars(main_tag=str(fold)+'_LearningRate',tag_scalar_dict={'LR': optimizer.state_dict()['param_groups'][0]['lr']},global_step=epoch)      
-        print(" "*20+'- Epoch: %d - Train_loss: %.5f - Train_acc: %.5f -  - Val_loss: %.5f - Val_acc: %.5f  - T_Time: %.5f' %(epoch,train_loss,train_acc,validate_loss,validate_acc,time_all),'LR：%.8f' %optimizer.state_dict()['param_groups'][0]['lr'])
+        print(" "*20+'- Epoch: %d - Train_loss: %.5f - Train_acc: %.5f -  - Val_loss: %.5f - Val_acc: %.5f  - T_Time: %.5f' %(epoch,train_loss,train_acc,validate_loss,validate_acc,time_all),'LR:%.8f' %optimizer.state_dict()['param_groups'][0]['lr'])
         
         if(best_valida_loss>validate_loss):
             best_valida_loss = validate_loss
@@ -346,8 +340,8 @@ def train_model(train_loader,model,criterion,optimizer,device,onehot_lable = Fal
         acc = num_correct/len(target) # 计算准确率
         train_loss.append(loss.item())
         train_acc.append(acc)
-        # y_ture.extend((target.to('cpu').detach().numpy().flatten()).tolist())
-        # y_pred.extend((pred.to('cpu').detach().numpy().flatten()).tolist())
+        y_ture.extend((target.to('cpu').detach().numpy().flatten()).tolist())
+        y_pred.extend((pred.to('cpu').detach().numpy().flatten()).tolist())
     return y_ture,y_pred,np.mean(train_loss),np.mean(train_acc)
 
 def eval_model(test_loader,criterion,model,device,onehot_lable=False):
