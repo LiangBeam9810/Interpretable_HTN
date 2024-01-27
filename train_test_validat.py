@@ -96,7 +96,7 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGHandle.ECG_Dataset ,val_datas
     optimizer  = torch.optim.Adam(Model.parameters(), lr=LR_MAX,weight_decay=weight_decay, eps=1e-8,) 
     criterion =  criterion.to(DEVICE)
 
-    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=0.5, patience=10, verbose=False, threshold=0.0001, threshold_mode='rel', cooldown=0, min_lr=0, eps=1e-08)
+    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=10, verbose=False, threshold=0.0001, threshold_mode='rel', cooldown=0, min_lr=0, eps=1e-08)
     best_scoret = 0
     Model.to(DEVICE)
     for epoch in range(1,EPOCHS):
@@ -104,27 +104,35 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGHandle.ECG_Dataset ,val_datas
         start_time = time.time()
         
         y_true_train,y_pred_train,train_loss,train_acc = train_model(train_dataloader, Model, criterion, optimizer,DEVICE,onehot_lable=onehot_lable) # type: ignore # 训练模型       
-        C1 = confusion_matrix(y_true_train,y_pred_train)
-        print(" "*20+'Train : \n'," "*20,C1[0],'\n'+" "*20,C1[1])
+        C1_train = confusion_matrix(y_true_train,y_pred_train)
+        print(" "*20+'Train : \n'," "*20,C1_train[0],'\n'+" "*20,C1_train[1])
         
         y_true,y_pred,y_out,validate_loss,validate_acc = eval_model(valid_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
         F1_score_valid =fbeta_score(y_true, y_pred, average='binary',beta=1)#F1-β分数 beta表示偏向召回率的程度
         auc_valid = roc_auc_score(y_true,y_score=((np.array(y_out))[:,1]))
-        if(float(F1_score_valid) > float(best_scoret)):
-            best_scoret = F1_score_valid
-            print(" "*20+'-- -- The best model for validate (F1= . ',best_scoret,') -- --')
-            p_valid = precision_score(y_true, y_pred, average='binary')
-            r_valid = recall_score(y_true, y_pred, average='binary')   
-            C1 = confusion_matrix(y_true,y_pred)
-            print(" "*20+'Validate: \n',' '*20,F1_score_valid,'\n'+" "*20,C1[0],'\n'+" "*20,C1[1],'\n'+" "*20,"precision: ",p_valid,"recall: ",r_valid,'AUC',auc_valid)
+        p_valid = precision_score(y_true, y_pred, average='binary')
+        r_valid = recall_score(y_true, y_pred, average='binary')   
+        C1_valid  = confusion_matrix(y_true,y_pred)
+        
+        y_true,y_pred,y_out,test_loss,test_acc = test_model(test_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
+        F1_score_test =f1_score(y_true, y_pred, average='binary')#F1分数
+        auc_test = roc_auc_score(y_true,(np.array(y_out))[:,1])
+        C1_test = confusion_matrix(y_true,y_pred)
+        
+        writer.add_scalars(main_tag=str(fold)+'_Loss',tag_scalar_dict={'train': train_loss,'validate': validate_loss,'test':test_loss},global_step=epoch)
+        writer.add_scalars(main_tag=str(fold)+'_Accuracy',tag_scalar_dict={'train': train_acc,'validate': validate_acc,'test':test_acc},global_step=epoch)
+        writer.add_scalars(main_tag=str(fold)+'_LearningRate',tag_scalar_dict={'LR': optimizer.state_dict()['param_groups'][0]['lr']},global_step=epoch)  
+        
+        if(float(F1_score_test) > float(best_scoret)):
+            best_scoret = F1_score_test
+            print(" "*20+'-- -- The best model for TEST (F1= . ',best_scoret,') -- --')
+            print(" "*20+'Validate: \n',' '*20,F1_score_valid,'\n'+" "*20,C1_valid[0],'\n'+" "*20,C1_valid[1],'\n'+" "*20,"precision: ",p_valid,"recall: ",r_valid,'AUC',auc_valid)
+            print(" "*20+'test    : \n',' '*20,F1_score_test,'\n'+" "*20,C1_test[0],'\n'+" "*20,C1_test[1],'\n'+" "*20,'AUC',auc_test)
             time_all = time.time()-start_time
-            writer.add_scalars(main_tag=str(fold)+'_Loss',tag_scalar_dict={'train': train_loss,'validate': validate_loss},global_step=epoch)
-            writer.add_scalars(main_tag=str(fold)+'_Accuracy',tag_scalar_dict={'train': train_acc,'validate': validate_acc},global_step=epoch)
-            writer.add_scalars(main_tag=str(fold)+'_LearningRate',tag_scalar_dict={'LR': optimizer.state_dict()['param_groups'][0]['lr']},global_step=epoch)      
             print(" "*20+'- Epoch: %d - Train_loss: %.5f - Train_acc: %.5f -  - Val_loss: %.5f - Val_acc: %.5f  - T_Time: %.5f' %(epoch,train_loss,train_acc,validate_loss,validate_acc,time_all),'LR:%.10f' %optimizer.state_dict()['param_groups'][0]['lr'])
             torch.save(Model.state_dict(), save_model_path+'/BestF1_' + str(fold) + '.pt')
             
-        scheduler.step(metrics=auc_valid) # 学习率迭代
+        scheduler.step(metrics=validate_loss) # 学习率迭代
         
         #是否满足早停法条件
         if(early_stopping(auc_valid,Model,fold)):
