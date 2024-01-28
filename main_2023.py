@@ -62,7 +62,7 @@ print(DEVICE)
 
 BATCH_SIZE = 256
 L2 = 0.07
-FOLDS = 1
+FOLDS = 5
 EPOCHS = 200  
 PATIENCE = 100
 LR = 0.001
@@ -77,7 +77,7 @@ data_root = '/workspace/data/Preprocess_HTN/datas_/'
 if __name__ == '__main__':
     L2_list = [0.001]
     BS_list = [256]
-    random_seed_list = [2024]
+    random_seed_list = [2023]
     ##############################################准备数据
     data_root = '/workspace/data/Preprocess_HTN/datas_/'
     ALL_data = pd.read_csv(data_root+'/All_data_handled_ID_range_age_IDimputate.csv',low_memory=False)

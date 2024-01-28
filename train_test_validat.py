@@ -93,7 +93,7 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGHandle.ECG_Dataset ,val_datas
     test_dataloader = Data.DataLoader(dataset=test_dataset, batch_size=BATCH_SIZE, shuffle=False,num_workers=num_workers,pin_memory=True)  
     
     early_stopping = EarlyStopping(PATIENCE, verbose=True, model_path=save_model_path, delta=0, positive=True)
-    optimizer  = torch.optim.Adam(Model.parameters(), lr=LR_MAX,weight_decay=weight_decay, eps=1e-8,) 
+    optimizer  = torch.optim.Adam(Model.parameters(), lr=LR_MAX, eps=1e-8,) 
     criterion =  criterion.to(DEVICE)
 
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=10, verbose=False, threshold=0.0001, threshold_mode='rel', cooldown=0, min_lr=0, eps=1e-08)
@@ -108,14 +108,14 @@ def tarinning_one_flod(fold,Model,train_dataset:ECGHandle.ECG_Dataset ,val_datas
         print(" "*20+'Train : \n'," "*20,C1_train[0],'\n'+" "*20,C1_train[1])
         
         y_true,y_pred,y_out,validate_loss,validate_acc = eval_model(valid_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
-        F1_score_valid =fbeta_score(y_true, y_pred, average='binary',beta=1)#F1-β分数 beta表示偏向召回率的程度
+        F1_score_valid =fbeta_score(y_true, y_pred, average='binary',beta=1.5)#F1-β分数 beta表示偏向召回率的程度
         auc_valid = roc_auc_score(y_true,y_score=((np.array(y_out))[:,1]))
         p_valid = precision_score(y_true, y_pred, average='binary')
         r_valid = recall_score(y_true, y_pred, average='binary')   
         C1_valid  = confusion_matrix(y_true,y_pred)
         
         y_true,y_pred,y_out,test_loss,test_acc = test_model(test_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
-        F1_score_test =f1_score(y_true, y_pred, average='binary')#F1分数
+        F1_score_test =fbeta_score(y_true, y_pred, average='binary',beta=1.5)#F1-β分数 beta表示偏向召回率的程度
         auc_test = roc_auc_score(y_true,(np.array(y_out))[:,1])
         C1_test = confusion_matrix(y_true,y_pred)
         
