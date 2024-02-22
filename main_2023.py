@@ -166,7 +166,7 @@ if __name__ == '__main__':
         seed_torch(random_seed)
         for fold in range(FOLDS):
             print(" "*10+ "Fold "+str(fold)+" of "+str(FOLDS) + ' :')
-            criterion =nn.CrossEntropyLoss()
+            criterion =nn.CrossEntropyLoss(weight = torch.tensor([0.17, 1]).to(device),label_smoothing=0.1)
             if(PAIR):
                 #########配对方法取训练集##########################################
                 tv_df_buffer = tv_df.copy()
