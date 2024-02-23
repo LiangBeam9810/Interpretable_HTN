@@ -74,43 +74,83 @@ log_root = './logs/'+  time_str+'/'
 model_root =  './model/'+time_str+'/'
 data_root = '/workspace/data/Preprocess_HTN/datas_/'
 
+def change_ages(df_input): #把年龄改成 数值型
+    df = df_input.copy()
+    df = df.dropna(subset=['年龄']) #删除ages== nan
+    df.loc[~(df['年龄'].str.contains('岁')==True),'年龄']='0岁' #不含有岁的（天周月）改为"0岁"
+    df['年龄'].replace(regex=True,inplace=True,to_replace=r'岁',value=r'') #删除"岁"
+    df["年龄"] = pd.to_numeric(df["年龄"],errors='coerce') #把年龄改成数值型
+    print('\n')
+    print("{:^10} {:^10} {:^20}".format('  ','orginal','removed ages NaN ed'))
+    print("{:^10} {:^10} {:^20}".format('nums',len(df_input),len(df)))
+    return df
+
 if __name__ == '__main__':
     L2_list = [0.001]
     BS_list = [256]
     random_seed_list = [2023]
     ##############################################准备数据
     data_root = '/workspace/data/Preprocess_HTN/datas_/'
-    ALL_data = pd.read_csv(data_root+'/All_data_handled_ID_range_age_IDimputate.csv',low_memory=False)
-    ALL_data = ECGHandle.change_label(ALL_data) # 剔除labelNan的数据，将label转换为0,1
-    ALL_data = ECGHandle.filter_ID(ALL_data)  #剔除ID为Nan的数据
-    ALL_data = ECGHandle.filter_QC(ALL_data)  #剔除QC为Nan的数据
-    ALL_data = ECGHandle.filter_ages(ALL_data,18) #剔除年龄大于18的数据
+    ALL_data = pd.read_csv(data_root+'/All_data_QC.csv',low_memory=False)
+
+    '''清洗原始数据'''
+    ALL_data = ALL_data[(~ALL_data['住院号'].isnull())] #剔除ID为Nan的数据
+    ALL_data = ALL_data[ALL_data['住院号'].astype(str).map(len)==6] #剔除ALL_data中的ID不为6位数的数据
+    # ALL_data = ALL_data.drop_duplicates(subset='住院号', keep='first') #剔除重复的住院号
+
+    ALL_data = ALL_data[(~ALL_data['Q'].isnull())&(ALL_data['Q']<1)]  #剔除QC为Nan的数据
+    ALL_data = ALL_data[(~ALL_data['性别'].isnull())] #剔除性别为Nan的数据
+    ALL_data = ALL_data[(~ALL_data['年龄'].isnull())] #剔除ID为Nan的数据
+    ALL_data = change_ages(ALL_data) #处理年龄中的‘岁’ 转为数字型
+    ALL_data = ALL_data[((ALL_data['年龄'].apply(int))>17) ]#选取年龄大于17
+    ALL_data = ALL_data[(ALL_data['申请部门'].str.contains('重症') == False)]#删除重症的
+
+
+
+    ALL_data.loc[(ALL_data['临床诊断'].str.contains('高血压')==True),'label']= 1 # ‘临床诊断’含有高血压的label为1
+    ALL_data.loc[~(ALL_data['label']==1),'label']= 0 #‘临床诊断’不含有高血压的label为0
+
     print('\n')
     print("{:^10} {:^10} {:^20}".format('原始标签','HTN','NHTN'))
     print("{:^10} {:^10} {:^20}".format('nums',len(ALL_data[(ALL_data['label']==1)]),len(ALL_data[(ALL_data['label']==0)])))
 
-    '''将补充诊断中所有诊断都加入临床诊断中'''
+
+    '''将补充诊断中所有诊断都加入临床诊断中,剔除没有补充诊断数据的ID'''
     Sup_diagnosis = pd.read_csv('补充诊断.csv',low_memory=False)
     Sup_diagnosis_grouped = Sup_diagnosis.groupby('住院号')['住院所有诊断'].agg(lambda x: ' '.join(map(str, x))).reset_index()
+    #将`ALL_data`和`Sup_diagnosis_grouped`进行了合并，并将'临床诊断'和'住院所有诊断'字段的值合并为一个字符串。
     ALL_data['住院号'] = ALL_data['住院号'].astype(str)
     Sup_diagnosis_grouped['住院号'] = Sup_diagnosis_grouped['住院号'].astype(str)
+    ALL_data = ALL_data[ALL_data['住院号'].isin(Sup_diagnosis_grouped['住院号'])]# 剔除ALL_data中没有Sup_diagnosis_grouped的数据
+    print('\n')
+    print("{:^15} {:^10} {:^20}".format('剔除没有补充诊断的样本','HTN','NHTN'))
+    print("{:^15} {:^10} {:^20}".format('nums',len(ALL_data[(ALL_data['label']==1)]),len(ALL_data[(ALL_data['label']==0)])))
     merged_data = pd.merge(ALL_data, Sup_diagnosis_grouped[['住院号', '住院所有诊断']], on='住院号', how='left')
     merged_data['临床诊断'] = merged_data.apply(lambda row: str(row['临床诊断']) + ' ' + str(row['住院所有诊断']), axis=1)
     merged_data = merged_data.drop('label', axis=1)
     merged_data = merged_data.drop('住院所有诊断', axis=1)
-    ALL_data = ECGHandle.change_label(merged_data)
+    ALL_data = merged_data
+    ALL_data.loc[(ALL_data['临床诊断'].str.contains('高血压')==True),'label']= 1 # ‘临床诊断’含有高血压的label为1
+    ALL_data.loc[~(ALL_data['label']==1),'label']= 0 #‘临床诊断’不含有高血压的label为0
+
     print('\n')
     print("{:^10} {:^10} {:^20}".format('更新标签','HTN','NHTN'))
     print("{:^10} {:^10} {:^20}".format('nums',len(ALL_data[(ALL_data['label']==1)]),len(ALL_data[(ALL_data['label']==0)])))
     print('\n')
-    
+
     '''剔除含有特定诊断的数据'''
-    diagnoses = ['起搏', '房颤', '左束支传导阻滞', '左前分支阻滞', '心', '旁瓣','动脉','脉瓣','尖瓣']
+    diagnoses = ['停搏','除颤','起搏', '房颤','颤动','扑动', '传导阻滞', '早搏', '房','心肌','心脏','瓣膜','动脉','脉瓣','尖瓣','室','噪声','伪','平坦','电轴','心动','窦性','心律失常','心律不齐','心力衰竭','心包积液','心功能','心跳','心电图','冠心病','心悸','心']
     for diagnose in diagnoses:
         ALL_data = ALL_data[~ALL_data['临床诊断'].str.contains(diagnose)]
         print("{:^15} {:^10} {:^20}".format('剔除'+diagnose,'HTN','NHTN'))
         print("{:^15} {:^10} {:^20}".format('nums',len(ALL_data[(ALL_data['label']==1)]),len(ALL_data[(ALL_data['label']==0)])))
+    print('\n')
+
     ALL_data = ALL_data.rename(columns={'住院号':'ID','年龄':'age','性别':'gender','姓名':'name'}) 
+    ALL_data['gender'].replace({'男': 1, '女': 2}, inplace=True)# Replace '男' with 1 and '女' with 2 in the 'gender' column of df
+    ALL_data['label'] = pd.to_numeric(ALL_data['label'],errors='coerce', downcast='integer') #把label（diagnose）改成数值型
+    ALL_data['age'] = pd.to_numeric(ALL_data['age'],errors='coerce', downcast='integer') #把label（diagnose）改成数值型
+    ALL_data['gender'] = pd.to_numeric(ALL_data['gender'],errors='coerce', downcast='integer') #把label（diagnose）改成数值型
     ##############################################
     
     for i in range(len(L2_list)):
