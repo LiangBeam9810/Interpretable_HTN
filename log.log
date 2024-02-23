@@ -82,6 +82,12 @@ cuda:0
      nums          5052           22851        
       剔除心          HTN             NHTN        
      nums          5014           22754        
+    剔除肾性高血压        HTN             NHTN        
+     nums          4894           22754        
+   剔除继发性高血压        HTN             NHTN        
+     nums          4870           22754        
+   剔除原发性醛固酮        HTN             NHTN        
+     nums          4824           22743        
 
 
 ----------------------------------------------------------------
@@ -584,3926 +590,1398 @@ Estimated Total Size (MB): 721.10
 Batchsize =  256
           Fold 0 of 5 :
                     Train : 
-                      [ 174 2908] 
-                     [ 163 3306]
-                    -- -- The best model for TEST (F1= .  0.40797981390947796 ) -- --
+                      [ 171 2796] 
+                     [ 177 3129]
+                    -- -- The best model for TEST (F1= .  0.40086275762901424 ) -- --
                     Validate: 
-                      0.8098962576720439 
-                     [  0 875] 
-                     [   0 1147] 
-                     precision:  0.5672601384767557 recall:  1.0 AUC 0.4381676422966745
+                      0.8173869458676766 
+                     [  3 813] 
+                     [   3 1129] 
+                     precision:  0.5813594232749743 recall:  0.9973498233215548 AUC 0.49088514601953853
                     test    : 
-                      0.40797981390947796 
-                     [   0 1877] 
-                     [  0 398] 
-                     AUC 0.444663380835986
-                    - Epoch: 1 - Train_loss: 0.55176 - Train_acc: 0.53088 -  - Val_loss: 0.39821 - Val_acc: 0.56690  - T_Time: 217.90453 LR:0.0010000000
+                      0.40086275762901424 
+                     [   2 1875] 
+                     [  0 386] 
+                     AUC 0.5095676873856142
+                    - Epoch: 1 - Train_loss: 0.56406 - Train_acc: 0.52547 -  - Val_loss: 0.57998 - Val_acc: 0.57840  - T_Time: 34.38106 LR:0.0010000000
                     --------------------------------------------------
 
-                    Validation  score to (inf --> 0.43816764).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 138 2915] 
-                     [ 166 3303]
-                    --------------------------------------------------
-
-                    Validation  score to (0.43816764 --> 0.53497571).  Saving model ...
+                    Validation  score to (inf --> 0.49088515).  Saving model ...
                     --------------------------------------------------
 
                     Train : 
-                      [ 119 2883] 
-                     [ 145 3324]
+                      [ 103 2889] 
+                     [ 156 3150]
                     --------------------------------------------------
 
-                    Validation  score to (0.53497571 --> 0.61362262).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 132 2928] 
-                     [ 142 3327]
-                    --------------------------------------------------
-
-                    Validation  score to (0.61362262 --> 0.68134761).  Saving model ...
+                    Validation  score to (0.49088515 --> 0.55585561).  Saving model ...
                     --------------------------------------------------
 
                     Train : 
-                      [ 133 2870] 
-                     [ 172 3297]
-                    -- -- The best model for TEST (F1= .  0.44380882081564865 ) -- --
+                      [ 154 2778] 
+                     [ 142 3164]
+                    --------------------------------------------------
+
+                    Validation  score to (0.55585561 --> 0.57100806).  Saving model ...
+                    --------------------------------------------------
+
+                    Train : 
+                      [ 142 2788] 
+                     [ 122 3184]
+                    -- -- The best model for TEST (F1= .  0.41917260559707986 ) -- --
                     Validate: 
-                      0.7964530431277711 
-                     [178 697] 
-                     [  83 1064] 
-                     precision:  0.6042021578648495 recall:  0.927637314734089 AUC 0.6836975962137253
+                      0.8044331563149387 
+                     [104 712] 
+                     [  60 1072] 
+                     precision:  0.600896860986547 recall:  0.9469964664310954 AUC 0.6487714785560867
                     test    : 
-                      0.44380882081564865 
-                     [ 433 1444] 
-                     [ 28 370] 
-                     AUC 0.6728541482050636
-                    - Epoch: 5 - Train_loss: 0.41890 - Train_acc: 0.52876 -  - Val_loss: 0.40387 - Val_acc: 0.61395  - T_Time: 36.95591 LR:0.0010000000
+                      0.41917260559707986 
+                     [ 240 1637] 
+                     [ 15 371] 
+                     AUC 0.6634374111483157
+                    - Epoch: 4 - Train_loss: 0.41549 - Train_acc: 0.53139 -  - Val_loss: 0.41916 - Val_acc: 0.60677  - T_Time: 33.11916 LR:0.0010000000
                     --------------------------------------------------
 
-                    Validation  score to (0.68134761 --> 0.68369760).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 130 2908] 
-                     [ 142 3327]
-                    --------------------------------------------------
-
-                    Validation  score to (0.68369760 --> 0.68468103).  Saving model ...
+                    Validation  score to (0.57100806 --> 0.64877148).  Saving model ...
                     --------------------------------------------------
 
                     Train : 
-                      [ 123 2909] 
-                     [ 147 3322]
-                    --------------------------------------------------
-
-                    Validation  score to (0.68468103 --> 0.69129107).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 175 2924] 
-                     [ 179 3290]
+                      [ 128 2787] 
+                     [ 143 3163]
                     EarlyStopping counter: 1 out of 100
 
                     Train : 
-                      [ 131 2918] 
-                     [ 129 3340]
+                      [ 195 2789] 
+                     [ 136 3170]
+                    --------------------------------------------------
+
+                    Validation  score to (0.64877148 --> 0.65933538).  Saving model ...
+                    --------------------------------------------------
+
+                    Train : 
+                      [ 123 2858] 
+                     [ 150 3156]
+                    --------------------------------------------------
+
+                    Validation  score to (0.65933538 --> 0.66703799).  Saving model ...
+                    --------------------------------------------------
+
+                    Train : 
+                      [ 136 2843] 
+                     [ 120 3186]
+                    --------------------------------------------------
+
+                    Validation  score to (0.66703799 --> 0.67280548).  Saving model ...
+                    --------------------------------------------------
+
+                    Train : 
+                      [ 191 2784] 
+                     [ 137 3169]
+                    EarlyStopping counter: 1 out of 100
+
+                    Train : 
+                      [ 218 2746] 
+                     [ 153 3153]
                     EarlyStopping counter: 2 out of 100
 
                     Train : 
-                      [ 184 2812] 
-                     [ 144 3325]
+                      [ 184 2692] 
+                     [ 147 3159]
+                    --------------------------------------------------
+
+                    Validation  score to (0.67280548 --> 0.68372826).  Saving model ...
+                    --------------------------------------------------
+
+                    Train : 
+                      [ 150 2795] 
+                     [ 136 3170]
+                    -- -- The best model for TEST (F1= .  0.4337240757439134 ) -- --
+                    Validate: 
+                      0.8063120240018463 
+                     [105 711] 
+                     [  57 1075] 
+                     precision:  0.6019036954087346 recall:  0.9496466431095406 AUC 0.6878356024388554
+                    test    : 
+                      0.4337240757439134 
+                     [ 343 1534] 
+                     [ 16 370] 
+                     AUC 0.7259655331377101
+                    - Epoch: 12 - Train_loss: 0.39630 - Train_acc: 0.53137 -  - Val_loss: 0.40057 - Val_acc: 0.60685  - T_Time: 32.86403 LR:0.0010000000
+                    --------------------------------------------------
+
+                    Validation  score to (0.68372826 --> 0.68783560).  Saving model ...
+                    --------------------------------------------------
+
+                    Train : 
+                      [ 215 2744] 
+                     [ 143 3163]
+                    --------------------------------------------------
+
+                    Validation  score to (0.68783560 --> 0.69428891).  Saving model ...
+                    --------------------------------------------------
+
+                    Train : 
+                      [ 256 2685] 
+                     [ 153 3153]
+                    EarlyStopping counter: 1 out of 100
+
+                    Train : 
+                      [ 210 2712] 
+                     [ 161 3145]
+                    --------------------------------------------------
+
+                    Validation  score to (0.69428891 --> 0.69903390).  Saving model ...
+                    --------------------------------------------------
+
+                    Train : 
+                      [ 141 2777] 
+                     [ 133 3173]
+                    EarlyStopping counter: 1 out of 100
+
+                    Train : 
+                      [ 289 2718] 
+                     [ 158 3148]
+                    -- -- The best model for TEST (F1= .  0.45089538171536286 ) -- --
+                    Validate: 
+                      0.8041471962616822 
+                     [142 674] 
+                     [  73 1059] 
+                     precision:  0.6110790536641661 recall:  0.9355123674911661 AUC 0.6900126879373658
+                    test    : 
+                      0.45089538171536286 
+                     [ 461 1416] 
+                     [ 18 368] 
+                     AUC 0.7353869171674566
+                    - Epoch: 17 - Train_loss: 0.39035 - Train_acc: 0.54459 -  - Val_loss: 0.36571 - Val_acc: 0.61491  - T_Time: 34.43157 LR:0.0010000000
+                    EarlyStopping counter: 2 out of 100
+
+                    Train : 
+                      [ 395 2552] 
+                     [ 155 3151]
+                    -- -- The best model for TEST (F1= .  0.4715025906735751 ) -- --
+                    Validate: 
+                      0.7700376884422111 
+                     [326 490] 
+                     [189 943] 
+                     precision:  0.6580600139567341 recall:  0.8330388692579506 AUC 0.6933335281992655
+                    test    : 
+                      0.4715025906735751 
+                     [ 848 1029] 
+                     [ 64 322] 
+                     AUC 0.723000819850881
+                    - Epoch: 18 - Train_loss: 0.37939 - Train_acc: 0.56713 -  - Val_loss: 0.44441 - Val_acc: 0.65093  - T_Time: 33.58966 LR:0.0010000000
                     EarlyStopping counter: 3 out of 100
 
                     Train : 
-                      [ 174 2945] 
-                     [ 140 3329]
+                      [ 377 2558] 
+                     [ 154 3152]
                     EarlyStopping counter: 4 out of 100
 
                     Train : 
-                      [ 159 2881] 
-                     [ 147 3322]
-                    --------------------------------------------------
-
-                    Validation  score to (0.69129107 --> 0.71875451).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 179 2876] 
-                     [ 166 3303]
-                    EarlyStopping counter: 1 out of 100
-
-                    Train : 
-                      [ 212 2863] 
-                     [ 140 3329]
-                    EarlyStopping counter: 2 out of 100
-
-                    Train : 
-                      [ 210 2831] 
-                     [ 156 3313]
-                    EarlyStopping counter: 3 out of 100
-
-                    Train : 
-                      [ 241 2772] 
-                     [ 137 3332]
-                    --------------------------------------------------
-
-                    Validation  score to (0.71875451 --> 0.72927737).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 270 2731] 
-                     [ 163 3306]
-                    EarlyStopping counter: 1 out of 100
-
-                    Train : 
-                      [ 248 2753] 
-                     [ 155 3314]
-                    -- -- The best model for TEST (F1= .  0.48488228004956635 ) -- --
-                    Validate: 
-                      0.7524331292297776 
-                     [475 400] 
-                     [249 898] 
-                     precision:  0.6918335901386748 recall:  0.7829119442022667 AUC 0.731971602939345
-                    test    : 
-                      0.48488228004956635 
-                     [1056  821] 
-                     [ 97 301] 
-                     AUC 0.7242177857856142
-                    - Epoch: 18 - Train_loss: 0.39122 - Train_acc: 0.55073 -  - Val_loss: 0.52262 - Val_acc: 0.67863  - T_Time: 35.71954 LR:0.0010000000
-                    --------------------------------------------------
-
-                    Validation  score to (0.72927737 --> 0.73197160).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 347 2715] 
-                     [ 165 3304]
-                    EarlyStopping counter: 1 out of 100
-
-                    Train : 
-                      [ 291 2766] 
-                     [ 148 3321]
-                    EarlyStopping counter: 2 out of 100
-
-                    Train : 
-                      [ 317 2727] 
-                     [ 165 3304]
-                    EarlyStopping counter: 3 out of 100
-
-                    Train : 
-                      [ 339 2650] 
-                     [ 148 3321]
-                    --------------------------------------------------
-
-                    Validation  score to (0.73197160 --> 0.73599601).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 451 2603] 
-                     [ 161 3308]
-                    EarlyStopping counter: 1 out of 100
-
-                    Train : 
-                      [ 459 2561] 
-                     [ 149 3320]
-                    EarlyStopping counter: 2 out of 100
-
-                    Train : 
-                      [ 480 2540] 
-                     [ 150 3319]
-                    EarlyStopping counter: 3 out of 100
-
-                    Train : 
-                      [ 465 2584] 
-                     [ 157 3312]
-                    EarlyStopping counter: 4 out of 100
-
-                    Train : 
-                      [ 556 2518] 
-                     [ 178 3291]
+                      [ 408 2614] 
+                     [ 153 3153]
                     EarlyStopping counter: 5 out of 100
 
                     Train : 
-                      [ 579 2447] 
-                     [ 171 3298]
-                    --------------------------------------------------
-
-                    Validation  score to (0.73599601 --> 0.73781193).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 645 2383] 
-                     [ 168 3301]
-                    EarlyStopping counter: 1 out of 100
-
-                    Train : 
-                      [ 711 2332] 
-                     [ 155 3314]
-                    --------------------------------------------------
-
-                    Validation  score to (0.73781193 --> 0.73801270).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 781 2241] 
-                     [ 132 3337]
-                    EarlyStopping counter: 1 out of 100
-
-                    Train : 
-                      [ 836 2199] 
-                     [ 137 3332]
-                    EarlyStopping counter: 2 out of 100
-
-                    Train : 
-                      [ 893 2185] 
-                     [ 157 3312]
-                    EarlyStopping counter: 3 out of 100
-
-                    Train : 
-                      [ 926 2171] 
-                     [ 154 3315]
-                    EarlyStopping counter: 4 out of 100
-
-                    Train : 
-                      [ 850 2208] 
-                     [ 149 3320]
-                    EarlyStopping counter: 5 out of 100
-
-                    Train : 
-                      [ 975 2132] 
-                     [ 174 3295]
+                      [ 387 2545] 
+                     [ 139 3167]
                     EarlyStopping counter: 6 out of 100
 
                     Train : 
-                      [ 942 2043] 
-                     [ 144 3325]
+                      [ 528 2505] 
+                     [ 131 3175]
                     EarlyStopping counter: 7 out of 100
 
                     Train : 
-                      [ 945 2098] 
-                     [ 171 3298]
+                      [ 556 2397] 
+                     [ 176 3130]
                     EarlyStopping counter: 8 out of 100
 
                     Train : 
-                      [1092 1928] 
-                     [ 149 3320]
+                      [ 518 2429] 
+                     [ 158 3148]
                     EarlyStopping counter: 9 out of 100
 
                     Train : 
-                      [1205 1852] 
-                     [ 144 3325]
+                      [ 548 2321] 
+                     [ 148 3158]
                     EarlyStopping counter: 10 out of 100
 
                     Train : 
-                      [1403 1703] 
-                     [ 138 3331]
+                      [ 606 2296] 
+                     [ 151 3155]
                     EarlyStopping counter: 11 out of 100
 
                     Train : 
-                      [1296 1753] 
-                     [ 149 3320]
+                      [ 719 2166] 
+                     [ 166 3140]
                     EarlyStopping counter: 12 out of 100
 
                     Train : 
-                      [1356 1631] 
-                     [ 148 3321]
+                      [ 771 2170] 
+                     [ 136 3170]
                     EarlyStopping counter: 13 out of 100
 
                     Train : 
-                      [1421 1660] 
-                     [ 136 3333]
+                      [ 811 2145] 
+                     [ 141 3165]
                     EarlyStopping counter: 14 out of 100
 
                     Train : 
-                      [1426 1665] 
-                     [ 172 3297]
+                      [ 895 2044] 
+                     [ 163 3143]
                     EarlyStopping counter: 15 out of 100
 
                     Train : 
-                      [1434 1528] 
-                     [ 155 3314]
+                      [ 891 2069] 
+                     [ 149 3157]
                     EarlyStopping counter: 16 out of 100
 
                     Train : 
-                      [1442 1598] 
-                     [ 142 3327]
-                    -- -- The best model for TEST (F1= .  0.48560551986676176 ) -- --
-                    Validate: 
-                      0.7547752631910736 
-                     [411 464] 
-                     [226 921] 
-                     precision:  0.6649819494584838 recall:  0.8029642545771578 AUC 0.7086252335284593
-                    test    : 
-                      0.48560551986676176 
-                     [985 892] 
-                     [ 84 314] 
-                     AUC 0.7362598822562466
-                    - Epoch: 47 - Train_loss: 0.29570 - Train_acc: 0.73291 -  - Val_loss: 0.49288 - Val_acc: 0.65873  - T_Time: 33.95074 LR:0.0002500000
+                      [ 935 1996] 
+                     [ 147 3159]
                     EarlyStopping counter: 17 out of 100
 
                     Train : 
-                      [1590 1461] 
-                     [ 177 3292]
+                      [ 961 1938] 
+                     [ 150 3156]
+                    -- -- The best model for TEST (F1= .  0.47935103244837757 ) -- --
+                    Validate: 
+                      0.7077738990332975 
+                     [450 366] 
+                     [321 811] 
+                     precision:  0.6890399320305862 recall:  0.7164310954063604 AUC 0.6768884674010948
+                    test    : 
+                      0.47935103244837757 
+                     [1156  721] 
+                     [111 275] 
+                     AUC 0.7125097650588941
+                    - Epoch: 33 - Train_loss: 0.33671 - Train_acc: 0.66276 -  - Val_loss: 0.59196 - Val_acc: 0.64984  - T_Time: 32.89538 LR:0.0005000000
                     EarlyStopping counter: 18 out of 100
 
                     Train : 
-                      [1510 1563] 
-                     [ 146 3323]
+                      [1009 1907] 
+                     [ 151 3155]
+                    -- -- The best model for TEST (F1= .  0.49276125296130563 ) -- --
+                    Validate: 
+                      0.7269512833944474 
+                     [399 417] 
+                     [278 854] 
+                     precision:  0.6719118804091266 recall:  0.7544169611307421 AUC 0.6699523228019122
+                    test    : 
+                      0.49276125296130563 
+                     [1134  743] 
+                     [ 98 288] 
+                     AUC 0.7283995517044342
+                    - Epoch: 34 - Train_loss: 0.33429 - Train_acc: 0.66738 -  - Val_loss: 0.59722 - Val_acc: 0.64374  - T_Time: 33.34852 LR:0.0005000000
                     EarlyStopping counter: 19 out of 100
 
                     Train : 
-                      [1650 1433] 
-                     [ 150 3319]
+                      [1071 1915] 
+                     [ 174 3132]
                     EarlyStopping counter: 20 out of 100
 
                     Train : 
-                      [1769 1289] 
-                     [ 145 3324]
+                      [1074 1781] 
+                     [ 135 3171]
                     EarlyStopping counter: 21 out of 100
 
                     Train : 
-                      [1718 1285] 
-                     [ 157 3312]
+                      [1169 1782] 
+                     [ 168 3138]
                     EarlyStopping counter: 22 out of 100
 
                     Train : 
-                      [1834 1275] 
-                     [ 155 3314]
+                      [1250 1708] 
+                     [ 147 3159]
+                    -- -- The best model for TEST (F1= .  0.49577724993401956 ) -- --
+                    Validate: 
+                      0.707418672308913 
+                     [405 411] 
+                     [309 823] 
+                     precision:  0.666936790923825 recall:  0.7270318021201413 AUC 0.6701309499064643
+                    test    : 
+                      0.49577724993401956 
+                     [1140  737] 
+                     [ 97 289] 
+                     AUC 0.7340425825578796
+                    - Epoch: 38 - Train_loss: 0.31569 - Train_acc: 0.70449 -  - Val_loss: 0.61342 - Val_acc: 0.62934  - T_Time: 32.98872 LR:0.0002500000
                     EarlyStopping counter: 23 out of 100
 
                     Train : 
-                      [1855 1270] 
-                     [ 148 3321]
+                      [1341 1634] 
+                     [ 150 3156]
                     EarlyStopping counter: 24 out of 100
 
                     Train : 
-                      [1848 1182] 
-                     [ 143 3326]
+                      [1367 1537] 
+                     [ 157 3149]
                     EarlyStopping counter: 25 out of 100
 
                     Train : 
-                      [1890 1133] 
-                     [ 130 3339]
+                      [1411 1501] 
+                     [ 156 3150]
                     EarlyStopping counter: 26 out of 100
 
                     Train : 
-                      [1923 1153] 
-                     [ 159 3310]
+                      [1319 1601] 
+                     [ 139 3167]
                     EarlyStopping counter: 27 out of 100
 
                     Train : 
-                      [1937 1135] 
-                     [ 157 3312]
+                      [1506 1491] 
+                     [ 132 3174]
                     EarlyStopping counter: 28 out of 100
 
                     Train : 
-                      [1899 1130] 
-                     [ 150 3319]
+                      [1470 1429] 
+                     [ 161 3145]
                     EarlyStopping counter: 29 out of 100
 
                     Train : 
-                      [1945 1096] 
-                     [ 144 3325]
+                      [1511 1410] 
+                     [ 160 3146]
                     EarlyStopping counter: 30 out of 100
 
                     Train : 
-                      [2083 1090] 
-                     [ 144 3325]
+                      [1579 1368] 
+                     [ 144 3162]
                     EarlyStopping counter: 31 out of 100
 
                     Train : 
-                      [2011 1004] 
-                     [ 151 3318]
+                      [1602 1321] 
+                     [ 126 3180]
                     EarlyStopping counter: 32 out of 100
 
                     Train : 
-                      [2080  975] 
-                     [ 148 3321]
+                      [1823 1200] 
+                     [ 127 3179]
                     EarlyStopping counter: 33 out of 100
 
                     Train : 
-                      [2146  890] 
-                     [ 136 3333]
+                      [1793 1161] 
+                     [ 155 3151]
                     EarlyStopping counter: 34 out of 100
 
                     Train : 
-                      [2031 1005] 
-                     [ 112 3357]
+                      [1820 1125] 
+                     [ 141 3165]
                     EarlyStopping counter: 35 out of 100
 
                     Train : 
-                      [2021  963] 
-                     [ 138 3331]
+                      [1843 1128] 
+                     [ 117 3189]
                     EarlyStopping counter: 36 out of 100
 
                     Train : 
-                      [2139  995] 
-                     [ 142 3327]
+                      [1882 1072] 
+                     [ 134 3172]
                     EarlyStopping counter: 37 out of 100
 
                     Train : 
-                      [2109  925] 
-                     [ 141 3328]
+                      [1886 1022] 
+                     [ 131 3175]
                     EarlyStopping counter: 38 out of 100
 
                     Train : 
-                      [2148  926] 
-                     [ 153 3316]
+                      [1941  992] 
+                     [ 139 3167]
                     EarlyStopping counter: 39 out of 100
 
                     Train : 
-                      [2096  939] 
-                     [ 140 3329]
+                      [1926 1002] 
+                     [ 136 3170]
                     EarlyStopping counter: 40 out of 100
 
                     Train : 
-                      [2128  882] 
-                     [ 144 3325]
+                      [1987  970] 
+                     [ 111 3195]
                     EarlyStopping counter: 41 out of 100
 
                     Train : 
-                      [2149  858] 
-                     [ 145 3324]
+                      [1952  968] 
+                     [ 142 3164]
                     EarlyStopping counter: 42 out of 100
 
                     Train : 
-                      [2259  844] 
-                     [ 144 3325]
+                      [1968  902] 
+                     [ 139 3167]
                     EarlyStopping counter: 43 out of 100
 
                     Train : 
-                      [2237  805] 
-                     [ 147 3322]
+                      [2077  881] 
+                     [ 120 3186]
                     EarlyStopping counter: 44 out of 100
 
                     Train : 
-                      [2134  824] 
-                     [ 130 3339]
+                      [2134  814] 
+                     [ 141 3165]
                     EarlyStopping counter: 45 out of 100
 
                     Train : 
-                      [2139  839] 
-                     [ 140 3329]
+                      [2114  858] 
+                     [ 139 3167]
                     EarlyStopping counter: 46 out of 100
 
                     Train : 
-                      [2300  806] 
-                     [ 143 3326]
+                      [2129  833] 
+                     [ 121 3185]
                     EarlyStopping counter: 47 out of 100
 
                     Train : 
-                      [2247  799] 
-                     [ 143 3326]
+                      [2129  808] 
+                     [ 121 3185]
                     EarlyStopping counter: 48 out of 100
 
                     Train : 
-                      [2307  809] 
-                     [ 143 3326]
+                      [2155  819] 
+                     [ 131 3175]
                     EarlyStopping counter: 49 out of 100
 
                     Train : 
-                      [2252  781] 
-                     [ 133 3336]
+                      [2155  759] 
+                     [ 136 3170]
                     EarlyStopping counter: 50 out of 100
 
                     Train : 
-                      [2256  832] 
-                     [ 137 3332]
+                      [2261  775] 
+                     [ 135 3171]
                     EarlyStopping counter: 51 out of 100
 
                     Train : 
-                      [2143  810] 
-                     [ 124 3345]
+                      [2194  758] 
+                     [ 128 3178]
                     EarlyStopping counter: 52 out of 100
 
                     Train : 
-                      [2223  744] 
-                     [ 144 3325]
+                      [2259  737] 
+                     [ 146 3160]
                     EarlyStopping counter: 53 out of 100
 
                     Train : 
-                      [2305  796] 
-                     [ 134 3335]
+                      [2186  719] 
+                     [ 136 3170]
                     EarlyStopping counter: 54 out of 100
 
                     Train : 
-                      [2266  792] 
-                     [ 146 3323]
+                      [2232  721] 
+                     [ 137 3169]
                     EarlyStopping counter: 55 out of 100
 
                     Train : 
-                      [2333  755] 
-                     [ 139 3330]
+                      [2235  675] 
+                     [ 141 3165]
                     EarlyStopping counter: 56 out of 100
 
                     Train : 
-                      [2272  750] 
-                     [ 126 3343]
+                      [2234  666] 
+                     [ 125 3181]
                     EarlyStopping counter: 57 out of 100
 
                     Train : 
-                      [2330  766] 
-                     [ 141 3328]
+                      [2242  674] 
+                     [ 125 3181]
                     EarlyStopping counter: 58 out of 100
 
                     Train : 
-                      [2336  687] 
-                     [ 157 3312]
+                      [2304  654] 
+                     [ 131 3175]
                     EarlyStopping counter: 59 out of 100
 
                     Train : 
-                      [2291  744] 
-                     [ 130 3339]
+                      [2283  643] 
+                     [ 132 3174]
                     EarlyStopping counter: 60 out of 100
 
                     Train : 
-                      [2337  748] 
-                     [ 169 3300]
+                      [2217  676] 
+                     [ 151 3155]
                     EarlyStopping counter: 61 out of 100
 
                     Train : 
-                      [2363  693] 
-                     [ 115 3354]
+                      [2303  642] 
+                     [ 136 3170]
                     EarlyStopping counter: 62 out of 100
 
                     Train : 
-                      [2258  697] 
-                     [ 158 3311]
+                      [2363  592] 
+                     [ 129 3177]
                     EarlyStopping counter: 63 out of 100
 
                     Train : 
-                      [2342  714] 
-                     [ 131 3338]
+                      [2360  614] 
+                     [ 115 3191]
                     EarlyStopping counter: 64 out of 100
 
                     Train : 
-                      [2380  694] 
-                     [ 159 3310]
+                      [2329  556] 
+                     [ 141 3165]
                     EarlyStopping counter: 65 out of 100
 
                     Train : 
-                      [2316  672] 
-                     [ 146 3323]
+                      [2277  619] 
+                     [ 159 3147]
                     EarlyStopping counter: 66 out of 100
 
                     Train : 
-                      [2406  712] 
-                     [ 147 3322]
+                      [2267  594] 
+                     [ 153 3153]
                     EarlyStopping counter: 67 out of 100
 
                     Train : 
-                      [2397  687] 
-                     [ 134 3335]
+                      [2354  605] 
+                     [ 115 3191]
                     EarlyStopping counter: 68 out of 100
 
                     Train : 
-                      [2323  711] 
-                     [ 148 3321]
+                      [2346  610] 
+                     [ 123 3183]
                     EarlyStopping counter: 69 out of 100
 
                     Train : 
-                      [2310  698] 
-                     [ 158 3311]
+                      [2214  645] 
+                     [ 108 3198]
                     EarlyStopping counter: 70 out of 100
 
                     Train : 
-                      [2307  647] 
-                     [ 150 3319]
+                      [2376  586] 
+                     [ 146 3160]
                     EarlyStopping counter: 71 out of 100
 
                     Train : 
-                      [2277  704] 
-                     [ 119 3350]
+                      [2365  625] 
+                     [ 143 3163]
                     EarlyStopping counter: 72 out of 100
 
                     Train : 
-                      [2377  672] 
-                     [ 135 3334]
+                      [2362  586] 
+                     [ 138 3168]
                     EarlyStopping counter: 73 out of 100
 
                     Train : 
-                      [2299  726] 
-                     [ 145 3324]
+                      [2438  551] 
+                     [ 132 3174]
                     EarlyStopping counter: 74 out of 100
 
                     Train : 
-                      [2365  697] 
-                     [ 151 3318]
+                      [2332  598] 
+                     [ 144 3162]
                     EarlyStopping counter: 75 out of 100
 
                     Train : 
-                      [2335  656] 
-                     [ 130 3339]
+                      [2342  581] 
+                     [ 147 3159]
                     EarlyStopping counter: 76 out of 100
 
                     Train : 
-                      [2415  675] 
-                     [ 160 3309]
+                      [2392  588] 
+                     [ 136 3170]
                     EarlyStopping counter: 77 out of 100
 
                     Train : 
-                      [2343  711] 
-                     [ 158 3311]
+                      [2377  549] 
+                     [ 124 3182]
                     EarlyStopping counter: 78 out of 100
 
                     Train : 
-                      [2351  651] 
-                     [ 138 3331]
+                      [2360  589] 
+                     [ 143 3163]
                     EarlyStopping counter: 79 out of 100
 
                     Train : 
-                      [2330  698] 
-                     [ 160 3309]
+                      [2353  560] 
+                     [ 111 3195]
                     EarlyStopping counter: 80 out of 100
 
                     Train : 
-                      [2345  696] 
-                     [ 134 3335]
+                      [2383  551] 
+                     [ 128 3178]
                     EarlyStopping counter: 81 out of 100
 
                     Train : 
-                      [2399  673] 
-                     [ 158 3311]
+                      [2413  568] 
+                     [ 141 3165]
                     EarlyStopping counter: 82 out of 100
 
                     Train : 
-                      [2315  704] 
-                     [ 148 3321]
+                      [2383  556] 
+                     [ 143 3163]
                     EarlyStopping counter: 83 out of 100
 
                     Train : 
-                      [2389  700] 
-                     [ 140 3329]
+                      [2354  552] 
+                     [ 125 3181]
                     EarlyStopping counter: 84 out of 100
 
                     Train : 
-                      [2307  662] 
-                     [ 147 3322]
+                      [2411  518] 
+                     [ 124 3182]
                     EarlyStopping counter: 85 out of 100
 
                     Train : 
-                      [2425  661] 
-                     [ 138 3331]
+                      [2422  580] 
+                     [ 133 3173]
                     EarlyStopping counter: 86 out of 100
 
                     Train : 
-                      [2367  680] 
-                     [ 126 3343]
+                      [2335  535] 
+                     [ 151 3155]
                     EarlyStopping counter: 87 out of 100
 
                     Train : 
-                      [2372  699] 
-                     [ 149 3320]
+                      [2343  538] 
+                     [ 133 3173]
                     EarlyStopping counter: 88 out of 100
 
                     Train : 
-                      [2350  667] 
-                     [ 148 3321]
+                      [2374  505] 
+                     [ 142 3164]
                     EarlyStopping counter: 89 out of 100
 
                     Train : 
-                      [2358  654] 
-                     [ 133 3336]
+                      [2398  544] 
+                     [ 114 3192]
                     EarlyStopping counter: 90 out of 100
 
                     Train : 
-                      [2393  698] 
-                     [ 132 3337]
+                      [2466  549] 
+                     [ 151 3155]
                     EarlyStopping counter: 91 out of 100
 
                     Train : 
-                      [2315  699] 
-                     [ 141 3328]
+                      [2355  553] 
+                     [ 144 3162]
                     EarlyStopping counter: 92 out of 100
 
                     Train : 
-                      [2361  692] 
-                     [ 154 3315]
+                      [2397  570] 
+                     [ 133 3173]
                     EarlyStopping counter: 93 out of 100
 
                     Train : 
-                      [2418  679] 
-                     [ 148 3321]
+                      [2447  593] 
+                     [ 127 3179]
                     EarlyStopping counter: 94 out of 100
 
                     Train : 
-                      [2437  625] 
-                     [ 168 3301]
+                      [2422  557] 
+                     [ 138 3168]
                     EarlyStopping counter: 95 out of 100
 
                     Train : 
-                      [2361  666] 
-                     [ 135 3334]
+                      [2376  539] 
+                     [ 147 3159]
                     EarlyStopping counter: 96 out of 100
 
                     Train : 
-                      [2337  665] 
-                     [ 154 3315]
+                      [2423  539] 
+                     [ 135 3171]
                     EarlyStopping counter: 97 out of 100
 
                     Train : 
-                      [2407  697] 
-                     [ 135 3334]
+                      [2386  547] 
+                     [ 157 3149]
                     EarlyStopping counter: 98 out of 100
 
                     Train : 
-                      [2415  625] 
-                     [ 142 3327]
+                      [2448  519] 
+                     [ 131 3175]
                     EarlyStopping counter: 99 out of 100
 
                     Train : 
-                      [2389  695] 
-                     [ 162 3307]
+                      [2426  592] 
+                     [ 147 3159]
                     EarlyStopping counter: 100 out of 100
 
                     Early stopping...
      Best Loss:
           valid
-           [145 730] 
-           [  45 1102]
-          F1:  0.739845585767036
-          AUC:  0.7380127039481879
-          precision:  0.601528384279476
-          recall:  0.960767218831735
+           [  0 816] 
+           [   0 1132]
+          F1:  0.7350649350649351
+          AUC:  0.6990349806000138
+          precision:  0.5811088295687885
+          recall:  1.0
           test
-           [ 404 1473] 
-           [ 18 380]
-          F1:  0.33762772101288313
-          AUC:  0.7388982740018687
-          precision:  0.2050728548300054
-          recall:  0.9547738693467337
+           [   0 1877] 
+           [  0 386]
+          F1:  0.29143072857682145
+          AUC:  0.7155393487016267
+          precision:  0.17057003977021654
+          recall:  1.0
 
 
 
      Best Sore:
           valid
-           [411 464] 
-           [226 921]
-          F1:  0.7274881516587677
-          AUC:  0.7086252335284593
-          precision:  0.6649819494584838
-          recall:  0.8029642545771578
+           [405 411] 
+           [309 823]
+          F1:  0.6956889264581572
+          AUC:  0.6701309499064644
+          precision:  0.666936790923825
+          recall:  0.7270318021201413
           test
-           [985 892] 
-           [ 84 314]
-          F1:  0.3915211970074812
-          AUC:  0.7362598822562466
-          precision:  0.2603648424543947
-          recall:  0.7889447236180904
+           [1140  737] 
+           [ 97 289]
+          F1:  0.4093484419263456
+          AUC:  0.7340425825578796
+          precision:  0.28167641325536064
+          recall:  0.7487046632124352
           ==================================================
           Fold 0 Training Finished
 
 
           Fold 1 of 5 :
                     Train : 
-                      [ 135 2980] 
-                     [ 152 3455]
-                    -- -- The best model for TEST (F1= .  0.4081085344691592 ) -- --
+                      [ 126 2796] 
+                     [ 152 3309]
+                    -- -- The best model for TEST (F1= .  0.40060673798499125 ) -- --
                     Validate: 
-                      0.7953070999818105 
-                     [  0 844] 
-                     [   0 1009] 
-                     precision:  0.5445223961144091 recall:  1.0 AUC 0.4312079906434506
+                      0.7898140662894099 
+                     [  0 845] 
+                     [  0 977] 
+                     precision:  0.5362239297475302 recall:  1.0 AUC 0.49656841072477637
                     test    : 
-                      0.4081085344691592 
-                     [   1 1876] 
-                     [  0 398] 
-                     AUC 0.4225596549610064
-                    - Epoch: 1 - Train_loss: 0.52927 - Train_acc: 0.53521 -  - Val_loss: 0.60277 - Val_acc: 0.54419  - T_Time: 35.19471 LR:0.0010000000
-                    --------------------------------------------------
-
-                    Validation  score to (inf --> 0.43120799).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 135 2962] 
-                     [ 152 3455]
-                    --------------------------------------------------
-
-                    Validation  score to (0.43120799 --> 0.54892461).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 147 2928] 
-                     [ 151 3456]
-                    --------------------------------------------------
-
-                    Validation  score to (0.54892461 --> 0.61016491).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 121 2927] 
-                     [ 155 3452]
-                    --------------------------------------------------
-
-                    Validation  score to (0.61016491 --> 0.65310664).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 135 2876] 
-                     [ 158 3449]
-                    EarlyStopping counter: 1 out of 100
-
-                    Train : 
-                      [ 129 2975] 
-                     [ 146 3461]
-                    --------------------------------------------------
-
-                    Validation  score to (0.65310664 --> 0.66949117).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 127 2920] 
-                     [ 160 3447]
-                    -- -- The best model for TEST (F1= .  0.4092860550166958 ) -- --
-                    Validate: 
-                      0.795080473732159 
-                     [  5 839] 
-                     [   2 1007] 
-                     precision:  0.5455037919826652 recall:  0.998017839444995 AUC 0.6279926162170795
-                    test    : 
-                      0.4092860550166958 
-                     [  24 1853] 
-                     [  2 396] 
-                     AUC 0.6499425738174089
-                    - Epoch: 7 - Train_loss: 0.39829 - Train_acc: 0.53714 -  - Val_loss: 0.39308 - Val_acc: 0.54721  - T_Time: 34.31703 LR:0.0010000000
-                    EarlyStopping counter: 1 out of 100
-
-                    Train : 
-                      [ 147 2896] 
-                     [ 167 3440]
-                    EarlyStopping counter: 2 out of 100
-
-                    Train : 
-                      [ 137 2915] 
-                     [ 147 3460]
-                    EarlyStopping counter: 3 out of 100
-
-                    Train : 
-                      [ 166 2971] 
-                     [ 180 3427]
-                    --------------------------------------------------
-
-                    Validation  score to (0.66949117 --> 0.68628845).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 164 2868] 
-                     [ 163 3444]
-                    EarlyStopping counter: 1 out of 100
-
-                    Train : 
-                      [ 153 2930] 
-                     [ 143 3464]
-                    --------------------------------------------------
-
-                    Validation  score to (0.68628845 --> 0.69030855).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 152 2906] 
-                     [ 139 3468]
-                    -- -- The best model for TEST (F1= .  0.42072645894301947 ) -- --
-                    Validate: 
-                      0.7884699556055773 
-                     [ 86 758] 
-                     [ 39 970] 
-                     precision:  0.5613425925925926 recall:  0.9613478691774033 AUC 0.6655738166924223
-                    test    : 
-                      0.42072645894301947 
-                     [ 244 1633] 
-                     [ 22 376] 
-                     AUC 0.6747215030935176
-                    - Epoch: 13 - Train_loss: 0.38723 - Train_acc: 0.53961 -  - Val_loss: 0.41420 - Val_acc: 0.56870  - T_Time: 35.30187 LR:0.0010000000
-                    EarlyStopping counter: 1 out of 100
-
-                    Train : 
-                      [ 170 2930] 
-                     [ 160 3447]
-                    EarlyStopping counter: 2 out of 100
-
-                    Train : 
-                      [ 146 2911] 
-                     [ 151 3456]
-                    EarlyStopping counter: 3 out of 100
-
-                    Train : 
-                      [ 193 2888] 
-                     [ 162 3445]
-                    EarlyStopping counter: 4 out of 100
-
-                    Train : 
-                      [ 145 2906] 
-                     [ 143 3464]
-                    EarlyStopping counter: 5 out of 100
-
-                    Train : 
-                      [ 192 2867] 
-                     [ 164 3443]
-                    --------------------------------------------------
-
-                    Validation  score to (0.69030855 --> 0.70357071).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 177 2866] 
-                     [ 157 3450]
-                    --------------------------------------------------
-
-                    Validation  score to (0.70357071 --> 0.70420129).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 235 2776] 
-                     [ 171 3436]
-                    -- -- The best model for TEST (F1= .  0.44520547945205485 ) -- --
-                    Validate: 
-                      0.8016107720380042 
-                     [121 723] 
-                     [ 29 980] 
-                     precision:  0.5754550792718731 recall:  0.9712586719524281 AUC 0.7031820252795927
-                    test    : 
-                      0.44520547945205485 
-                     [ 347 1530] 
-                     [ 13 385] 
-                     AUC 0.7263983743972929
-                    - Epoch: 20 - Train_loss: 0.37818 - Train_acc: 0.55454 -  - Val_loss: 0.37869 - Val_acc: 0.59067  - T_Time: 34.86346 LR:0.0010000000
-                    EarlyStopping counter: 1 out of 100
-
-                    Train : 
-                      [ 186 2867] 
-                     [ 147 3460]
-                    EarlyStopping counter: 2 out of 100
-
-                    Train : 
-                      [ 274 2806] 
-                     [ 166 3441]
-                    EarlyStopping counter: 3 out of 100
-
-                    Train : 
-                      [ 234 2751] 
-                     [ 154 3453]
-                    EarlyStopping counter: 4 out of 100
-
-                    Train : 
-                      [ 257 2772] 
-                     [ 152 3455]
-                    EarlyStopping counter: 5 out of 100
-
-                    Train : 
-                      [ 342 2737] 
-                     [ 169 3438]
-                    --------------------------------------------------
-
-                    Validation  score to (0.70420129 --> 0.70604489).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 350 2707] 
-                     [ 154 3453]
-                    -- -- The best model for TEST (F1= .  0.4462767060775772 ) -- --
-                    Validate: 
-                      0.7584576946451483 
-                     [276 568] 
-                     [145 864] 
-                     precision:  0.6033519553072626 recall:  0.8562933597621407 AUC 0.6634249104035247
-                    test    : 
-                      0.4462767060775772 
-                     [ 693 1184] 
-                     [ 67 331] 
-                     AUC 0.6676817759548943
-                    - Epoch: 26 - Train_loss: 0.36729 - Train_acc: 0.57263 -  - Val_loss: 0.46019 - Val_acc: 0.60659  - T_Time: 34.94580 LR:0.0010000000
-                    EarlyStopping counter: 1 out of 100
-
-                    Train : 
-                      [ 165 2923] 
-                     [ 139 3468]
-                    EarlyStopping counter: 2 out of 100
-
-                    Train : 
-                      [ 250 2784] 
-                     [ 156 3451]
-                    EarlyStopping counter: 3 out of 100
-
-                    Train : 
-                      [ 372 2695] 
-                     [ 164 3443]
-                    EarlyStopping counter: 4 out of 100
-
-                    Train : 
-                      [ 311 2635] 
-                     [ 150 3457]
-                    EarlyStopping counter: 5 out of 100
-
-                    Train : 
-                      [ 481 2635] 
-                     [ 169 3438]
-                    EarlyStopping counter: 6 out of 100
-
-                    Train : 
-                      [ 531 2488] 
-                     [ 176 3431]
-                    EarlyStopping counter: 7 out of 100
-
-                    Train : 
-                      [ 537 2521] 
-                     [ 161 3446]
-                    -- -- The best model for TEST (F1= .  0.4480642115203022 ) -- --
-                    Validate: 
-                      0.7998840280909734 
-                     [189 655] 
-                     [ 54 955] 
-                     precision:  0.593167701863354 recall:  0.9464816650148662 AUC 0.694464863620778
-                    test    : 
-                      0.4480642115203022 
-                     [ 490 1387] 
-                     [ 33 365] 
-                     AUC 0.7093150890306621
-                    - Epoch: 33 - Train_loss: 0.36616 - Train_acc: 0.59213 -  - Val_loss: 0.39104 - Val_acc: 0.62571  - T_Time: 34.79477 LR:0.0005000000
-                    EarlyStopping counter: 8 out of 100
-
-                    Train : 
-                      [ 434 2661] 
-                     [ 168 3439]
-                    EarlyStopping counter: 9 out of 100
-
-                    Train : 
-                      [ 524 2530] 
-                     [ 155 3452]
-                    EarlyStopping counter: 10 out of 100
-
-                    Train : 
-                      [ 459 2678] 
-                     [ 167 3440]
-                    EarlyStopping counter: 11 out of 100
-
-                    Train : 
-                      [ 610 2417] 
-                     [ 133 3474]
-                    EarlyStopping counter: 12 out of 100
-
-                    Train : 
-                      [ 705 2358] 
-                     [ 153 3454]
-                    EarlyStopping counter: 13 out of 100
-
-                    Train : 
-                      [ 651 2411] 
-                     [ 164 3443]
-                    EarlyStopping counter: 14 out of 100
-
-                    Train : 
-                      [ 683 2344] 
-                     [ 159 3448]
-                    EarlyStopping counter: 15 out of 100
-
-                    Train : 
-                      [ 776 2264] 
-                     [ 169 3438]
-                    EarlyStopping counter: 16 out of 100
-
-                    Train : 
-                      [ 873 2221] 
-                     [ 172 3435]
-                    -- -- The best model for TEST (F1= .  0.4523163403760419 ) -- --
-                    Validate: 
-                      0.7928167824900954 
-                     [204 640] 
-                     [ 70 939] 
-                     precision:  0.5946801773274224 recall:  0.9306243805748265 AUC 0.6757652689773086
-                    test    : 
-                      0.4523163403760419 
-                     [ 552 1325] 
-                     [ 39 359] 
-                     AUC 0.7151473938686507
-                    - Epoch: 42 - Train_loss: 0.33735 - Train_acc: 0.64158 -  - Val_loss: 0.40217 - Val_acc: 0.61898  - T_Time: 35.12173 LR:0.0002500000
-                    EarlyStopping counter: 17 out of 100
-
-                    Train : 
-                      [ 937 2075] 
-                     [ 156 3451]
-                    EarlyStopping counter: 18 out of 100
-
-                    Train : 
-                      [ 865 2160] 
-                     [ 141 3466]
-                    EarlyStopping counter: 19 out of 100
-
-                    Train : 
-                      [ 984 2084] 
-                     [ 151 3456]
-                    -- -- The best model for TEST (F1= .  0.4626478522515045 ) -- --
-                    Validate: 
-                      0.7756049055352999 
-                     [243 601] 
-                     [109 900] 
-                     precision:  0.5996002664890073 recall:  0.8919722497522299 AUC 0.6791941249136915
-                    test    : 
-                      0.4626478522515045 
-                     [ 706 1171] 
-                     [ 55 343] 
-                     AUC 0.7125652235605304
-                    - Epoch: 45 - Train_loss: 0.32391 - Train_acc: 0.66763 -  - Val_loss: 0.42835 - Val_acc: 0.62210  - T_Time: 34.63345 LR:0.0002500000
-                    EarlyStopping counter: 20 out of 100
-
-                    Train : 
-                      [1137 1975] 
-                     [ 181 3426]
-                    EarlyStopping counter: 21 out of 100
-
-                    Train : 
-                      [1126 1932] 
-                     [ 156 3451]
-                    EarlyStopping counter: 22 out of 100
-
-                    Train : 
-                      [1008 2051] 
-                     [ 173 3434]
-                    EarlyStopping counter: 23 out of 100
-
-                    Train : 
-                      [1096 2000] 
-                     [ 167 3440]
-                    EarlyStopping counter: 24 out of 100
-
-                    Train : 
-                      [1191 1893] 
-                     [ 177 3430]
-                    EarlyStopping counter: 25 out of 100
-
-                    Train : 
-                      [1326 1825] 
-                     [ 153 3454]
-                    EarlyStopping counter: 26 out of 100
-
-                    Train : 
-                      [1341 1738] 
-                     [ 158 3449]
-                    EarlyStopping counter: 27 out of 100
-
-                    Train : 
-                      [1404 1637] 
-                     [ 163 3444]
-                    EarlyStopping counter: 28 out of 100
-
-                    Train : 
-                      [1451 1619] 
-                     [ 155 3452]
-                    EarlyStopping counter: 29 out of 100
-
-                    Train : 
-                      [1421 1578] 
-                     [ 150 3457]
-                    EarlyStopping counter: 30 out of 100
-
-                    Train : 
-                      [1506 1559] 
-                     [ 176 3431]
-                    EarlyStopping counter: 31 out of 100
-
-                    Train : 
-                      [1465 1497] 
-                     [ 157 3450]
-                    EarlyStopping counter: 32 out of 100
-
-                    Train : 
-                      [1581 1495] 
-                     [ 167 3440]
-                    EarlyStopping counter: 33 out of 100
-
-                    Train : 
-                      [1522 1500] 
-                     [ 168 3439]
-                    EarlyStopping counter: 34 out of 100
-
-                    Train : 
-                      [1575 1477] 
-                     [ 158 3449]
-                    EarlyStopping counter: 35 out of 100
-
-                    Train : 
-                      [1533 1517] 
-                     [ 173 3434]
-                    EarlyStopping counter: 36 out of 100
-
-                    Train : 
-                      [1350 1696] 
-                     [ 230 3377]
-                    EarlyStopping counter: 37 out of 100
-
-                    Train : 
-                      [1348 1682] 
-                     [ 179 3428]
-                    EarlyStopping counter: 38 out of 100
-
-                    Train : 
-                      [1472 1593] 
-                     [ 158 3449]
-                    EarlyStopping counter: 39 out of 100
-
-                    Train : 
-                      [1488 1571] 
-                     [ 145 3462]
-                    EarlyStopping counter: 40 out of 100
-
-                    Train : 
-                      [1544 1409] 
-                     [ 160 3447]
-                    EarlyStopping counter: 41 out of 100
-
-                    Train : 
-                      [1552 1443] 
-                     [ 124 3483]
-                    EarlyStopping counter: 42 out of 100
-
-                    Train : 
-                      [1743 1376] 
-                     [ 143 3464]
-                    EarlyStopping counter: 43 out of 100
-
-                    Train : 
-                      [1772 1267] 
-                     [ 150 3457]
-                    EarlyStopping counter: 44 out of 100
-
-                    Train : 
-                      [1661 1351] 
-                     [ 175 3432]
-                    EarlyStopping counter: 45 out of 100
-
-                    Train : 
-                      [1684 1252] 
-                     [ 180 3427]
-                    EarlyStopping counter: 46 out of 100
-
-                    Train : 
-                      [1725 1243] 
-                     [ 153 3454]
-                    EarlyStopping counter: 47 out of 100
-
-                    Train : 
-                      [1774 1300] 
-                     [ 154 3453]
-                    EarlyStopping counter: 48 out of 100
-
-                    Train : 
-                      [1798 1261] 
-                     [ 163 3444]
-                    -- -- The best model for TEST (F1= .  0.471035562513979 ) -- --
-                    Validate: 
-                      0.7458795945107234 
-                     [321 523] 
-                     [177 832] 
-                     precision:  0.6140221402214022 recall:  0.8245787908820614 AUC 0.6609366413181837
-                    test    : 
-                      0.471035562513979 
-                     [ 861 1016] 
-                     [ 74 324] 
-                     AUC 0.6962395889945198
-                    - Epoch: 74 - Train_loss: 0.27497 - Train_acc: 0.78330 -  - Val_loss: 0.49474 - Val_acc: 0.62074  - T_Time: 34.42599 LR:0.0000312500
-                    EarlyStopping counter: 49 out of 100
-
-                    Train : 
-                      [1805 1214] 
-                     [ 135 3472]
-                    EarlyStopping counter: 50 out of 100
-
-                    Train : 
-                      [1753 1279] 
-                     [ 153 3454]
-                    EarlyStopping counter: 51 out of 100
-
-                    Train : 
-                      [1787 1270] 
-                     [ 154 3453]
-                    EarlyStopping counter: 52 out of 100
-
-                    Train : 
-                      [1786 1247] 
-                     [ 136 3471]
-                    EarlyStopping counter: 53 out of 100
-
-                    Train : 
-                      [1776 1256] 
-                     [ 148 3459]
-                    EarlyStopping counter: 54 out of 100
-
-                    Train : 
-                      [1808 1200] 
-                     [ 135 3472]
-                    EarlyStopping counter: 55 out of 100
-
-                    Train : 
-                      [1863 1142] 
-                     [ 151 3456]
-                    EarlyStopping counter: 56 out of 100
-
-                    Train : 
-                      [1896 1168] 
-                     [ 155 3452]
-                    EarlyStopping counter: 57 out of 100
-
-                    Train : 
-                      [1891 1144] 
-                     [ 153 3454]
-                    EarlyStopping counter: 58 out of 100
-
-                    Train : 
-                      [1922 1184] 
-                     [ 142 3465]
-                    EarlyStopping counter: 59 out of 100
-
-                    Train : 
-                      [1888 1145] 
-                     [ 146 3461]
-                    EarlyStopping counter: 60 out of 100
-
-                    Train : 
-                      [1903 1164] 
-                     [ 167 3440]
-                    EarlyStopping counter: 61 out of 100
-
-                    Train : 
-                      [1917 1090] 
-                     [ 155 3452]
-                    EarlyStopping counter: 62 out of 100
-
-                    Train : 
-                      [1905 1157] 
-                     [ 148 3459]
-                    EarlyStopping counter: 63 out of 100
-
-                    Train : 
-                      [1972 1054] 
-                     [ 161 3446]
-                    EarlyStopping counter: 64 out of 100
-
-                    Train : 
-                      [1851 1128] 
-                     [ 142 3465]
-                    EarlyStopping counter: 65 out of 100
-
-                    Train : 
-                      [1900 1152] 
-                     [ 141 3466]
-                    EarlyStopping counter: 66 out of 100
-
-                    Train : 
-                      [1873 1104] 
-                     [ 149 3458]
-                    EarlyStopping counter: 67 out of 100
-
-                    Train : 
-                      [1908 1127] 
-                     [ 117 3490]
-                    EarlyStopping counter: 68 out of 100
-
-                    Train : 
-                      [1966 1109] 
-                     [ 131 3476]
-                    EarlyStopping counter: 69 out of 100
-
-                    Train : 
-                      [1906 1122] 
-                     [ 149 3458]
-                    EarlyStopping counter: 70 out of 100
-
-                    Train : 
-                      [1905 1159] 
-                     [ 130 3477]
-                    EarlyStopping counter: 71 out of 100
-
-                    Train : 
-                      [1914 1149] 
-                     [ 138 3469]
-                    EarlyStopping counter: 72 out of 100
-
-                    Train : 
-                      [1917 1051] 
-                     [ 142 3465]
-                    EarlyStopping counter: 73 out of 100
-
-                    Train : 
-                      [1949 1118] 
-                     [ 148 3459]
-                    EarlyStopping counter: 74 out of 100
-
-                    Train : 
-                      [1926 1104] 
-                     [ 154 3453]
-                    EarlyStopping counter: 75 out of 100
-
-                    Train : 
-                      [1973 1101] 
-                     [ 146 3461]
-                    EarlyStopping counter: 76 out of 100
-
-                    Train : 
-                      [2003 1077] 
-                     [ 159 3448]
-                    EarlyStopping counter: 77 out of 100
-
-                    Train : 
-                      [2019 1111] 
-                     [ 130 3477]
-                    EarlyStopping counter: 78 out of 100
-
-                    Train : 
-                      [2002 1038] 
-                     [ 152 3455]
-                    EarlyStopping counter: 79 out of 100
-
-                    Train : 
-                      [1923 1076] 
-                     [ 140 3467]
-                    EarlyStopping counter: 80 out of 100
-
-                    Train : 
-                      [1991 1051] 
-                     [ 152 3455]
-                    EarlyStopping counter: 81 out of 100
-
-                    Train : 
-                      [1932 1097] 
-                     [ 152 3455]
-                    EarlyStopping counter: 82 out of 100
-
-                    Train : 
-                      [1963 1084] 
-                     [ 132 3475]
-                    EarlyStopping counter: 83 out of 100
-
-                    Train : 
-                      [1998 1091] 
-                     [ 139 3468]
-                    EarlyStopping counter: 84 out of 100
-
-                    Train : 
-                      [1979 1002] 
-                     [ 158 3449]
-                    EarlyStopping counter: 85 out of 100
-
-                    Train : 
-                      [1974 1044] 
-                     [ 181 3426]
-                    EarlyStopping counter: 86 out of 100
-
-                    Train : 
-                      [1992 1039] 
-                     [ 143 3464]
-                    EarlyStopping counter: 87 out of 100
-
-                    Train : 
-                      [2015 1107] 
-                     [ 143 3464]
-                    EarlyStopping counter: 88 out of 100
-
-                    Train : 
-                      [2011 1104] 
-                     [ 150 3457]
-                    EarlyStopping counter: 89 out of 100
-
-                    Train : 
-                      [2003 1102] 
-                     [ 146 3461]
-                    EarlyStopping counter: 90 out of 100
-
-                    Train : 
-                      [2015 1063] 
-                     [ 150 3457]
-                    EarlyStopping counter: 91 out of 100
-
-                    Train : 
-                      [1994 1037] 
-                     [ 133 3474]
-                    EarlyStopping counter: 92 out of 100
-
-                    Train : 
-                      [1983 1117] 
-                     [ 148 3459]
-                    EarlyStopping counter: 93 out of 100
-
-                    Train : 
-                      [2007 1081] 
-                     [ 157 3450]
-                    EarlyStopping counter: 94 out of 100
-
-                    Train : 
-                      [1988 1066] 
-                     [ 151 3456]
-                    EarlyStopping counter: 95 out of 100
-
-                    Train : 
-                      [2037 1037] 
-                     [ 157 3450]
-                    EarlyStopping counter: 96 out of 100
-
-                    Train : 
-                      [1983 1034] 
-                     [ 152 3455]
-                    EarlyStopping counter: 97 out of 100
-
-                    Train : 
-                      [2017 1078] 
-                     [ 149 3458]
-                    EarlyStopping counter: 98 out of 100
-
-                    Train : 
-                      [2017 1061] 
-                     [ 151 3456]
-                    EarlyStopping counter: 99 out of 100
-
-                    Train : 
-                      [2008 1069] 
-                     [ 146 3461]
-                    EarlyStopping counter: 100 out of 100
-
-                    Early stopping...
-     Best Loss:
-          valid
-           [ 45 799] 
-           [ 13 996]
-          F1:  0.7104136947218259
-          AUC:  0.706045472266192
-          precision:  0.5548746518105849
-          recall:  0.9871159563924677
-          test
-           [ 135 1742] 
-           [  5 393]
-          F1:  0.3103039873667588
-          AUC:  0.7172603828947615
-          precision:  0.18407494145199063
-          recall:  0.9874371859296482
-
-
-
-     Best Sore:
-          valid
-           [321 523] 
-           [177 832]
-          F1:  0.703891708967851
-          AUC:  0.6609378155839154
-          precision:  0.6140221402214022
-          recall:  0.8245787908820614
-          test
-           [ 861 1016] 
-           [ 74 324]
-          F1:  0.37284234752589185
-          AUC:  0.6962395889945198
-          precision:  0.2417910447761194
-          recall:  0.8140703517587939
-          ==================================================
-          Fold 1 Training Finished
-
-
-          Fold 2 of 5 :
-                    Train : 
-                      [ 235 2859] 
-                     [ 258 3461]
-                    -- -- The best model for TEST (F1= .  0.40797981390947796 ) -- --
-                    Validate: 
-                      0.7779705117085863 
-                     [  0 832] 
-                     [  0 897] 
-                     precision:  0.518796992481203 recall:  1.0 AUC 0.5
-                    test    : 
-                      0.40797981390947796 
+                      0.40060673798499125 
                      [   0 1877] 
-                     [  0 398] 
-                     AUC 0.5
-                    - Epoch: 1 - Train_loss: 0.53300 - Train_acc: 0.54275 -  - Val_loss: 33.64395 - Val_acc: 0.52060  - T_Time: 35.39426 LR:0.0010000000
+                     [  0 386] 
+                     AUC 0.4896690507672645
+                    - Epoch: 1 - Train_loss: 0.50297 - Train_acc: 0.53822 -  - Val_loss: 0.44880 - Val_acc: 0.53958  - T_Time: 34.32247 LR:0.0010000000
                     --------------------------------------------------
 
-                    Validation  score to (inf --> 0.50000000).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 119 3000] 
-                     [ 161 3558]
-                    --------------------------------------------------
-
-                    Validation  score to (0.50000000 --> 0.57062337).  Saving model ...
+                    Validation  score to (inf --> 0.49656841).  Saving model ...
                     --------------------------------------------------
 
                     Train : 
-                      [ 154 2883] 
-                     [ 171 3548]
-                    -- -- The best model for TEST (F1= .  0.41135315630465896 ) -- --
+                      [ 135 2825] 
+                     [ 127 3334]
+                    -- -- The best model for TEST (F1= .  0.40124740124740127 ) -- --
                     Validate: 
-                      0.7774433072446317 
-                     [  7 825] 
-                     [  3 894] 
-                     precision:  0.5200698080279232 recall:  0.9966555183946488 AUC 0.6608091340794101
+                      0.7887858609745472 
+                     [  1 844] 
+                     [  2 975] 
+                     precision:  0.5360087960417812 recall:  0.9979529170931423 AUC 0.5925778103480646
                     test    : 
-                      0.41135315630465896 
-                     [  26 1851] 
-                     [  0 398] 
-                     AUC 0.6436618360850604
-                    - Epoch: 3 - Train_loss: 0.41907 - Train_acc: 0.54936 -  - Val_loss: 0.38780 - Val_acc: 0.52101  - T_Time: 35.42452 LR:0.0010000000
+                      0.40124740124740127 
+                     [   5 1872] 
+                     [  0 386] 
+                     AUC 0.6197451561167224
+                    - Epoch: 2 - Train_loss: 0.40678 - Train_acc: 0.54472 -  - Val_loss: 0.42145 - Val_acc: 0.51335  - T_Time: 33.92357 LR:0.0010000000
                     --------------------------------------------------
 
-                    Validation  score to (0.57062337 --> 0.66080913).  Saving model ...
+                    Validation  score to (0.49656841 --> 0.59257781).  Saving model ...
                     --------------------------------------------------
 
                     Train : 
-                      [ 158 2958] 
-                     [ 164 3555]
+                      [ 176 2738] 
+                     [ 171 3290]
                     EarlyStopping counter: 1 out of 100
 
                     Train : 
-                      [ 113 2957] 
-                     [ 164 3555]
-                    --------------------------------------------------
-
-                    Validation  score to (0.66080913 --> 0.68517789).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 154 2888] 
-                     [ 153 3566]
-                    -- -- The best model for TEST (F1= .  0.44811059907834105 ) -- --
-                    Validate: 
-                      0.7815316913904465 
-                     [175 657] 
-                     [ 50 847] 
-                     precision:  0.5631648936170213 recall:  0.9442586399108138 AUC 0.6933501629362834
-                    test    : 
-                      0.44811059907834105 
-                     [ 434 1443] 
-                     [ 24 374] 
-                     AUC 0.6829746762582224
-                    - Epoch: 6 - Train_loss: 0.39227 - Train_acc: 0.55068 -  - Val_loss: 0.42884 - Val_acc: 0.59035  - T_Time: 34.89890 LR:0.0010000000
-                    --------------------------------------------------
-
-                    Validation  score to (0.68517789 --> 0.69335016).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 161 2940] 
-                     [ 163 3556]
-                    --------------------------------------------------
-
-                    Validation  score to (0.69335016 --> 0.69827242).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 148 2901] 
-                     [ 153 3566]
-                    EarlyStopping counter: 1 out of 100
-
-                    Train : 
-                      [ 194 2868] 
-                     [ 177 3542]
+                      [ 133 2818] 
+                     [ 168 3293]
                     EarlyStopping counter: 2 out of 100
 
                     Train : 
-                      [ 140 2857] 
-                     [ 182 3537]
+                      [ 157 2820] 
+                     [ 154 3307]
                     EarlyStopping counter: 3 out of 100
 
                     Train : 
-                      [ 153 2884] 
-                     [ 164 3555]
-                    -- -- The best model for TEST (F1= .  0.4794047875781756 ) -- --
-                    Validate: 
-                      0.7708816271592014 
-                     [300 532] 
-                     [104 793] 
-                     precision:  0.5984905660377359 recall:  0.8840579710144928 AUC 0.7038854139867936
-                    test    : 
-                      0.4794047875781756 
-                     [ 796 1081] 
-                     [ 56 342] 
-                     AUC 0.7251628413779071
-                    - Epoch: 11 - Train_loss: 0.38051 - Train_acc: 0.54797 -  - Val_loss: 0.44385 - Val_acc: 0.63216  - T_Time: 34.98595 LR:0.0010000000
+                      [ 137 2794] 
+                     [ 162 3299]
                     --------------------------------------------------
 
-                    Validation  score to (0.69827242 --> 0.70388541).  Saving model ...
+                    Validation  score to (0.59257781 --> 0.65667815).  Saving model ...
                     --------------------------------------------------
 
                     Train : 
-                      [ 146 2896] 
-                     [ 153 3566]
-                    --------------------------------------------------
-
-                    Validation  score to (0.70388541 --> 0.71029366).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 196 2857] 
-                     [ 134 3585]
-                    --------------------------------------------------
-
-                    Validation  score to (0.71029366 --> 0.71044105).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 198 2862] 
-                     [ 167 3552]
-                    --------------------------------------------------
-
-                    Validation  score to (0.71044105 --> 0.71470071).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 297 2887] 
-                     [ 176 3543]
-                    --------------------------------------------------
-
-                    Validation  score to (0.71470071 --> 0.72101382).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 239 2821] 
-                     [ 169 3550]
+                      [ 139 2770] 
+                     [ 142 3319]
                     EarlyStopping counter: 1 out of 100
 
                     Train : 
-                      [ 314 2736] 
-                     [ 175 3544]
+                      [ 128 2768] 
+                     [ 122 3339]
                     --------------------------------------------------
 
-                    Validation  score to (0.72101382 --> 0.72809807).  Saving model ...
+                    Validation  score to (0.65667815 --> 0.68469472).  Saving model ...
                     --------------------------------------------------
 
                     Train : 
-                      [ 274 2748] 
-                     [ 175 3544]
-                    -- -- The best model for TEST (F1= .  0.4809384164222874 ) -- --
+                      [ 131 2817] 
+                     [ 128 3333]
+                    -- -- The best model for TEST (F1= .  0.40162092761996465 ) -- --
                     Validate: 
-                      0.766127158677302 
-                     [383 449] 
-                     [136 761] 
-                     precision:  0.6289256198347107 recall:  0.8483835005574136 AUC 0.7252165337449619
+                      0.7907975842101986 
+                     [  5 840] 
+                     [  0 977] 
+                     precision:  0.5376995046780407 recall:  1.0 AUC 0.6840721203054877
                     test    : 
-                      0.4809384164222874 
-                     [884 993] 
-                     [ 70 328] 
-                     AUC 0.7369091059988274
-                    - Epoch: 18 - Train_loss: 0.37254 - Train_acc: 0.56256 -  - Val_loss: 0.47114 - Val_acc: 0.66171  - T_Time: 34.64821 LR:0.0010000000
+                      0.40162092761996465 
+                     [  15 1862] 
+                     [  1 385] 
+                     AUC 0.7079384752981966
+                    - Epoch: 9 - Train_loss: 0.40075 - Train_acc: 0.53280 -  - Val_loss: 0.36766 - Val_acc: 0.54570  - T_Time: 33.66714 LR:0.0010000000
                     EarlyStopping counter: 1 out of 100
 
                     Train : 
-                      [ 353 2719] 
-                     [ 177 3542]
-                    -- -- The best model for TEST (F1= .  0.48338368580060426 ) -- --
-                    Validate: 
-                      0.7614386700846735 
-                     [386 446] 
-                     [143 754] 
-                     precision:  0.6283333333333333 recall:  0.8405797101449275 AUC 0.7207779939542064
-                    test    : 
-                      0.48338368580060426 
-                     [941 936] 
-                     [ 78 320] 
-                     AUC 0.726500108427058
-                    - Epoch: 19 - Train_loss: 0.37706 - Train_acc: 0.57479 -  - Val_loss: 0.50637 - Val_acc: 0.66057  - T_Time: 35.05863 LR:0.0010000000
+                      [ 217 2748] 
+                     [ 172 3289]
                     EarlyStopping counter: 2 out of 100
 
                     Train : 
-                      [ 400 2689] 
-                     [ 173 3546]
+                      [ 135 2810] 
+                     [ 139 3322]
                     --------------------------------------------------
 
-                    Validation  score to (0.72809807 --> 0.72836270).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 429 2682] 
-                     [ 165 3554]
-                    EarlyStopping counter: 1 out of 100
-
-                    Train : 
-                      [ 449 2500] 
-                     [ 182 3537]
-                    --------------------------------------------------
-
-                    Validation  score to (0.72836270 --> 0.73380218).  Saving model ...
+                    Validation  score to (0.68469472 --> 0.68591207).  Saving model ...
                     --------------------------------------------------
 
                     Train : 
-                      [ 463 2623] 
-                     [ 169 3550]
-                    EarlyStopping counter: 1 out of 100
+                      [ 143 2812] 
+                     [ 149 3312]
+                    --------------------------------------------------
+
+                    Validation  score to (0.68591207 --> 0.68883310).  Saving model ...
+                    --------------------------------------------------
 
                     Train : 
-                      [ 510 2582] 
-                     [ 195 3524]
-                    EarlyStopping counter: 2 out of 100
+                      [ 213 2734] 
+                     [ 156 3305]
+                    --------------------------------------------------
+
+                    Validation  score to (0.68883310 --> 0.69878568).  Saving model ...
+                    --------------------------------------------------
 
                     Train : 
-                      [ 530 2544] 
-                     [ 157 3562]
-                    -- -- The best model for TEST (F1= .  0.4839681514955885 ) -- --
+                      [ 138 2774] 
+                     [ 144 3317]
+                    --------------------------------------------------
+
+                    Validation  score to (0.69878568 --> 0.70027375).  Saving model ...
+                    --------------------------------------------------
+
+                    Train : 
+                      [ 219 2771] 
+                     [ 161 3300]
+                    -- -- The best model for TEST (F1= .  0.4223826714801444 ) -- --
                     Validate: 
-                      0.7831795333483381 
-                     [321 511] 
-                     [ 94 803] 
-                     precision:  0.6111111111111112 recall:  0.89520624303233 AUC 0.7362643105222537
+                      0.7963726298433637 
+                     [ 67 778] 
+                     [ 11 966] 
+                     precision:  0.5538990825688074 recall:  0.9887410440122825 AUC 0.7038385832732734
                     test    : 
-                      0.4839681514955885 
-                     [ 795 1082] 
-                     [ 52 346] 
-                     AUC 0.7412502041373623
-                    - Epoch: 25 - Train_loss: 0.35321 - Train_acc: 0.60307 -  - Val_loss: 0.41964 - Val_acc: 0.65037  - T_Time: 35.56175 LR:0.0010000000
+                      0.4223826714801444 
+                     [ 215 1662] 
+                     [  8 378] 
+                     AUC 0.7208725200891071
+                    - Epoch: 15 - Train_loss: 0.37884 - Train_acc: 0.54742 -  - Val_loss: 0.36383 - Val_acc: 0.56325  - T_Time: 33.57342 LR:0.0010000000
                     --------------------------------------------------
 
-                    Validation  score to (0.73380218 --> 0.73626431).  Saving model ...
+                    Validation  score to (0.70027375 --> 0.70383858).  Saving model ...
                     --------------------------------------------------
 
                     Train : 
-                      [ 476 2528] 
-                     [ 182 3537]
+                      [ 223 2747] 
+                     [ 164 3297]
+                    --------------------------------------------------
+
+                    Validation  score to (0.70383858 --> 0.70669360).  Saving model ...
+                    --------------------------------------------------
+
+                    Train : 
+                      [ 205 2702] 
+                     [ 150 3311]
+                    -- -- The best model for TEST (F1= .  0.4779630052523407 ) -- --
+                    Validate: 
+                      0.7528235378749731 
+                     [373 472] 
+                     [172 805] 
+                     precision:  0.6303837118245889 recall:  0.8239508700102354 AUC 0.6927001508058118
+                    test    : 
+                      0.4779630052523407 
+                     [878 999] 
+                     [ 64 322] 
+                     AUC 0.7138485787871176
+                    - Epoch: 17 - Train_loss: 0.38354 - Train_acc: 0.55246 -  - Val_loss: 0.47718 - Val_acc: 0.63405  - T_Time: 33.46029 LR:0.0010000000
                     EarlyStopping counter: 1 out of 100
 
                     Train : 
-                      [ 689 2346] 
-                     [ 172 3547]
+                      [ 275 2647] 
+                     [ 160 3301]
                     EarlyStopping counter: 2 out of 100
 
                     Train : 
-                      [ 781 2270] 
-                     [ 170 3549]
+                      [ 317 2615] 
+                     [ 153 3308]
                     EarlyStopping counter: 3 out of 100
 
                     Train : 
-                      [ 825 2265] 
-                     [ 185 3534]
-                    --------------------------------------------------
-
-                    Validation  score to (0.73626431 --> 0.73853148).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 828 2204] 
-                     [ 190 3529]
-                    -- -- The best model for TEST (F1= .  0.48746227072208037 ) -- --
-                    Validate: 
-                      0.7729838397896853 
-                     [386 446] 
-                     [128 769] 
-                     precision:  0.6329218106995885 recall:  0.8573021181716833 AUC 0.7330457829517193
-                    test    : 
-                      0.48746227072208037 
-                     [942 935] 
-                     [ 75 323] 
-                     AUC 0.729786385309606
-                    - Epoch: 30 - Train_loss: 0.33544 - Train_acc: 0.64605 -  - Val_loss: 0.44958 - Val_acc: 0.66894  - T_Time: 35.28265 LR:0.0005000000
-                    EarlyStopping counter: 1 out of 100
-
-                    Train : 
-                      [ 844 2210] 
-                     [ 185 3534]
-                    --------------------------------------------------
-
-                    Validation  score to (0.73853148 --> 0.73884235).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [1003 2044] 
-                     [ 175 3544]
-                    EarlyStopping counter: 1 out of 100
-
-                    Train : 
-                      [ 957 2069] 
-                     [ 165 3554]
-                    EarlyStopping counter: 2 out of 100
-
-                    Train : 
-                      [1045 1996] 
-                     [ 158 3561]
-                    EarlyStopping counter: 3 out of 100
-
-                    Train : 
-                      [1021 2032] 
-                     [ 174 3545]
+                      [ 365 2596] 
+                     [ 169 3292]
                     EarlyStopping counter: 4 out of 100
 
                     Train : 
-                      [1099 1925] 
-                     [ 183 3536]
+                      [ 264 2579] 
+                     [ 157 3304]
+                    --------------------------------------------------
+
+                    Validation  score to (0.70669360 --> 0.70864923).  Saving model ...
+                    --------------------------------------------------
+
+                    Train : 
+                      [ 354 2636] 
+                     [ 158 3303]
+                    --------------------------------------------------
+
+                    Validation  score to (0.70864923 --> 0.71362764).  Saving model ...
+                    --------------------------------------------------
+
+                    Train : 
+                      [ 498 2518] 
+                     [ 155 3306]
+                    EarlyStopping counter: 1 out of 100
+
+                    Train : 
+                      [ 446 2500] 
+                     [ 163 3298]
+                    --------------------------------------------------
+
+                    Validation  score to (0.71362764 --> 0.71805006).  Saving model ...
+                    --------------------------------------------------
+
+                    Train : 
+                      [ 501 2426] 
+                     [ 154 3307]
+                    EarlyStopping counter: 1 out of 100
+
+                    Train : 
+                      [ 542 2414] 
+                     [ 140 3321]
+                    EarlyStopping counter: 2 out of 100
+
+                    Train : 
+                      [ 437 2460] 
+                     [ 156 3305]
+                    EarlyStopping counter: 3 out of 100
+
+                    Train : 
+                      [ 548 2363] 
+                     [ 152 3309]
+                    EarlyStopping counter: 4 out of 100
+
+                    Train : 
+                      [ 538 2407] 
+                     [ 159 3302]
                     EarlyStopping counter: 5 out of 100
 
                     Train : 
-                      [1068 2008] 
-                     [ 188 3531]
+                      [ 694 2237] 
+                     [ 228 3233]
+                    -- -- The best model for TEST (F1= .  0.4797807551766139 ) -- --
+                    Validate: 
+                      0.7583411739161902 
+                     [395 450] 
+                     [171 806] 
+                     precision:  0.64171974522293 recall:  0.8249744114636642 AUC 0.7117901073810058
+                    test    : 
+                      0.4797807551766139 
+                     [996 881] 
+                     [ 83 303] 
+                     AUC 0.7233541562575049
+                    - Epoch: 30 - Train_loss: 0.39584 - Train_acc: 0.61435 -  - Val_loss: 0.48917 - Val_acc: 0.64528  - T_Time: 33.75705 LR:0.0005000000
                     EarlyStopping counter: 6 out of 100
 
                     Train : 
-                      [1165 1826] 
-                     [ 171 3548]
+                      [ 564 2395] 
+                     [ 134 3327]
                     EarlyStopping counter: 7 out of 100
 
                     Train : 
-                      [1340 1765] 
-                     [ 171 3548]
+                      [ 689 2244] 
+                     [ 144 3317]
                     EarlyStopping counter: 8 out of 100
 
                     Train : 
-                      [1414 1642] 
-                     [ 160 3559]
+                      [ 783 2198] 
+                     [ 125 3336]
                     EarlyStopping counter: 9 out of 100
 
                     Train : 
-                      [1426 1624] 
-                     [ 184 3535]
+                      [ 769 2142] 
+                     [ 146 3315]
                     EarlyStopping counter: 10 out of 100
 
                     Train : 
-                      [1434 1646] 
-                     [ 163 3556]
+                      [ 779 2156] 
+                     [ 152 3309]
                     EarlyStopping counter: 11 out of 100
 
                     Train : 
-                      [1505 1551] 
-                     [ 151 3568]
+                      [ 951 2028] 
+                     [ 148 3313]
                     EarlyStopping counter: 12 out of 100
 
                     Train : 
-                      [1562 1507] 
-                     [ 175 3544]
+                      [ 995 1977] 
+                     [ 173 3288]
                     EarlyStopping counter: 13 out of 100
 
                     Train : 
-                      [1515 1463] 
-                     [ 179 3540]
+                      [1072 1929] 
+                     [ 160 3301]
                     EarlyStopping counter: 14 out of 100
 
                     Train : 
-                      [1706 1402] 
-                     [ 160 3559]
+                      [1012 1913] 
+                     [ 181 3280]
                     EarlyStopping counter: 15 out of 100
 
                     Train : 
-                      [1633 1439] 
-                     [ 161 3558]
+                      [1053 1903] 
+                     [ 140 3321]
                     EarlyStopping counter: 16 out of 100
 
                     Train : 
-                      [1556 1428] 
-                     [ 147 3572]
+                      [ 993 1952] 
+                     [ 148 3313]
                     EarlyStopping counter: 17 out of 100
 
                     Train : 
-                      [1649 1316] 
-                     [ 175 3544]
+                      [1140 1831] 
+                     [ 146 3315]
                     EarlyStopping counter: 18 out of 100
 
                     Train : 
-                      [1804 1266] 
-                     [ 162 3557]
+                      [1141 1801] 
+                     [ 138 3323]
                     EarlyStopping counter: 19 out of 100
 
                     Train : 
-                      [1817 1195] 
-                     [ 164 3555]
+                      [1196 1755] 
+                     [ 161 3300]
                     EarlyStopping counter: 20 out of 100
 
                     Train : 
-                      [1938 1114] 
-                     [ 169 3550]
+                      [ 822 2138] 
+                     [ 170 3291]
                     EarlyStopping counter: 21 out of 100
 
                     Train : 
-                      [1867 1160] 
-                     [ 138 3581]
+                      [ 967 1915] 
+                     [ 156 3305]
                     EarlyStopping counter: 22 out of 100
 
                     Train : 
-                      [2010 1096] 
-                     [ 154 3565]
+                      [1141 1786] 
+                     [ 134 3327]
+                    -- -- The best model for TEST (F1= .  0.48119122257053293 ) -- --
+                    Validate: 
+                      0.7536772619645549 
+                     [367 478] 
+                     [169 808] 
+                     precision:  0.6283048211508554 recall:  0.827021494370522 AUC 0.6892213211558146
+                    test    : 
+                      0.48119122257053293 
+                     [979 898] 
+                     [ 79 307] 
+                     AUC 0.7153095420152873
+                    - Epoch: 47 - Train_loss: 0.31450 - Train_acc: 0.69951 -  - Val_loss: 0.47395 - Val_acc: 0.65465  - T_Time: 33.86297 LR:0.0001250000
                     EarlyStopping counter: 23 out of 100
 
                     Train : 
-                      [2024 1040] 
-                     [ 163 3556]
+                      [1258 1740] 
+                     [ 135 3326]
                     EarlyStopping counter: 24 out of 100
 
                     Train : 
-                      [1910 1066] 
-                     [ 148 3571]
+                      [1296 1622] 
+                     [ 157 3304]
                     EarlyStopping counter: 25 out of 100
 
                     Train : 
-                      [2064 1018] 
-                     [ 178 3541]
+                      [1360 1561] 
+                     [ 119 3342]
                     EarlyStopping counter: 26 out of 100
 
                     Train : 
-                      [2001 1025] 
-                     [ 179 3540]
+                      [1283 1535] 
+                     [ 160 3301]
                     EarlyStopping counter: 27 out of 100
 
                     Train : 
-                      [1994 1028] 
-                     [ 159 3560]
+                      [1468 1519] 
+                     [ 145 3316]
                     EarlyStopping counter: 28 out of 100
 
                     Train : 
-                      [2045 1001] 
-                     [ 144 3575]
+                      [1470 1501] 
+                     [ 156 3305]
                     EarlyStopping counter: 29 out of 100
 
                     Train : 
-                      [2143  999] 
-                     [ 154 3565]
+                      [1459 1457] 
+                     [ 158 3303]
                     EarlyStopping counter: 30 out of 100
 
                     Train : 
-                      [2115  926] 
-                     [ 140 3579]
+                      [1478 1455] 
+                     [ 154 3307]
                     EarlyStopping counter: 31 out of 100
 
                     Train : 
-                      [2229  900] 
-                     [ 156 3563]
+                      [1494 1433] 
+                     [ 151 3310]
                     EarlyStopping counter: 32 out of 100
 
                     Train : 
-                      [2208  902] 
-                     [ 153 3566]
+                      [1528 1397] 
+                     [ 173 3288]
                     EarlyStopping counter: 33 out of 100
 
                     Train : 
-                      [2261  835] 
-                     [ 149 3570]
+                      [1515 1364] 
+                     [ 165 3296]
                     EarlyStopping counter: 34 out of 100
 
                     Train : 
-                      [2262  908] 
-                     [ 149 3570]
+                      [1573 1336] 
+                     [ 179 3282]
                     EarlyStopping counter: 35 out of 100
 
                     Train : 
-                      [2253  805] 
-                     [ 152 3567]
+                      [1594 1322] 
+                     [ 129 3332]
                     EarlyStopping counter: 36 out of 100
 
                     Train : 
-                      [2196  835] 
-                     [ 130 3589]
+                      [1612 1289] 
+                     [ 153 3308]
                     EarlyStopping counter: 37 out of 100
 
                     Train : 
-                      [2236  834] 
-                     [ 155 3564]
+                      [1625 1285] 
+                     [ 157 3304]
                     EarlyStopping counter: 38 out of 100
 
                     Train : 
-                      [2203  843] 
-                     [ 155 3564]
+                      [1601 1341] 
+                     [ 135 3326]
                     EarlyStopping counter: 39 out of 100
 
                     Train : 
-                      [2352  738] 
-                     [ 146 3573]
+                      [1554 1325] 
+                     [ 155 3306]
                     EarlyStopping counter: 40 out of 100
 
                     Train : 
-                      [2378  717] 
-                     [ 151 3568]
+                      [1529 1387] 
+                     [ 131 3330]
                     EarlyStopping counter: 41 out of 100
 
                     Train : 
-                      [2354  723] 
-                     [ 157 3562]
+                      [1581 1317] 
+                     [ 138 3323]
                     EarlyStopping counter: 42 out of 100
 
                     Train : 
-                      [2351  726] 
-                     [ 173 3546]
+                      [1709 1266] 
+                     [ 181 3280]
                     EarlyStopping counter: 43 out of 100
 
                     Train : 
-                      [2434  668] 
-                     [ 168 3551]
+                      [1690 1223] 
+                     [ 132 3329]
                     EarlyStopping counter: 44 out of 100
 
                     Train : 
-                      [2376  678] 
-                     [ 158 3561]
+                      [1735 1177] 
+                     [ 148 3313]
                     EarlyStopping counter: 45 out of 100
 
                     Train : 
-                      [2372  744] 
-                     [ 148 3571]
+                      [1737 1181] 
+                     [ 159 3302]
                     EarlyStopping counter: 46 out of 100
 
                     Train : 
-                      [2338  702] 
-                     [ 157 3562]
+                      [1751 1110] 
+                     [ 138 3323]
                     EarlyStopping counter: 47 out of 100
 
                     Train : 
-                      [2394  667] 
-                     [ 161 3558]
+                      [1752 1217] 
+                     [ 134 3327]
                     EarlyStopping counter: 48 out of 100
 
                     Train : 
-                      [2371  685] 
-                     [ 135 3584]
+                      [1830 1143] 
+                     [ 149 3312]
                     EarlyStopping counter: 49 out of 100
 
                     Train : 
-                      [2406  666] 
-                     [ 150 3569]
+                      [1768 1121] 
+                     [ 134 3327]
                     EarlyStopping counter: 50 out of 100
 
                     Train : 
-                      [2475  579] 
-                     [ 135 3584]
+                      [1797 1166] 
+                     [ 161 3300]
                     EarlyStopping counter: 51 out of 100
 
                     Train : 
-                      [2448  656] 
-                     [ 179 3540]
+                      [1854 1082] 
+                     [ 155 3306]
                     EarlyStopping counter: 52 out of 100
 
                     Train : 
-                      [2461  625] 
-                     [ 153 3566]
+                      [1768 1101] 
+                     [ 139 3322]
                     EarlyStopping counter: 53 out of 100
 
                     Train : 
-                      [2410  571] 
-                     [ 154 3565]
+                      [1862 1107] 
+                     [ 133 3328]
                     EarlyStopping counter: 54 out of 100
 
                     Train : 
-                      [2438  655] 
-                     [ 124 3595]
+                      [1847 1103] 
+                     [ 160 3301]
                     EarlyStopping counter: 55 out of 100
 
                     Train : 
-                      [2485  612] 
-                     [ 140 3579]
+                      [1831 1133] 
+                     [ 136 3325]
                     EarlyStopping counter: 56 out of 100
 
                     Train : 
-                      [2463  604] 
-                     [ 153 3566]
+                      [1825 1093] 
+                     [ 144 3317]
                     EarlyStopping counter: 57 out of 100
 
                     Train : 
-                      [2493  573] 
-                     [ 169 3550]
+                      [1798 1103] 
+                     [ 153 3308]
                     EarlyStopping counter: 58 out of 100
 
                     Train : 
-                      [2434  601] 
-                     [ 159 3560]
+                      [1913 1097] 
+                     [ 157 3304]
                     EarlyStopping counter: 59 out of 100
 
                     Train : 
-                      [2533  563] 
-                     [ 143 3576]
+                      [1860 1097] 
+                     [ 154 3307]
                     EarlyStopping counter: 60 out of 100
 
                     Train : 
-                      [2518  581] 
-                     [ 153 3566]
+                      [1821 1114] 
+                     [ 146 3315]
                     EarlyStopping counter: 61 out of 100
 
                     Train : 
-                      [2565  550] 
-                     [ 150 3569]
+                      [1868 1120] 
+                     [ 146 3315]
                     EarlyStopping counter: 62 out of 100
 
                     Train : 
-                      [2478  584] 
-                     [ 151 3568]
+                      [1821 1094] 
+                     [ 171 3290]
                     EarlyStopping counter: 63 out of 100
 
                     Train : 
-                      [2496  551] 
-                     [ 136 3583]
+                      [1858 1074] 
+                     [ 136 3325]
                     EarlyStopping counter: 64 out of 100
 
                     Train : 
-                      [2504  523] 
-                     [ 145 3574]
+                      [1857 1060] 
+                     [ 143 3318]
                     EarlyStopping counter: 65 out of 100
 
                     Train : 
-                      [2469  541] 
-                     [ 134 3585]
+                      [1903 1083] 
+                     [ 151 3310]
                     EarlyStopping counter: 66 out of 100
 
                     Train : 
-                      [2479  513] 
-                     [ 168 3551]
+                      [1910 1027] 
+                     [ 148 3313]
                     EarlyStopping counter: 67 out of 100
 
                     Train : 
-                      [2544  503] 
-                     [ 123 3596]
+                      [1834 1010] 
+                     [ 161 3300]
                     EarlyStopping counter: 68 out of 100
 
                     Train : 
-                      [2513  512] 
-                     [ 164 3555]
+                      [1866 1082] 
+                     [ 166 3295]
                     EarlyStopping counter: 69 out of 100
 
                     Train : 
-                      [2484  563] 
-                     [ 172 3547]
+                      [1871 1076] 
+                     [ 148 3313]
                     EarlyStopping counter: 70 out of 100
 
                     Train : 
-                      [2574  537] 
-                     [ 163 3556]
+                      [1847 1044] 
+                     [ 140 3321]
                     EarlyStopping counter: 71 out of 100
 
                     Train : 
-                      [2526  530] 
-                     [ 151 3568]
+                      [1856 1111] 
+                     [ 154 3307]
                     EarlyStopping counter: 72 out of 100
 
                     Train : 
-                      [2528  490] 
-                     [ 141 3578]
+                      [1895 1069] 
+                     [ 137 3324]
                     EarlyStopping counter: 73 out of 100
 
                     Train : 
-                      [2511  528] 
-                     [ 158 3561]
+                      [1894 1044] 
+                     [ 152 3309]
                     EarlyStopping counter: 74 out of 100
 
                     Train : 
-                      [2537  503] 
-                     [ 135 3584]
+                      [1898 1069] 
+                     [ 142 3319]
                     EarlyStopping counter: 75 out of 100
 
                     Train : 
-                      [2536  484] 
-                     [ 141 3578]
+                      [1945 1035] 
+                     [ 164 3297]
                     EarlyStopping counter: 76 out of 100
 
                     Train : 
-                      [2500  500] 
-                     [ 141 3578]
+                      [1905 1058] 
+                     [ 137 3324]
                     EarlyStopping counter: 77 out of 100
 
                     Train : 
-                      [2552  493] 
-                     [ 165 3554]
+                      [1907 1057] 
+                     [ 155 3306]
                     EarlyStopping counter: 78 out of 100
 
                     Train : 
-                      [2537  545] 
-                     [ 157 3562]
+                      [1848  989] 
+                     [ 144 3317]
                     EarlyStopping counter: 79 out of 100
 
                     Train : 
-                      [2587  495] 
-                     [ 151 3568]
+                      [1894 1078] 
+                     [ 146 3315]
                     EarlyStopping counter: 80 out of 100
 
                     Train : 
-                      [2508  517] 
-                     [ 137 3582]
+                      [1910 1031] 
+                     [ 149 3312]
                     EarlyStopping counter: 81 out of 100
 
                     Train : 
-                      [2586  511] 
-                     [ 155 3564]
+                      [1940 1038] 
+                     [ 151 3310]
                     EarlyStopping counter: 82 out of 100
 
-                    Train : 
-                      [2628  520] 
-                     [ 141 3578]
-                    EarlyStopping counter: 83 out of 100
-
-                    Train : 
-                      [2582  483] 
-                     [ 143 3576]
-                    EarlyStopping counter: 84 out of 100
-
-                    Train : 
-                      [2622  508] 
-                     [ 159 3560]
-                    EarlyStopping counter: 85 out of 100
-
-                    Train : 
-                      [2546  500] 
-                     [ 150 3569]
-                    EarlyStopping counter: 86 out of 100
-
-                    Train : 
-                      [2571  493] 
-                     [ 168 3551]
-                    EarlyStopping counter: 87 out of 100
-
-                    Train : 
-                      [2596  500] 
-                     [ 152 3567]
-                    EarlyStopping counter: 88 out of 100
-
-                    Train : 
-                      [2531  511] 
-                     [ 151 3568]
-                    EarlyStopping counter: 89 out of 100
-
-                    Train : 
-                      [2627  500] 
-                     [ 166 3553]
-                    EarlyStopping counter: 90 out of 100
-
-                    Train : 
-                      [2610  538] 
-                     [ 160 3559]
-                    EarlyStopping counter: 91 out of 100
-
-                    Train : 
-                      [2533  514] 
-                     [ 162 3557]
-                    EarlyStopping counter: 92 out of 100
-
-                    Train : 
-                      [2548  469] 
-                     [ 139 3580]
-                    EarlyStopping counter: 93 out of 100
-
-                    Train : 
-                      [2609  502] 
-                     [ 158 3561]
-                    EarlyStopping counter: 94 out of 100
-
-                    Train : 
-                      [2528  509] 
-                     [ 162 3557]
-                    EarlyStopping counter: 95 out of 100
-
-                    Train : 
-                      [2629  467] 
-                     [ 141 3578]
-                    EarlyStopping counter: 96 out of 100
-
-                    Train : 
-                      [2600  493] 
-                     [ 170 3549]
-                    EarlyStopping counter: 97 out of 100
-
-                    Train : 
-                      [2567  461] 
-                     [ 156 3563]
-                    EarlyStopping counter: 98 out of 100
-
-                    Train : 
-                      [2524  467] 
-                     [ 162 3557]
-                    EarlyStopping counter: 99 out of 100
-
-                    Train : 
-                      [2587  494] 
-                     [ 140 3579]
-                    EarlyStopping counter: 100 out of 100
-
-                    Early stopping...
-     Best Loss:
-          valid
-           [262 570] 
-           [ 69 828]
-          F1:  0.7215686274509804
-          AUC:  0.7388423484263786
-          precision:  0.592274678111588
-          recall:  0.9230769230769231
-          test
-           [ 628 1249] 
-           [ 38 360]
-          F1:  0.3587443946188341
-          AUC:  0.7189664358018114
-          precision:  0.22374145431945308
-          recall:  0.9045226130653267
-
-
-
-     Best Sore:
-          valid
-           [386 446] 
-           [128 769]
-          F1:  0.728219696969697
-          AUC:  0.7330457829517193
-          precision:  0.6329218106995885
-          recall:  0.8573021181716833
-          test
-           [942 935] 
-           [ 75 323]
-          F1:  0.39009661835748793
-          AUC:  0.729786385309606
-          precision:  0.25675675675675674
-          recall:  0.8115577889447236
-          ==================================================
-          Fold 2 Training Finished
-
-
-          Fold 3 of 5 :
-                    Train : 
-                      [ 137 2846] 
-                     [ 207 3608]
-                    -- -- The best model for TEST (F1= .  0.40797981390947796 ) -- --
-                    Validate: 
-                      0.7633604574444689 
-                     [  0 807] 
-                     [  0 801] 
-                     precision:  0.498134328358209 recall:  1.0 AUC 0.4749716509876904
-                    test    : 
-                      0.40797981390947796 
-                     [   0 1877] 
-                     [  0 398] 
-                     AUC 0.5012917544568875
-                    - Epoch: 1 - Train_loss: 0.50572 - Train_acc: 0.55099 -  - Val_loss: 0.51482 - Val_acc: 0.49833  - T_Time: 35.03654 LR:0.0010000000
-                    --------------------------------------------------
-
-                    Validation  score to (inf --> 0.47497165).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 126 2941] 
-                     [ 184 3631]
-                    -- -- The best model for TEST (F1= .  0.409141230428594 ) -- --
-                    Validate: 
-                      0.7601557334900462 
-                     [  2 805] 
-                     [  5 796] 
-                     precision:  0.4971892567145534 recall:  0.9937578027465668 AUC 0.6490059668289483
-                    test    : 
-                      0.409141230428594 
-                     [   9 1868] 
-                     [  0 398] 
-                     AUC 0.6407831646244007
-                    - Epoch: 2 - Train_loss: 0.41219 - Train_acc: 0.54587 -  - Val_loss: 0.44234 - Val_acc: 0.49095  - T_Time: 35.68389 LR:0.0010000000
-                    --------------------------------------------------
-
-                    Validation  score to (0.47497165 --> 0.64900597).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 146 2947] 
-                     [ 141 3674]
-                    --------------------------------------------------
-
-                    Validation  score to (0.64900597 --> 0.65983815).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 128 2987] 
-                     [ 152 3663]
-                    --------------------------------------------------
-
-                    Validation  score to (0.65983815 --> 0.67880298).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 149 2899] 
-                     [ 167 3648]
-                    EarlyStopping counter: 1 out of 100
-
-                    Train : 
-                      [ 117 2907] 
-                     [ 167 3648]
-                    EarlyStopping counter: 2 out of 100
-
-                    Train : 
-                      [ 139 2919] 
-                     [ 155 3660]
-                    EarlyStopping counter: 3 out of 100
-
-                    Train : 
-                      [ 187 2901] 
-                     [ 159 3656]
-                    -- -- The best model for TEST (F1= .  0.4123017779913502 ) -- --
-                    Validate: 
-                      0.7679852125693162 
-                     [ 27 780] 
-                     [  2 799] 
-                     precision:  0.506016466117796 recall:  0.9975031210986267 AUC 0.6800344055680091
-                    test    : 
-                      0.4123017779913502 
-                     [  47 1830] 
-                     [  2 396] 
-                     AUC 0.6795619011412951
-                    - Epoch: 8 - Train_loss: 0.37819 - Train_acc: 0.55671 -  - Val_loss: 0.40560 - Val_acc: 0.51228  - T_Time: 35.49876 LR:0.0010000000
-                    --------------------------------------------------
-
-                    Validation  score to (0.67880298 --> 0.68003441).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 169 2852] 
-                     [ 154 3661]
-                    -- -- The best model for TEST (F1= .  0.41986917416189695 ) -- --
-                    Validate: 
-                      0.7593345656192236 
-                     [ 18 789] 
-                     [ 11 790] 
-                     precision:  0.5003166561114629 recall:  0.9862671660424469 AUC 0.6745239454399472
-                    test    : 
-                      0.41986917416189695 
-                     [ 110 1767] 
-                     [  3 395] 
-                     AUC 0.7158367757808757
-                    - Epoch: 9 - Train_loss: 0.37553 - Train_acc: 0.56016 -  - Val_loss: 0.42096 - Val_acc: 0.49795  - T_Time: 35.14944 LR:0.0010000000
-                    EarlyStopping counter: 1 out of 100
-
-                    Train : 
-                      [ 143 2912] 
-                     [ 158 3657]
-                    --------------------------------------------------
-
-                    Validation  score to (0.68003441 --> 0.69894587).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 138 2895] 
-                     [ 174 3641]
-                    -- -- The best model for TEST (F1= .  0.4901744043232621 ) -- --
-                    Validate: 
-                      0.6999735192867861 
-                     [387 420] 
-                     [191 610] 
-                     precision:  0.5922330097087378 recall:  0.7615480649188514 AUC 0.6902446910383087
-                    test    : 
-                      0.4901744043232621 
-                     [1044  833] 
-                     [ 91 307] 
-                     AUC 0.7114622125009705
-                    - Epoch: 11 - Train_loss: 0.37873 - Train_acc: 0.55189 -  - Val_loss: 0.51499 - Val_acc: 0.62196  - T_Time: 34.71649 LR:0.0010000000
-                    EarlyStopping counter: 1 out of 100
-
-                    Train : 
-                      [ 138 2920] 
-                     [ 155 3660]
-                    EarlyStopping counter: 2 out of 100
-
-                    Train : 
-                      [ 198 2837] 
-                     [ 173 3642]
-                    EarlyStopping counter: 3 out of 100
-
-                    Train : 
-                      [ 200 2843] 
-                     [ 167 3648]
-                    EarlyStopping counter: 4 out of 100
-
-                    Train : 
-                      [ 189 2849] 
-                     [ 156 3659]
-                    EarlyStopping counter: 5 out of 100
-
-                    Train : 
-                      [ 178 2887] 
-                     [ 166 3649]
-                    --------------------------------------------------
-
-                    Validation  score to (0.69894587 --> 0.70435654).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 261 2774] 
-                     [ 172 3643]
-                    EarlyStopping counter: 1 out of 100
-
-                    Train : 
-                      [ 299 2781] 
-                     [ 165 3650]
-                    EarlyStopping counter: 2 out of 100
-
-                    Train : 
-                      [ 304 2701] 
-                     [ 163 3652]
-                    EarlyStopping counter: 3 out of 100
-
-                    Train : 
-                      [ 404 2694] 
-                     [ 154 3661]
-                    EarlyStopping counter: 4 out of 100
-
-                    Train : 
-                      [ 339 2699] 
-                     [ 169 3646]
-                    EarlyStopping counter: 5 out of 100
-
-                    Train : 
-                      [ 372 2685] 
-                     [ 166 3649]
-                    EarlyStopping counter: 6 out of 100
-
-                    Train : 
-                      [ 449 2571] 
-                     [ 192 3623]
-                    EarlyStopping counter: 7 out of 100
-
-                    Train : 
-                      [ 513 2550] 
-                     [ 154 3661]
-                    EarlyStopping counter: 8 out of 100
-
-                    Train : 
-                      [ 500 2599] 
-                     [ 154 3661]
-                    EarlyStopping counter: 9 out of 100
-
-                    Train : 
-                      [ 555 2532] 
-                     [ 283 3532]
-                    EarlyStopping counter: 10 out of 100
-
-                    Train : 
-                      [ 382 2709] 
-                     [ 169 3646]
-                    EarlyStopping counter: 11 out of 100
-
-                    Train : 
-                      [ 505 2531] 
-                     [ 203 3612]
-                    EarlyStopping counter: 12 out of 100
-
-                    Train : 
-                      [ 608 2443] 
-                     [ 182 3633]
-                    EarlyStopping counter: 13 out of 100
-
-                    Train : 
-                      [ 702 2407] 
-                     [ 165 3650]
-                    EarlyStopping counter: 14 out of 100
-
-                    Train : 
-                      [ 691 2454] 
-                     [ 171 3644]
-                    EarlyStopping counter: 15 out of 100
-
-                    Train : 
-                      [ 726 2328] 
-                     [ 148 3667]
-                    EarlyStopping counter: 16 out of 100
-
-                    Train : 
-                      [ 823 2256] 
-                     [ 167 3648]
-                    EarlyStopping counter: 17 out of 100
-
-                    Train : 
-                      [ 804 2247] 
-                     [ 164 3651]
-                    EarlyStopping counter: 18 out of 100
-
-                    Train : 
-                      [ 873 2172] 
-                     [ 180 3635]
-                    EarlyStopping counter: 19 out of 100
-
-                    Train : 
-                      [ 934 2161] 
-                     [ 189 3626]
-                    EarlyStopping counter: 20 out of 100
-
-                    Train : 
-                      [ 934 2073] 
-                     [ 149 3666]
-                    EarlyStopping counter: 21 out of 100
-
-                    Train : 
-                      [1135 1947] 
-                     [ 185 3630]
-                    EarlyStopping counter: 22 out of 100
-
-                    Train : 
-                      [1136 1921] 
-                     [ 180 3635]
-                    EarlyStopping counter: 23 out of 100
-
-                    Train : 
-                      [1224 1804] 
-                     [ 156 3659]
-                    EarlyStopping counter: 24 out of 100
-
-                    Train : 
-                      [1225 1770] 
-                     [ 175 3640]
-                    EarlyStopping counter: 25 out of 100
-
-                    Train : 
-                      [1321 1701] 
-                     [ 165 3650]
-                    EarlyStopping counter: 26 out of 100
-
-                    Train : 
-                      [1281 1750] 
-                     [ 154 3661]
-                    EarlyStopping counter: 27 out of 100
-
-                    Train : 
-                      [1365 1687] 
-                     [ 155 3660]
-                    EarlyStopping counter: 28 out of 100
-
-                    Train : 
-                      [1399 1670] 
-                     [ 165 3650]
-                    EarlyStopping counter: 29 out of 100
-
-                    Train : 
-                      [1396 1717] 
-                     [ 170 3645]
-                    EarlyStopping counter: 30 out of 100
-
-                    Train : 
-                      [1217 1826] 
-                     [ 173 3642]
-                    EarlyStopping counter: 31 out of 100
-
-                    Train : 
-                      [1375 1712] 
-                     [ 179 3636]
-                    EarlyStopping counter: 32 out of 100
-
-                    Train : 
-                      [1462 1623] 
-                     [ 157 3658]
-                    EarlyStopping counter: 33 out of 100
-
-                    Train : 
-                      [1665 1429] 
-                     [ 161 3654]
-                    EarlyStopping counter: 34 out of 100
-
-                    Train : 
-                      [1648 1422] 
-                     [ 165 3650]
-                    EarlyStopping counter: 35 out of 100
-
-                    Train : 
-                      [1606 1428] 
-                     [ 151 3664]
-                    EarlyStopping counter: 36 out of 100
-
-                    Train : 
-                      [1648 1368] 
-                     [ 170 3645]
-                    EarlyStopping counter: 37 out of 100
-
-                    Train : 
-                      [1765 1273] 
-                     [ 134 3681]
-                    EarlyStopping counter: 38 out of 100
-
-                    Train : 
-                      [1739 1339] 
-                     [ 162 3653]
-                    EarlyStopping counter: 39 out of 100
-
-                    Train : 
-                      [1780 1320] 
-                     [ 148 3667]
-                    EarlyStopping counter: 40 out of 100
-
-                    Train : 
-                      [1454 1603] 
-                     [ 163 3652]
-                    EarlyStopping counter: 41 out of 100
-
-                    Train : 
-                      [1644 1432] 
-                     [ 171 3644]
-                    EarlyStopping counter: 42 out of 100
-
-                    Train : 
-                      [1820 1267] 
-                     [ 156 3659]
-                    EarlyStopping counter: 43 out of 100
-
-                    Train : 
-                      [1763 1293] 
-                     [ 157 3658]
-                    EarlyStopping counter: 44 out of 100
-
-                    Train : 
-                      [1888 1197] 
-                     [ 152 3663]
-                    EarlyStopping counter: 45 out of 100
-
-                    Train : 
-                      [1962 1162] 
-                     [ 149 3666]
-                    EarlyStopping counter: 46 out of 100
-
-                    Train : 
-                      [1776 1242] 
-                     [ 161 3654]
-                    EarlyStopping counter: 47 out of 100
-
-                    Train : 
-                      [1860 1169] 
-                     [ 160 3655]
-                    EarlyStopping counter: 48 out of 100
-
-                    Train : 
-                      [1956 1145] 
-                     [ 134 3681]
-                    EarlyStopping counter: 49 out of 100
-
-                    Train : 
-                      [1795 1234] 
-                     [ 148 3667]
-                    EarlyStopping counter: 50 out of 100
-
-                    Train : 
-                      [1978 1142] 
-                     [ 174 3641]
-                    EarlyStopping counter: 51 out of 100
-
-                    Train : 
-                      [1945 1153] 
-                     [ 148 3667]
-                    EarlyStopping counter: 52 out of 100
-
-                    Train : 
-                      [1935 1111] 
-                     [ 172 3643]
-                    EarlyStopping counter: 53 out of 100
-
-                    Train : 
-                      [2049 1048] 
-                     [ 158 3657]
-                    EarlyStopping counter: 54 out of 100
-
-                    Train : 
-                      [2068 1051] 
-                     [ 159 3656]
-                    EarlyStopping counter: 55 out of 100
-
-                    Train : 
-                      [2040 1030] 
-                     [ 129 3686]
-                    EarlyStopping counter: 56 out of 100
-
-                    Train : 
-                      [2076 1055] 
-                     [ 147 3668]
-                    EarlyStopping counter: 57 out of 100
-
-                    Train : 
-                      [2109 1023] 
-                     [ 163 3652]
-                    EarlyStopping counter: 58 out of 100
-
-                    Train : 
-                      [2100 1021] 
-                     [ 160 3655]
-                    EarlyStopping counter: 59 out of 100
-
-                    Train : 
-                      [2074  982] 
-                     [ 148 3667]
-                    EarlyStopping counter: 60 out of 100
-
-                    Train : 
-                      [2080  950] 
-                     [ 155 3660]
-                    EarlyStopping counter: 61 out of 100
-
-                    Train : 
-                      [2142  951] 
-                     [ 161 3654]
-                    EarlyStopping counter: 62 out of 100
-
-                    Train : 
-                      [2150  975] 
-                     [ 170 3645]
-                    EarlyStopping counter: 63 out of 100
-
-                    Train : 
-                      [2124 1035] 
-                     [ 150 3665]
-                    EarlyStopping counter: 64 out of 100
-
-                    Train : 
-                      [2115  887] 
-                     [ 143 3672]
-                    EarlyStopping counter: 65 out of 100
-
-                    Train : 
-                      [2104 1009] 
-                     [ 158 3657]
-                    EarlyStopping counter: 66 out of 100
-
-                    Train : 
-                      [2176  920] 
-                     [ 181 3634]
-                    EarlyStopping counter: 67 out of 100
-
-                    Train : 
-                      [2178  889] 
-                     [ 147 3668]
-                    EarlyStopping counter: 68 out of 100
-
-                    Train : 
-                      [2143  962] 
-                     [ 156 3659]
-                    EarlyStopping counter: 69 out of 100
-
-                    Train : 
-                      [2214  892] 
-                     [ 174 3641]
-                    EarlyStopping counter: 70 out of 100
-
-                    Train : 
-                      [2048  962] 
-                     [ 158 3657]
-                    EarlyStopping counter: 71 out of 100
-
-                    Train : 
-                      [2105  953] 
-                     [ 161 3654]
-                    EarlyStopping counter: 72 out of 100
-
-                    Train : 
-                      [2121  967] 
-                     [ 168 3647]
-                    EarlyStopping counter: 73 out of 100
-
-                    Train : 
-                      [2131  929] 
-                     [ 178 3637]
-                    EarlyStopping counter: 74 out of 100
-
-                    Train : 
-                      [2168  904] 
-                     [ 144 3671]
-                    EarlyStopping counter: 75 out of 100
-
-                    Train : 
-                      [2161  918] 
-                     [ 163 3652]
-                    EarlyStopping counter: 76 out of 100
-
-                    Train : 
-                      [2135  911] 
-                     [ 161 3654]
-                    EarlyStopping counter: 77 out of 100
-
-                    Train : 
-                      [2192  872] 
-                     [ 162 3653]
-                    EarlyStopping counter: 78 out of 100
-
-                    Train : 
-                      [2196  886] 
-                     [ 160 3655]
-                    EarlyStopping counter: 79 out of 100
-
-                    Train : 
-                      [2188  902] 
-                     [ 146 3669]
-                    EarlyStopping counter: 80 out of 100
-
-                    Train : 
-                      [2168  886] 
-                     [ 177 3638]
-                    EarlyStopping counter: 81 out of 100
-
-                    Train : 
-                      [2171  878] 
-                     [ 166 3649]
-                    EarlyStopping counter: 82 out of 100
-
-                    Train : 
-                      [2226  875] 
-                     [ 165 3650]
-                    EarlyStopping counter: 83 out of 100
-
-                    Train : 
-                      [2271  920] 
-                     [ 160 3655]
-                    EarlyStopping counter: 84 out of 100
-
-                    Train : 
-                      [2250  819] 
-                     [ 177 3638]
-                    EarlyStopping counter: 85 out of 100
-
-                    Train : 
-                      [2209  814] 
-                     [ 164 3651]
-                    EarlyStopping counter: 86 out of 100
-
-                    Train : 
-                      [2213  843] 
-                     [ 164 3651]
-                    EarlyStopping counter: 87 out of 100
-
-                    Train : 
-                      [2209  869] 
-                     [ 160 3655]
-                    EarlyStopping counter: 88 out of 100
-
-                    Train : 
-                      [2215  836] 
-                     [ 147 3668]
-                    EarlyStopping counter: 89 out of 100
-
-                    Train : 
-                      [2193  867] 
-                     [ 159 3656]
-                    EarlyStopping counter: 90 out of 100
-
-                    Train : 
-                      [2206  834] 
-                     [ 152 3663]
-                    EarlyStopping counter: 91 out of 100
-
-                    Train : 
-                      [2169  841] 
-                     [ 161 3654]
-                    EarlyStopping counter: 92 out of 100
-
-                    Train : 
-                      [2210  903] 
-                     [ 150 3665]
-                    EarlyStopping counter: 93 out of 100
-
-                    Train : 
-                      [2196  829] 
-                     [ 145 3670]
-                    EarlyStopping counter: 94 out of 100
-
-                    Train : 
-                      [2201  868] 
-                     [ 164 3651]
-                    EarlyStopping counter: 95 out of 100
-
-                    Train : 
-                      [2175  841] 
-                     [ 182 3633]
-                    EarlyStopping counter: 96 out of 100
-
-                    Train : 
-                      [2216  863] 
-                     [ 146 3669]
-                    EarlyStopping counter: 97 out of 100
-
-                    Train : 
-                      [2230  853] 
-                     [ 158 3657]
-                    EarlyStopping counter: 98 out of 100
-
-                    Train : 
-                      [2192  853] 
-                     [ 172 3643]
-                    EarlyStopping counter: 99 out of 100
-
-                    Train : 
-                      [2212  831] 
-                     [ 165 3650]
-                    EarlyStopping counter: 100 out of 100
-
-                    Early stopping...
-     Best Loss:
-          valid
-           [ 63 744] 
-           [ 16 785]
-          F1:  0.6738197424892703
-          AUC:  0.7043565431686227
-          precision:  0.513407455853499
-          recall:  0.9800249687890137
-          test
-           [ 226 1651] 
-           [  6 392]
-          F1:  0.32117984432609586
-          AUC:  0.7288747948586833
-          precision:  0.19187469407733726
-          recall:  0.9849246231155779
-
-
-
-     Best Sore:
-          valid
-           [387 420] 
-           [191 610]
-          F1:  0.6663025669033316
-          AUC:  0.6902446910383087
-          precision:  0.5922330097087378
-          recall:  0.7615480649188514
-          test
-           [1044  833] 
-           [ 91 307]
-          F1:  0.3992197659297789
-          AUC:  0.7114622125009705
-          precision:  0.2692982456140351
-          recall:  0.7713567839195979
-          ==================================================
-          Fold 3 Training Finished
-
-
-          Fold 4 of 5 :
-                    Train : 
-                      [ 122 2866] 
-                     [ 158 3697]
-                    -- -- The best model for TEST (F1= .  0.40797981390947796 ) -- --
-                    Validate: 
-                      0.7388901336918366 
-                     [  0 874] 
-                     [  0 761] 
-                     precision:  0.4654434250764526 recall:  1.0 AUC 0.47771735371680646
-                    test    : 
-                      0.40797981390947796 
-                     [   0 1877] 
-                     [  0 398] 
-                     AUC 0.4792931091258102
-                    - Epoch: 1 - Train_loss: 0.49828 - Train_acc: 0.55732 -  - Val_loss: 0.54785 - Val_acc: 0.46449  - T_Time: 35.65030 LR:0.0010000000
-                    --------------------------------------------------
-
-                    Validation  score to (inf --> 0.47771735).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 136 2944] 
-                     [ 169 3686]
-                    -- -- The best model for TEST (F1= .  0.4085181049609188 ) -- --
-                    Validate: 
-                      0.7395997301551607 
-                     [ 10 864] 
-                     [  2 759] 
-                     precision:  0.4676524953789279 recall:  0.9973718791064389 AUC 0.6625803997510201
-                    test    : 
-                      0.4085181049609188 
-                     [  32 1845] 
-                     [  4 394] 
-                     AUC 0.6422141340693879
-                    - Epoch: 2 - Train_loss: 0.42316 - Train_acc: 0.54592 -  - Val_loss: 0.57249 - Val_acc: 0.46718  - T_Time: 35.68688 LR:0.0010000000
-                    --------------------------------------------------
-
-                    Validation  score to (0.47771735 --> 0.66258040).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 154 2854] 
-                     [ 164 3691]
-                    EarlyStopping counter: 1 out of 100
-
-                    Train : 
-                      [ 142 2907] 
-                     [ 174 3681]
-                    --------------------------------------------------
-
-                    Validation  score to (0.66258040 --> 0.67016256).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 110 2948] 
-                     [ 165 3690]
-                    -- -- The best model for TEST (F1= .  0.42605705037426667 ) -- --
-                    Validate: 
-                      0.7141143199931442 
-                     [310 564] 
-                     [120 641] 
-                     precision:  0.5319502074688797 recall:  0.8423127463863338 AUC 0.6307745739828059
-                    test    : 
-                      0.42605705037426667 
-                     [ 625 1252] 
-                     [ 74 324] 
-                     AUC 0.5979685320582668
-                    - Epoch: 5 - Train_loss: 0.44587 - Train_acc: 0.53013 -  - Val_loss: 0.55006 - Val_acc: 0.57848  - T_Time: 35.30816 LR:0.0010000000
-                    EarlyStopping counter: 1 out of 100
-
-                    Train : 
-                      [ 321 2798] 
-                     [ 283 3572]
-                    EarlyStopping counter: 2 out of 100
-
-                    Train : 
-                      [ 141 2946] 
-                     [ 151 3704]
-                    EarlyStopping counter: 3 out of 100
-
-                    Train : 
-                      [ 125 2981] 
-                     [ 167 3688]
-                    --------------------------------------------------
-
-                    Validation  score to (0.67016256 --> 0.69514549).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 173 2861] 
-                     [ 164 3691]
-                    EarlyStopping counter: 1 out of 100
-
-                    Train : 
-                      [ 116 2990] 
-                     [ 172 3683]
-                    --------------------------------------------------
-
-                    Validation  score to (0.69514549 --> 0.69961991).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 146 2841] 
-                     [ 163 3692]
-                    --------------------------------------------------
-
-                    Validation  score to (0.69961991 --> 0.70349895).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 125 2931] 
-                     [ 174 3681]
-                    EarlyStopping counter: 1 out of 100
-
-                    Train : 
-                      [ 188 2849] 
-                     [ 157 3698]
-                    --------------------------------------------------
-
-                    Validation  score to (0.70349895 --> 0.70575871).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 222 2831] 
-                     [ 155 3700]
-                    --------------------------------------------------
-
-                    Validation  score to (0.70575871 --> 0.71845428).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 157 2834] 
-                     [ 158 3697]
-                    -- -- The best model for TEST (F1= .  0.4330364788491179 ) -- --
-                    Validate: 
-                      0.755684904928211 
-                     [114 760] 
-                     [ 12 749] 
-                     precision:  0.4963552021206097 recall:  0.9842312746386334 AUC 0.7184633010280944
-                    test    : 
-                      0.4330364788491179 
-                     [ 242 1635] 
-                     [  9 389] 
-                     AUC 0.7192917169759292
-                    - Epoch: 15 - Train_loss: 0.36443 - Train_acc: 0.56276 -  - Val_loss: 0.41299 - Val_acc: 0.52849  - T_Time: 35.25699 LR:0.0010000000
-                    --------------------------------------------------
-
-                    Validation  score to (0.71845428 --> 0.71846330).  Saving model ...
-                    --------------------------------------------------
-
-                    Train : 
-                      [ 252 2846] 
-                     [ 158 3697]
-                    -- -- The best model for TEST (F1= .  0.4492807771343172 ) -- --
-                    Validate: 
-                      0.7435752839764762 
-                     [193 681] 
-                     [ 51 710] 
-                     precision:  0.5104241552839683 recall:  0.9329829172141918 AUC 0.7114825428422797
-                    test    : 
-                      0.4492807771343172 
-                     [ 466 1411] 
-                     [ 28 370] 
-                     AUC 0.7180896490979136
-                    - Epoch: 16 - Train_loss: 0.36938 - Train_acc: 0.56702 -  - Val_loss: 0.42988 - Val_acc: 0.55435  - T_Time: 36.46433 LR:0.0010000000
-                    EarlyStopping counter: 1 out of 100
-
-                    Train : 
-                      [ 221 2849] 
-                     [ 186 3669]
-                    EarlyStopping counter: 2 out of 100
-
-                    Train : 
-                      [ 173 2929] 
-                     [ 144 3711]
-                    EarlyStopping counter: 3 out of 100
-
-                    Train : 
-                      [ 201 2854] 
-                     [ 163 3692]
-                    EarlyStopping counter: 4 out of 100
-
-                    Train : 
-                      [ 222 2839] 
-                     [ 152 3703]
-                    EarlyStopping counter: 5 out of 100
-
-                    Train : 
-                      [ 303 2766] 
-                     [ 220 3635]
-                    EarlyStopping counter: 6 out of 100
-
-                    Train : 
-                      [ 126 2911] 
-                     [ 171 3684]
-                    EarlyStopping counter: 7 out of 100
-
-                    Train : 
-                      [ 151 2856] 
-                     [ 184 3671]
-                    EarlyStopping counter: 8 out of 100
-
-                    Train : 
-                      [ 123 2840] 
-                     [ 149 3706]
-                    EarlyStopping counter: 9 out of 100
-
-                    Train : 
-                      [ 173 2858] 
-                     [ 155 3700]
-                    EarlyStopping counter: 10 out of 100
-
-                    Train : 
-                      [ 169 2867] 
-                     [ 149 3706]
-                    EarlyStopping counter: 11 out of 100
-
-                    Train : 
-                      [ 299 2794] 
-                     [ 168 3687]
-                    EarlyStopping counter: 12 out of 100
-
-                    Train : 
-                      [ 269 2758] 
-                     [ 155 3700]
-                    EarlyStopping counter: 13 out of 100
-
-                    Train : 
-                      [ 330 2716] 
-                     [ 171 3684]
-                    EarlyStopping counter: 14 out of 100
-
-                    Train : 
-                      [ 368 2717] 
-                     [ 160 3695]
-                    EarlyStopping counter: 15 out of 100
-
-                    Train : 
-                      [ 287 2691] 
-                     [ 166 3689]
-                    EarlyStopping counter: 16 out of 100
-
-                    Train : 
-                      [ 460 2606] 
-                     [ 182 3673]
-                    EarlyStopping counter: 17 out of 100
-
-                    Train : 
-                      [ 413 2571] 
-                     [ 189 3666]
-                    EarlyStopping counter: 18 out of 100
-
-                    Train : 
-                      [ 393 2673] 
-                     [ 167 3688]
-                    -- -- The best model for TEST (F1= .  0.46633102580239144 ) -- --
-                    Validate: 
-                      0.7358283348821492 
-                     [297 577] 
-                     [ 91 670] 
-                     precision:  0.53728949478749 recall:  0.8804204993429697 AUC 0.6934164669515301
-                    test    : 
-                      0.46633102580239144 
-                     [ 731 1146] 
-                     [ 56 342] 
-                     AUC 0.7138917817644429
-                    - Epoch: 34 - Train_loss: 0.34853 - Train_acc: 0.59614 -  - Val_loss: 0.46374 - Val_acc: 0.59449  - T_Time: 35.24353 LR:0.0005000000
-                    EarlyStopping counter: 19 out of 100
-
-                    Train : 
-                      [ 453 2555] 
-                     [ 191 3664]
-                    EarlyStopping counter: 20 out of 100
-
-                    Train : 
-                      [ 487 2569] 
-                     [ 166 3689]
-                    EarlyStopping counter: 21 out of 100
-
-                    Train : 
-                      [ 563 2514] 
-                     [ 181 3674]
-                    EarlyStopping counter: 22 out of 100
-
-                    Train : 
-                      [ 618 2362] 
-                     [ 164 3691]
-                    EarlyStopping counter: 23 out of 100
-
-                    Train : 
-                      [ 630 2386] 
-                     [ 176 3679]
-                    EarlyStopping counter: 24 out of 100
-
-                    Train : 
-                      [ 747 2381] 
-                     [ 177 3678]
-                    EarlyStopping counter: 25 out of 100
-
-                    Train : 
-                      [ 719 2295] 
-                     [ 177 3678]
-                    EarlyStopping counter: 26 out of 100
-
-                    Train : 
-                      [ 729 2320] 
-                     [ 155 3700]
-                    EarlyStopping counter: 27 out of 100
-
-                    Train : 
-                      [ 853 2199] 
-                     [ 175 3680]
-                    EarlyStopping counter: 28 out of 100
-
-                    Train : 
-                      [ 875 2203] 
-                     [ 175 3680]
-                    EarlyStopping counter: 29 out of 100
-
-                    Train : 
-                      [ 812 2241] 
-                     [ 184 3671]
-                    EarlyStopping counter: 30 out of 100
-
-                    Train : 
-                      [ 863 2222] 
-                     [ 183 3672]
-                    EarlyStopping counter: 31 out of 100
-
-                    Train : 
-                      [ 918 2224] 
-                     [ 164 3691]
-                    EarlyStopping counter: 32 out of 100
-
-                    Train : 
-                      [ 980 2013] 
-                     [ 191 3664]
-                    EarlyStopping counter: 33 out of 100
-
-                    Train : 
-                      [1004 2003] 
-                     [ 180 3675]
-                    EarlyStopping counter: 34 out of 100
-
-                    Train : 
-                      [1102 1955] 
-                     [ 161 3694]
-                    EarlyStopping counter: 35 out of 100
-
-                    Train : 
-                      [1115 1915] 
-                     [ 164 3691]
-                    EarlyStopping counter: 36 out of 100
-
-                    Train : 
-                      [1130 1887] 
-                     [ 164 3691]
-                    EarlyStopping counter: 37 out of 100
-
-                    Train : 
-                      [1222 1844] 
-                     [ 200 3655]
-                    EarlyStopping counter: 38 out of 100
-
-                    Train : 
-                      [1233 1847] 
-                     [ 182 3673]
-                    EarlyStopping counter: 39 out of 100
-
-                    Train : 
-                      [1158 1856] 
-                     [ 168 3687]
-                    EarlyStopping counter: 40 out of 100
-
-                    Train : 
-                      [1229 1774] 
-                     [ 195 3660]
-                    EarlyStopping counter: 41 out of 100
-
-                    Train : 
-                      [1224 1791] 
-                     [ 176 3679]
-                    EarlyStopping counter: 42 out of 100
-
-                    Train : 
-                      [1321 1790] 
-                     [ 159 3696]
-                    EarlyStopping counter: 43 out of 100
-
-                    Train : 
-                      [1346 1719] 
-                     [ 166 3689]
-                    EarlyStopping counter: 44 out of 100
-
-                    Train : 
-                      [1402 1641] 
-                     [ 180 3675]
-                    EarlyStopping counter: 45 out of 100
-
-                    Train : 
-                      [1356 1661] 
-                     [ 172 3683]
-                    EarlyStopping counter: 46 out of 100
-
-                    Train : 
-                      [1456 1607] 
-                     [ 187 3668]
-                    EarlyStopping counter: 47 out of 100
-
-                    Train : 
-                      [1510 1573] 
-                     [ 160 3695]
-                    EarlyStopping counter: 48 out of 100
-
-                    Train : 
-                      [1528 1589] 
-                     [ 181 3674]
-                    EarlyStopping counter: 49 out of 100
-
-                    Train : 
-                      [1548 1468] 
-                     [ 173 3682]
-                    EarlyStopping counter: 50 out of 100
-
-                    Train : 
-                      [1497 1569] 
-                     [ 157 3698]
-                    EarlyStopping counter: 51 out of 100
-
-                    Train : 
-                      [1555 1556] 
-                     [ 164 3691]
-                    EarlyStopping counter: 52 out of 100
-
-                    Train : 
-                      [1628 1477] 
-                     [ 152 3703]
-                    EarlyStopping counter: 53 out of 100
-
-                    Train : 
-                      [1511 1470] 
-                     [ 164 3691]
-                    EarlyStopping counter: 54 out of 100
-
-                    Train : 
-                      [1621 1408] 
-                     [ 171 3684]
-                    EarlyStopping counter: 55 out of 100
-
-                    Train : 
-                      [1572 1427] 
-                     [ 162 3693]
-                    EarlyStopping counter: 56 out of 100
-
-                    Train : 
-                      [1644 1452] 
-                     [ 160 3695]
-                    EarlyStopping counter: 57 out of 100
-
-                    Train : 
-                      [1571 1471] 
-                     [ 176 3679]
-                    EarlyStopping counter: 58 out of 100
-
-                    Train : 
-                      [1649 1354] 
-                     [ 154 3701]
-                    EarlyStopping counter: 59 out of 100
-
-                    Train : 
-                      [1629 1376] 
-                     [ 168 3687]
-                    EarlyStopping counter: 60 out of 100
-
-                    Train : 
-                      [1609 1360] 
-                     [ 174 3681]
-                    EarlyStopping counter: 61 out of 100
-
-                    Train : 
-                      [1709 1342] 
-                     [ 144 3711]
-                    EarlyStopping counter: 62 out of 100
-
-                    Train : 
-                      [1718 1349] 
-                     [ 168 3687]
-                    EarlyStopping counter: 63 out of 100
-
-                    Train : 
-                      [1758 1300] 
-                     [ 181 3674]
-                    EarlyStopping counter: 64 out of 100
-
-                    Train : 
-                      [1649 1352] 
-                     [ 154 3701]
-                    EarlyStopping counter: 65 out of 100
-
-                    Train : 
-                      [1750 1286] 
-                     [ 177 3678]
-                    EarlyStopping counter: 66 out of 100
-
-                    Train : 
-                      [1745 1369] 
-                     [ 169 3686]
-                    EarlyStopping counter: 67 out of 100
-
-                    Train : 
-                      [1810 1266] 
-                     [ 162 3693]
-                    EarlyStopping counter: 68 out of 100
-
-                    Train : 
-                      [1797 1245] 
-                     [ 173 3682]
-                    EarlyStopping counter: 69 out of 100
-
-                    Train : 
-                      [1839 1249] 
-                     [ 148 3707]
-                    EarlyStopping counter: 70 out of 100
-
-                    Train : 
-                      [1859 1260] 
-                     [ 175 3680]
-                    EarlyStopping counter: 71 out of 100
-
-                    Train : 
-                      [1831 1247] 
-                     [ 128 3727]
-                    EarlyStopping counter: 72 out of 100
-
-                    Train : 
-                      [1840 1253] 
-                     [ 151 3704]
-                    EarlyStopping counter: 73 out of 100
-
-                    Train : 
-                      [1813 1280] 
-                     [ 166 3689]
-                    EarlyStopping counter: 74 out of 100
-
-                    Train : 
-                      [1840 1275] 
-                     [ 193 3662]
-                    EarlyStopping counter: 75 out of 100
-
-                    Train : 
-                      [1817 1241] 
-                     [ 165 3690]
-                    EarlyStopping counter: 76 out of 100
-
-                    Train : 
-                      [1811 1224] 
-                     [ 175 3680]
-                    EarlyStopping counter: 77 out of 100
-
-                    Train : 
-                      [1829 1238] 
-                     [ 176 3679]
-                    EarlyStopping counter: 78 out of 100
-
-                    Train : 
-                      [1865 1218] 
-                     [ 153 3702]
-                    EarlyStopping counter: 79 out of 100
-
-                    Train : 
-                      [1828 1202] 
-                     [ 161 3694]
-                    EarlyStopping counter: 80 out of 100
-
-                    Train : 
-                      [1752 1245] 
-                     [ 150 3705]
-                    EarlyStopping counter: 81 out of 100
-
-                    Train : 
-                      [1812 1175] 
-                     [ 195 3660]
-                    EarlyStopping counter: 82 out of 100
-
-                    Train : 
-                      [1866 1148] 
-                     [ 163 3692]
-                    EarlyStopping counter: 83 out of 100
-
-                    Train : 
-                      [1835 1248] 
-                     [ 146 3709]
-                    EarlyStopping counter: 84 out of 100
-
-                    Train : 
-                      [1792 1240] 
-                     [ 161 3694]
-                    EarlyStopping counter: 85 out of 100
-
-                    Train : 
-                      [1781 1223] 
-                     [ 176 3679]
-                    EarlyStopping counter: 86 out of 100
-
-                    Train : 
-                      [1860 1189] 
-                     [ 180 3675]
-                    EarlyStopping counter: 87 out of 100
-
-                    Train : 
-                      [1875 1253] 
-                     [ 166 3689]
-                    EarlyStopping counter: 88 out of 100
-
-                    Train : 
-                      [1913 1158] 
-                     [ 188 3667]
-                    EarlyStopping counter: 89 out of 100
-
-                    Train : 
-                      [1884 1166] 
-                     [ 169 3686]
-                    EarlyStopping counter: 90 out of 100
-
-                    Train : 
-                      [1881 1146] 
-                     [ 154 3701]
-                    EarlyStopping counter: 91 out of 100
-
-                    Train : 
-                      [1827 1173] 
-                     [ 170 3685]
-                    EarlyStopping counter: 92 out of 100
-
-                    Train : 
-                      [1861 1152] 
-                     [ 151 3704]
-                    EarlyStopping counter: 93 out of 100
-
-                    Train : 
-                      [1834 1176] 
-                     [ 154 3701]
-                    EarlyStopping counter: 94 out of 100
-
-                    Train : 
-                      [1869 1183] 
-                     [ 162 3693]
-                    EarlyStopping counter: 95 out of 100
-
-                    Train : 
-                      [1843 1122] 
-                     [ 152 3703]
-                    EarlyStopping counter: 96 out of 100
-
-                    Train : 
-                      [1836 1220] 
-                     [ 172 3683]
-                    EarlyStopping counter: 97 out of 100
-
-                    Train : 
-                      [1914 1208] 
-                     [ 157 3698]
-                    EarlyStopping counter: 98 out of 100
-
-                    Train : 
-                      [1893 1152] 
-                     [ 156 3699]
-                    EarlyStopping counter: 99 out of 100
-
-                    Train : 
-                      [1929 1183] 
-                     [ 161 3694]
-                    EarlyStopping counter: 100 out of 100
-
-                    Early stopping...
-     Best Loss:
-          valid
-           [114 760] 
-           [ 12 749]
-          F1:  0.6599118942731278
-          AUC:  0.718461797526439
-          precision:  0.4963552021206097
-          recall:  0.9842312746386334
-          test
-           [ 242 1635] 
-           [  9 389]
-          F1:  0.3212221304706854
-          AUC:  0.7192917169759292
-          precision:  0.19219367588932806
-          recall:  0.9773869346733668
-
-
-
-     Best Sore:
-          valid
-           [297 577] 
-           [ 91 670]
-          F1:  0.6673306772908367
-          AUC:  0.6934179704531854
-          precision:  0.53728949478749
-          recall:  0.8804204993429697
-          test
-           [ 731 1146] 
-           [ 56 342]
-          F1:  0.36267232237539765
-          AUC:  0.7138917817644429
-          precision:  0.22983870967741934
-          recall:  0.8592964824120602
-          ==================================================
-          Fold 4 Training Finished
-
-
-     ==================================================
-train_loss [0.2915048496081279, 0.26371851563453674, 0.33529594319838063, 0.381842107684524, 0.3520718685218266]  mean: 0.32488665692947916 
-     train_acc [0.7742603852438411, 0.7924520502645502, 0.6605099022633745, 0.5579591813348002, 0.5957919034090909]  mean: 0.6761946845031315 
-
-     validate_loss [0.4928452633321285, 0.49002521112561226, 0.45257134096963064, 0.51228586265019, 0.47145175508090426]  mean: 0.48383588663169314 
-     validate_acc [0.6586701766304348, 0.6238633452868853, 0.6665722150259068, 0.6290922619047619, 0.5936034451659451]  mean: 0.6343602888027867 
-     validate_precision [0.6649819494584838, 0.6140221402214022, 0.6329218106995885, 0.5922330097087378, 0.53728949478749]  mean: 0.6082896809751405 
-     validate_recall [0.8029642545771578, 0.8245787908820614, 0.8573021181716833, 0.7615480649188514, 0.8804204993429697]  mean: 0.8253627455785448 
-     validate_auc [0.7086252335284593, 0.6609378155839154, 0.7330457829517193, 0.6902446910383087, 0.6934179704531854]  mean: 0.6972542987111177 
-
-     test_loss [0.8358088334401449, 0.858961820602417, 0.7317371103498671, 0.7083154453171624, 0.7367729345957438]  mean: 0.7743192288610671 
-     test_acc [0.5709549375917767, 0.5207549406510034, 0.5559207507342143, 0.5941897638277044, 0.47164479319628]  mean: 0.5426930372001958 
-     test_precision [0.2603648424543947, 0.2417910447761194, 0.25675675675675674, 0.2692982456140351, 0.22983870967741934]  mean: 0.25160991985574505 
-     test_recall [0.7889447236180904, 0.8140703517587939, 0.8115577889447236, 0.7713567839195979, 0.8592964824120602]  mean: 0.8090452261306533 
-     test_auc [0.7362598822562466, 0.6962395889945198, 0.729786385309606, 0.7114622125009705, 0.7138917817644429]  mean: 0.7175279701651572
-     ==================================================
-Training Finished
-train_loss [0.2915048496081279, 0.26371851563453674, 0.33529594319838063, 0.381842107684524, 0.3520718685218266]  mean: 0.32488665692947916 
-     train_acc [0.7742603852438411, 0.7924520502645502, 0.6605099022633745, 0.5579591813348002, 0.5957919034090909]  mean: 0.6761946845031315 
-
-     validate_loss [0.4928452633321285, 0.49002521112561226, 0.45257134096963064, 0.51228586265019, 0.47145175508090426]  mean: 0.48383588663169314 
-     validate_acc [0.6586701766304348, 0.6238633452868853, 0.6665722150259068, 0.6290922619047619, 0.5936034451659451]  mean: 0.6343602888027867 
-     validate_precision [0.6649819494584838, 0.6140221402214022, 0.6329218106995885, 0.5922330097087378, 0.53728949478749]  mean: 0.6082896809751405 
-     validate_recall [0.8029642545771578, 0.8245787908820614, 0.8573021181716833, 0.7615480649188514, 0.8804204993429697]  mean: 0.8253627455785448 
-     validate_auc [0.7086252335284593, 0.6609378155839154, 0.7330457829517193, 0.6902446910383087, 0.6934179704531854]  mean: 0.6972542987111177 
-
-     test_loss [0.8358088334401449, 0.858961820602417, 0.7317371103498671, 0.7083154453171624, 0.7367729345957438]  mean: 0.7743192288610671 
-     test_acc [0.5709549375917767, 0.5207549406510034, 0.5559207507342143, 0.5941897638277044, 0.47164479319628]  mean: 0.5426930372001958 
-     test_precision [0.2603648424543947, 0.2417910447761194, 0.25675675675675674, 0.2692982456140351, 0.22983870967741934]  mean: 0.25160991985574505 
-     test_recall [0.7889447236180904, 0.8140703517587939, 0.8115577889447236, 0.7713567839195979, 0.8592964824120602]  mean: 0.8090452261306533 
-     test_auc [0.7362598822562466, 0.6962395889945198, 0.729786385309606, 0.7114622125009705, 0.7138917817644429]  mean: 0.7175279701651572
-     ==================================================
-train_loss [0.2915048496081279, 0.26371851563453674, 0.33529594319838063, 0.381842107684524, 0.3520718685218266]  mean: 0.32488665692947916 
-     train_acc [0.7742603852438411, 0.7924520502645502, 0.6605099022633745, 0.5579591813348002, 0.5957919034090909]  mean: 0.6761946845031315 
-
-     validate_loss [0.4928452633321285, 0.49002521112561226, 0.45257134096963064, 0.51228586265019, 0.47145175508090426]  mean: 0.48383588663169314 
-     validate_acc [0.6586701766304348, 0.6238633452868853, 0.6665722150259068, 0.6290922619047619, 0.5936034451659451]  mean: 0.6343602888027867 
-     validate_precision [0.6649819494584838, 0.6140221402214022, 0.6329218106995885, 0.5922330097087378, 0.53728949478749]  mean: 0.6082896809751405 
-     validate_recall [0.8029642545771578, 0.8245787908820614, 0.8573021181716833, 0.7615480649188514, 0.8804204993429697]  mean: 0.8253627455785448 
-     validate_auc [0.7086252335284593, 0.6609378155839154, 0.7330457829517193, 0.6902446910383087, 0.6934179704531854]  mean: 0.6972542987111177 
-
-     test_loss [0.8358088334401449, 0.858961820602417, 0.7317371103498671, 0.7083154453171624, 0.7367729345957438]  mean: 0.7743192288610671 
-     test_acc [0.5709549375917767, 0.5207549406510034, 0.5559207507342143, 0.5941897638277044, 0.47164479319628]  mean: 0.5426930372001958 
-     test_precision [0.2603648424543947, 0.2417910447761194, 0.25675675675675674, 0.2692982456140351, 0.22983870967741934]  mean: 0.25160991985574505 
-     test_recall [0.7889447236180904, 0.8140703517587939, 0.8115577889447236, 0.7713567839195979, 0.8592964824120602]  mean: 0.8090452261306533 
-     test_auc [0.7362598822562466, 0.6962395889945198, 0.729786385309606, 0.7114622125009705, 0.7138917817644429]  mean: 0.7175279701651572
-     ==================================================
-train_loss [0.2915048496081279, 0.26371851563453674, 0.33529594319838063, 0.381842107684524, 0.3520718685218266]  mean: 0.32488665692947916 
-     train_acc [0.7742603852438411, 0.7924520502645502, 0.6605099022633745, 0.5579591813348002, 0.5957919034090909]  mean: 0.6761946845031315 
-
-     validate_loss [0.4928452633321285, 0.49002521112561226, 0.45257134096963064, 0.51228586265019, 0.47145175508090426]  mean: 0.48383588663169314 
-     validate_acc [0.6586701766304348, 0.6238633452868853, 0.6665722150259068, 0.6290922619047619, 0.5936034451659451]  mean: 0.6343602888027867 
-     validate_precision [0.6649819494584838, 0.6140221402214022, 0.6329218106995885, 0.5922330097087378, 0.53728949478749]  mean: 0.6082896809751405 
-     validate_recall [0.8029642545771578, 0.8245787908820614, 0.8573021181716833, 0.7615480649188514, 0.8804204993429697]  mean: 0.8253627455785448 
-     validate_auc [0.7086252335284593, 0.6609378155839154, 0.7330457829517193, 0.6902446910383087, 0.6934179704531854]  mean: 0.6972542987111177 
-
-     test_loss [0.8358088334401449, 0.858961820602417, 0.7317371103498671, 0.7083154453171624, 0.7367729345957438]  mean: 0.7743192288610671 
-     test_acc [0.5709549375917767, 0.5207549406510034, 0.5559207507342143, 0.5941897638277044, 0.47164479319628]  mean: 0.5426930372001958 
-     test_precision [0.2603648424543947, 0.2417910447761194, 0.25675675675675674, 0.2692982456140351, 0.22983870967741934]  mean: 0.25160991985574505 
-     test_recall [0.7889447236180904, 0.8140703517587939, 0.8115577889447236, 0.7713567839195979, 0.8592964824120602]  mean: 0.8090452261306533 
-     test_auc [0.7362598822562466, 0.6962395889945198, 0.729786385309606, 0.7114622125009705, 0.7138917817644429]  mean: 0.7175279701651572
-     ==================================================
-train_loss [0.2915048496081279, 0.26371851563453674, 0.33529594319838063, 0.381842107684524, 0.3520718685218266]  mean: 0.32488665692947916 
-     train_acc [0.7742603852438411, 0.7924520502645502, 0.6605099022633745, 0.5579591813348002, 0.5957919034090909]  mean: 0.6761946845031315 
-
-     validate_loss [0.4928452633321285, 0.49002521112561226, 0.45257134096963064, 0.51228586265019, 0.47145175508090426]  mean: 0.48383588663169314 
-     validate_acc [0.6586701766304348, 0.6238633452868853, 0.6665722150259068, 0.6290922619047619, 0.5936034451659451]  mean: 0.6343602888027867 
-     validate_precision [0.6649819494584838, 0.6140221402214022, 0.6329218106995885, 0.5922330097087378, 0.53728949478749]  mean: 0.6082896809751405 
-     validate_recall [0.8029642545771578, 0.8245787908820614, 0.8573021181716833, 0.7615480649188514, 0.8804204993429697]  mean: 0.8253627455785448 
-     validate_auc [0.7086252335284593, 0.6609378155839154, 0.7330457829517193, 0.6902446910383087, 0.6934179704531854]  mean: 0.6972542987111177 
-
-     test_loss [0.8358088334401449, 0.858961820602417, 0.7317371103498671, 0.7083154453171624, 0.7367729345957438]  mean: 0.7743192288610671 
-     test_acc [0.5709549375917767, 0.5207549406510034, 0.5559207507342143, 0.5941897638277044, 0.47164479319628]  mean: 0.5426930372001958 
-     test_precision [0.2603648424543947, 0.2417910447761194, 0.25675675675675674, 0.2692982456140351, 0.22983870967741934]  mean: 0.25160991985574505 
-     test_recall [0.7889447236180904, 0.8140703517587939, 0.8115577889447236, 0.7713567839195979, 0.8592964824120602]  mean: 0.8090452261306533 
-     test_auc [0.7362598822562466, 0.6962395889945198, 0.729786385309606, 0.7114622125009705, 0.7138917817644429]  mean: 0.7175279701651572
-     ==================================================
-train_loss [0.2915048496081279, 0.26371851563453674, 0.33529594319838063, 0.381842107684524, 0.3520718685218266]  mean: 0.32488665692947916 
-     train_acc [0.7742603852438411, 0.7924520502645502, 0.6605099022633745, 0.5579591813348002, 0.5957919034090909]  mean: 0.6761946845031315 
-
-     validate_loss [0.4928452633321285, 0.49002521112561226, 0.45257134096963064, 0.51228586265019, 0.47145175508090426]  mean: 0.48383588663169314 
-     validate_acc [0.6586701766304348, 0.6238633452868853, 0.6665722150259068, 0.6290922619047619, 0.5936034451659451]  mean: 0.6343602888027867 
-     validate_precision [0.6649819494584838, 0.6140221402214022, 0.6329218106995885, 0.5922330097087378, 0.53728949478749]  mean: 0.6082896809751405 
-     validate_recall [0.8029642545771578, 0.8245787908820614, 0.8573021181716833, 0.7615480649188514, 0.8804204993429697]  mean: 0.8253627455785448 
-     validate_auc [0.7086252335284593, 0.6609378155839154, 0.7330457829517193, 0.6902446910383087, 0.6934179704531854]  mean: 0.6972542987111177 
-
-     test_loss [0.8358088334401449, 0.858961820602417, 0.7317371103498671, 0.7083154453171624, 0.7367729345957438]  mean: 0.7743192288610671 
-     test_acc [0.5709549375917767, 0.5207549406510034, 0.5559207507342143, 0.5941897638277044, 0.47164479319628]  mean: 0.5426930372001958 
-     test_precision [0.2603648424543947, 0.2417910447761194, 0.25675675675675674, 0.2692982456140351, 0.22983870967741934]  mean: 0.25160991985574505 
-     test_recall [0.7889447236180904, 0.8140703517587939, 0.8115577889447236, 0.7713567839195979, 0.8592964824120602]  mean: 0.8090452261306533 
-     test_auc [0.7362598822562466, 0.6962395889945198, 0.729786385309606, 0.7114622125009705, 0.7138917817644429]  mean: 0.7175279701651572
-     ==================================================
-copy ./log.log -> ./logs/20240222_213924/log.log
