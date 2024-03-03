@@ -238,19 +238,19 @@ def tarinning_one_flod_mutilabels(fold,Model,train_dataset,val_dataset,test_data
                         LR_MIN = 1e-5,
                         warm_up_iter = 5,
                         weight_decay=1e-3,
-                        num_workers = 0,
+                        num_workers = 4,
                         shuffle = True,
                         onehot_lable = False
                         ):
-    # target = train_dataset.labels
-    # class_sample_count = np.array([len(np.where(target == t)[0]) for t in np.unique(target)])
-    # weight = 1. / class_sample_count
-    # samples_weight = np.array([weight[t] for t in target])
-    # samples_weight = torch.from_numpy(samples_weight)
-    # samples_weight = samples_weight.double()
-    # sampler = Data.WeightedRandomSampler(samples_weight, len(samples_weight))  # type: ignore
-
-    train_dataloader = Data.DataLoader(dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=True,num_workers=num_workers,pin_memory=True)
+    target = train_dataset.labels
+    class_sample_count = np.array([len(np.where(target[:,i] == 1)[0]) for i in range(target.shape[1])])
+    weight = 1. / class_sample_count
+    # 为了保证所有权重的和为1，我们需要对权重进行归一化处理
+    weight = weight / weight.sum()
+    weight = torch.Tensor(weight).tolist()
+    sampler = Data.WeightedRandomSampler(weight, num_samples=len(weight))
+    
+    train_dataloader = Data.DataLoader(dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=False,num_workers=num_workers,pin_memory=True,sampler=sampler)
     valid_dataloader = Data.DataLoader(dataset=val_dataset, batch_size=BATCH_SIZE, shuffle=False,num_workers=num_workers,pin_memory=True)
     test_dataloader = Data.DataLoader(dataset=test_dataset, batch_size=BATCH_SIZE, shuffle=False,num_workers=num_workers,pin_memory=True)
     early_stopping = EarlyStopping(PATIENCE, verbose=True, model_path=save_model_path, delta=0, positive=False)
@@ -274,9 +274,6 @@ def tarinning_one_flod_mutilabels(fold,Model,train_dataset,val_dataset,test_data
         
         y_true,y_pred,validate_loss,validate_acc = eval_model_mutilabels(valid_dataloader,criterion,Model,DEVICE,onehot_lable=onehot_lable) # 验证模型
         time_all = time.time()-start_time
-        # F1_score_valid =f1_score(y_true, y_pred, average='macro')#F1分数
-        # C1 = confusion_matrix(y_true,y_pred)
-        # print(" "*20+'Validate: ',F1_score_valid,'\n'+" "*20,C1[0],'\n'+" "*20,C1[1])
         
         writer.add_scalars(main_tag=str(fold)+'_Loss',tag_scalar_dict={'train': train_loss,'validate': validate_loss},global_step=epoch)
         writer.add_scalars(main_tag=str(fold)+'_Accuracy',tag_scalar_dict={'train': train_acc,'validate': validate_acc},global_step=epoch)

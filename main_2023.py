@@ -167,11 +167,11 @@ if __name__ == '__main__':
         torch.cuda.empty_cache()# 清空显卡
         device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         NET = [ 
-                Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.2),
-                Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.2),
-                Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.2),
-                Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.2),
-                Net.MLBFNet_GUR_o(True,True,True,2,Dropout_rate=0.2),
+                Net.MLBFNet_GUR_o(2,True,True,True,2,Dropout_rate=0.2),
+                Net.MLBFNet_GUR_o(2,True,True,True,2,Dropout_rate=0.2),
+                Net.MLBFNet_GUR_o(2,True,True,True,2,Dropout_rate=0.2),
+                Net.MLBFNet_GUR_o(2,True,True,True,2,Dropout_rate=0.2),
+                Net.MLBFNet_GUR_o(2,True,True,True,2,Dropout_rate=0.2),
                ] # type: ignore
         summary(NET[0].to(device), input_size=(12, 5000))
         os.makedirs(model_path, exist_ok=True)  # type: ignore

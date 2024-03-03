@@ -572,7 +572,7 @@ class MLBFNet_GUR(nn.Module):
         return self.last_out
 
 class MLBFNet_GUR_o(nn.Module):
-    def __init__(self,mark = True,res = True,se=True,GRU_layers_nums:int= 3,Dropout_rate:float = 0.0,size = [[3,3,3,3,3,3],
+    def __init__(self,num_class = 2,mark = True,res = True,se=True,GRU_layers_nums:int= 3,Dropout_rate:float = 0.0,size = [[3,3,3,3,3,3],
                                                                                                     [5,5,5,5,3,3],
                                                                                                     [7,7,7,7,3,3]],):
         super(MLBFNet_GUR_o, self).__init__()
@@ -612,7 +612,7 @@ class MLBFNet_GUR_o(nn.Module):
             self.layers_list_1d.append(layers)    
         self.dorp = nn.Dropout(p = Dropout_rate)
         self.avgpool = nn.AdaptiveAvgPool1d(1)
-        self.fc = nn.Linear(512*len(self.sizes)+384*GRU_layers_nums,2)
+        self.fc = nn.Linear(512*len(self.sizes)+384*GRU_layers_nums,num_class)
         self.softmax = nn.Softmax(-1)
         
         self.GRU = nn.GRU(384,384,GRU_layers_nums,batch_first=True,bidirectional=False)

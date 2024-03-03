@@ -9,6 +9,7 @@ from sklearn.model_selection import StratifiedKFold
 from sklearn.model_selection import KFold
 import random
 import pandas as pd
+import shutil
 
 import time
 import os
@@ -26,12 +27,12 @@ EcgLength_num = 5000
 DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 print(DEVICE)
 
-BATCH_SIZE = 200
+BATCH_SIZE = 256
 
-FOLDS = 2
-EPOCHS = 100  
-PATIENCE = 10
-LR = 0.01
+FOLDS = 5
+EPOCHS = 200  
+PATIENCE = 100
+LR = 0.015
 
 num2class = np.array(['NORM', 'MI', 'STTC', 'CD', 'HYP'])
 
@@ -40,6 +41,17 @@ def amplitude_limiting(ecg_data,max_bas = 90):
     ecg_data[ecg_data > max_bas] = max_bas
     ecg_data[ecg_data < (-1*max_bas)] = -1*max_bas
     return ecg_data
+
+def mycopyfile(srcfile,dstpath):                       # 复制函数
+    if not os.path.isfile(srcfile):
+        print ("%s not exist!"%(srcfile))
+    else:
+        fpath,fname=os.path.split(srcfile)             # 分离文件名和路径
+        if not os.path.exists(dstpath):
+            os.makedirs(dstpath)                       # 创建路径
+        shutil.copy(srcfile, dstpath + fname)          # 复制文件
+        print ("copy %s -> %s"%(srcfile, dstpath + fname))
+
 
 class TensorDataset(Data.Dataset):
     """
@@ -71,11 +83,11 @@ if __name__ == '__main__':
     print(train_data.shape)
     print(train_label.shape)
     torch.cuda.empty_cache()# 清空显卡cuda '/workspace/data/Interpretable_HTN/PTX/
-    NET = [Net.MLBFNet(num_class = 5,mark = True,res = True,se = True,Dropout_rate = 0.25),
-           Net.MLBFNet(num_class = 5,mark = True,res = True,se = True,Dropout_rate = 0.25),
-           Net.MLBFNet(num_class = 5,mark = True,res = True,se = True,Dropout_rate = 0.25),
-           Net.MLBFNet(num_class = 5,mark = True,res = True,se = True,Dropout_rate = 0.25),
-           Net.MLBFNet(num_class = 5,mark = True,res = True,se = True,Dropout_rate = 0.25)] # type: ignore
+    NET = [Net.MLBFNet_GUR_o(num_class = 5,mark = True,res = True,se = True,Dropout_rate = 0.2),
+           Net.MLBFNet_GUR_o(num_class = 5,mark = True,res = True,se = True,Dropout_rate = 0.2),
+           Net.MLBFNet_GUR_o(num_class = 5,mark = True,res = True,se = True,Dropout_rate = 0.2),
+           Net.MLBFNet_GUR_o(num_class = 5,mark = True,res = True,se = True,Dropout_rate = 0.2),
+           Net.MLBFNet_GUR_o(num_class = 5,mark = True,res = True,se = True,Dropout_rate = 0.2)] # type: ignore
     os.makedirs(model_path, exist_ok=True)  # type: ignore
     writer = SummaryWriter(log_path)  # type: ignore
 
@@ -132,18 +144,27 @@ if __name__ == '__main__':
         '\n'+" "*10+"test_loss",test_loss,
         " "*10+"test_acc",test_acc)
         print(" "*10+'='*50)
-        print(" "*10+'='*50)
-    print(" "*5+'='*50)
+
+        print("train_loss",train_loss_sum," mean:",(np.array(train_loss_sum)).mean(),
+        "\n" + " "*5+"train_acc",train_acc_sum," mean:",(np.array(train_acc_sum)).mean(),
+        "\n" + "\n" + " "*5+"validate_loss",validate_loss_sum," mean:",(np.array(validate_loss_sum)).mean(),
+        "\n" + " "*5+"validate_acc",validate_acc_sum," mean:",(np.array(validate_acc_sum)).mean(),
+
+        "\n" + "\n" + " "*5+"test_loss",test_loss_sum," mean:",(np.array(test_loss_sum)).mean(),
+        "\n" + " "*5+"test_acc",test_acc_sum," mean:",(np.array(test_acc_sum)).mean())
+        print(" "*5+'='*50)
+        print('Training Finished')
+        # sys.stdout.log.close()
+        
+        for ttt in range(5):
+            print("train_loss",train_loss_sum," mean:",(np.array(train_loss_sum)).mean(),
+            "\n" + " "*5+"train_acc",train_acc_sum," mean:",(np.array(train_acc_sum)).mean(),
+            "\n" + "\n" + " "*5+"validate_loss",validate_loss_sum," mean:",(np.array(validate_loss_sum)).mean(),
+            "\n" + " "*5+"validate_acc",validate_acc_sum," mean:",(np.array(validate_acc_sum)).mean(),
+            "\n" + "\n" + " "*5+"test_loss",test_loss_sum," mean:",(np.array(test_loss_sum)).mean(),
+            "\n" + " "*5+"test_acc",test_acc_sum," mean:",(np.array(test_acc_sum)).mean())
+            print(" "*5+'='*50)
     
-    print("train_loss",train_loss_sum,
-    " "*5+"train_acc",train_acc_sum,
-    "\n" + " "*5+"validate_loss",validate_loss_sum,
-    " "*5+"validate_acc",validate_acc_sum,
-    "\n" + " "*5+"test_loss",test_loss_sum,
-    " "*5+"test_acc",test_acc_sum)
-    print(" "*5+'='*50)
-    print('Training Finished')
-    
-    
+        mycopyfile('./log.log',log_path)
     
     
