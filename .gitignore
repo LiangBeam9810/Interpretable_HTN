@@ -22,3 +22,4 @@ __pycache__/self_attention.cpython-37.pyc
 __pycache__/train_test_validat.cpython-37.pyc
 ERR_fold/
 testdataset.csv
+plot_for_last_paper/
